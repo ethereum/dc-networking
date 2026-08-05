@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 152">
+  <desc>Decoupled consensus, one finality-gadget round: each slot a new block
+  joins the available chain and a sampled committee confirms the head; one of
+  eight validator cohorts casts its finality vote on the target checkpoint;
+  after eight slots the checkpoint finalizes.</desc>
+  <style>
+  .lnk { stroke: #D9E2DD; stroke-width: 1.4; }
+  .blk rect { fill: none; stroke: #5C6F6A; stroke-width: 1.4; }
+  .tgt rect { stroke: #1F6F63; fill: #1F6F63; fill-opacity: 0.18; }
+  .fnl rect { fill: #1A2C29; stroke: #1A2C29; }
+  .ring { fill: none; stroke: #1F6F63; stroke-width: 1.3; }
+  .loz { fill: #1F6F63; transform-box: fill-box; transform-origin: center; }
+  .pulse { fill: none; stroke: #1F6F63; stroke-width: 1.5; opacity: 0;
+           transform-box: fill-box; transform-origin: center; }
+  .dot { fill: none; stroke: #5C6F6A; stroke-width: 1.2; }
+  .cvote { fill: #1F6F63; opacity: 0; }
+  .cline { stroke: #1F6F63; stroke-width: 1; opacity: 0; }
+  .beam { stroke: #1F6F63; stroke-width: 1.2; opacity: 0; }
+  .fin rect { fill: #1A2C29; stroke: #1A2C29; }
+  .cap { font-family: "Avenir Next", Avenir, "Segoe UI", system-ui, sans-serif;
+         font-size: 7px; font-weight: 600; letter-spacing: 0.9px; fill: #5C6F6A; }
+  @media (prefers-reduced-motion: no-preference) {
+    .rnd { animation: rfade 11s linear infinite; }
+    .b1 { animation: app1 11s linear infinite; }
+    .p1 { animation: pul1 11s linear infinite; }
+    .z1 { animation: loz1 11s linear infinite; }
+    .b2 { animation: app2 11s linear infinite; }
+    .p2 { animation: pul2 11s linear infinite; }
+    .z2 { animation: loz2 11s linear infinite; }
+    .b3 { animation: app3 11s linear infinite; }
+    .p3 { animation: pul3 11s linear infinite; }
+    .z3 { animation: loz3 11s linear infinite; }
+    .b4 { animation: app4 11s linear infinite; }
+    .p4 { animation: pul4 11s linear infinite; }
+    .z4 { animation: loz4 11s linear infinite; }
+    .b5 { animation: app5 11s linear infinite; }
+    .p5 { animation: pul5 11s linear infinite; }
+    .z5 { animation: loz5 11s linear infinite; }
+    .b6 { animation: app6 11s linear infinite; }
+    .p6 { animation: pul6 11s linear infinite; }
+    .z6 { animation: loz6 11s linear infinite; }
+    .b7 { animation: app7 11s linear infinite; }
+    .p7 { animation: pul7 11s linear infinite; }
+    .z7 { animation: loz7 11s linear infinite; }
+    .b8 { animation: app8 11s linear infinite; }
+    .p8 { animation: pul8 11s linear infinite; }
+    .z8 { animation: loz8 11s linear infinite; }
+    .f1 { animation: com1 11s linear infinite; }
+    .e1 { animation: cln1 11s linear infinite; }
+    .c1 { animation: coh1 11s linear infinite; }
+    .m1 { animation: bem1 11s linear infinite; }
+    .f2 { animation: com2 11s linear infinite; }
+    .e2 { animation: cln2 11s linear infinite; }
+    .c2 { animation: coh2 11s linear infinite; }
+    .m2 { animation: bem2 11s linear infinite; }
+    .f3 { animation: com3 11s linear infinite; }
+    .e3 { animation: cln3 11s linear infinite; }
+    .c3 { animation: coh3 11s linear infinite; }
+    .m3 { animation: bem3 11s linear infinite; }
+    .f4 { animation: com4 11s linear infinite; }
+    .e4 { animation: cln4 11s linear infinite; }
+    .c4 { animation: coh4 11s linear infinite; }
+    .m4 { animation: bem4 11s linear infinite; }
+    .f5 { animation: com5 11s linear infinite; }
+    .e5 { animation: cln5 11s linear infinite; }
+    .c5 { animation: coh5 11s linear infinite; }
+    .m5 { animation: bem5 11s linear infinite; }
+    .f6 { animation: com6 11s linear infinite; }
+    .e6 { animation: cln6 11s linear infinite; }
+    .c6 { animation: coh6 11s linear infinite; }
+    .m6 { animation: bem6 11s linear infinite; }
+    .f7 { animation: com7 11s linear infinite; }
+    .e7 { animation: cln7 11s linear infinite; }
+    .c7 { animation: coh7 11s linear infinite; }
+    .m7 { animation: bem7 11s linear infinite; }
+    .f8 { animation: com8 11s linear infinite; }
+    .e8 { animation: cln8 11s linear infinite; }
+    .c8 { animation: coh8 11s linear infinite; }
+    .m8 { animation: bem8 11s linear infinite; }
+    .g0 { animation: fin0 11s linear infinite; }
+    .g1 { animation: fin1 11s linear infinite; }
+    .g2 { animation: fin2 11s linear infinite; }
+    @keyframes rfade { 0%, 96% { opacity: 1 } 99.6%, 100% { opacity: 0 } }
+    @keyframes app1 { 0%, 0.18% { opacity: 0 } 2.18% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes pul1 { 0%, 0.45% { opacity: 0; transform: scale(0.35) } 0.91% { opacity: 0.75 } 6.09%, 100% { opacity: 0; transform: scale(1.7) } }
+    @keyframes loz1 { 0%, 6.36% { opacity: 0; transform: scale(0); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1.3) } 9.55% { opacity: 1; transform: scale(1) } 100% { opacity: 1; transform: scale(1) } }
+    @keyframes app2 { 0%, 10.91% { opacity: 0 } 12.91% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes pul2 { 0%, 11.36% { opacity: 0; transform: scale(0.35) } 11.82% { opacity: 0.75 } 17.0%, 100% { opacity: 0; transform: scale(1.7) } }
+    @keyframes loz2 { 0%, 17.27% { opacity: 0; transform: scale(0); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1.3) } 20.45% { opacity: 1; transform: scale(1) } 100% { opacity: 1; transform: scale(1) } }
+    @keyframes app3 { 0%, 21.82% { opacity: 0 } 23.82% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes pul3 { 0%, 22.27% { opacity: 0; transform: scale(0.35) } 22.73% { opacity: 0.75 } 27.91%, 100% { opacity: 0; transform: scale(1.7) } }
+    @keyframes loz3 { 0%, 28.18% { opacity: 0; transform: scale(0); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1.3) } 31.36% { opacity: 1; transform: scale(1) } 100% { opacity: 1; transform: scale(1) } }
+    @keyframes app4 { 0%, 32.73% { opacity: 0 } 34.73% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes pul4 { 0%, 33.18% { opacity: 0; transform: scale(0.35) } 33.64% { opacity: 0.75 } 38.82%, 100% { opacity: 0; transform: scale(1.7) } }
+    @keyframes loz4 { 0%, 39.09% { opacity: 0; transform: scale(0); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1.3) } 42.27% { opacity: 1; transform: scale(1) } 100% { opacity: 1; transform: scale(1) } }
+    @keyframes app5 { 0%, 43.64% { opacity: 0 } 45.64% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes pul5 { 0%, 44.09% { opacity: 0; transform: scale(0.35) } 44.55% { opacity: 0.75 } 49.73%, 100% { opacity: 0; transform: scale(1.7) } }
+    @keyframes loz5 { 0%, 50.0% { opacity: 0; transform: scale(0); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1.3) } 53.18% { opacity: 1; transform: scale(1) } 100% { opacity: 1; transform: scale(1) } }
+    @keyframes app6 { 0%, 54.55% { opacity: 0 } 56.55% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes pul6 { 0%, 55.0% { opacity: 0; transform: scale(0.35) } 55.45% { opacity: 0.75 } 60.64%, 100% { opacity: 0; transform: scale(1.7) } }
+    @keyframes loz6 { 0%, 60.91% { opacity: 0; transform: scale(0); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1.3) } 64.09% { opacity: 1; transform: scale(1) } 100% { opacity: 1; transform: scale(1) } }
+    @keyframes app7 { 0%, 65.45% { opacity: 0 } 67.45% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes pul7 { 0%, 65.91% { opacity: 0; transform: scale(0.35) } 66.36% { opacity: 0.75 } 71.55%, 100% { opacity: 0; transform: scale(1.7) } }
+    @keyframes loz7 { 0%, 71.82% { opacity: 0; transform: scale(0); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1.3) } 75.0% { opacity: 1; transform: scale(1) } 100% { opacity: 1; transform: scale(1) } }
+    @keyframes app8 { 0%, 76.36% { opacity: 0 } 78.36% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes pul8 { 0%, 76.82% { opacity: 0; transform: scale(0.35) } 77.27% { opacity: 0.75 } 82.45%, 100% { opacity: 0; transform: scale(1.7) } }
+    @keyframes loz8 { 0%, 82.73% { opacity: 0; transform: scale(0); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1.3) } 85.91% { opacity: 1; transform: scale(1) } 100% { opacity: 1; transform: scale(1) } }
+    @keyframes com1 { 0%, 1.64% { opacity: 0 } 2.73% { opacity: 1.0 } 6.55%, 100% { opacity: 0 } }
+    @keyframes cln1 { 0%, 1.82% { opacity: 0 } 2.91% { opacity: 0.4 } 6.0%, 100% { opacity: 0 } }
+    @keyframes coh1 { 0%, 4.09% { opacity: 0 } 7.27% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes bem1 { 0%, 3.45% { opacity: 0 } 4.55% { opacity: 0.5 } 9.55%, 100% { opacity: 0 } }
+    @keyframes com2 { 0%, 12.55% { opacity: 0 } 13.64% { opacity: 1.0 } 17.45%, 100% { opacity: 0 } }
+    @keyframes cln2 { 0%, 12.73% { opacity: 0 } 13.82% { opacity: 0.4 } 16.91%, 100% { opacity: 0 } }
+    @keyframes coh2 { 0%, 15.0% { opacity: 0 } 18.18% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes bem2 { 0%, 14.36% { opacity: 0 } 15.45% { opacity: 0.5 } 20.45%, 100% { opacity: 0 } }
+    @keyframes com3 { 0%, 23.45% { opacity: 0 } 24.55% { opacity: 1.0 } 28.36%, 100% { opacity: 0 } }
+    @keyframes cln3 { 0%, 23.64% { opacity: 0 } 24.73% { opacity: 0.4 } 27.82%, 100% { opacity: 0 } }
+    @keyframes coh3 { 0%, 25.91% { opacity: 0 } 29.09% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes bem3 { 0%, 25.27% { opacity: 0 } 26.36% { opacity: 0.5 } 31.36%, 100% { opacity: 0 } }
+    @keyframes com4 { 0%, 34.36% { opacity: 0 } 35.45% { opacity: 1.0 } 39.27%, 100% { opacity: 0 } }
+    @keyframes cln4 { 0%, 34.55% { opacity: 0 } 35.64% { opacity: 0.4 } 38.73%, 100% { opacity: 0 } }
+    @keyframes coh4 { 0%, 36.82% { opacity: 0 } 40.0% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes bem4 { 0%, 36.18% { opacity: 0 } 37.27% { opacity: 0.5 } 42.27%, 100% { opacity: 0 } }
+    @keyframes com5 { 0%, 45.27% { opacity: 0 } 46.36% { opacity: 1.0 } 50.18%, 100% { opacity: 0 } }
+    @keyframes cln5 { 0%, 45.45% { opacity: 0 } 46.55% { opacity: 0.4 } 49.64%, 100% { opacity: 0 } }
+    @keyframes coh5 { 0%, 47.73% { opacity: 0 } 50.91% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes bem5 { 0%, 47.09% { opacity: 0 } 48.18% { opacity: 0.5 } 53.18%, 100% { opacity: 0 } }
+    @keyframes com6 { 0%, 56.18% { opacity: 0 } 57.27% { opacity: 1.0 } 61.09%, 100% { opacity: 0 } }
+    @keyframes cln6 { 0%, 56.36% { opacity: 0 } 57.45% { opacity: 0.4 } 60.55%, 100% { opacity: 0 } }
+    @keyframes coh6 { 0%, 58.64% { opacity: 0 } 61.82% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes bem6 { 0%, 58.0% { opacity: 0 } 59.09% { opacity: 0.5 } 64.09%, 100% { opacity: 0 } }
+    @keyframes com7 { 0%, 67.09% { opacity: 0 } 68.18% { opacity: 1.0 } 72.0%, 100% { opacity: 0 } }
+    @keyframes cln7 { 0%, 67.27% { opacity: 0 } 68.36% { opacity: 0.4 } 71.45%, 100% { opacity: 0 } }
+    @keyframes coh7 { 0%, 69.55% { opacity: 0 } 72.73% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes bem7 { 0%, 68.91% { opacity: 0 } 70.0% { opacity: 0.5 } 75.0%, 100% { opacity: 0 } }
+    @keyframes com8 { 0%, 78.0% { opacity: 0 } 79.09% { opacity: 1.0 } 82.91%, 100% { opacity: 0 } }
+    @keyframes cln8 { 0%, 78.18% { opacity: 0 } 79.27% { opacity: 0.4 } 82.36%, 100% { opacity: 0 } }
+    @keyframes coh8 { 0%, 80.45% { opacity: 0 } 83.64% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes bem8 { 0%, 79.82% { opacity: 0 } 80.91% { opacity: 0.5 } 85.91%, 100% { opacity: 0 } }
+    @keyframes fin0 { 0%, 87.27% { opacity: 0 } 90.0% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes fin1 { 0%, 87.82% { opacity: 0 } 90.55% { opacity: 1 } 100% { opacity: 1 } }
+    @keyframes fin2 { 0%, 88.36% { opacity: 0 } 91.09% { opacity: 1 } 100% { opacity: 1 } }
+  }
+  </style>
+  <defs>
+    <marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5"
+            markerHeight="5" orient="auto-start-reverse">
+      <path d="M0 0L8 4L0 8z" fill="#1F6F63"/>
+    </marker>
+  </defs>
+  <g class="blk"><line class="lnk" x1="24" y1="29.0" x2="50" y2="29.0"/><rect x="10" y="22" width="14" height="14" rx="1.5"/></g><path class="loz" d="M17.0 8l4.5 4.5-4.5 4.5-4.5-4.5z"/><g class="blk"><line class="lnk" x1="64" y1="29.0" x2="90" y2="29.0"/><rect x="50" y="22" width="14" height="14" rx="1.5"/></g><path class="loz" d="M57.0 8l4.5 4.5-4.5 4.5-4.5-4.5z"/><g class="blk tgt"><rect x="90" y="22" width="14" height="14" rx="1.5"/></g><path class="loz" d="M97.0 8l4.5 4.5-4.5 4.5-4.5-4.5z"/>
+  <circle class="dot" cx="20.5" cy="68" r="2.9"/><circle class="dot" cx="20.5" cy="79" r="2.9"/><circle class="dot" cx="20.5" cy="90" r="2.9"/><circle class="dot" cx="29.5" cy="68" r="2.9"/><circle class="dot" cx="29.5" cy="79" r="2.9"/><circle class="dot" cx="29.5" cy="90" r="2.9"/><circle class="dot" cx="38.5" cy="68" r="2.9"/><circle class="dot" cx="38.5" cy="79" r="2.9"/><circle class="dot" cx="38.5" cy="90" r="2.9"/><circle class="dot" cx="47.5" cy="68" r="2.9"/><circle class="dot" cx="47.5" cy="79" r="2.9"/><circle class="dot" cx="47.5" cy="90" r="2.9"/><circle class="dot" cx="76.5" cy="68" r="2.9"/><circle class="dot" cx="76.5" cy="79" r="2.9"/><circle class="dot" cx="76.5" cy="90" r="2.9"/><circle class="dot" cx="85.5" cy="68" r="2.9"/><circle class="dot" cx="85.5" cy="79" r="2.9"/><circle class="dot" cx="85.5" cy="90" r="2.9"/><circle class="dot" cx="94.5" cy="68" r="2.9"/><circle class="dot" cx="94.5" cy="79" r="2.9"/><circle class="dot" cx="94.5" cy="90" r="2.9"/><circle class="dot" cx="103.5" cy="68" r="2.9"/><circle class="dot" cx="103.5" cy="79" r="2.9"/><circle class="dot" cx="103.5" cy="90" r="2.9"/><circle class="dot" cx="132.5" cy="68" r="2.9"/><circle class="dot" cx="132.5" cy="79" r="2.9"/><circle class="dot" cx="132.5" cy="90" r="2.9"/><circle class="dot" cx="141.5" cy="68" r="2.9"/><circle class="dot" cx="141.5" cy="79" r="2.9"/><circle class="dot" cx="141.5" cy="90" r="2.9"/><circle class="dot" cx="150.5" cy="68" r="2.9"/><circle class="dot" cx="150.5" cy="79" r="2.9"/><circle class="dot" cx="150.5" cy="90" r="2.9"/><circle class="dot" cx="159.5" cy="68" r="2.9"/><circle class="dot" cx="159.5" cy="79" r="2.9"/><circle class="dot" cx="159.5" cy="90" r="2.9"/><circle class="dot" cx="188.5" cy="68" r="2.9"/><circle class="dot" cx="188.5" cy="79" r="2.9"/><circle class="dot" cx="188.5" cy="90" r="2.9"/><circle class="dot" cx="197.5" cy="68" r="2.9"/><circle class="dot" cx="197.5" cy="79" r="2.9"/><circle class="dot" cx="197.5" cy="90" r="2.9"/><circle class="dot" cx="206.5" cy="68" r="2.9"/><circle class="dot" cx="206.5" cy="79" r="2.9"/><circle class="dot" cx="206.5" cy="90" r="2.9"/><circle class="dot" cx="215.5" cy="68" r="2.9"/><circle class="dot" cx="215.5" cy="79" r="2.9"/><circle class="dot" cx="215.5" cy="90" r="2.9"/><circle class="dot" cx="244.5" cy="68" r="2.9"/><circle class="dot" cx="244.5" cy="79" r="2.9"/><circle class="dot" cx="244.5" cy="90" r="2.9"/><circle class="dot" cx="253.5" cy="68" r="2.9"/><circle class="dot" cx="253.5" cy="79" r="2.9"/><circle class="dot" cx="253.5" cy="90" r="2.9"/><circle class="dot" cx="262.5" cy="68" r="2.9"/><circle class="dot" cx="262.5" cy="79" r="2.9"/><circle class="dot" cx="262.5" cy="90" r="2.9"/><circle class="dot" cx="271.5" cy="68" r="2.9"/><circle class="dot" cx="271.5" cy="79" r="2.9"/><circle class="dot" cx="271.5" cy="90" r="2.9"/><circle class="dot" cx="300.5" cy="68" r="2.9"/><circle class="dot" cx="300.5" cy="79" r="2.9"/><circle class="dot" cx="300.5" cy="90" r="2.9"/><circle class="dot" cx="309.5" cy="68" r="2.9"/><circle class="dot" cx="309.5" cy="79" r="2.9"/><circle class="dot" cx="309.5" cy="90" r="2.9"/><circle class="dot" cx="318.5" cy="68" r="2.9"/><circle class="dot" cx="318.5" cy="79" r="2.9"/><circle class="dot" cx="318.5" cy="90" r="2.9"/><circle class="dot" cx="327.5" cy="68" r="2.9"/><circle class="dot" cx="327.5" cy="79" r="2.9"/><circle class="dot" cx="327.5" cy="90" r="2.9"/><circle class="dot" cx="356.5" cy="68" r="2.9"/><circle class="dot" cx="356.5" cy="79" r="2.9"/><circle class="dot" cx="356.5" cy="90" r="2.9"/><circle class="dot" cx="365.5" cy="68" r="2.9"/><circle class="dot" cx="365.5" cy="79" r="2.9"/><circle class="dot" cx="365.5" cy="90" r="2.9"/><circle class="dot" cx="374.5" cy="68" r="2.9"/><circle class="dot" cx="374.5" cy="79" r="2.9"/><circle class="dot" cx="374.5" cy="90" r="2.9"/><circle class="dot" cx="383.5" cy="68" r="2.9"/><circle class="dot" cx="383.5" cy="79" r="2.9"/><circle class="dot" cx="383.5" cy="90" r="2.9"/><circle class="dot" cx="412.5" cy="68" r="2.9"/><circle class="dot" cx="412.5" cy="79" r="2.9"/><circle class="dot" cx="412.5" cy="90" r="2.9"/><circle class="dot" cx="421.5" cy="68" r="2.9"/><circle class="dot" cx="421.5" cy="79" r="2.9"/><circle class="dot" cx="421.5" cy="90" r="2.9"/><circle class="dot" cx="430.5" cy="68" r="2.9"/><circle class="dot" cx="430.5" cy="79" r="2.9"/><circle class="dot" cx="430.5" cy="90" r="2.9"/><circle class="dot" cx="439.5" cy="68" r="2.9"/><circle class="dot" cx="439.5" cy="79" r="2.9"/><circle class="dot" cx="439.5" cy="90" r="2.9"/>
+  <g class="rnd">
+    <g class="blk b1"><line class="lnk" x1="104" y1="29.0" x2="130" y2="29.0"/><rect x="130" y="22" width="14" height="14" rx="1.5"/></g><circle class="pulse p1" cx="137.0" cy="29.0" r="9"/><path class="loz z1" d="M137.0 8l4.5 4.5-4.5 4.5-4.5-4.5z"/><g class="blk b2"><line class="lnk" x1="144" y1="29.0" x2="170" y2="29.0"/><rect x="170" y="22" width="14" height="14" rx="1.5"/></g><circle class="pulse p2" cx="177.0" cy="29.0" r="9"/><path class="loz z2" d="M177.0 8l4.5 4.5-4.5 4.5-4.5-4.5z"/><g class="blk b3"><line class="lnk" x1="184" y1="29.0" x2="210" y2="29.0"/><rect x="210" y="22" width="14" height="14" rx="1.5"/></g><circle class="pulse p3" cx="217.0" cy="29.0" r="9"/><path class="loz z3" d="M217.0 8l4.5 4.5-4.5 4.5-4.5-4.5z"/><g class="blk b4"><line class="lnk" x1="224" y1="29.0" x2="250" y2="29.0"/><rect x="250" y="22" width="14" height="14" rx="1.5"/></g><circle class="pulse p4" cx="257.0" cy="29.0" r="9"/><path class="loz z4" d="M257.0 8l4.5 4.5-4.5 4.5-4.5-4.5z"/><g class="blk b5"><line class="lnk" x1="264" y1="29.0" x2="290" y2="29.0"/><rect x="290" y="22" width="14" height="14" rx="1.5"/></g><circle class="pulse p5" cx="297.0" cy="29.0" r="9"/><path class="loz z5" d="M297.0 8l4.5 4.5-4.5 4.5-4.5-4.5z"/><g class="blk b6"><line class="lnk" x1="304" y1="29.0" x2="330" y2="29.0"/><rect x="330" y="22" width="14" height="14" rx="1.5"/></g><circle class="pulse p6" cx="337.0" cy="29.0" r="9"/><path class="loz z6" d="M337.0 8l4.5 4.5-4.5 4.5-4.5-4.5z"/><g class="blk b7"><line class="lnk" x1="344" y1="29.0" x2="370" y2="29.0"/><rect x="370" y="22" width="14" height="14" rx="1.5"/></g><circle class="pulse p7" cx="377.0" cy="29.0" r="9"/><path class="loz z7" d="M377.0 8l4.5 4.5-4.5 4.5-4.5-4.5z"/><g class="blk b8"><line class="lnk" x1="384" y1="29.0" x2="410" y2="29.0"/><rect x="410" y="22" width="14" height="14" rx="1.5"/></g><circle class="pulse p8" cx="417.0" cy="29.0" r="9"/><path class="loz z8" d="M417.0 8l4.5 4.5-4.5 4.5-4.5-4.5z"/><line class="cline e1" x1="150.5" y1="90" x2="137.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f1" cx="150.5" cy="90" r="2.9"/><line class="cline e1" x1="188.5" y1="79" x2="137.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f1" cx="188.5" cy="79" r="2.9"/><line class="cline e1" x1="141.5" y1="90" x2="137.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f1" cx="141.5" cy="90" r="2.9"/><line class="cline e1" x1="356.5" y1="68" x2="137.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f1" cx="356.5" cy="68" r="2.9"/><line class="beam m1" x1="34" y1="63" x2="97.0" y2="38" marker-end="url(#ah)"/><circle class="cvote c1" cx="20.5" cy="68" r="2.9"/><circle class="cvote c1" cx="20.5" cy="79" r="2.9"/><circle class="cvote c1" cx="20.5" cy="90" r="2.9"/><circle class="cvote c1" cx="29.5" cy="68" r="2.9"/><circle class="cvote c1" cx="29.5" cy="79" r="2.9"/><circle class="cvote c1" cx="29.5" cy="90" r="2.9"/><circle class="cvote c1" cx="38.5" cy="68" r="2.9"/><circle class="cvote c1" cx="38.5" cy="79" r="2.9"/><circle class="cvote c1" cx="38.5" cy="90" r="2.9"/><circle class="cvote c1" cx="47.5" cy="68" r="2.9"/><circle class="cvote c1" cx="47.5" cy="79" r="2.9"/><circle class="cvote c1" cx="47.5" cy="90" r="2.9"/><line class="cline e2" x1="318.5" y1="79" x2="177.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f2" cx="318.5" cy="79" r="2.9"/><line class="cline e2" x1="300.5" y1="79" x2="177.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f2" cx="300.5" cy="79" r="2.9"/><line class="cline e2" x1="141.5" y1="79" x2="177.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f2" cx="141.5" cy="79" r="2.9"/><line class="cline e2" x1="141.5" y1="90" x2="177.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f2" cx="141.5" cy="90" r="2.9"/><line class="beam m2" x1="90" y1="63" x2="97.0" y2="38" marker-end="url(#ah)"/><circle class="cvote c2" cx="76.5" cy="68" r="2.9"/><circle class="cvote c2" cx="76.5" cy="79" r="2.9"/><circle class="cvote c2" cx="76.5" cy="90" r="2.9"/><circle class="cvote c2" cx="85.5" cy="68" r="2.9"/><circle class="cvote c2" cx="85.5" cy="79" r="2.9"/><circle class="cvote c2" cx="85.5" cy="90" r="2.9"/><circle class="cvote c2" cx="94.5" cy="68" r="2.9"/><circle class="cvote c2" cx="94.5" cy="79" r="2.9"/><circle class="cvote c2" cx="94.5" cy="90" r="2.9"/><circle class="cvote c2" cx="103.5" cy="68" r="2.9"/><circle class="cvote c2" cx="103.5" cy="79" r="2.9"/><circle class="cvote c2" cx="103.5" cy="90" r="2.9"/><line class="cline e3" x1="150.5" y1="79" x2="217.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f3" cx="150.5" cy="79" r="2.9"/><line class="cline e3" x1="271.5" y1="79" x2="217.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f3" cx="271.5" cy="79" r="2.9"/><line class="cline e3" x1="188.5" y1="79" x2="217.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f3" cx="188.5" cy="79" r="2.9"/><line class="cline e3" x1="374.5" y1="79" x2="217.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f3" cx="374.5" cy="79" r="2.9"/><line class="beam m3" x1="146" y1="63" x2="97.0" y2="38" marker-end="url(#ah)"/><circle class="cvote c3" cx="132.5" cy="68" r="2.9"/><circle class="cvote c3" cx="132.5" cy="79" r="2.9"/><circle class="cvote c3" cx="132.5" cy="90" r="2.9"/><circle class="cvote c3" cx="141.5" cy="68" r="2.9"/><circle class="cvote c3" cx="141.5" cy="79" r="2.9"/><circle class="cvote c3" cx="141.5" cy="90" r="2.9"/><circle class="cvote c3" cx="150.5" cy="68" r="2.9"/><circle class="cvote c3" cx="150.5" cy="79" r="2.9"/><circle class="cvote c3" cx="150.5" cy="90" r="2.9"/><circle class="cvote c3" cx="159.5" cy="68" r="2.9"/><circle class="cvote c3" cx="159.5" cy="79" r="2.9"/><circle class="cvote c3" cx="159.5" cy="90" r="2.9"/><line class="cline e4" x1="262.5" y1="90" x2="257.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f4" cx="262.5" cy="90" r="2.9"/><line class="cline e4" x1="215.5" y1="90" x2="257.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f4" cx="215.5" cy="90" r="2.9"/><line class="cline e4" x1="439.5" y1="79" x2="257.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f4" cx="439.5" cy="79" r="2.9"/><line class="cline e4" x1="356.5" y1="68" x2="257.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f4" cx="356.5" cy="68" r="2.9"/><line class="beam m4" x1="202" y1="63" x2="97.0" y2="38" marker-end="url(#ah)"/><circle class="cvote c4" cx="188.5" cy="68" r="2.9"/><circle class="cvote c4" cx="188.5" cy="79" r="2.9"/><circle class="cvote c4" cx="188.5" cy="90" r="2.9"/><circle class="cvote c4" cx="197.5" cy="68" r="2.9"/><circle class="cvote c4" cx="197.5" cy="79" r="2.9"/><circle class="cvote c4" cx="197.5" cy="90" r="2.9"/><circle class="cvote c4" cx="206.5" cy="68" r="2.9"/><circle class="cvote c4" cx="206.5" cy="79" r="2.9"/><circle class="cvote c4" cx="206.5" cy="90" r="2.9"/><circle class="cvote c4" cx="215.5" cy="68" r="2.9"/><circle class="cvote c4" cx="215.5" cy="79" r="2.9"/><circle class="cvote c4" cx="215.5" cy="90" r="2.9"/><line class="cline e5" x1="300.5" y1="68" x2="297.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f5" cx="300.5" cy="68" r="2.9"/><line class="cline e5" x1="383.5" y1="90" x2="297.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f5" cx="383.5" cy="90" r="2.9"/><line class="cline e5" x1="421.5" y1="79" x2="297.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f5" cx="421.5" cy="79" r="2.9"/><line class="cline e5" x1="47.5" y1="68" x2="297.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f5" cx="47.5" cy="68" r="2.9"/><line class="beam m5" x1="258" y1="63" x2="97.0" y2="38" marker-end="url(#ah)"/><circle class="cvote c5" cx="244.5" cy="68" r="2.9"/><circle class="cvote c5" cx="244.5" cy="79" r="2.9"/><circle class="cvote c5" cx="244.5" cy="90" r="2.9"/><circle class="cvote c5" cx="253.5" cy="68" r="2.9"/><circle class="cvote c5" cx="253.5" cy="79" r="2.9"/><circle class="cvote c5" cx="253.5" cy="90" r="2.9"/><circle class="cvote c5" cx="262.5" cy="68" r="2.9"/><circle class="cvote c5" cx="262.5" cy="79" r="2.9"/><circle class="cvote c5" cx="262.5" cy="90" r="2.9"/><circle class="cvote c5" cx="271.5" cy="68" r="2.9"/><circle class="cvote c5" cx="271.5" cy="79" r="2.9"/><circle class="cvote c5" cx="271.5" cy="90" r="2.9"/><line class="cline e6" x1="132.5" y1="68" x2="337.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f6" cx="132.5" cy="68" r="2.9"/><line class="cline e6" x1="206.5" y1="90" x2="337.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f6" cx="206.5" cy="90" r="2.9"/><line class="cline e6" x1="38.5" y1="79" x2="337.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f6" cx="38.5" cy="79" r="2.9"/><line class="cline e6" x1="20.5" y1="68" x2="337.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f6" cx="20.5" cy="68" r="2.9"/><line class="beam m6" x1="314" y1="63" x2="97.0" y2="38" marker-end="url(#ah)"/><circle class="cvote c6" cx="300.5" cy="68" r="2.9"/><circle class="cvote c6" cx="300.5" cy="79" r="2.9"/><circle class="cvote c6" cx="300.5" cy="90" r="2.9"/><circle class="cvote c6" cx="309.5" cy="68" r="2.9"/><circle class="cvote c6" cx="309.5" cy="79" r="2.9"/><circle class="cvote c6" cx="309.5" cy="90" r="2.9"/><circle class="cvote c6" cx="318.5" cy="68" r="2.9"/><circle class="cvote c6" cx="318.5" cy="79" r="2.9"/><circle class="cvote c6" cx="318.5" cy="90" r="2.9"/><circle class="cvote c6" cx="327.5" cy="68" r="2.9"/><circle class="cvote c6" cx="327.5" cy="79" r="2.9"/><circle class="cvote c6" cx="327.5" cy="90" r="2.9"/><line class="cline e7" x1="262.5" y1="68" x2="377.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f7" cx="262.5" cy="68" r="2.9"/><line class="cline e7" x1="271.5" y1="68" x2="377.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f7" cx="271.5" cy="68" r="2.9"/><line class="cline e7" x1="430.5" y1="79" x2="377.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f7" cx="430.5" cy="79" r="2.9"/><line class="cline e7" x1="141.5" y1="90" x2="377.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f7" cx="141.5" cy="90" r="2.9"/><line class="beam m7" x1="370" y1="63" x2="97.0" y2="38" marker-end="url(#ah)"/><circle class="cvote c7" cx="356.5" cy="68" r="2.9"/><circle class="cvote c7" cx="356.5" cy="79" r="2.9"/><circle class="cvote c7" cx="356.5" cy="90" r="2.9"/><circle class="cvote c7" cx="365.5" cy="68" r="2.9"/><circle class="cvote c7" cx="365.5" cy="79" r="2.9"/><circle class="cvote c7" cx="365.5" cy="90" r="2.9"/><circle class="cvote c7" cx="374.5" cy="68" r="2.9"/><circle class="cvote c7" cx="374.5" cy="79" r="2.9"/><circle class="cvote c7" cx="374.5" cy="90" r="2.9"/><circle class="cvote c7" cx="383.5" cy="68" r="2.9"/><circle class="cvote c7" cx="383.5" cy="79" r="2.9"/><circle class="cvote c7" cx="383.5" cy="90" r="2.9"/><line class="cline e8" x1="271.5" y1="79" x2="417.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f8" cx="271.5" cy="79" r="2.9"/><line class="cline e8" x1="262.5" y1="79" x2="417.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f8" cx="262.5" cy="79" r="2.9"/><line class="cline e8" x1="29.5" y1="68" x2="417.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f8" cx="29.5" cy="68" r="2.9"/><line class="cline e8" x1="188.5" y1="79" x2="417.0" y2="38" marker-end="url(#ah)"/><circle class="cvote f8" cx="188.5" cy="79" r="2.9"/><line class="beam m8" x1="426" y1="63" x2="97.0" y2="38" marker-end="url(#ah)"/><circle class="cvote c8" cx="412.5" cy="68" r="2.9"/><circle class="cvote c8" cx="412.5" cy="79" r="2.9"/><circle class="cvote c8" cx="412.5" cy="90" r="2.9"/><circle class="cvote c8" cx="421.5" cy="68" r="2.9"/><circle class="cvote c8" cx="421.5" cy="79" r="2.9"/><circle class="cvote c8" cx="421.5" cy="90" r="2.9"/><circle class="cvote c8" cx="430.5" cy="68" r="2.9"/><circle class="cvote c8" cx="430.5" cy="79" r="2.9"/><circle class="cvote c8" cx="430.5" cy="90" r="2.9"/><circle class="cvote c8" cx="439.5" cy="68" r="2.9"/><circle class="cvote c8" cx="439.5" cy="79" r="2.9"/><circle class="cvote c8" cx="439.5" cy="90" r="2.9"/><g class="fin g0"><rect x="10" y="22" width="14" height="14" rx="1.5"/><circle class="ring" cx="17.0" cy="29.0" r="10.5"/></g><g class="fin g1"><rect x="50" y="22" width="14" height="14" rx="1.5"/><circle class="ring" cx="57.0" cy="29.0" r="10.5"/></g><g class="fin g2"><rect x="90" y="22" width="14" height="14" rx="1.5"/><circle class="ring" cx="97.0" cy="29.0" r="10.5"/></g>
+  </g>
+  <rect x="24.5" y="130.5" width="11" height="11" rx="1.5" fill="none" stroke="#5C6F6A" stroke-width="1.3"/><text class="cap" x="42.5" y="140">AVAILABLE</text><path d="M108.75 132.5l3.5 3.5-3.5 3.5-3.5-3.5z" fill="#1F6F63"/><text class="cap" x="121.25" y="140">CONFIRMED · COMMITTEE VOTE</text><circle cx="268.25" cy="136" r="3.4" fill="#1F6F63"/><text class="cap" x="280.75" y="140">COHORT · FG VOTE</text><rect x="374.75" y="130.5" width="11" height="11" rx="1.5" fill="#1A2C29"/><circle cx="380.25" cy="136" r="6.8" fill="none" stroke="#1F6F63" stroke-width="1.2"/><text class="cap" x="392.75" y="140">JUSTIFIED</text>
+</svg>
