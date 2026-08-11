@@ -18,7 +18,7 @@ validator-set scale.
 |---|---|
 | [`design/`](design/) | The current planned design: [`explainer.md`](design/explainer.md) (the proposal) and [`requirements.md`](design/requirements.md) (binding parameter envelope — changes are decisions, date them) |
 | [`research/`](research/) | Reasoning behind design decisions and design options: [`open_questions.md`](research/open_questions.md) (settled vs. open tracker), [`ssz.md`](research/ssz.md) (wire objects & byte accounting), [`ac/`](research/ac/) (AC slot structure), [`fg/`](research/fg/) (FG round) |
-| [`specs/`](specs/) | Exact specifications (to come) |
+| [`specs/`](specs/) | Exact specifications (to come) — meanwhile [`README.md`](specs/README.md) points at Francesco's executable Simplex pyspec |
 | [`poc/`](poc/) | Proof of concept: [`poc.md`](poc/poc.md) (Shadow → Prysm-on-Shadow → Kurtosis) |
 | [`benchmarking/`](benchmarking/) | Benchmark results |
 | [`meetings/`](meetings/) | Meeting notes, one file per call: `YYYY-MM-DD.md` |
