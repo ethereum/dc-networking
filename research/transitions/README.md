@@ -53,5 +53,9 @@ pauses at the boundary, who spreads the computation, and what went wrong when
 they didn't. Distill lessons for the DC FG round design.
 
 - [survey.md](survey.md) — per-chain findings + synthesis (start here).
+- [boundary-pipelining.md](boundary-pipelining.md) — follow-up (2026-08-25):
+  does the justification dependency stall slot-0 votes? Verdict: no bubble
+  for p ≥ 76.2%, one-round latency below; certificate-gating is the wrong
+  fix; "vote in the previous slot" is effectively broken.
 
 Related: open question Q16 in [open_questions.md](../open_questions.md).

@@ -454,6 +454,14 @@ stall self-extends across the handoff unless there's an escape hatch
 design (Q6, Q9) should treat "boundary-time finality lag" as the same
 failure class.
 
+> **Update 2026-08-25:** the follow-up analysis in
+> [boundary-pipelining.md](boundary-pipelining.md) shows the current
+> simplex-healing spec already engineers this handoff at *round* granularity
+> (state-gated counting, one-slot inclusion spillover, empty-slot
+> settlement), and that importing network-consumable certificates beyond
+> exact-target JCs would break the accountable-safety proof. Read that note
+> before acting on the GRANDPA analogy here.
+
 ### Recommendation
 
 Adopt **2 + 3 + 4 together; drop the gap slot**: duty inputs frozen ≥1 round
