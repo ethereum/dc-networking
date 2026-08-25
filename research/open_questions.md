@@ -31,6 +31,7 @@ Design stance: **conservative delta** — most things don't change compared to t
 | 13 | AC/FG    | Multiple ideas to improve Privacy and Security      | res     | lo   | —       |
 | 14 | AC/FG    | **Transition management** from today's pipeline (raised by Francesco; [poc.md](../poc/poc.md) stage 4 "transition testing")      | spec+eng     | med   | —       |
 | 15 | AC/FG    | **Griefing attacks**: cheap, non-slashable degradation — e.g. lazy/withholding aggregators, invalid-signature & duplicate-vote spam, votes timed at phase boundaries to force timeouts (interacts with back-off #9, privacy/security #13)      | res     | med   | —       |
+| 16 | FG    | **Transition timing**: early votes (X→0 or previous slot) leave no time for epoch/height-transition computation (duty assignment, subnet churn) — gap slot vs. lookahead vs. deferral vs. precompute; cross-chain survey in [transitions/](transitions/README.md)      | spec+res     | hi   | #3, #7       |
 
 
 
