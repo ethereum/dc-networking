@@ -177,7 +177,7 @@ def main():
             cl_hash = base64.b64decode(json.load(fh)["latest_block_hash"]).hex()
         check_dir = tempfile.mkdtemp(prefix="genesis-check-", dir="/var/tmp")
     init = run([geth, "--datadir", check_dir, "init", f"{meta}/genesis.json"],
-               dry, capture=True)
+               dry, capture=True, merge=True)
     if dry:
         return
     matches = re.findall(r"Successfully wrote genesis state.*hash=([0-9a-f.]+)",
