@@ -1,6 +1,6 @@
 # nft devnet 1
 
-We ran the first DC devent on 05-09-2026.
+We ran the first DC devnet on 05-09-2026.
 
 ![alt text](image-0.png)
 
@@ -30,12 +30,12 @@ On top, we add the load of the **512 AC votes**, and dummy bytes for **VRF selec
 2. Validator duties computation in first slots: Prysm inefficiency
 3. Crash on Slot 117: no time to start spamoor
 
-![alt text](image-1.png)
 
 ### Open questions:
 4. Crash post mortem
 5. What happened to aggregations? Seems like many are the same, or have exactly 2/3 of attestations
 
+![alt text](image-1.png)
 
 ## Limitations
 
