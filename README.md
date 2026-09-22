@@ -17,7 +17,7 @@ validator-set scale.
 | Path | What |
 |---|---|
 | [`design/`](design/) | The current planned design: [`explainer.md`](design/explainer.md) (the proposal) and [`requirements.md`](design/requirements.md) (binding parameter envelope — changes are decisions, date them) |
-| [`research/`](research/) | Reasoning behind design decisions and design options: [`open_questions.md`](research/open_questions.md) (settled vs. open tracker), [`ssz.md`](research/ssz.md) (wire objects & byte accounting), [`ac/`](research/ac/) (AC slot structure), [`fg/`](research/fg/) (FG round) |
+| [`research/`](research/) | Reasoning behind design decisions and design options: [`open_questions.md`](research/open_questions.md) (settled vs. open tracker), [`ssz.md`](research/ssz.md) (wire objects & byte accounting), [`ac/`](research/ac/) (AC slot structure), [`fg/`](research/fg/) (FG round; [`fg/pipelined-units/`](research/fg/pipelined-units/) — 4 s + 4 s vote units, three per slot), [`transitions/`](research/transitions/) (epoch/height transition timing vs. early FG votes) |
 | [`specs/`](specs/) | Exact specifications (to come) — meanwhile [`README.md`](specs/README.md) points at Francesco's executable Simplex pyspec |
 | [`poc/`](poc/) | Proof of concept: [`poc.md`](poc/poc.md) (Shadow → Prysm-on-Shadow → Kurtosis) |
 | [`benchmarking/`](benchmarking/) | Benchmark results |

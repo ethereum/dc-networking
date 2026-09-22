@@ -1,0 +1,905 @@
+{
+ "type": "excalidraw",
+ "version": 2,
+ "source": "https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor",
+ "elements": [
+  {
+   "id": "committee-size-0001",
+   "type": "text",
+   "x": 60.0,
+   "y": 24.0,
+   "width": 1220.8000000000002,
+   "height": 27.0,
+   "angle": 0,
+   "strokeColor": "#243447",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 1,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "seed": 496241440,
+   "version": 1,
+   "versionNonce": 389291683,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "text": "Central open question: how large should a unit's committees (subnets) be under bundled GossipSub propagation?",
+   "fontSize": 20,
+   "fontFamily": 6,
+   "textAlign": "left",
+   "verticalAlign": "top",
+   "containerId": null,
+   "originalText": "Central open question: how large should a unit's committees (subnets) be under bundled GossipSub propagation?",
+   "autoResize": true,
+   "lineHeight": 1.35
+  },
+  {
+   "id": "committee-size-0002",
+   "type": "text",
+   "x": 60.0,
+   "y": 54.0,
+   "width": 516.88,
+   "height": 17.55,
+   "angle": 0,
+   "strokeColor": "#94a3b8",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 1,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "seed": 110866002,
+   "version": 1,
+   "versionNonce": 1953871966,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "text": "schematic — no measured curve yet; the whole point is to benchmark this",
+   "fontSize": 13,
+   "fontFamily": 6,
+   "textAlign": "left",
+   "verticalAlign": "top",
+   "containerId": null,
+   "originalText": "schematic — no measured curve yet; the whole point is to benchmark this",
+   "autoResize": true,
+   "lineHeight": 1.35
+  },
+  {
+   "id": "committee-size-0003",
+   "type": "line",
+   "x": 200.0,
+   "y": 420.0,
+   "width": 620.0,
+   "height": 0.0,
+   "angle": 0,
+   "strokeColor": "#94a3b8",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 1,
+   "strokeStyle": "solid",
+   "roughness": 0,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "seed": 2085293330,
+   "version": 1,
+   "versionNonce": 79586225,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "points": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     620.0,
+     0.0
+    ]
+   ],
+   "lastCommittedPoint": null,
+   "startBinding": null,
+   "endBinding": null,
+   "startArrowhead": null,
+   "endArrowhead": null
+  },
+  {
+   "id": "committee-size-0004",
+   "type": "line",
+   "x": 200.0,
+   "y": 420.0,
+   "width": 0.0,
+   "height": 280.0,
+   "angle": 0,
+   "strokeColor": "#94a3b8",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 1,
+   "strokeStyle": "solid",
+   "roughness": 0,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "seed": 1393684398,
+   "version": 1,
+   "versionNonce": 1121303643,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "points": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -280.0
+    ]
+   ],
+   "lastCommittedPoint": null,
+   "startBinding": null,
+   "endBinding": null,
+   "startArrowhead": null,
+   "endArrowhead": null
+  },
+  {
+   "id": "committee-size-0005",
+   "type": "text",
+   "x": 342.55999999999995,
+   "y": 432.0,
+   "width": 334.88000000000005,
+   "height": 17.55,
+   "angle": 0,
+   "strokeColor": "#243447",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 1,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "seed": 173488451,
+   "version": 1,
+   "versionNonce": 44565739,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "text": "validators per committee (subnet) of a unit  →",
+   "fontSize": 13,
+   "fontFamily": 6,
+   "textAlign": "center",
+   "verticalAlign": "top",
+   "containerId": null,
+   "originalText": "validators per committee (subnet) of a unit  →",
+   "autoResize": true,
+   "lineHeight": 1.35
+  },
+  {
+   "id": "committee-size-0006",
+   "type": "text",
+   "x": -161.44000000000005,
+   "y": 110.0,
+   "width": 349.44000000000005,
+   "height": 16.200000000000003,
+   "angle": 0,
+   "strokeColor": "#94a3b8",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 1,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "seed": 874326637,
+   "version": 1,
+   "versionNonce": 1345833301,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "text": "vote → published-aggregate latency, tail (schematic)",
+   "fontSize": 12,
+   "fontFamily": 6,
+   "textAlign": "right",
+   "verticalAlign": "top",
+   "containerId": null,
+   "originalText": "vote → published-aggregate latency, tail (schematic)",
+   "autoResize": true,
+   "lineHeight": 1.35
+  },
+  {
+   "id": "committee-size-0007",
+   "type": "line",
+   "x": 200.0,
+   "y": 229.60000000000002,
+   "width": 620.0,
+   "height": 171.67147820096113,
+   "angle": 0,
+   "strokeColor": "#1971c2",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 2,
+   "strokeStyle": "solid",
+   "roughness": 0,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": {
+    "type": 2
+   },
+   "seed": 1010336212,
+   "version": 1,
+   "versionNonce": 1985218816,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "points": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     31.0,
+     34.97758442337215
+    ],
+    [
+     62.0,
+     62.907752878460144
+    ],
+    [
+     93.0,
+     85.21044538252943
+    ],
+    [
+     124.0,
+     103.01950706903199
+    ],
+    [
+     155.0,
+     117.24033166659046
+    ],
+    [
+     186.0,
+     128.59589075187318
+    ],
+    [
+     217.0,
+     137.66348885455187
+    ],
+    [
+     248.0,
+     144.90411300473255
+    ],
+    [
+     279.0,
+     150.68586882259262
+    ],
+    [
+     310.0,
+     155.3026946160603
+    ],
+    [
+     341.0,
+     158.9893048913309
+    ],
+    [
+     372.0,
+     161.9331229883794
+    ],
+    [
+     403.0,
+     164.28380948395005
+    ],
+    [
+     434.0,
+     166.1608707758818
+    ],
+    [
+     465.0,
+     167.65973466109477
+    ],
+    [
+     496.0,
+     168.85660178314998
+    ],
+    [
+     527.0,
+     169.81231959181093
+    ],
+    [
+     558.0,
+     170.5754757625839
+    ],
+    [
+     589.0,
+     171.1848683423924
+    ],
+    [
+     620.0,
+     171.67147820096113
+    ]
+   ],
+   "lastCommittedPoint": null,
+   "startBinding": null,
+   "endBinding": null,
+   "startArrowhead": null,
+   "endArrowhead": null
+  },
+  {
+   "id": "committee-size-0008",
+   "type": "line",
+   "x": 200.0,
+   "y": 406.0,
+   "width": 620.0,
+   "height": 210.0,
+   "angle": 0,
+   "strokeColor": "#e8590c",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 2,
+   "strokeStyle": "solid",
+   "roughness": 0,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": {
+    "type": 2
+   },
+   "seed": 684515733,
+   "version": 1,
+   "versionNonce": 626729575,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "points": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     31.0,
+     -0.2883721426178454
+    ],
+    [
+     62.0,
+     -1.3250104234084006
+    ],
+    [
+     93.0,
+     -3.2331069016405536
+    ],
+    [
+     124.0,
+     -6.088149174892635
+    ],
+    [
+     155.0,
+     -9.946889967724474
+    ],
+    [
+     186.0,
+     -14.855458317776197
+    ],
+    [
+     217.0,
+     -20.85302156272047
+    ],
+    [
+     248.0,
+     -27.973787768702948
+    ],
+    [
+     279.0,
+     -36.24823168612272
+    ],
+    [
+     310.0,
+     -45.70390457304654
+    ],
+    [
+     341.0,
+     -56.36599939179587
+    ],
+    [
+     372.0,
+     -68.257762129426
+    ],
+    [
+     403.0,
+     -81.40080116761646
+    ],
+    [
+     434.0,
+     -95.81532626325878
+    ],
+    [
+     465.0,
+     -111.52033727171028
+    ],
+    [
+     496.0,
+     -128.53377597178098
+    ],
+    [
+     527.0,
+     -146.8726501545015
+    ],
+    [
+     558.0,
+     -166.55313643760218
+    ],
+    [
+     589.0,
+     -187.59066647422648
+    ],
+    [
+     620.0,
+     -210.0
+    ]
+   ],
+   "lastCommittedPoint": null,
+   "startBinding": null,
+   "endBinding": null,
+   "startArrowhead": null,
+   "endArrowhead": null
+  },
+  {
+   "id": "committee-size-0009",
+   "type": "line",
+   "x": 200.0,
+   "y": 215.6,
+   "width": 620.0,
+   "height": 155.2588470350685,
+   "angle": 0,
+   "strokeColor": "#243447",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 3,
+   "strokeStyle": "solid",
+   "roughness": 0,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": {
+    "type": 2
+   },
+   "seed": 1834941970,
+   "version": 1,
+   "versionNonce": 450720541,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "points": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     31.0,
+     34.689212280754276
+    ],
+    [
+     62.0,
+     61.58274245505177
+    ],
+    [
+     93.0,
+     81.9773384808889
+    ],
+    [
+     124.0,
+     96.93135789413938
+    ],
+    [
+     155.0,
+     107.29344169886602
+    ],
+    [
+     186.0,
+     113.74043243409707
+    ],
+    [
+     217.0,
+     116.81046729183143
+    ],
+    [
+     248.0,
+     116.93032523602963
+    ],
+    [
+     279.0,
+     114.43763713646999
+    ],
+    [
+     310.0,
+     109.59879004301385
+    ],
+    [
+     341.0,
+     102.62330549953506
+    ],
+    [
+     372.0,
+     93.67536085895344
+    ],
+    [
+     403.0,
+     82.88300831633362
+    ],
+    [
+     434.0,
+     70.34554451262309
+    ],
+    [
+     465.0,
+     56.13939738938453
+    ],
+    [
+     496.0,
+     40.32282581136906
+    ],
+    [
+     527.0,
+     22.939669437309448
+    ],
+    [
+     558.0,
+     4.022339324981772
+    ],
+    [
+     589.0,
+     -16.405798131834047
+    ],
+    [
+     620.0,
+     -38.32852179903887
+    ]
+   ],
+   "lastCommittedPoint": null,
+   "startBinding": null,
+   "endBinding": null,
+   "startArrowhead": null,
+   "endArrowhead": null
+  },
+  {
+   "id": "committee-size-0010",
+   "type": "ellipse",
+   "x": 440.0,
+   "y": 324.5303252360296,
+   "width": 16.0,
+   "height": 16.0,
+   "angle": 0,
+   "strokeColor": "#243447",
+   "backgroundColor": "#ffffff",
+   "fillStyle": "solid",
+   "strokeWidth": 2,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": {
+    "type": 2
+   },
+   "seed": 646293714,
+   "version": 1,
+   "versionNonce": 477008970,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false
+  },
+  {
+   "id": "committee-size-0011",
+   "type": "text",
+   "x": 378.84,
+   "y": 298.5303252360296,
+   "width": 138.32000000000002,
+   "height": 17.55,
+   "angle": 0,
+   "strokeColor": "#243447",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 1,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "seed": 1520429661,
+   "version": 1,
+   "versionNonce": 294613568,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "text": "sweet spot? unknown",
+   "fontSize": 13,
+   "fontFamily": 6,
+   "textAlign": "center",
+   "verticalAlign": "top",
+   "containerId": null,
+   "originalText": "sweet spot? unknown",
+   "autoResize": true,
+   "lineHeight": 1.35
+  },
+  {
+   "id": "committee-size-0012",
+   "type": "text",
+   "x": 828.0,
+   "y": 393.27147820096116,
+   "width": 141.12,
+   "height": 16.200000000000003,
+   "angle": 0,
+   "strokeColor": "#1971c2",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 1,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "seed": 514950377,
+   "version": 1,
+   "versionNonce": 137839243,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "text": "bundling gain forgone",
+   "fontSize": 12,
+   "fontFamily": 6,
+   "textAlign": "left",
+   "verticalAlign": "top",
+   "containerId": null,
+   "originalText": "bundling gain forgone",
+   "autoResize": true,
+   "lineHeight": 1.35
+  },
+  {
+   "id": "committee-size-0013",
+   "type": "text",
+   "x": 828.0,
+   "y": 188.0,
+   "width": 174.72000000000003,
+   "height": 16.200000000000003,
+   "angle": 0,
+   "strokeColor": "#e8590c",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 1,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "seed": 95780679,
+   "version": 1,
+   "versionNonce": 1847348882,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "text": "queueing + control traffic",
+   "fontSize": 12,
+   "fontFamily": 6,
+   "textAlign": "left",
+   "verticalAlign": "top",
+   "containerId": null,
+   "originalText": "queueing + control traffic",
+   "autoResize": true,
+   "lineHeight": 1.35
+  },
+  {
+   "id": "committee-size-0014",
+   "type": "text",
+   "x": 828.0,
+   "y": 169.27147820096113,
+   "width": 107.52000000000001,
+   "height": 16.200000000000003,
+   "angle": 0,
+   "strokeColor": "#243447",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 1,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "seed": 1321553982,
+   "version": 1,
+   "versionNonce": 775266368,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "text": "combined latency",
+   "fontSize": 12,
+   "fontFamily": 6,
+   "textAlign": "left",
+   "verticalAlign": "top",
+   "containerId": null,
+   "originalText": "combined latency",
+   "autoResize": true,
+   "lineHeight": 1.35
+  },
+  {
+   "id": "committee-size-0015",
+   "type": "rectangle",
+   "x": 60.0,
+   "y": 470.0,
+   "width": 420.0,
+   "height": 84.80000000000001,
+   "angle": 0,
+   "strokeColor": "#1971c2",
+   "backgroundColor": "#ffffff",
+   "fillStyle": "solid",
+   "strokeWidth": 1,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": {
+    "type": 3
+   },
+   "seed": 1461764556,
+   "version": 1,
+   "versionNonce": 95316164,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false
+  },
+  {
+   "id": "committee-size-0016",
+   "type": "text",
+   "x": 70.0,
+   "y": 480.0,
+   "width": 309.12,
+   "height": 64.80000000000001,
+   "angle": 0,
+   "strokeColor": "#243447",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 1,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "seed": 793218435,
+   "version": 1,
+   "versionNonce": 715722109,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "text": "too small\n· fewer votes per bundle → little gain from\n  bundled propagation (EIP-8334)\n· more subnets and aggregators to run per unit",
+   "fontSize": 12,
+   "fontFamily": 6,
+   "textAlign": "left",
+   "verticalAlign": "top",
+   "containerId": null,
+   "originalText": "too small\n· fewer votes per bundle → little gain from\n  bundled propagation (EIP-8334)\n· more subnets and aggregators to run per unit",
+   "autoResize": true,
+   "lineHeight": 1.35
+  },
+  {
+   "id": "committee-size-0017",
+   "type": "rectangle",
+   "x": 500.0,
+   "y": 470.0,
+   "width": 480.0,
+   "height": 117.2,
+   "angle": 0,
+   "strokeColor": "#e8590c",
+   "backgroundColor": "#ffffff",
+   "fillStyle": "solid",
+   "strokeWidth": 1,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": {
+    "type": 3
+   },
+   "seed": 1010668088,
+   "version": 1,
+   "versionNonce": 992418192,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false
+  },
+  {
+   "id": "committee-size-0018",
+   "type": "text",
+   "x": 510.0,
+   "y": 480.0,
+   "width": 315.84000000000003,
+   "height": 97.2,
+   "angle": 0,
+   "strokeColor": "#243447",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 1,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "seed": 1761799411,
+   "version": 1,
+   "versionNonce": 2026004814,
+   "isDeleted": false,
+   "boundElements": [],
+   "updated": 1790000000000,
+   "link": null,
+   "locked": false,
+   "text": "too large\n· per-subnet message rate → queueing delays\n· more IHAVE / IWANT control messages per node\n· validation backlog behind the previous unit's\n  aggregates and the block — GossipSub has no\n  message prioritisation",
+   "fontSize": 12,
+   "fontFamily": 6,
+   "textAlign": "left",
+   "verticalAlign": "top",
+   "containerId": null,
+   "originalText": "too large\n· per-subnet message rate → queueing delays\n· more IHAVE / IWANT control messages per node\n· validation backlog behind the previous unit's\n  aggregates and the block — GossipSub has no\n  message prioritisation",
+   "autoResize": true,
+   "lineHeight": 1.35
+  }
+ ],
+ "appState": {
+  "gridSize": 20,
+  "gridStep": 5,
+  "gridModeEnabled": false,
+  "viewBackgroundColor": "#ffffff"
+ },
+ "files": {}
+}

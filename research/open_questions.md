@@ -32,6 +32,7 @@ Design stance: **conservative delta** — most things don't change compared to t
 | 14 | AC/FG    | **Transition management** from today's pipeline (raised by Francesco; [poc.md](../poc/poc.md) stage 4 "transition testing")      | spec+eng     | med   | —       |
 | 15 | AC/FG    | **Griefing attacks**: cheap, non-slashable degradation — e.g. lazy/withholding aggregators, invalid-signature & duplicate-vote spam, votes timed at phase boundaries to force timeouts (interacts with back-off #9, privacy/security #13)      | res     | med   | —       |
 | 16 | FG    | **Transition timing**: early votes (X→0 or previous slot) leave no time for epoch/height-transition computation (duty assignment, subnet churn) — gap slot vs. lookahead vs. deferral vs. precompute; cross-chain survey in [transitions/](transitions/README.md)      | spec+res     | hi   | #3, #7       |
+| 17 | FG    | **Pipelined 4 s + 4 s units**: FG votes in fixed units of 4 s vote + 4 s aggregation, three per slot, 23 per 8-slot round; unit-size parity with today's attestation slot as the load argument (needs ≥ 28.1 % consolidation or equivalent bundling); accepted reward variance; end-of-slot catch-all aggregates; committee size under bundled propagation — write-up in [fg/pipelined-units/](fg/pipelined-units/README.md)      | res+eng     | hi   | #3, #5, #16       |
 
 
 

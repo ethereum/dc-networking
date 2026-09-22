@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="56.96 -4 1487.04 519.2" width="1487.04" height="519.2" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif'>
+<rect x="56.96" y="-4" width="1487.04" height="519.2" fill="#ffffff"/>
+<g><text x="230" y="38.85" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="22" fill="#243447">Inside a slot: today one phase at a time, pipelined units two phases at a time</text></g>
+<g><text x="230" y="90.12" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="15" fill="#243447">today's slot (mainnet)</text></g>
+<g><polyline points="230,110 1166,110" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><polyline points="230,105 230,115" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="230" y="126.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">0 s</text></g>
+<g><polyline points="542,105 542,115" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="542" y="126.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">4 s</text></g>
+<g><polyline points="854,105 854,115" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="854" y="126.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">8 s</text></g>
+<g><polyline points="1166,105 1166,115" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="1166" y="126.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">12 s</text></g>
+<g><rect x="231" y="142" width="310" height="30" rx="7.5" fill="#e9b949" stroke="#e9b949" stroke-width="1"/></g>
+<g><text x="386" y="157" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#243447">block</text></g>
+<g><rect x="543" y="142" width="310" height="30" rx="7.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="698" y="157" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#ffffff">attest (V/32)</text></g>
+<g><rect x="855" y="142" width="310" height="30" rx="7.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><text x="1010" y="157" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#ffffff">aggregate</text></g>
+<g><text x="1180" y="157.78" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#94a3b8">one phase in flight at a time</text></g>
+<g><text x="230" y="245.12" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="15" fill="#243447">pipelined units — an interior slot s of the round (units u(3s−1) … u(3s+2) touch it)</text></g>
+<g><polyline points="230,265 1166,265" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><polyline points="230,260 230,270" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="230" y="281.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">0 s</text></g>
+<g><polyline points="542,260 542,270" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="542" y="281.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">4 s</text></g>
+<g><polyline points="854,260 854,270" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="854" y="281.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">8 s</text></g>
+<g><polyline points="1166,260 1166,270" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="1166" y="281.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">12 s</text></g>
+<g><text x="216" y="312.77" text-anchor="end" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#243447">block</text></g>
+<g><text x="216" y="362.77" text-anchor="end" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#243447">vote phases</text></g>
+<g><text x="216" y="412.77" text-anchor="end" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#243447">aggregation phases</text></g>
+<g><rect x="231" y="297" width="310" height="30" rx="7.5" fill="#e9b949" stroke="#e9b949" stroke-width="1"/></g>
+<g><text x="386" y="312" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#243447">block</text></g>
+<g><rect x="231" y="347" width="310" height="30" rx="7.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="386" y="362" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#ffffff">u(3s) vote</text></g>
+<g><rect x="543" y="347" width="310" height="30" rx="7.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="698" y="362" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#ffffff">u(3s+1) vote</text></g>
+<g><rect x="855" y="347" width="310" height="30" rx="7.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="1010" y="362" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#ffffff">u(3s+2) vote</text></g>
+<g><rect x="231" y="397" width="310" height="30" rx="7.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><text x="386" y="412" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#ffffff">u(3s−1) aggregate</text></g>
+<g><rect x="543" y="397" width="310" height="30" rx="7.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><text x="698" y="412" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#ffffff">u(3s) aggregate</text></g>
+<g><rect x="855" y="397" width="310" height="30" rx="7.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><text x="1010" y="412" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#ffffff">u(3s+1) aggregate</text></g>
+<g><polyline points="542,427 542,455" fill="none" stroke="#e8590c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 10"/></g>
+<g><polyline points="854,427 854,455" fill="none" stroke="#e8590c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 10"/></g>
+<g><polyline points="1166,427 1166,455" fill="none" stroke="#e8590c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 10"/></g>
+<g><ellipse cx="542" cy="459" rx="6" ry="6" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="854" cy="459" rx="6" ry="6" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="1166" cy="459" rx="6" ry="6" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><text x="542" y="479.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">u(3s−1) lands</text></g>
+<g><text x="854" y="479.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">u(3s) lands</text></g>
+<g><text x="1166" y="479.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">u(3s+1) lands = next block</text></g>
+<g><rect x="1186" y="339" width="330" height="133.4" rx="32" fill="#ffffff" stroke="#243447" stroke-width="1"/></g>
+<g><text x="1196" y="357.1" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">at any instant one vote phase and one</text><text x="1196" y="373.3" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">aggregation phase are in flight — plus the</text><text x="1196" y="389.5" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">block in the first third of the slot</text><text x="1196" y="405.7" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447"></text><text x="1196" y="421.9" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">slot 0 of a round has no u(−1): its</text><text x="1196" y="438.1" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">aggregation row starts empty → only</text><text x="1196" y="454.3" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">2 landings instead of 3</text></g>
+</svg>

@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-14.56 -4 1652.32 544.25" width="1652.32" height="544.25" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif'>
+<rect x="-14.56" y="-4" width="1652.32" height="544.25" fill="#ffffff"/>
+<g><text x="180" y="38.85" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="22" fill="#243447">One 8-slot round = 23 units: three start in every slot, two in the last</text></g>
+<g><text x="180" y="64.78" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#94a3b8">each unit is 4 s vote (blue) + 4 s aggregation (orange); units start every 4 s; a unit must finish inside the round</text></g>
+<g><polyline points="180,96 180,452" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="180" y="88.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#94a3b8">0 s</text></g>
+<g><polyline points="324,96 324,452" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="324" y="88.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#94a3b8">12 s</text></g>
+<g><polyline points="468,96 468,452" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="468" y="88.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#94a3b8">24 s</text></g>
+<g><polyline points="612,96 612,452" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="612" y="88.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#94a3b8">36 s</text></g>
+<g><polyline points="756,96 756,452" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="756" y="88.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#94a3b8">48 s</text></g>
+<g><polyline points="900,96 900,452" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="900" y="88.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#94a3b8">60 s</text></g>
+<g><polyline points="1044,96 1044,452" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="1044" y="88.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#94a3b8">72 s</text></g>
+<g><polyline points="1188,96 1188,452" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="1188" y="88.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#94a3b8">84 s</text></g>
+<g><polyline points="1332,96 1332,452" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="1332" y="88.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#94a3b8">96 s</text></g>
+<g opacity="0.6"><polyline points="228,96 228,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g opacity="0.6"><polyline points="276,96 276,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g><text x="252" y="109.45" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="14" fill="#243447">slot 0</text></g>
+<g opacity="0.6"><polyline points="372,96 372,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g opacity="0.6"><polyline points="420,96 420,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g><text x="396" y="109.45" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="14" fill="#243447">slot 1</text></g>
+<g opacity="0.6"><polyline points="516,96 516,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g opacity="0.6"><polyline points="564,96 564,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g><text x="540" y="109.45" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="14" fill="#243447">slot 2</text></g>
+<g opacity="0.6"><polyline points="660,96 660,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g opacity="0.6"><polyline points="708,96 708,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g><text x="684" y="109.45" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="14" fill="#243447">slot 3</text></g>
+<g opacity="0.6"><polyline points="804,96 804,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g opacity="0.6"><polyline points="852,96 852,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g><text x="828" y="109.45" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="14" fill="#243447">slot 4</text></g>
+<g opacity="0.6"><polyline points="948,96 948,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g opacity="0.6"><polyline points="996,96 996,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g><text x="972" y="109.45" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="14" fill="#243447">slot 5</text></g>
+<g opacity="0.6"><polyline points="1092,96 1092,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g opacity="0.6"><polyline points="1140,96 1140,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g><text x="1116" y="109.45" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="14" fill="#243447">slot 6</text></g>
+<g opacity="0.6"><polyline points="1236,96 1236,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g opacity="0.6"><polyline points="1284,96 1284,452" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g><text x="1260" y="109.45" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="14" fill="#243447">slot 7</text></g>
+<g><polyline points="180,92 180,456" fill="none" stroke="#243447" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><polyline points="1332,92 1332,456" fill="none" stroke="#243447" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="172" y="468.1" text-anchor="end" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">round start</text></g>
+<g><text x="1340" y="468.1" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">round end</text></g>
+<g><text x="168" y="140.1" text-anchor="end" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#94a3b8">blocks</text></g>
+<g><polyline points="180,140 228,140" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><polyline points="205.75,131.01 228,140 205.75,148.99" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><polyline points="324,140 372,140" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><polyline points="349.75,131.01 372,140 349.75,148.99" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><polyline points="468,140 516,140" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><polyline points="493.75,131.01 516,140 493.75,148.99" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><polyline points="612,140 660,140" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><polyline points="637.75,131.01 660,140 637.75,148.99" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><polyline points="756,140 804,140" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><polyline points="781.75,131.01 804,140 781.75,148.99" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><polyline points="900,140 948,140" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><polyline points="925.75,131.01 948,140 925.75,148.99" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><polyline points="1044,140 1092,140" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><polyline points="1069.75,131.01 1092,140 1069.75,148.99" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><polyline points="1188,140 1236,140" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><polyline points="1213.75,131.01 1236,140 1213.75,148.99" fill="none" stroke="#e9b949" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="168" y="190.1" text-anchor="end" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">units starting at +0 s</text></g>
+<g><text x="168" y="244.1" text-anchor="end" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">units starting at +4 s</text></g>
+<g><text x="168" y="298.1" text-anchor="end" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">units starting at +8 s</text></g>
+<g><rect x="181" y="178" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="204" y="191" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u0</text></g>
+<g><rect x="229" y="178" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="229" y="232" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="252" y="245" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u1</text></g>
+<g><rect x="277" y="232" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="277" y="286" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="300" y="299" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u2</text></g>
+<g><rect x="325" y="286" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="325" y="178" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="348" y="191" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u3</text></g>
+<g><rect x="373" y="178" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="373" y="232" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="396" y="245" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u4</text></g>
+<g><rect x="421" y="232" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="421" y="286" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="444" y="299" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u5</text></g>
+<g><rect x="469" y="286" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="469" y="178" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="492" y="191" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u6</text></g>
+<g><rect x="517" y="178" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="517" y="232" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="540" y="245" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u7</text></g>
+<g><rect x="565" y="232" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="565" y="286" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="588" y="299" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u8</text></g>
+<g><rect x="613" y="286" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="613" y="178" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="636" y="191" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u9</text></g>
+<g><rect x="661" y="178" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="661" y="232" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="684" y="245" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u10</text></g>
+<g><rect x="709" y="232" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="709" y="286" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="732" y="299" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u11</text></g>
+<g><rect x="757" y="286" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="757" y="178" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="780" y="191" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u12</text></g>
+<g><rect x="805" y="178" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="805" y="232" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="828" y="245" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u13</text></g>
+<g><rect x="853" y="232" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="853" y="286" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="876" y="299" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u14</text></g>
+<g><rect x="901" y="286" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="901" y="178" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="924" y="191" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u15</text></g>
+<g><rect x="949" y="178" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="949" y="232" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="972" y="245" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u16</text></g>
+<g><rect x="997" y="232" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="997" y="286" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="1020" y="299" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u17</text></g>
+<g><rect x="1045" y="286" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="1045" y="178" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="1068" y="191" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u18</text></g>
+<g><rect x="1093" y="178" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="1093" y="232" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="1116" y="245" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u19</text></g>
+<g><rect x="1141" y="232" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="1141" y="286" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="1164" y="299" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u20</text></g>
+<g><rect x="1189" y="286" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="1189" y="178" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="1212" y="191" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u21</text></g>
+<g><rect x="1237" y="178" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="1237" y="232" width="46" height="26" rx="6.5" fill="#1971c2" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="1260" y="245" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#ffffff">u22</text></g>
+<g><rect x="1285" y="232" width="46" height="26" rx="6.5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><rect x="1285" y="286" width="94" height="26" rx="6.5" fill="none" stroke="#e03131" stroke-width="2" stroke-dasharray="8 10"/></g>
+<g><text x="1332" y="299" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="11" fill="#e03131">u23 — dropped</text></g>
+<g><text x="1388" y="299.1" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#e03131">would end 4 s into the next round</text></g>
+<g><text x="168" y="352.1" text-anchor="end" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#94a3b8">aggregates land</text></g>
+<g><polyline points="180,350 1332,350" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><ellipse cx="276" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="324" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="372" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="420" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="468" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="516" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="564" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="612" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="660" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="708" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="756" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="804" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="852" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="900" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="948" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="996" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="1044" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="1092" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="1140" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="1188" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="1236" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="1284" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><ellipse cx="1332" cy="350" rx="5" ry="5" fill="#e8590c" stroke="#e8590c" stroke-width="1"/></g>
+<g><text x="168" y="391.1" text-anchor="end" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#94a3b8">landings per slot</text></g>
+<g><text x="168" y="424.1" text-anchor="end" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#94a3b8">units starting per slot</text></g>
+<g><text x="252" y="389.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#e8590c">2</text></g>
+<g><text x="252" y="422.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#243447">3</text></g>
+<g><text x="396" y="389.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#243447">3</text></g>
+<g><text x="396" y="422.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#243447">3</text></g>
+<g><text x="540" y="389.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#243447">3</text></g>
+<g><text x="540" y="422.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#243447">3</text></g>
+<g><text x="684" y="389.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#243447">3</text></g>
+<g><text x="684" y="422.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#243447">3</text></g>
+<g><text x="828" y="389.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#243447">3</text></g>
+<g><text x="828" y="422.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#243447">3</text></g>
+<g><text x="972" y="389.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#243447">3</text></g>
+<g><text x="972" y="422.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#243447">3</text></g>
+<g><text x="1116" y="389.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#243447">3</text></g>
+<g><text x="1116" y="422.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#243447">3</text></g>
+<g><text x="1260" y="389.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#243447">3</text></g>
+<g><text x="1260" y="422.15" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="18" fill="#1971c2">2</text></g>
+<g><text x="756" y="502.12" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="15" fill="#243447">Σ = 8 × 3 − 1 = 23 units per round (one full validator pass)  ·  today: 32 attestation slots per pass  ·  −28.1 %</text></g>
+</svg>

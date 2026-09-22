@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="102 2 1099.84 484.9" width="1099.84" height="484.9" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif'>
+<rect x="102" y="2" width="1099.84" height="484.9" fill="#ffffff"/>
+<g><text x="150" y="44.85" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="22" fill="#243447">Today's attestation pipeline: one 8-second unit per 12-second slot</text></g>
+<g><text x="150" y="70.78" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#94a3b8">mainnet, 12 s slots · V/32 of the validators attest per slot · 64 subnets · 16 aggregators per committee</text></g>
+<g><polyline points="150,130 1110,130" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><polyline points="150,124 150,136" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="158" y="148.78" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#243447">0 s</text></g>
+<g><polyline points="470,124 470,136" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="470" y="148.78" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#243447">4 s</text></g>
+<g><polyline points="790,124 790,136" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="790" y="148.78" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#243447">8 s</text></g>
+<g><polyline points="1110,124 1110,136" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="1102" y="148.78" text-anchor="end" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#243447">12 s</text></g>
+<g><ellipse cx="470" cy="130" rx="6" ry="6" fill="#1971c2" stroke="#1e1e1e" stroke-width="1"/></g>
+<g><text x="470" y="104.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">attestation deadline</text></g>
+<g><ellipse cx="790" cy="130" rx="6" ry="6" fill="#e8590c" stroke="#1e1e1e" stroke-width="1"/></g>
+<g><text x="790" y="104.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">aggregators publish</text></g>
+<g><ellipse cx="1110" cy="130" rx="6" ry="6" fill="#e9b949" stroke="#1e1e1e" stroke-width="1"/></g>
+<g><text x="1110" y="104.1" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#243447">next block proposed</text></g>
+<g><polyline points="150,130 150,400" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><polyline points="1110,130 1110,400" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g opacity="0.7"><polyline points="470,160 470,400" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g opacity="0.7"><polyline points="790,160 790,400" fill="none" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/></g>
+<g opacity="0.1"><rect x="130" y="165" width="1000" height="235" rx="32" fill="#e9ecef" stroke="#243447" stroke-width="1"/></g>
+<g><text x="140" y="179.1" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#94a3b8">network</text></g>
+<g><polyline points="150,205 470,205" fill="none" stroke="#e9b949" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="442.18,193.76 470,205 442.18,216.24" fill="none" stroke="#e9b949" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="162" y="223.78" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#243447">beacon block propagates</text></g>
+<g><polyline points="470,265 790,265" fill="none" stroke="#1971c2" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="762.18,253.76 790,265 762.18,276.24" fill="none" stroke="#1971c2" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><ellipse cx="629" cy="236" rx="75" ry="15" fill="#a5d8ff" stroke="#1971c2" stroke-width="1"/></g>
+<g><text x="629" y="236" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#1971c2">V/32 voters</text></g>
+<g><text x="482" y="283.77" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#243447">attestations: voter → subnet → aggregators</text></g>
+<g><polyline points="790,330 1110,330" fill="none" stroke="#e8590c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="1082.18,318.76 1110,330 1082.18,341.24" fill="none" stroke="#e8590c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><ellipse cx="949" cy="301" rx="75" ry="15" fill="#ffd8a8" stroke="#e8590c" stroke-width="1"/></g>
+<g><text x="949" y="301" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="12" fill="#e8590c">16-to-all per committee</text></g>
+<g><text x="802" y="348.77" text-anchor="start" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="13" fill="#243447">aggregates: aggregator → global topic → everyone</text></g>
+<g><polyline points="470,430 1110,430" fill="none" stroke="#243447" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="1087.75,421.01 1110,430 1087.75,438.99" fill="none" stroke="#243447" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="492.25,438.99 470,430 492.25,421.01" fill="none" stroke="#243447" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g><text x="790" y="449.45" text-anchor="middle" dominant-baseline="central" font-family='Nunito, "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif' font-size="14" fill="#243447">the unit: 4 s vote + 4 s aggregation = 8 s, ending at the next block proposal</text></g>
+</svg>
