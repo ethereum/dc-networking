@@ -22,7 +22,7 @@ Design stance: **conservative delta** — most things don't change compared to t
 | 4  | FG    | **Safety Analysis** under Decoupled Consensus: Impact of possible Goldfish instability, short asynchrony, censorship, etc.                                                              | res    | med   | P2       |
 | 5  | FG    | **Performance Analysis** under Decoupled Consensus: How short can a **decoupled-FG round** get comfortably? Which [networking patterns](https://notes.ethereum.org/ZIqFmp9ES9Ctm0Vw4LqXmA) are best?                | spec+eng | hi   | P2  |
 | 6  | FG    | How does **FG healing** impact rounds & networking?                                           | res     | hi   | P2       |
-| 7  | FG    | Rely on RANDAO for shuffling or use a VRF?                                           | res     | hi   | P2       |
+| 7  | FG    | Rely on RANDAO for shuffling or use a VRF? (For FG cohorts, #18 proposes neither a per-epoch shuffle nor a VRF: a public schedule with one RANDAO-seeded re-draw per 256-epoch era.)                                           | res     | hi   | P2, #18       |
 | 8 | FG    | **PQ forward design**: leverage more flexible aggregation while dealing with higher load           | res     | hi   | —       |
 | 9  | FG    | Co-design with FG: design/investigate a **back-off mechanism** to handle adverse network conditions (crashes, asynchrony or sleepiness)        | res+eng     | hi   | P2       |
 | 10  | AC/FG | **PoV** for better security                                                                   | res     | lo  | -      |
@@ -33,6 +33,7 @@ Design stance: **conservative delta** — most things don't change compared to t
 | 15 | AC/FG    | **Griefing attacks**: cheap, non-slashable degradation — e.g. lazy/withholding aggregators, invalid-signature & duplicate-vote spam, votes timed at phase boundaries to force timeouts (interacts with back-off #9, privacy/security #13)      | res     | med   | —       |
 | 16 | FG    | **Transition timing**: early votes (X→0 or previous slot) leave no time for epoch/height-transition computation (duty assignment, subnet churn) — gap slot vs. lookahead vs. deferral vs. precompute; cross-chain survey in [transitions/](transitions/README.md)      | spec+res     | hi   | #3, #7       |
 | 17 | FG    | **Pipelined 4 s + 4 s units**: FG votes in fixed units of 4 s vote + 4 s aggregation, three per slot, 23 per 8-slot round; unit-size parity with today's attestation slot as the load argument (needs ≥ 28.1 % consolidation or equivalent bundling); accepted reward variance; end-of-slot catch-all aggregates; committee size under bundled propagation — write-up in [fg/pipelined-units/](fg/pipelined-units/README.md)      | res+eng     | hi   | #3, #5, #16       |
+| 18 | FG    | **Staggered committee assignment**: who votes in which unit (one unit *later* every 8 rounds), who shares a cohort/subnet (hash re-draw once per 256-epoch era), and which index set the bitfields refer to (`Active(epoch(round))`, cached by `(E, D(E))`, so gossip never regenerates a state); hard-start / soft-end windows, per-block merged inclusion, full-size slashing evidence, fixes for the DC state-transition draft — write-up in [fg/staggered-committees/](fg/staggered-committees/README.md)      | res+spec     | hi   | #7, #15, #16, #17       |
 
 
 
