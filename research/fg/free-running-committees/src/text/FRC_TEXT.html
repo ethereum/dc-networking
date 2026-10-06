@@ -1,0 +1,54 @@
+<p>Keep the 4 s unit grid, but stop forcing rounds to start on a slot boundary. Number units from genesis, <i>u</i> = ⌊<i>t</i> / 4 s⌋, and let committee <i>k</i> = <i>u</i> mod 23 vote in unit <i>u</i>. A round is then just 23 consecutive units: 92 s, or <b>eight slots minus one committee</b>. The unit that Q17 left idle becomes the first committee of the next round.</p>
+<div class="callout key">
+<h4>Definition (C = 23 committees, three 4 s units per 12 s slot)</h4>
+<pre class="spec">active_committee(u) = u mod C          # the only duty function
+round(u)            = u // C           # accounting only
+unit_start(u)       = genesis + 4·u s  # slot u // 3, offset 4·(u mod 3) s
+round_start(r)      = unit_start(C·r)  # +0, +8, +4 s into its slot
+seat(v)             ∈ [0, C)           # hashed, striped or chosen (§4)
+v votes in unit u   ⇔ u mod C == seat(v)</pre>
+</div>
+<p>What follows from it:</p>
+<ul class="tight">
+<li><b>Every validator votes exactly every 92 s</b>, unless its seat changes (an era re-draw or a seat request). The gap is always C units, the optimum in Q18's gap lemma. No cohort waits C + 1 or 2C − 1 units, and none votes twice in a row, so the end-of-round overlap is gone by construction.</li>
+<li><b>The rotation is free.</b> 23 is not a multiple of 3, so each committee's in-slot offset steps +0 → +8 → +4 s, one step per round, and repeats every 3 rounds (276 s, or 23 slots). Position needs no rotation function, no seed and no period K, and in-slot effects even out within 13 min.
+<ul class="tight">
+<li><b>Caveat:</b> this covers in-slot effects only. Seats are fixed in the round, so if the round boundary itself carried a penalty, the free-running clock would never even it out: 0.93 pp for one cohort under Q18's assumed rates. Penalties of that kind would be a round-start freeze, or a first-unit miss rate. Q18's slow rotation on top (3.3 h) would then be the fix.</li>
+<li>Composition, meaning who shares a cohort, is a separate axis. It still needs Q18's era hash, or capped seat choice (§4).</li>
+</ul></li>
+<li><b>Every block carries three committees.</b> In Q17, the first slot of each round landed only two aggregates (its "Problem 1"). Here every slot is identical.</li>
+<li><b>The round boundary drifts 4 s earlier for every 96 s</b> of slot time. Two rounds out of three start mid-slot. The round stays in the protocol as accounting: rewards, the vote's round field, bit layout and the inclusion window. Nothing has to happen when a round starts.</li>
+<li><b>Cost:</b> no unit is idle, so a validator votes every 92 s instead of every 96 s. FG traffic per second rises by 24/23 (+4.3 %) at the same per-unit load, and the 4 s breather Q17 had once per round is gone.</li>
+</ul>
+<div class="tbl-wrap wide"><table class="data">
+<caption>Schedules on the wall clock [sim, <code>results/clock.md</code> X1–X4]. Seconds per height use the explicit-time model of §1 with Q18's random offline sets. The constant-lag model (X2b) also puts the free-running clock first, but orders the others differently.</caption>
+<thead><tr><th>schedule</th><th class="num">vote gap</th><th class="num">blocks with 2 committees</th><th class="num">in-slot ε-fair after</th><th class="num">s per height at p = 1</th><th class="num">p = 0.9</th><th class="num">p = 0.8</th><th class="num">p = 0.67</th></tr></thead>
+<tbody>
+<tr><td>a · Q17 grid, fixed order</td><td class="num">96 s</td><td class="num">12.5 %</td><td class="num">never (0.80 pp)</td><td class="num">80</td><td class="num">84</td><td class="num">96</td><td class="num">108</td></tr>
+<tr><td>b · Q17 + Francesco, +1 per round</td><td class="num">8–100 s</td><td class="num">12.5 %</td><td class="num">0.38 h</td><td class="num">80</td><td class="num">92</td><td class="num">96</td><td class="num">108</td></tr>
+<tr><td>c · Q17 + Q18, +1 every 8 rounds</td><td class="num">8–100 s</td><td class="num">12.5 %</td><td class="num">3.0 h</td><td class="num">80</td><td class="num">85</td><td class="num">96</td><td class="num">108</td></tr>
+<tr class="hl"><td><b>d · free-running clock</b></td><td class="num"><b>92 s</b></td><td class="num"><b>0</b></td><td class="num"><b>0.21 h</b></td><td class="num"><b>72</b></td><td class="num"><b>84</b></td><td class="num"><b>92</b></td><td class="num"><b>108</b></td></tr>
+<tr><td>e · free-running + (index + round)</td><td class="num">4–96 s</td><td class="num">0</td><td class="num">4.9 h</td><td class="num">81</td><td class="num">84</td><td class="num">96</td><td class="num">108</td></tr>
+</tbody></table></div>
+<p><b>Reading the latency columns: do not sell this on latency.</b></p>
+<ul class="tight">
+<li><b>At the 2/3 threshold</b> every schedule takes <b>108 s</b>, because the block grid absorbs the 4 s. A height ends with the block that carries its last needed committee, at 12·⌈(G + 2)/3⌉ s, which is 108 s for G = 23, 24 and 25 alike [derived].</li>
+<li><b>The −8 s at p = 1 depends on the model.</b> It disappears if the +0 s committee can see its slot's block before signing: both clocks then take 72 s, and both take 96 s at the threshold. A free-running clock with C = 24, which adds no traffic, also reaches 72 s at p = 1.</li>
+<li><b>The −4 s at p = 0.8 comes from random offline sets.</b> With offline stake spread evenly, both clocks give 96 s.</li>
+</ul>
+<p>The wins that do not depend on modelling are structural: a constant gap, no double vote, identical blocks, and in-slot rotation for free. A new minor cost is that 8.7 % of blocks carry votes from two rounds, which cannot share one aggregate.</p>
+<h3>Is this what Francesco meant?</h3>
+<p>Not as written. The chat does not say who first suggested letting rounds drift. Francesco's formula, read with the DC draft's slot-aligned rounds, is the forward +1 rotation of §2. The precise relation is this:</p>
+<ul class="tight">
+<li><b>On the slot-aligned grid</b> (Figure 2, slot view), the free-running clock is also a rotation. Position <i>j</i> of 96 s window <i>R</i> holds cohort (<i>j</i> + <i>R</i>) mod 23. Every cohort moves <b>one unit earlier</b> per 96 s, and all 24 positions are used.</li>
+<li><b>Q18 rejected the backward direction</b> ("−1 unit every round", 2.0 rounds per height near 2/3) because inside fixed 23-unit rounds the wrapping cohort waits 2C − 1 units. Filling the idle unit removes the wrap: the cohort that would be pushed out of the round votes as the next round's first committee.</li>
+</ul>
+<p>So the difference is this. <b>Francesco's formula rotates the cohorts through the round. The free-running clock keeps the cohort order fixed and rotates the round through the slots.</b> Adding <code>(index + round) mod C</code> on top of the free drift (schedule e above) only costs: the worst gap stretches to C + 1, a double vote 4 s apart returns, and in-slot fairness slows to 4.9 h because 24 ≡ 0 (mod 3). If round-position penalties exist, the right addition is Q18's slow rotation (3.3 h), not the per-round step.</p>
+<h3>What changes in the spec</h3>
+<ul class="tight">
+<li><b>Round ≠ 8 slots.</b> Define <code>compute_round_at_unit</code>, <code>compute_round_at_slot</code> (the round of the slot's first unit) and the round's start slot and offset. The vote keeps its <code>round</code> field: seat, bit layout and inclusion window are functions of it (Q18 §10).</li>
+<li><b>Inclusion.</b> "Current or previous round" now counts in units. The block of slot <i>s</i> carries units 3<i>s</i> − 4 … 3<i>s</i> − 2, which can straddle a round boundary.</li>
+<li><b>Epochs and eras.</b> A 32-slot epoch holds 96/23 ≈ 4.17 rounds, and 22.9 % of rounds straddle an epoch boundary. Q18's index set <code>Active(epoch(round))</code> uses the epoch of the round's first unit. If Q18's era hash stays, era boundaries must snap to rounds: 256 epochs is 1,068.5 rounds. 1,056 rounds (253 epochs) keeps Q18's zero-slack invariant, era ≤ 256 epochs.</li>
+<li><b>C must be coprime with the units per slot.</b> With 3 units per slot that means C ∈ {22, 23, 25, 26, …}; with 10 s quick slots and 2 units per slot, C must be odd. C = 24 would freeze every committee's in-slot offset forever.</li>
+<li><b>Round position must stay neutral.</b> Under Mikhail's instant switch nothing waits for a round to start, because heights advance inside blocks. Two asymmetries remain. First, the inclusion window ("current or previous round") gives the round's last seat 88 s to be included and its first seat 176 s; both are ample, since votes land within 8–16 s. Second, a design that picks targets at round starts (§5) picks them mid-slot two rounds out of three, as "the head at the round's first unit". Adding any round-start freeze would bring back a first-unit penalty, and the free-running clock would not even it out.</li>
+</ul>

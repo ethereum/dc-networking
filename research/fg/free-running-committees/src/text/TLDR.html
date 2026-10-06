@@ -1,0 +1,25 @@
+<ol>
+<li><b>The unit (sub-round design).</b> A committee starts every 4 s; it votes for 4 s (push only) and then aggregates for 4 s. Once per slot, a 2 s IHAVE/IWANT window opens at +8 s, followed by a 2 s final aggregation at +10 s, so the next proposer gets the best aggregate. This requires Q18's vote windows to stay open until about +10.5 s.</li>
+<li><b>Francesco's <code>(index + round) mod C</code></b>, on the DC draft's slot-aligned rounds, moves each cohort one unit later per round. Gaps are 100 s, and once per round the cohort that wraps around votes twice within 8 s. That is a one-cohort version of the overlap Mikhail wanted to avoid.</li>
+<li><b>Proposal: a free-running committee clock.</b> Committee = unit mod 23. A round is 23 units, 92 s, "eight slots minus one committee", not tied to slots.
+<ul class="tight">
+<li>Every validator votes exactly every 92 s, and every block carries three committees.</li>
+<li>In-slot positions rotate on their own (+0 → +8 → +4 s). No position function and no position seed is needed. The rotation is ε-fair in 13 min, provided the round boundary itself carries no penalty.</li>
+<li>Composition still needs Q18's era hash, or capped seat choice.</li>
+<li>Drawn on the slot grid, it is a rotation one unit <i>earlier</i> per 8 slots, with Q17's idle unit filled.</li>
+<li>Its latency gain is small and depends on the model: −8 s per height at p = 1 in the explicit-time model, none at 2/3. The case is structural, not latency. It costs +4.3 % FG traffic.</li>
+</ul></li>
+<li><b>Pick-your-seat.</b> On the free-running clock every seat has the same in-slot timing, so choosing a seat only chooses who you vote with.
+<ul class="tight">
+<li>It is acceptable for load and liveness only with a stake cap <i>and</i> a count cap on every inflow.</li>
+<li>Uncapped, an attacker can pack 8× a seat's load into one unit and burst 67 MB.</li>
+<li>Capped seats can still drift, over months, towards whole seats owned by one operator or an adversary. Choice replaces the era re-draw's periodic reset with slowness.</li>
+</ul></li>
+<li><b>Extra: where targets come from.</b> With heights advancing at 2/3, <i>sticky</i> voters, who keep the old target for reward fairness, lock heights to rounds.
+<ul class="tight">
+<li>That costs +50 s of expected lag at p = 1 (174 → 224 s), and becomes a cliff near 2/3: +111 s at p = 0.8, +220 s at 0.7.</li>
+<li>Previous-target credit makes rewards fair without stickiness.</li>
+<li>If round-aligned voting is required, pick the target at the round start; prefix counting is faster (184 s) but its finalization is untested.</li>
+<li>Rolling FFG is fastest and flat (168 s).</li>
+</ul></li>
+</ol>

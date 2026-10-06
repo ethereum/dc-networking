@@ -1,0 +1,29 @@
+<ul class="tight">
+<li><b>Clock lane</b>: <code>sim/clock.py</code> (<code>python3 sim/clock.py all</code>, ~6 s), write-up in <code>results/clock.md</code>.
+<ul class="tight">
+<li>It reuses Q18's simulator for the constant-lag model and reproduces Q18's 0.696 / 0.826 / 1.130 rounds per height exactly.</li>
+<li>It adds an explicit-time model of §1: a vote cast at <i>t</i> lands in the block at 12·⌈(<i>t</i> + 8)/12⌉ s, and the quorum block becomes visible 1 s after its slot start. The model uses 40·C validators and Q18's random offline sets.</li>
+</ul></li>
+<li><b>Design lane</b>: <code>sim/designs.py</code> (<code>all</code>, ~70 s; <code>traces</code> writes Figure 5's data), write-up in <code>results/designs.md</code>.
+<ul class="tight">
+<li>It is a copy of the prefix-consensus simulator with 92 s rounds and three new engines: sticky voters, round-aligned target, and prefix with sticky voters.</li>
+<li>At C = 24 it reproduces the prefix study's tables byte for byte. Its ideal-model runs match the closed forms 5/3, 5/2, 13/6, 11/6 and 4/3.</li>
+</ul></li>
+<li><b>Independent check</b>: <code>sim/check_frc.py</code>, about 80 lines by the orchestrating agent. It spreads offline stake evenly over cohorts and reproduces:
+<ul class="tight">
+<li>the vote gaps and the committees per block;</li>
+<li>the explicit-time seconds per height: 72 / 84 / 96 / 96 / 108 s for the free-running clock at p = 1 / 0.9 / 0.8 / 0.7 / 0.67.</li>
+</ul>
+It agrees with the clock lane at p = 1, 0.9 and 0.67. At 0.8 and 0.7 the clock lane's random offline sets average shorter and longer heights: 92 and 98.2 s.</li>
+<li><b>This page</b>: <code>python3 build.py</code> inlines <code>src/</code> and <code>results/*.json</code> into one file. Plain JavaScript, no libraries.</li>
+</ul>
+<h3>Open questions</h3>
+<ol>
+<li><b>The +8 s pull window, on the devnet.</b> What share of votes is still missing at +8 s, per unit offset? Does one 2 s IHAVE/IWANT round recover them? Does per-topic IHAVE scheduling cut IHAVE volume, or only duplicate IWANTs (Anton's caveat)?</li>
+<li><b>When can the +0 s committee sign?</b> If it can see its slot's block first, the threshold latency drops from 108 s to 96 s on both clocks.</li>
+<li><b>Rewards.</b> The choice between the instant switch with previous-target credit and sticky voting (§5).</li>
+<li><b>Pick-your-seat.</b> Whether to allow it before an SG or fast-confirmation rule is specified, the cap κ, and how seat requests interact with consolidations and top-ups.</li>
+<li><b>10 s quick slots</b> (CFI'd for H*). The grid has to be redrawn. With 2 units per slot, C must be odd (e.g. 15).</li>
+<li><b>Rounds now straddle epochs and blocks.</b> 22.9 % of rounds straddle an epoch, and 8.7 % of blocks carry two rounds' votes. Check reward accounting, the inclusion window and the per-block merge.</li>
+<li><b>Francesco's newer message, if any.</b> The local copy of the FF chat ends on 2026-10-02. If the rotation idea was refined after that, this note needs a re-read.</li>
+</ol>

@@ -1,0 +1,13 @@
+<p>Q17 fixed the shape of a <b>unit</b>, the voting slot of one cohort. A cohort votes for 4 s; then its aggregators publish and the aggregates spread for another 4 s, exactly like today's attestation pipeline. A new unit starts every 4 s, so three cohorts start in every slot, at +0, +4 and +8 s. Terminology: this page calls the group that votes in a unit a <b>committee</b>, which is Q18's <i>cohort</i> or <i>seat</i>. On the wire each one splits into 64 subnet committees (Q18 §7).</p>
+<p>Two additions make this the sub-round design:</p>
+<ul class="tight">
+<li><b>Push only inside the phases.</b> Votes and on-time aggregates travel by eager push, and FG topics emit no IHAVE gossip while a phase runs. Anton's traffic simulations put almost all GossipSub control traffic on IHAVEs for FG votes and aggregates: about 30 % of a home node's traffic, and up to 250 Mbit/s of IHAVEs on a supernode (FF chat, 2026-10-01/02).</li>
+<li><b>One repair window per slot.</b> At +8 s, four seconds before the slot ends, nodes run a single 2 s IHAVE/IWANT round for the FG messages of the three committees the next block will carry. At +10 s a few late aggregators publish the best aggregate they now hold, a superset of the on-time one, and it reaches the next proposer by +12 s. This is Q18's late aggregator, and Anton's request for a few very late aggregators (FF chat, 2026-09-30), moved onto a fixed, slot-synchronous grid.</li>
+</ul>
+<p>So, on the free-running clock of §3, the block at the end of every slot carries exactly <b>three committees</b>: those that started at −4, +0 and +4 s. A vote cast at time <i>t</i> lands in the first block at or after <i>t</i> + 8 s.</p>
+<div class="callout warn"><h4>What the repair window changes elsewhere</h4>
+<ul class="tight">
+<li><b>Vote windows.</b> Under Q18's rules, the −4 s and +0 s committees' votes are already ignored at +8 s: the soft end is the unit start + 8.5 s. The repair window therefore extends the soft end to about +10.5 s. Then four windows are open at +8…+10 s instead of three, and Q18's burst bound grows from 3β to 4β units: 11.6 MB instead of 8.7 MB at β = 1/3 and 10⁶ validators (§4 has the seat-choice version).</li>
+<li><b>Gossip.</b> "No IHAVE during the phases" needs per-topic IHAVE scheduling in the clients, a GossipSub change that sits outside Q17's "only the round architecture is tuned". Anton's caveat applies: deferring IHAVE mostly saves duplicate IWANTs, not IHAVE volume. The IHAVE saving needs batching, or not advertising what push already delivered (IDONTWANT, partial messages).</li>
+<li><b>Best effort.</b> The 2 s final hop is shorter than Q17's 4 s propagation budget, so it is a best-effort improvement. The on-time aggregate stays the guaranteed path.</li>
+</ul></div>

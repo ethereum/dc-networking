@@ -1,0 +1,8 @@
+<p>Francesco's point (FF chat, 2026-10-01) was that committees are a load unit, not a security unit. So they need no shuffle, only a fair deterministic map from (round, index) to committee. His simplest version is <i>"index + round % number of committees"</i>, with the index taken in the active set.</p>
+<p>Read on the DC draft's slot-aligned 8-slot rounds and Q17's grid (23 units, the 24th left idle), the formula moves every cohort <b>one unit later per round</b>:</p>
+<ul class="tight">
+<li>Most cohorts wait 25 units, <b>100 s</b>, between votes.</li>
+<li>Once per round, the cohort that wraps from the last seat to the first votes at the end of one round and again at the start of the next, <b>8 s later</b>. This is a one-cohort (1/23 of stake) version of the overlap Mikhail wanted to avoid. His example was the last quarter of a round voting again at the start of the next.</li>
+<li>The in-slot offset changes every round, so in-slot fairness comes quickly (0.38 h).</li>
+</ul>
+<p>Q18 measured this rotation at 0.727 rounds per height, against 0.696 for a fixed order. It recommended two changes: use the raw validator index, because active-set ranks re-seat everyone behind each exit, and step one seat every 8 rounds instead of every round. The first still applies. The proposal below replaces the second, unless the round boundary itself carries a penalty (§3).</p>

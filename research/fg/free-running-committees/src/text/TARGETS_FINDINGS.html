@@ -1,0 +1,28 @@
+<h3>Findings</h3>
+<p>From <code>results/designs.md</code>: head-sourced voters, honest runs, expected lag from block birth to finalization [sim].</p>
+<div class="tbl-wrap wide"><table class="data">
+<caption>E[lag] by participation (seconds; rounds of 92 s in brackets). The difference to the instant switch is in square brackets.</caption>
+<thead><tr><th>design</th><th class="num">p = 1</th><th class="num">p = 0.9</th><th class="num">p = 0.8</th><th class="num">p = 0.7</th><th class="num">ideal (rounds)</th></tr></thead>
+<tbody>
+<tr><td><span class="sw" style="background:var(--s1)"></span> Floating heights, instant switch</td><td class="num">174 (1.89)</td><td class="num">204</td><td class="num">234</td><td class="num">234</td><td class="num">5/3</td></tr>
+<tr class="hl"><td><span class="sw" style="background:var(--s2)"></span> Floating heights, sticky voters</td><td class="num">224 [+50]</td><td class="num">224 [+20]</td><td class="num">345 [+111]</td><td class="num">454 [+220]</td><td class="num">5/2</td></tr>
+<tr><td><span class="sw" style="background:var(--s3)"></span> Round-aligned target</td><td class="num">212 [+38]</td><td class="num">220 [+16]</td><td class="num">232 [−2]</td><td class="num">324 [+90]</td><td class="num">13/6</td></tr>
+<tr><td><span class="sw" style="background:var(--s4)"></span> Prefix counting, sticky voters</td><td class="num">184 [+10]</td><td class="num">201 [−3]</td><td class="num">225 [−9]</td><td class="num">324 [+90]</td><td class="num">11/6</td></tr>
+<tr><td><span class="sw" style="background:var(--s5)"></span> Rolling FFG, δ = 1 (δ = 0)</td><td class="num">168 (156)</td><td class="num">192 (180)</td><td class="num">204 (192)</td><td class="num">216 (204)</td><td class="num">4/3</td></tr>
+<tr><td>DC today, ideal model only (5/2 rounds × 92 s; 240 s with DC's 96 s rounds), not comparable to the simulated rows</td><td class="num">230</td><td class="num">230</td><td class="num">230</td><td class="num">230</td><td class="num">5/2</td></tr>
+</tbody></table></div>
+<ol>
+<li><b>Sticky voters give back what floating heights buy.</b> Heights lock to one per round, and E[lag] rises from 174 s to 224 s at p = 1 (+50 s). In the ideal model it goes from 5/3 to 5/2 rounds, exactly DC today's terms. Stale votes rise from 11 % to 26 % of honest votes.</li>
+<li><b>Near 2/3 it is a cliff.</b> Once the quorum block lands after the next round's first unit, that round re-votes a closed height: 345 s at p = 0.8 (+111 s) and 454 s at p = 0.7 (+220 s). Voters that source from the confirmed block see the quorum about 17 s later, so they fall off already at p = 1 (283 s). A minority suffices: 20 % sticky stake locks heights to rounds at p = 1.</li>
+<li><b>"Picked deep" is mild at full participation and real near 2/3.</b> At p = 1 the entry is only 20 s old at its first sticky vote, because the 8 s aggregation already puts the quorum 68–76 s into the 92 s round. At p = 0.8 it is 48 s old, at 0.7 88 s. Even at p = 1 the cost is the whole round between pick and justification (92 s instead of 72 s), paid again before finality. What a design does with its target matters more than the target's age at the pick.</li>
+<li><b>If round-aligned voting is wanted, pick the target at the round start, or count by prefix.</b>
+<ul class="tight">
+<li>Round-aligned targets cost 212 s at p = 1 but have no cliff at 0.8 (232 s).</li>
+<li>Prefix counting with sticky voters stays within +10 s of the instant switch at p = 1 (184 s), and is slightly faster at 0.9–0.8 (201 and 225 s). At p = 1 its justified block keeps deepening for 20 s after the first quorum (16 s and 12 s at 0.9 and 0.8).</li>
+<li>Both break at p = 0.7 with k = 1 finalization: 324 s mean, max 456 s. When voters source from the confirmed block, they never finalize at all.</li>
+<li>A Gasper-style variant (source pinned at the round start, k ≤ 2) was simulated for the round-aligned target only. It holds p = 0.7 to 328 s mean (max 372 s; 344 s with confirmed-block sources) and costs +29 s at p = 0.8. For prefix counting it is untested.</li>
+</ul></li>
+<li><b>Rolling FFG is fastest at every participation level</b>, with a flat lag and no stale votes: 168 / 192 / 204 / 216 s at δ = 1, 12 s less at δ = 0. The ideal 20 % gain over floating heights shrinks to 3–13 %, because it pays the 8 s aggregation in both phases.</li>
+</ol>
+<div class="callout key"><b>Recommendation.</b> Keep the instant switch, and get reward fairness from previous-target credit (Q18 §3), which already pays stale votes. Stickiness is the most expensive way to make rewards fair. On the free-running clock this is also the natural fit, since nothing has to happen when a round starts. If the team still wants round-aligned voting, take the round-aligned target with Gasper-style k ≤ 2: it is simulated, and has no cliff. Prefix counting is faster, but its round-aligned finalization breaks at p = 0.7, and its k ≤ 2 variant and its safety are untested.</div>
+<p class="small muted">Not modelled: AC forks and entry splits, timeouts and the R1–R3 races, missed slots. For those adversarial worst cases see the prefix-consensus study (Rolling FFG is immune to R1–R3). The prefix design's k = 1 finalization is a timing model; its safety was not checked.</p>

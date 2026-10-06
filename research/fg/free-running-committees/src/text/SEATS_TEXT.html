@@ -1,0 +1,9 @@
+<p>Once the active committee index alone decides when a seat votes, a seat can be any public number in [0, 23). Here a seat is Q18's cohort: the group that votes in one unit. On the wire it splits into 64 subnet committees. Seat choice could work like this:</p>
+<ul class="tight">
+<li><b>Default seat.</b> Q18's era hash, or the seed-free stripe <i>v</i> mod 23.</li>
+<li><b>Choice.</b> A validator may request a seat through an <code>fg_seat</code> field, set by an EL-triggered request (like EIP-7002 exits and EIP-7251 consolidations). The request is churn-limited and takes effect at an era boundary (or any round boundary at least 5 epochs ahead).</li>
+<li><b>Caps.</b> A request is refused or queued if it would push a seat above κ · S / 23 of stake (κ ≈ 1.05) <i>or</i> above a validator-count cap. The stake cap alone bounds message load only when validator sizes are similar: a seat of 32 ETH validators carries 64× the messages of the same stake in 2048 ETH validators.</li>
+<li><b>Subnets within a seat.</b> They must be specified too: a stripe of the validator index (no seed) or Q18's era hash (keeps the seed). An operator gets local aggregation only if it fills a whole seat, about 4.3 % of stake, or also chooses its subnets.</li>
+<li><b>Membership.</b> Gossip and STF membership stay a pure function of the seat and <code>Active(epoch(round))</code>, with no shuffle.</li>
+</ul>
+<p><b>Why the free-running clock makes this reasonable:</b> every seat has the same 92 s gap and passes through all three in-slot offsets every 3 rounds, so no seat is better for in-slot timing. A choice is therefore about <i>who you vote with</i>, as in Yann's "a committee of only Binance validators" question. Relative-order effects remain: at p = 0.8 two thirds of one cohort's votes can go stale (below), and previous-target credit has to neutralise that.</p>

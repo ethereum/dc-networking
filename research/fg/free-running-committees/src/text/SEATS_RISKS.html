@@ -1,0 +1,49 @@
+<h3>What can go wrong, and why the caps must cover every inflow</h3>
+<p>From <code>results/clock.md</code> §7, at 10⁶ validators [sim, calc]. Seat composition is not an FG security unit (Q18 §8), so none of this touches the height FG's safety. It is about load, liveness and partial tallies. Capped figures use κ = 1.1, which is conservative against the proposed 1.05.</p>
+<ul class="tight">
+<li><b>Load.</b> Without caps:
+<ul class="tight">
+<li>operators co-locating put 2.2–4.2× a seat's normal load into one unit;</li>
+<li>a herd or an attacker puts 7.6–8.3×, up to 72.5 MB in one 4 s unit;</li>
+<li>heights at p = 1 slow from 72 s to 79–92 s.</li>
+</ul>
+A stake cap plus a count cap keeps every seat near κ.</li>
+<li><b>Bursts.</b> Hashed seats keep Q18's vote windows at 3β units (8.7 MB at β = 1/3), or 4β (11.6 MB) once §1's repair window extends the soft end.
+<ul class="tight">
+<li>An adversary that owns whole consecutive seats can release min(βC, 3κ) units at once: <b>26–29 MB</b>. With the repair window, min(βC, 4κ) units: <b>35–38 MB</b>, three times the hashed bound.</li>
+<li>Uncapped, the burst is βC = 7.67 units (66.7 MB), as if there were no windows.</li>
+<li>If honest validators already fill the seats, the cap leaves the adversary ≈ 1.3 units.</li>
+</ul></li>
+<li><b>Honest minorities.</b> In a mixed seat the majority chooser holds most aggregator slots.
+<ul class="tight">
+<li>Uncapped, an attacker with β = 1/3 can dilute a seat so that 27 % of its committees have no honest aggregator. With the cap the probability is ≤ 5.5·10⁻⁵.</li>
+<li>A seat filled entirely by one operator harms nobody, though it deanonymises that operator.</li>
+<li>One filled to 95 % leaves 45 % of its committees without an aggregator from the 5 % minority.</li>
+</ul></li>
+<li><b>Partial tallies.</b> At β = 1/3, the adversary's largest share of any 4 consecutive units is 33.6 % with default striped seats, 39 % with the cap, 74 % uncapped and 100 % with whole seats. This matters only to a gadget that reads partial tallies (an SG, a fast confirmation).</li>
+<li><b>Capture speed.</b> Going from 10 % of stake to 1/3 of one seat takes:
+<ul class="tight">
+<li>9.5 days uncapped (churn-limited);</li>
+<li>118 days (Electra churn) or 30 days (EIP-8061) with κ = 1.1;</li>
+<li>for comparison, 8.3 or 4.4 days under Q18's fixed striping.</li>
+</ul>
+The capped numbers assume honest validators never move, which is exactly what seat choice invites. Q18's era re-draw instead resets every 27 h. Every inflow needs the caps, including consolidation targets and top-ups.</li>
+<li><b>Withholding is not worse.</b> An adversary that owns whole consecutive seats and stays silent costs 92 s per height at β = 1/3, against 108 s when its stake is spread. Its dead arc absorbs the post-switch lag.</li>
+<li><b>Relative order.</b> The order of seats never changes, so in round-locked regimes the same cohorts cast the stale votes: up to 67 % of one cohort's votes at p = 0.8. A rotation cannot spread this on the free-running clock. Previous-target credit (<code>mk:124-134</code>) keeps it reward-neutral.</li>
+</ul>
+<p><b>The trade against Q18's era hash.</b></p>
+<ul class="tight">
+<li>With a striped default and capped choice, the protocol needs no seed, no era-boundary delay and no era invariant.</li>
+<li>It loses the periodic reset: composition becomes slow to capture rather than re-drawn.</li>
+<li>Choice is strictly more power than grinding ever gave.</li>
+</ul>
+<p><b>What it needs:</b></p>
+<ul class="tight">
+<li>a 1-byte seat field (1 MB at 10⁶ validators);</li>
+<li>per-seat stake and count totals;</li>
+<li>a ~69-byte EIP-7685 request;</li>
+<li>both cap checks on every inflow;</li>
+<li>a subnet rule within the seat.</li>
+</ul>
+<p>It is compatible with <code>Active(epoch(round))</code> if a seat change takes effect at epoch ≥ c + 5 and on a round boundary. A state-held seat can differ across forks. That is fine for the height FG, but not for a continuous FG whose slashing reads a validator's tick.</p>
+<div class="callout key"><b>Verdict.</b> Pick-your-seat is acceptable <i>for load and liveness</i> with a stake cap and a count cap on every inflow; FG safety is not the question. Even capped, seats drift over months towards whole seats held by one operator or an adversary. Keep Q18's era hash as the default, and revisit seat choice before any SG or fast-confirmation rule reads partial tallies.</div>

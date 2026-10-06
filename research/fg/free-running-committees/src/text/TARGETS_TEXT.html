@@ -1,0 +1,12 @@
+<p><b>The question</b> (Yann, from a discussion with Mikhail on 2026-10-05). Suppose a height advances as soon as 2/3 have voted, and there is no prefix consensus or Rolling FFG. Then the next height's target is fixed at that instant: it is the block that completed the quorum, the height's <i>entry</i>. Under Mikhail's instant switch, the rest of the round votes for it at once. Yann's team favours keeping the old target for the rest of the round, for reward fairness. If voters do that, the entry is first voted on in the next round. By then it is already old (a third of a round in the ideal model), and latency grows.</p>
+<p>The five designs below run on the same free-running clock with the unit timing of §1. They differ only in <b>where the target comes from</b> and <b>when voters switch</b>.</p>
+<div class="tbl-wrap wide"><table class="data">
+<thead><tr><th>design</th><th>target of the next checkpoint</th><th>voters switch</th></tr></thead>
+<tbody>
+<tr><td><span class="sw" style="background:var(--s1)"></span> Floating heights, instant switch (Mikhail)</td><td>the block that completes the 2/3 quorum (entry)</td><td>at once; previous-target votes keep reward credit</td></tr>
+<tr><td><span class="sw" style="background:var(--s2)"></span> Floating heights, sticky voters</td><td>the same entry</td><td>only at their next round: the round's votes all name one height</td></tr>
+<tr><td><span class="sw" style="background:var(--s3)"></span> Round-aligned target (control)</td><td>the head when the round starts</td><td>at round starts</td></tr>
+<tr><td><span class="sw" style="background:var(--s4)"></span> Prefix counting, sticky voters</td><td>none fixed: votes name their head, and the round justifies the deepest block that 2/3 of its votes extend</td><td>at round starts</td></tr>
+<tr><td><span class="sw" style="background:var(--s5)"></span> Rolling FFG</td><td>every unit is a checkpoint (a δ-deep block)</td><td>no heights to switch</td></tr>
+</tbody></table></div>
+<p>Latency is reported, as in the continuous-FG note, as an expected value over block birth time: E[lag] = E[time to inclusion] + (inclusion → justified) + (justified → finalized). <b>Best</b> and <b>worst</b> are the minimum and maximum over birth time. "Time to inclusion" is the wait until the gadget adopts the block (or a descendant) as a target.</p>

@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free-running FG committees</title>
+<meta name="description" content="A committee every 4 s, rounds of 23 units that slide across slots, seats validators can pick, and what target selection does to finality.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/*INLINE:base.css*/
+</style>
+</head>
+<body>
+<button class="btn theme-toggle" type="button" id="theme" aria-label="Toggle dark mode">◐</button>
+<div class="wrap">
+
+<header class="top">
+  <p class="kicker">DC networking · research/fg · 2026-10-06 · agent draft</p>
+  <h1>Free-running FG committees</h1>
+  <p class="lede prose">One committee every 4 seconds, and rounds of 23 units that are allowed to slide across slot boundaries. Committees then rotate through the slot on their own, every validator votes exactly every 92 s, validators can pick their own seat, and the round becomes pure accounting. The appendix asks where each FG design picks its target and what that does to time-to-finality.</p>
+  <div class="provenance prose">{{PROVENANCE}}</div>
+  <section class="tldr prose" aria-labelledby="tldr-h">
+    <h2 id="tldr-h">TL;DR</h2>
+    {{TLDR}}
+  </section>
+  <nav class="toc" aria-label="Sections">
+    <a href="#unit">1 · The unit</a>
+    <a href="#francesco">2 · Francesco's rotation</a>
+    <a href="#frc">3 · Let the clock run free</a>
+    <a href="#seats">4 · Pick your seat</a>
+    <a href="#targets">5 · Extra: where targets come from</a>
+    <a href="#method">6 · Method and open questions</a>
+  </nav>
+</header>
+
+<main>
+<!-- ============================================================ 1 -->
+<section id="unit" data-part="1">
+  <h2><span class="num">1</span>The unit: a committee every 4 seconds</h2>
+  <div class="prose">
+    {{UNIT_TEXT}}
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><span class="fig-title">Figure 1 · Inside the slot, slots 7–9</span><div class="controls" data-controls></div></div>
+    <div class="scroll-x" data-fig></div>
+    <p class="status-line" data-status aria-live="off"></p>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--vote)"></i>vote (push only)</span>
+      <span><i class="sw" style="background:var(--agg)"></i>on-time aggregation</span>
+      <span><i class="sw" style="background:repeating-linear-gradient(45deg,var(--repair) 0 2px,var(--surface) 2px 5px)"></i>IHAVE/IWANT pull (+8…+10 s)</span>
+      <span><i class="sw" style="background:repeating-linear-gradient(45deg,var(--agg) 0 2px,var(--surface) 2px 5px)"></i>final aggregation (+10…+12 s)</span>
+      <span><i class="sw" style="background:var(--surface);border:1.5px solid var(--avail)"></i>block (carries 3 committees)</span>
+    </div>
+    <figcaption>{{FIG1_CAPTION}}</figcaption>
+  </figure>
+</section>
+
+<!-- ============================================================ 2 -->
+<section id="francesco" data-part="2">
+  <h2><span class="num">2</span>Francesco's rotation, on the slot grid</h2>
+  <div class="prose">
+    {{FRANCESCO_TEXT}}
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><span class="fig-title">Figure 2 · Who votes where, 8 rounds</span><div class="controls" data-modes></div></div>
+    <div class="scroll-x" data-fig></div>
+    <div data-readout></div>
+    <div class="scroll-x" data-strip></div>
+    <figcaption>{{FIG2_CAPTION}}</figcaption>
+  </figure>
+</section>
+
+<!-- ============================================================ 3 -->
+<section id="frc" data-part="3">
+  <h2><span class="num">3</span>The proposal: let the clock run free</h2>
+  <div class="prose">
+    {{FRC_TEXT}}
+  </div>
+</section>
+
+<!-- ============================================================ 4 -->
+<section id="seats" data-part="4">
+  <h2><span class="num">4</span>Pick your seat</h2>
+  <div class="prose">
+    {{SEATS_TEXT}}
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><span class="fig-title">Figure 3 · The active committee index decides when a seat votes</span><div class="controls" data-scen></div></div>
+    <div class="ring-grid">
+      <div data-fig></div>
+      <div>
+        <div class="controls" data-controls></div>
+        <p class="small" data-note style="margin-top:12px"></p>
+        <div data-panel></div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--s1)"></i>operator A</span>
+      <span><i class="sw" style="background:var(--s3)"></i>operator B</span>
+      <span><i class="sw" style="background:var(--line-strong)"></i>other validators</span>
+      <span><i class="sw" style="background:repeating-linear-gradient(45deg,var(--adv) 0 2px,var(--surface) 2px 5px)"></i>adversary</span>
+      <span><i class="sw line" style="background:var(--ink-2)"></i>per-seat cap (dashed circle)</span>
+    </div>
+    <figcaption>{{FIG3_CAPTION}}</figcaption>
+  </figure>
+  <div class="prose">
+    {{SEATS_RISKS}}
+  </div>
+</section>
+
+<!-- ============================================================ 5 -->
+<section id="targets" data-part="5">
+  <h2><span class="num">5</span>Extra: where targets come from, and what it costs</h2>
+  <div class="prose">
+    {{TARGETS_TEXT}}
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><span class="fig-title">Figure 4 · Where the target is picked (ideal model)</span></div>
+    <div class="scroll-x" data-schematic></div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--ink-2);opacity:.85"></i>votes that count (alternate shades = consecutive checkpoints)</span>
+      <span><i class="sw" style="background:repeating-linear-gradient(45deg,var(--line-strong) 0 2px,var(--surface) 2px 5px)"></i>stale votes</span>
+      <span>◇ target picked</span>
+      <span><i class="sw" style="background:var(--adv);height:3px"></i>target waits before its first vote</span>
+      <span><i class="sw" style="background:var(--just-fill);border:1.5px solid var(--just-line)"></i>J justified</span>
+      <span><i class="sw" style="background:var(--fin)"></i>F finalized</span>
+    </div>
+    <figcaption>{{FIG4A_CAPTION}}</figcaption>
+  </figure>
+  <figure class="fig">
+    <div class="fig-head"><span class="fig-title">Figure 5 · Five designs on the same clock, simulated</span><div class="controls" data-p></div></div>
+    <div class="controls" data-controls></div>
+    <div class="lanes" data-lanes></div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--surface);border:1.5px solid var(--avail)"></i>available</span>
+      <span><i class="sw" style="background:var(--just-fill);border:1.5px solid var(--just-line)"></i>justified (or an ancestor of a justified block)</span>
+      <span><i class="sw" style="background:var(--fin)"></i>finalized</span>
+      <span><i class="sw" style="background:repeating-linear-gradient(45deg,var(--line-strong) 0 2px,var(--surface) 2px 5px)"></i>stale vote (names a closed height)</span>
+      <span>◇ checkpoint (target) above its block</span>
+    </div>
+    <figcaption>{{FIG5_CAPTION}}</figcaption>
+  </figure>
+  <figure class="fig">
+    <div class="fig-head"><span class="fig-title">Figure 6 · Lag of every block, by birth time</span></div>
+    <div class="scroll-x" data-lagchart></div>
+    <figcaption>{{FIG6_CAPTION}}</figcaption>
+  </figure>
+  <figure class="fig">
+    <div class="fig-head"><span class="fig-title">Figure 7 · Best, expected, worst</span></div>
+    <div class="scroll-x" data-summary></div>
+    <figcaption>{{FIG7_CAPTION}}</figcaption>
+  </figure>
+  <div class="prose">
+    {{TARGETS_FINDINGS}}
+  </div>
+</section>
+
+<!-- ============================================================ 6 -->
+<section id="method" data-part="6">
+  <h2><span class="num">6</span>Method, numbers and open questions</h2>
+  <div class="prose">
+    {{METHOD_TEXT}}
+  </div>
+</section>
+</main>
+
+<footer class="end prose">{{FOOTER}}</footer>
+</div>
+
+<script>window.FRC_TRACES = /*DATA:traces*/null;</script>
+<script>window.FRC_IDEAL = /*DATA:ideal*/null;</script>
+<script>
+/*INLINE:kit.js*/
+</script>
+<script>
+/*INLINE:part1-units.js*/
+</script>
+<script>
+/*INLINE:part2-rotation.js*/
+</script>
+<script>
+/*INLINE:part3-seats.js*/
+</script>
+<script>
+/*INLINE:part4-schematic.js*/
+</script>
+<script>
+/*INLINE:part4-designs.js*/
+</script>
+<script>
+(function () {
+  var q = function (s) { return document.querySelector(s); };
+  try { FRCPart1.init(q('[data-part="1"]')); } catch (e) { console.error(e); }
+  try { FRCPart2.init(q('[data-part="2"]')); } catch (e) { console.error(e); }
+  try { FRCPart3.init(q('[data-part="4"]')); } catch (e) { console.error(e); }
+  try { FRCSchematic.init(q('[data-schematic]')); } catch (e) { console.error(e); }
+  try { FRCPart4.init(q('[data-part="5"]')); } catch (e) { console.error(e); }
+  var btn = document.getElementById("theme");
+  var key = "frc-theme";
+  try { var saved = localStorage.getItem(key); if (saved) document.documentElement.setAttribute("data-theme", saved); } catch (e) {}
+  btn.addEventListener("click", function () {
+    var cur = document.documentElement.getAttribute("data-theme");
+    var dark = cur ? cur === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var next = dark ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem(key, next); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>
