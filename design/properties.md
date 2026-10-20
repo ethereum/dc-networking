@@ -21,8 +21,9 @@ bigger signatures and multi-stage aggregation.
     aggregate topic.
 - **Forward compatible with J\*.** Whatever I* adds should survive the move to
   PQ, and ideally de-risk it.
-  - Proposal: 1 kB (8192-bit) bitfields already in I*, the size J* would use
-    for the whole validator set.
+  - Proposal: one bitlist over the whole validator set already in I*, the
+    format J* would use. At one bit per validator that's about 135 kB at
+    today's ~1.1M validators (1 kB at 8,192).
   - Don't foreclose multi-stage aggregation
     ([requirements](requirements.md#pq-forwardness)).
   - No new BLS-only dependencies (selection proofs, randomness).
