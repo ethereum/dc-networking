@@ -84,6 +84,15 @@ bigger signatures and multi-stage aggregation.
   - Open. Related: [Q12](../research/open_questions.md) (optimistic
     aggregation through brokers).
 
+## Conclusions
+
+1. **Prioritization alone gives very uneven rewards.** When a vote can go
+   into any of several blocks and proposers just prioritize what they
+   include, big operators can choose which blocks carry their votes, e.g.
+   only the ones they propose. They collect much more of the rewards and
+   grief the other proposers, who have fewer votes left to include. The
+   [incentives](#incentives) proposal is meant to counter this.
+
 ## Incentives
 
 One proposal that covers several properties above:
