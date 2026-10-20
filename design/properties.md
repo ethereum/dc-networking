@@ -33,9 +33,10 @@ bigger signatures and multi-stage aggregation.
   redo RANDAO, committee assignment and bitlists. Ideally many forks share the
   same bitlist for a long time, so gossip validation never needs a state
   regeneration.
-  - Proposal: bitlists only grow at finality; in between they can only shrink
-    through exits. Activations already wait for finality today (phase0
-    `is_eligible_for_activation`). Alternative: Q18's `Active(epoch(round))`.
+  - Proposal: bitlists only grow at finality, and even then at most about once
+    a day; in between they can only shrink through exits. Activations already
+    wait for finality today (phase0 `is_eligible_for_activation`).
+    Alternative: Q18's `Active(epoch(round))`.
 - **Fair vote timing.** A validator should not be forced to send at a bad
   time, e.g. right before a deadline. This is the same as fairness across
   geolocations and being friendly to home stakers.
