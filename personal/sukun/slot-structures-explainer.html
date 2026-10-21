@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FFG Slot Structures</title>
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --axis: #c3c2b7; --ring: rgba(11, 11, 11, 0.10);
+  --vote: #0072B2; --agg: #C0428A; --block: #009E73; --gold: #E69F00;
+  --s1: #0072B2; --s2: #C0428A;
+  --font: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; background: var(--page); color: var(--ink); font-family: var(--font); }
+main { max-width: 1120px; margin: 0 auto; padding: 56px 24px 96px; }
+h1 { font-size: 44px; line-height: 1.1; margin: 0 0 12px; font-weight: 650; letter-spacing: -0.01em; }
+h2 { font-size: 28px; margin: 64px 0 12px; font-weight: 650; }
+h3 { font-size: 19px; margin: 24px 0 8px; font-weight: 650; }
+p, li { font-size: 18px; line-height: 1.55; color: var(--ink-2); max-width: 760px; }
+p { margin: 0 0 14px; }
+ul { padding-left: 1.2em; margin: 0 0 14px; }
+li { margin-bottom: 6px; }
+li b, p b { color: var(--ink); }
+.lede { font-size: 21px; color: var(--ink-2); max-width: 800px; }
+.meta { font-size: 15px; color: var(--muted); margin-bottom: 32px; }
+.summary { background: var(--surface); box-shadow: 0 0 0 1px var(--ring); border-radius: 12px; padding: 20px 28px 8px; }
+.summary li { max-width: none; }
+figure { margin: 24px 0 28px; background: var(--surface); box-shadow: 0 0 0 1px var(--ring); border-radius: 12px;
+  padding: 20px 20px 12px; }
+figcaption { font-size: 15px; color: var(--muted); margin-top: 8px; line-height: 1.45; }
+.chart { width: 100%; height: auto; display: block; font-family: var(--font); }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.two-col ul { margin: 0; }
+.pro h3 { color: #006300; } .con h3 { color: #b42323; }
+table { border-collapse: collapse; font-size: 16px; font-variant-numeric: tabular-nums; margin: 8px 0 16px; }
+th, td { padding: 8px 14px; text-align: right; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+th { color: var(--ink-2); font-weight: 600; }
+th:first-child, td:first-child { text-align: left; }
+td { color: var(--ink); }
+.table-wrap { overflow-x: auto; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 15px; color: var(--ink-2); margin: 0 0 8px; }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.mark { display: inline-block; width: 10px; height: 18px; border-radius: 3px; }
+.mark.tint { width: 26px; opacity: 0.18; }
+.mark.dia { width: 12px; height: 12px; border-radius: 0; transform: rotate(45deg) scaleY(1.4); }
+.sw { display: inline-block; width: 14px; height: 14px; border-radius: 3px; }
+.grid { stroke: var(--grid); stroke-width: 1; }
+.row-sep { stroke: var(--grid); stroke-width: 1; }
+.baseline { stroke: var(--axis); stroke-width: 1; }
+.tick { fill: var(--muted); font-size: 17px; font-variant-numeric: tabular-nums; }
+.side-label { fill: var(--muted); font-size: 17px; }
+.row-label { fill: var(--ink); font-size: 21px; }
+.band-text { fill: var(--ink-2); font-size: 16px; }
+.panel-title { fill: var(--ink); font-size: 20px; font-weight: 600; }
+.sub-label { fill: var(--muted); font-size: 16px; }
+.group-label { fill: var(--ink); font-size: 22px; font-weight: 600; }
+.group-label.sm { font-size: 19px; }
+.subnet-label { fill: var(--ink-2); font-size: 19px; }
+.note-text { fill: var(--muted); font-size: 18px; }
+.bar { stroke: var(--surface); stroke-width: 2; }
+.bar.s1 { fill: var(--s1); } .bar.s2 { fill: var(--s2); }
+.bar-text { fill: #ffffff; font-size: 20px; }
+.bar-text.small { font-size: 16px; }
+.total-value { fill: var(--ink); font-size: 26px; font-weight: 650; }
+.burst .area { stroke: var(--surface); stroke-width: 1; }
+.burst .ref { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 5 5; }
+.burst .ref-label { fill: var(--ink-2); font-size: 14px; }
+.burst .peak { fill: var(--ink); font-size: 15px; font-weight: 600; }
+.burst .cursor { stroke: var(--ink); stroke-width: 1; }
+.panel-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; align-items: baseline;
+  margin: 8px 0 2px; }
+.panel-head b { font-size: 17px; }
+.panel-head span { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.controls { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; margin: 4px 0 12px; font-size: 15px;
+  color: var(--ink-2); }
+.controls label { display: inline-flex; align-items: center; gap: 8px; }
+.controls output { min-width: 3.2em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.controls input[type=range] { width: 120px; }
+.seg { display: inline-flex; border-radius: 8px; box-shadow: 0 0 0 1px var(--axis); overflow: hidden; }
+.seg button, .presets button { font: inherit; font-size: 15px; border: 0; background: var(--surface); color: var(--ink-2);
+  padding: 6px 12px; cursor: pointer; }
+.seg button[aria-pressed=true] { background: var(--ink); color: var(--surface); }
+.presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
+.presets button { border-radius: 999px; box-shadow: 0 0 0 1px var(--axis); }
+.presets button:hover, .seg button:hover { color: var(--ink); }
+.callout { border-left: 3px solid var(--axis); padding: 4px 16px; margin: 0 0 14px; }
+#tip { position: fixed; pointer-events: none; z-index: 10; background: var(--ink); color: var(--surface);
+  font: 14px/1.45 var(--font); padding: 8px 11px; border-radius: 6px; max-width: 420px; display: none; }
+a { color: var(--vote); }
+@media (max-width: 760px) {
+  main { padding: 32px 16px 64px; }
+  h1 { font-size: 32px; }
+  .two-col { grid-template-columns: 1fr; }
+  figure { padding: 12px 8px 8px; overflow-x: auto; }
+  figure .chart { min-width: 720px; }
+}
+@media print { #tip, .controls, .presets { display: none !important; } figure { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<main>
+<h1>Staggered publishing vs subrounds</h1>
+<p class="lede">Two ways to schedule finality (FFG) votes and aggregates in a slot, and how each one shares the
+network with the block and the Goldfish votes.</p>
+<p class="meta">Per node in 2 subnets · 12 s slot · 2,500 FFG voters per subnet per slot · effective gossipsub
+factor 5 · aggregate overhead 350 B</p>
+
+<section class="summary">
+<ul>
+<li><b>One mechanism, two settings.</b> An aggregation point defines a committee. Staggered publishing has 1
+aggregation point per subnet per slot. Subrounds have 4.</li>
+<li><b>On average, staggered publishing is cheaper.</b> Votes cost the same in both systems. Subrounds send
+2.6× the aggregate bytes, because each aggregation point adds 16 × 64 aggregates with 350 B of fixed
+overhead. With all traffic: 7.8 Mbit/s against 11.4 Mbit/s per node.</li>
+<li><b>At peak, subrounds can be better.</b> Staggered publishing peaks at 54 Mbit/s at 9 s, when 1,024
+aggregates of 663 B arrive together. This is more than the 50 Mbit/s download of a home node.</li>
+<li><b>Subrounds aligned to the slot are the worst case.</b> Each subround starts with a vote burst and an aggregate
+burst. If a subround starts at 0 s, both land on the block and the Goldfish votes: 94 Mbit/s.</li>
+<li><b>Subrounds can move. Staggered publishing cannot.</b> FFG votes do not use the block, so the subround grid is
+free. Shift it by 1 s and publish aggregates 1.5 s after the votes. The peak falls to 35 Mbit/s, and
+the slot start carries only the block and the Goldfish votes (34 Mbit/s).</li>
+</ul>
+</section>
+
+<h2>1. Inputs</h2>
+<div class="table-wrap"><table>
+<tr><th>Object</th><th>Size</th><th>Per slot</th><th>Who receives it</th><th>Sent at</th></tr>
+<tr><td>Block</td><td>10 KB</td><td>1</td><td>every node</td><td>~70 ms</td></tr>
+<tr><td>Execution payload</td><td>256 KB</td><td>1</td><td>every node</td><td>~190 ms</td></tr>
+<tr><td>Data column (3 blobs)</td><td>6,788 B</td><td>8 custody columns</td><td>every node</td><td>with the payload</td></tr>
+<tr><td>Goldfish vote</td><td>201 B</td><td>512</td><td>every node</td><td>~150 ms, after the block</td></tr>
+<tr><td>FFG vote</td><td>250 B</td><td>2,500 per subnet</td><td>nodes in that subnet</td><td>by schedule</td></tr>
+<tr><td>FFG aggregate</td><td>bitlist + 350 B</td><td>16 per committee × 64 subnets</td><td>every node</td><td>by schedule</td></tr>
+</table></div>
+<p>Every byte counts 5 times: a node receives each message about 5 times (effective gossipsub factor). We assume
+that a node sends about as many bytes as it receives. A home node has 50 Mbit/s down and 25 Mbit/s up.</p>
+
+<h2>2. Staggered publishing</h2>
+<figure><div class="legend">
+<span><i class="mark" style="background:#0072B2"></i>votes published</span>
+<span><i class="mark tint" style="background:#0072B2"></i>vote window</span>
+<span><i class="mark dia" style="background:#C0428A"></i>aggregators publish</span>
+<span><i class="mark tint" style="background:#C0428A"></i>aggregates spread</span>
+</div><svg viewBox="0 0 1440 570" class="chart" role="img" aria-label="Staggered publishing: one committee per subnet per slot, in 7 groups">
+<line x1="300.0" x2="300.0" y1="56" y2="530" class="baseline"/>
+<text x="300.0" y="556" class="tick" text-anchor="middle">0 s</text>
+<line x1="391.7" x2="391.7" y1="56" y2="530" class="grid"/>
+<text x="391.7" y="556" class="tick" text-anchor="middle">1 s</text>
+<line x1="483.3" x2="483.3" y1="56" y2="530" class="grid"/>
+<text x="483.3" y="556" class="tick" text-anchor="middle">2 s</text>
+<line x1="575.0" x2="575.0" y1="56" y2="530" class="grid"/>
+<text x="575.0" y="556" class="tick" text-anchor="middle">3 s</text>
+<line x1="666.7" x2="666.7" y1="56" y2="530" class="grid"/>
+<text x="666.7" y="556" class="tick" text-anchor="middle">4 s</text>
+<line x1="758.3" x2="758.3" y1="56" y2="530" class="grid"/>
+<text x="758.3" y="556" class="tick" text-anchor="middle">5 s</text>
+<line x1="850.0" x2="850.0" y1="56" y2="530" class="grid"/>
+<text x="850.0" y="556" class="tick" text-anchor="middle">6 s</text>
+<line x1="941.7" x2="941.7" y1="56" y2="530" class="grid"/>
+<text x="941.7" y="556" class="tick" text-anchor="middle">7 s</text>
+<line x1="1033.3" x2="1033.3" y1="56" y2="530" class="grid"/>
+<text x="1033.3" y="556" class="tick" text-anchor="middle">8 s</text>
+<line x1="1125.0" x2="1125.0" y1="56" y2="530" class="grid"/>
+<text x="1125.0" y="556" class="tick" text-anchor="middle">9 s</text>
+<line x1="1216.7" x2="1216.7" y1="56" y2="530" class="grid"/>
+<text x="1216.7" y="556" class="tick" text-anchor="middle">10 s</text>
+<line x1="1308.3" x2="1308.3" y1="56" y2="530" class="grid"/>
+<text x="1308.3" y="556" class="tick" text-anchor="middle">11 s</text>
+<line x1="1400.0" x2="1400.0" y1="56" y2="530" class="baseline"/>
+<text x="1400.0" y="556" class="tick" text-anchor="middle">12 s</text>
+<text x="850.0" y="18" class="panel-title" text-anchor="middle">Slot n</text>
+<text x="280" y="87.0" class="row-label" text-anchor="end">Block</text>
+<text x="280" y="123.0" class="row-label" text-anchor="end">Goldfish votes</text>
+<circle cx="306.4" cy="80" r="9" fill="#F0E442" stroke="#b4ab32" stroke-width="1.5" data-tip="proposer sends at ~70 ms"/>
+<circle cx="327.5" cy="116" r="9" fill="#E69F00" stroke="#ac7700" stroke-width="1.5" data-tip="every Goldfish committee member, once it has the block"/>
+<line x1="40" x2="1400" y1="140" y2="140" class="row-sep"/>
+<text x="280" y="171.0" class="row-label" text-anchor="end">Group 1</text>
+<rect x="301.0" y="152.0" width="823.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n: group 1 votes wait for aggregation until 9 s"/>
+<rect x="300.0" y="152.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="slot n: group 1 of 7 votes at 0 s"/>
+<text x="280" y="205.0" class="row-label" text-anchor="end">Group 2</text>
+<rect x="392.7" y="186.0" width="731.3" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n: group 2 votes wait for aggregation until 9 s"/>
+<rect x="391.7" y="186.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="slot n: group 2 of 7 votes at 1 s"/>
+<text x="280" y="239.0" class="row-label" text-anchor="end">Group 3</text>
+<rect x="484.3" y="220.0" width="639.7" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n: group 3 votes wait for aggregation until 9 s"/>
+<rect x="483.3" y="220.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="slot n: group 3 of 7 votes at 2 s"/>
+<text x="280" y="273.0" class="row-label" text-anchor="end">Group 4</text>
+<rect x="576.0" y="254.0" width="548.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n: group 4 votes wait for aggregation until 9 s"/>
+<rect x="575.0" y="254.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="slot n: group 4 of 7 votes at 3 s"/>
+<text x="280" y="307.0" class="row-label" text-anchor="end">Group 5</text>
+<rect x="667.7" y="288.0" width="456.3" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n: group 5 votes wait for aggregation until 9 s"/>
+<rect x="666.7" y="288.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="slot n: group 5 of 7 votes at 4 s"/>
+<text x="280" y="341.0" class="row-label" text-anchor="end">Group 6</text>
+<rect x="759.3" y="322.0" width="364.7" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n: group 6 votes wait for aggregation until 9 s"/>
+<rect x="758.3" y="322.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="slot n: group 6 of 7 votes at 5 s"/>
+<text x="280" y="375.0" class="row-label" text-anchor="end">Group 7</text>
+<rect x="851.0" y="356.0" width="273.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n: group 7 votes wait for aggregation until 9 s"/>
+<rect x="850.0" y="356.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="slot n: group 7 of 7 votes at 6 s"/>
+<text x="280" y="413.0" class="row-label" text-anchor="end">Aggregates</text>
+<rect x="1126.0" y="394.0" width="273.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="slot n: aggregates of all 7 groups spread until 12 s"/>
+<text x="1262.5" y="412.0" class="band-text" text-anchor="middle" pointer-events="none">aggregates</text>
+<path d="M1125.0,392.0 l8,14 l-8,14 l-8,-14 z" fill="#C0428A" data-tip="slot n: aggregators publish at 9 s"/>
+<line x1="40" x2="1400" y1="432" y2="432" class="row-sep"/>
+<text x="280" y="452" class="side-label" text-anchor="end">open at each time</text>
+<text x="280" y="481.0" class="row-label" text-anchor="end">Votes</text>
+<text x="280" y="517.0" class="row-label" text-anchor="end">Aggregates</text>
+<rect x="301.0" y="462.0" width="823.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n: votes open 0–9 s"/>
+<text x="712.5" y="480.0" class="band-text" text-anchor="middle" pointer-events="none">groups 1–7</text>
+<rect x="1126.0" y="498.0" width="273.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="slot n: aggregates open 9–12 s"/>
+<text x="1262.5" y="516.0" class="band-text" text-anchor="middle" pointer-events="none">groups 1–7</text>
+</svg>
+<figcaption>One subnet. The bottom strip shows which phases are open at each time.</figcaption></figure>
+<p>One committee per subnet votes in each slot. It votes in 7 groups, one group per second from 0 s to 6 s. At 9 s,
+the aggregators publish one aggregate per subnet for the whole committee. The aggregates spread until the next block
+at 12 s.</p>
+<div class="two-col">
+<div class="pro"><h3>Good</h3><ul>
+<li><b>Fewest aggregates.</b> The fixed aggregate overhead is paid once per subnet per slot.</li>
+<li><b>Long collection time.</b> Group 1 has 9 s to reach the aggregators. The last group has 3 s.</li>
+<li><b>Small vote bursts.</b> Each group is 357 voters per subnet.</li>
+</ul></div>
+<div class="con"><h3>Bad</h3><ul>
+<li><b>Tied to the slot.</b> Group 1 votes with the block. The aggregates must reach the next proposer, so their
+burst stays near the slot end, with the PTC votes at 9 s.</li>
+<li><b>One large aggregate burst.</b> 1,024 aggregates of 663 B arrive together.</li>
+<li><b>Uneven load.</b> No FFG traffic from 7 s to 9 s, then the aggregate burst.</li>
+<li><b>One failure costs a full slot.</b> A missed aggregate loses the votes of the whole committee in that
+subnet.</li>
+</ul></div>
+</div>
+
+<h2>3. Subrounds</h2>
+<figure><div class="legend">
+<span><i class="mark" style="background:#0072B2"></i>votes published</span>
+<span><i class="mark tint" style="background:#0072B2"></i>vote window</span>
+<span><i class="mark dia" style="background:#C0428A"></i>aggregators publish</span>
+<span><i class="mark tint" style="background:#C0428A"></i>aggregates spread</span>
+</div><svg viewBox="0 0 1440 570" class="chart" role="img" aria-label="Subrounds: 4 committees per subnet per slot, one per 3 s subround">
+<line x1="300.0" x2="300.0" y1="56" y2="530" class="baseline"/>
+<text x="300.0" y="556" class="tick" text-anchor="middle">0 s</text>
+<line x1="391.7" x2="391.7" y1="56" y2="530" class="grid"/>
+<text x="391.7" y="556" class="tick" text-anchor="middle">1 s</text>
+<line x1="483.3" x2="483.3" y1="56" y2="530" class="grid"/>
+<text x="483.3" y="556" class="tick" text-anchor="middle">2 s</text>
+<line x1="575.0" x2="575.0" y1="56" y2="530" class="grid"/>
+<text x="575.0" y="556" class="tick" text-anchor="middle">3 s</text>
+<line x1="666.7" x2="666.7" y1="56" y2="530" class="grid"/>
+<text x="666.7" y="556" class="tick" text-anchor="middle">4 s</text>
+<line x1="758.3" x2="758.3" y1="56" y2="530" class="grid"/>
+<text x="758.3" y="556" class="tick" text-anchor="middle">5 s</text>
+<line x1="850.0" x2="850.0" y1="56" y2="530" class="grid"/>
+<text x="850.0" y="556" class="tick" text-anchor="middle">6 s</text>
+<line x1="941.7" x2="941.7" y1="56" y2="530" class="grid"/>
+<text x="941.7" y="556" class="tick" text-anchor="middle">7 s</text>
+<line x1="1033.3" x2="1033.3" y1="56" y2="530" class="grid"/>
+<text x="1033.3" y="556" class="tick" text-anchor="middle">8 s</text>
+<line x1="1125.0" x2="1125.0" y1="56" y2="530" class="grid"/>
+<text x="1125.0" y="556" class="tick" text-anchor="middle">9 s</text>
+<line x1="1216.7" x2="1216.7" y1="56" y2="530" class="grid"/>
+<text x="1216.7" y="556" class="tick" text-anchor="middle">10 s</text>
+<line x1="1308.3" x2="1308.3" y1="56" y2="530" class="grid"/>
+<text x="1308.3" y="556" class="tick" text-anchor="middle">11 s</text>
+<line x1="1400.0" x2="1400.0" y1="56" y2="530" class="baseline"/>
+<text x="1400.0" y="556" class="tick" text-anchor="middle">12 s</text>
+<text x="850.0" y="18" class="panel-title" text-anchor="middle">Slot n</text>
+<text x="280" y="87.0" class="row-label" text-anchor="end">Block</text>
+<text x="280" y="123.0" class="row-label" text-anchor="end">Goldfish votes</text>
+<circle cx="306.4" cy="80" r="9" fill="#F0E442" stroke="#b4ab32" stroke-width="1.5" data-tip="proposer sends at ~70 ms"/>
+<circle cx="327.5" cy="116" r="9" fill="#E69F00" stroke="#ac7700" stroke-width="1.5" data-tip="every Goldfish committee member, once it has the block"/>
+<line x1="40" x2="1400" y1="140" y2="140" class="row-sep"/>
+<text x="437.5" y="44" class="sub-label" text-anchor="middle">subround 1</text>
+<text x="712.5" y="44" class="sub-label" text-anchor="middle">subround 2</text>
+<text x="987.5" y="44" class="sub-label" text-anchor="middle">subround 3</text>
+<text x="1262.5" y="44" class="sub-label" text-anchor="middle">subround 4</text>
+<text x="280" y="179.0" class="row-label" text-anchor="end">Committee 1</text>
+<rect x="301.0" y="160.0" width="273.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n: committee 1 votes in subround 1"/>
+<text x="437.5" y="178.0" class="band-text" text-anchor="middle" pointer-events="none">votes</text>
+<rect x="300.0" y="160.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="slot n: committee 1 votes at 0 s"/>
+<rect x="576.0" y="160.0" width="273.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="slot n: committee 1 aggregates"/>
+<text x="712.5" y="178.0" class="band-text" text-anchor="middle" pointer-events="none">aggregates</text>
+<path d="M575.0,158.0 l8,14 l-8,14 l-8,-14 z" fill="#C0428A" data-tip="slot n: committee 1 aggregators publish"/>
+<text x="280" y="257.0" class="row-label" text-anchor="end">Committee 2</text>
+<rect x="576.0" y="238.0" width="273.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n: committee 2 votes in subround 2"/>
+<text x="712.5" y="256.0" class="band-text" text-anchor="middle" pointer-events="none">votes</text>
+<rect x="575.0" y="238.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="slot n: committee 2 votes at 3 s"/>
+<rect x="851.0" y="238.0" width="273.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="slot n: committee 2 aggregates"/>
+<text x="987.5" y="256.0" class="band-text" text-anchor="middle" pointer-events="none">aggregates</text>
+<path d="M850.0,236.0 l8,14 l-8,14 l-8,-14 z" fill="#C0428A" data-tip="slot n: committee 2 aggregators publish"/>
+<text x="280" y="335.0" class="row-label" text-anchor="end">Committee 3</text>
+<rect x="851.0" y="316.0" width="273.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n: committee 3 votes in subround 3"/>
+<text x="987.5" y="334.0" class="band-text" text-anchor="middle" pointer-events="none">votes</text>
+<rect x="850.0" y="316.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="slot n: committee 3 votes at 6 s"/>
+<rect x="1126.0" y="316.0" width="273.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="slot n: committee 3 aggregates"/>
+<text x="1262.5" y="334.0" class="band-text" text-anchor="middle" pointer-events="none">aggregates</text>
+<path d="M1125.0,314.0 l8,14 l-8,14 l-8,-14 z" fill="#C0428A" data-tip="slot n: committee 3 aggregators publish"/>
+<text x="280" y="413.0" class="row-label" text-anchor="end">Committee 4</text>
+<rect x="1126.0" y="394.0" width="273.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n: committee 4 votes in subround 4"/>
+<text x="1262.5" y="412.0" class="band-text" text-anchor="middle" pointer-events="none">votes</text>
+<rect x="1125.0" y="394.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="slot n: committee 4 votes at 9 s"/>
+<rect x="301.0" y="394.0" width="273.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="committee 4 of slot n − 1 aggregates in subround 1"/>
+<text x="437.5" y="412.0" class="band-text" text-anchor="middle" pointer-events="none">aggregates · slot n − 1</text>
+<path d="M300.0,392.0 l8,14 l-8,14 l-8,-14 z" fill="#C0428A" data-tip="committee 4 of slot n − 1: aggregators publish at 0 s"/>
+<line x1="40" x2="1400" y1="432" y2="432" class="row-sep"/>
+<text x="280" y="452" class="side-label" text-anchor="end">open at each time</text>
+<text x="280" y="481.0" class="row-label" text-anchor="end">Votes</text>
+<text x="280" y="517.0" class="row-label" text-anchor="end">Aggregates</text>
+<rect x="301.0" y="462.0" width="273.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n, subround 1: committee 1 votes"/>
+<text x="437.5" y="480.0" class="band-text" text-anchor="middle" pointer-events="none">C1</text>
+<rect x="301.0" y="498.0" width="273.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="slot n, subround 1: committee 4 of slot n − 1 aggregates"/>
+<text x="437.5" y="516.0" class="band-text" text-anchor="middle" pointer-events="none">C4 · n − 1</text>
+<rect x="576.0" y="462.0" width="273.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n, subround 2: committee 2 votes"/>
+<text x="712.5" y="480.0" class="band-text" text-anchor="middle" pointer-events="none">C2</text>
+<rect x="576.0" y="498.0" width="273.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="slot n, subround 2: committee 1 aggregates"/>
+<text x="712.5" y="516.0" class="band-text" text-anchor="middle" pointer-events="none">C1</text>
+<rect x="851.0" y="462.0" width="273.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n, subround 3: committee 3 votes"/>
+<text x="987.5" y="480.0" class="band-text" text-anchor="middle" pointer-events="none">C3</text>
+<rect x="851.0" y="498.0" width="273.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="slot n, subround 3: committee 2 aggregates"/>
+<text x="987.5" y="516.0" class="band-text" text-anchor="middle" pointer-events="none">C2</text>
+<rect x="1126.0" y="462.0" width="273.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="slot n, subround 4: committee 4 votes"/>
+<text x="1262.5" y="480.0" class="band-text" text-anchor="middle" pointer-events="none">C4</text>
+<rect x="1126.0" y="498.0" width="273.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="slot n, subround 4: committee 3 aggregates"/>
+<text x="1262.5" y="516.0" class="band-text" text-anchor="middle" pointer-events="none">C3</text>
+</svg>
+<figcaption>One subnet. Committee 4 aggregates in subround 1 of the next slot.</figcaption></figure>
+<p>Each subnet has 4 committees per slot, of 625 voters each. Each committee votes at the start of its 3 s subround.
+In the next subround, its aggregators publish while the next committee votes. At any time, one committee votes and
+one committee aggregates.</p>
+<div class="two-col">
+<div class="pro"><h3>Good</h3><ul>
+<li><b>Decoupled from the block.</b> The pipeline repeats every 3 s and does not use the block. You can shift the
+grid to keep FFG traffic out of the block window.</li>
+<li><b>Even load.</b> No idle time and no single large aggregate burst.</li>
+<li><b>Smaller aggregates.</b> A 625-voter aggregate is 429 B, against 663 B.</li>
+<li><b>Failure isolation.</b> A missed aggregate loses one quarter of the slot's votes.</li>
+<li><b>Free length.</b> A subround does not have to divide the slot. See
+<a href="../../research/fg/free-running-committees/README.md">free-running committees</a>.</li>
+</ul></div>
+<div class="con"><h3>Bad</h3><ul>
+<li><b>More aggregate bytes.</b> Each extra aggregation point adds 1,024 aggregates per slot: 1.8 MB per
+node.</li>
+<li><b>Shorter collection time.</b> Every vote has 3 s to reach the aggregators.</li>
+<li><b>Bigger vote bursts.</b> 625 voters per subnet publish together, against 357.</li>
+<li><b>Inclusion delay changes with the committee.</b> Aggregates finish at different times in the slot.</li>
+</ul></div>
+</div>
+
+<h2>4. One mechanism, two settings</h2>
+<figure><div class="legend">
+<span><i class="mark" style="background:#0072B2"></i>votes published</span>
+<span><i class="mark tint" style="background:#0072B2"></i>vote window</span>
+<span><i class="mark dia" style="background:#C0428A"></i>aggregators publish</span>
+<span><i class="mark tint" style="background:#C0428A"></i>aggregates spread</span>
+</div><svg viewBox="0 0 1440 620" class="chart" role="img" aria-label="Staggered publishing with one and with two aggregates, above subrounds with two committees">
+<line x1="300.0" x2="300.0" y1="56" y2="580" class="baseline"/>
+<text x="300.0" y="606" class="tick" text-anchor="middle">0 s</text>
+<line x1="391.7" x2="391.7" y1="56" y2="580" class="grid"/>
+<text x="391.7" y="606" class="tick" text-anchor="middle">1 s</text>
+<line x1="483.3" x2="483.3" y1="56" y2="580" class="grid"/>
+<text x="483.3" y="606" class="tick" text-anchor="middle">2 s</text>
+<line x1="575.0" x2="575.0" y1="56" y2="580" class="grid"/>
+<text x="575.0" y="606" class="tick" text-anchor="middle">3 s</text>
+<line x1="666.7" x2="666.7" y1="56" y2="580" class="grid"/>
+<text x="666.7" y="606" class="tick" text-anchor="middle">4 s</text>
+<line x1="758.3" x2="758.3" y1="56" y2="580" class="grid"/>
+<text x="758.3" y="606" class="tick" text-anchor="middle">5 s</text>
+<line x1="850.0" x2="850.0" y1="56" y2="580" class="grid"/>
+<text x="850.0" y="606" class="tick" text-anchor="middle">6 s</text>
+<line x1="941.7" x2="941.7" y1="56" y2="580" class="grid"/>
+<text x="941.7" y="606" class="tick" text-anchor="middle">7 s</text>
+<line x1="1033.3" x2="1033.3" y1="56" y2="580" class="grid"/>
+<text x="1033.3" y="606" class="tick" text-anchor="middle">8 s</text>
+<line x1="1125.0" x2="1125.0" y1="56" y2="580" class="grid"/>
+<text x="1125.0" y="606" class="tick" text-anchor="middle">9 s</text>
+<line x1="1216.7" x2="1216.7" y1="56" y2="580" class="grid"/>
+<text x="1216.7" y="606" class="tick" text-anchor="middle">10 s</text>
+<line x1="1308.3" x2="1308.3" y1="56" y2="580" class="grid"/>
+<text x="1308.3" y="606" class="tick" text-anchor="middle">11 s</text>
+<line x1="1400.0" x2="1400.0" y1="56" y2="580" class="baseline"/>
+<text x="1400.0" y="606" class="tick" text-anchor="middle">12 s</text>
+<text x="850.0" y="18" class="panel-title" text-anchor="middle">Slot n</text>
+<text x="280" y="87.0" class="row-label" text-anchor="end">Block</text>
+<text x="280" y="123.0" class="row-label" text-anchor="end">Goldfish votes</text>
+<circle cx="306.4" cy="80" r="9" fill="#F0E442" stroke="#b4ab32" stroke-width="1.5" data-tip="proposer sends at ~70 ms"/>
+<circle cx="327.5" cy="116" r="9" fill="#E69F00" stroke="#ac7700" stroke-width="1.5" data-tip="every Goldfish committee member, once it has the block"/>
+<line x1="40" x2="1400" y1="140" y2="140" class="row-sep"/>
+<text x="40" y="169" class="group-label sm">Staggered, 1 aggregate</text>
+<text x="40" y="199" class="subnet-label">Committee</text>
+<text x="280" y="199.0" class="row-label" text-anchor="end">Votes</text>
+<text x="280" y="229.0" class="row-label" text-anchor="end">Aggregates</text>
+<rect x="301.0" y="180.0" width="823.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="1 aggregate: its own committee, votes open 0–9 s"/>
+<text x="996.7" y="198" class="band-text" text-anchor="middle">groups 1–7</text>
+<rect x="300.0" y="180.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="1 aggregate: group 1 of 7 votes at 0 s"/>
+<rect x="391.7" y="180.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="1 aggregate: group 2 of 7 votes at 1 s"/>
+<rect x="483.3" y="180.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="1 aggregate: group 3 of 7 votes at 2 s"/>
+<rect x="575.0" y="180.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="1 aggregate: group 4 of 7 votes at 3 s"/>
+<rect x="666.7" y="180.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="1 aggregate: group 5 of 7 votes at 4 s"/>
+<rect x="758.3" y="180.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="1 aggregate: group 6 of 7 votes at 5 s"/>
+<rect x="850.0" y="180.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="1 aggregate: group 7 of 7 votes at 6 s"/>
+<rect x="1126.0" y="210.0" width="273.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="1 aggregate: aggregates spread until 12 s"/>
+<text x="1262.5" y="228.0" class="band-text" text-anchor="middle" pointer-events="none">aggregates</text>
+<path d="M1125.0,208.0 l8,14 l-8,14 l-8,-14 z" fill="#C0428A" data-tip="1 aggregate: aggregators publish at 9 s"/>
+<line x1="40" x2="1400" y1="242" y2="242" class="row-sep"/>
+<text x="40" y="273" class="group-label sm">Staggered, 2 aggregates</text>
+<text x="40" y="303" class="subnet-label">Committee 1</text>
+<text x="280" y="303.0" class="row-label" text-anchor="end">Votes</text>
+<text x="280" y="333.0" class="row-label" text-anchor="end">Aggregates</text>
+<rect x="301.0" y="284.0" width="456.3" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="committee 1: votes wait for the 5 s aggregate"/>
+<text x="675.8" y="302" class="band-text" text-anchor="middle">groups 1–4</text>
+<rect x="300.0" y="284.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="committee 1: group 1 of 7 votes at 0 s"/>
+<rect x="391.7" y="284.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="committee 1: group 2 of 7 votes at 1 s"/>
+<rect x="483.3" y="284.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="committee 1: group 3 of 7 votes at 2 s"/>
+<rect x="575.0" y="284.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="committee 1: group 4 of 7 votes at 3 s"/>
+<rect x="759.3" y="314.0" width="273.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="committee 1: aggregate holds groups 1–4 only"/>
+<text x="895.8" y="332.0" class="band-text" text-anchor="middle" pointer-events="none">aggregates</text>
+<path d="M758.3,312.0 l8,14 l-8,14 l-8,-14 z" fill="#C0428A" data-tip="committee 1: aggregators publish at 5 s"/>
+<text x="40" y="367" class="subnet-label">Committee 2</text>
+<text x="280" y="367.0" class="row-label" text-anchor="end">Votes</text>
+<text x="280" y="397.0" class="row-label" text-anchor="end">Aggregates</text>
+<rect x="667.7" y="348.0" width="456.3" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="committee 2: votes wait for the 9 s aggregate"/>
+<text x="996.7" y="366" class="band-text" text-anchor="middle">groups 5–7</text>
+<rect x="666.7" y="348.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="committee 2: group 5 of 7 votes at 4 s"/>
+<rect x="758.3" y="348.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="committee 2: group 6 of 7 votes at 5 s"/>
+<rect x="850.0" y="348.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="committee 2: group 7 of 7 votes at 6 s"/>
+<rect x="1126.0" y="378.0" width="273.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="committee 2: aggregate holds groups 5–7 only"/>
+<text x="1262.5" y="396.0" class="band-text" text-anchor="middle" pointer-events="none">aggregates</text>
+<path d="M1125.0,376.0 l8,14 l-8,14 l-8,-14 z" fill="#C0428A" data-tip="committee 2: aggregators publish at 9 s"/>
+<line x1="40" x2="1400" y1="410" y2="410" class="row-sep"/>
+<text x="40" y="441" class="group-label sm">Subrounds, 2 committees</text>
+<text x="575.0" y="440" class="sub-label" text-anchor="middle">subround 1</text>
+<text x="1125.0" y="440" class="sub-label" text-anchor="middle">subround 2</text>
+<text x="40" y="471" class="subnet-label">Committee 1</text>
+<text x="280" y="471.0" class="row-label" text-anchor="end">Votes</text>
+<text x="280" y="501.0" class="row-label" text-anchor="end">Aggregates</text>
+<rect x="301.0" y="452.0" width="548.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="committee 1: votes in subround 1"/>
+<text x="575.0" y="470.0" class="band-text" text-anchor="middle" pointer-events="none">votes</text>
+<rect x="300.0" y="452.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="committee 1: votes at 0 s"/>
+<rect x="851.0" y="482.0" width="548.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="committee 1: aggregates in subround 2"/>
+<text x="1125.0" y="500.0" class="band-text" text-anchor="middle" pointer-events="none">aggregates</text>
+<path d="M850.0,480.0 l8,14 l-8,14 l-8,-14 z" fill="#C0428A" data-tip="committee 1: aggregators publish at 6 s"/>
+<text x="40" y="535" class="subnet-label">Committee 2</text>
+<text x="280" y="535.0" class="row-label" text-anchor="end">Votes</text>
+<text x="280" y="565.0" class="row-label" text-anchor="end">Aggregates</text>
+<rect x="851.0" y="516.0" width="548.0" height="24" rx="4" fill="#0072B2" fill-opacity="0.18" data-tip="committee 2: votes in subround 2"/>
+<text x="1125.0" y="534.0" class="band-text" text-anchor="middle" pointer-events="none">votes</text>
+<rect x="850.0" y="516.0" width="18.3" height="24" rx="3" fill="#0072B2" data-tip="committee 2: votes at 6 s"/>
+<rect x="301.0" y="546.0" width="548.0" height="24" rx="4" fill="#C0428A" fill-opacity="0.18" data-tip="committee 2 of slot n − 1: aggregates in subround 1"/>
+<text x="575.0" y="564.0" class="band-text" text-anchor="middle" pointer-events="none">aggregates · slot n − 1</text>
+<path d="M300.0,544.0 l8,14 l-8,14 l-8,-14 z" fill="#C0428A" data-tip="committee 2 of slot n − 1: aggregators publish at 0 s"/>
+</svg>
+<figcaption>Top: Scenario 1. Middle: the same votes with a second aggregation point at 5 s. Bottom: subrounds with
+2 committees.</figcaption></figure>
+<p>Give staggered publishing a second aggregation point at 5 s. The 5 s aggregate holds groups 1–4. The 9 s
+aggregate holds groups 5–7. Each set of groups now has its own aggregate, so each set is a committee. This is the
+subround structure with 2 committees.</p>
+<p>So both systems are points in one design space with two settings:</p>
+<ul>
+<li><b>Vote schedule:</b> when each voter publishes. Staggered: 7 times per slot. Subrounds: 4 times.</li>
+<li><b>Aggregation points:</b> when aggregators publish, and which votes each aggregate holds. Staggered: 1 per
+slot. Subrounds: 4.</li>
+</ul>
+<p>The vote bytes do not change with the settings. The aggregate bytes grow with the number of aggregation points n.
+The bitlist bytes per slot stay about the same, but the fixed 350 B overhead is paid n times.</p>
+<div class="table-wrap"><table>
+<tr><th>Aggregation points per slot (n)</th><th>Voters per committee</th><th>Bitlist</th><th>Aggregate</th><th>Per node per slot</th><th>Average</th></tr>
+<tr><td>1</td><td>2,500</td><td>313 B</td><td>663 B</td><td>3.4 MB</td><td>2.3 Mbit/s</td></tr>
+<tr><td>2</td><td>1,250</td><td>157 B</td><td>507 B</td><td>5.2 MB</td><td>3.5 Mbit/s</td></tr>
+<tr><td>3</td><td>833</td><td>105 B</td><td>455 B</td><td>7.0 MB</td><td>4.7 Mbit/s</td></tr>
+<tr><td>4</td><td>625</td><td>79 B</td><td>429 B</td><td>8.8 MB</td><td>5.9 Mbit/s</td></tr>
+<tr><td>6</td><td>417</td><td>53 B</td><td>403 B</td><td>12.4 MB</td><td>8.3 Mbit/s</td></tr>
+</table></div>
+
+<h2>5. Average FFG load</h2>
+<figure><div class="legend"><span><i class="sw" style="background:#0072B2"></i>FFG votes</span>
+<span><i class="sw" style="background:#C0428A"></i>FFG aggregates</span></div><svg viewBox="0 0 1440 520" class="chart" role="img" aria-label="Rate per node in 2 subnets over one slot, votes per subnet and global aggregates, staggered and subrounds">
+<text x="300.0" y="508.0" class="tick" text-anchor="middle">0 s</text>
+<text x="530.0" y="508.0" class="tick" text-anchor="middle">3 s</text>
+<text x="760.0" y="508.0" class="tick" text-anchor="middle">6 s</text>
+<text x="990.0" y="508.0" class="tick" text-anchor="middle">9 s</text>
+<text x="1220.0" y="508.0" class="tick" text-anchor="middle">12 s</text>
+<line x1="300.0" x2="1220.0" y1="220.0" y2="220.0" class="baseline"/>
+<text x="290.0" y="226.0" class="tick" text-anchor="end">0</text>
+<line x1="300.0" x2="1220.0" y1="129.5" y2="129.5" class="grid"/>
+<text x="290.0" y="135.5" class="tick" text-anchor="end">5</text>
+<line x1="300.0" x2="1220.0" y1="39.0" y2="39.0" class="grid"/>
+<text x="290.0" y="45.0" class="tick" text-anchor="end">10</text>
+<text x="240.0" y="109.0" class="row-label" text-anchor="end">Staggered</text>
+<text x="240.0" y="135.0" class="side-label" text-anchor="end">2 subnets × 1 committee</text>
+<text x="240.0" y="157.0" class="side-label" text-anchor="end">2,500 members each</text>
+<rect x="300.0" y="155.4" width="536.7" height="64.6" class="bar s1" data-tip="staggered, 0–7 s: subnet 1 votes 3.6 Mbit/s"/>
+<text x="568.3" y="194.7" class="bar-text" text-anchor="middle" pointer-events="none">subnet 1 votes 3.6</text>
+<rect x="300.0" y="90.7" width="536.7" height="64.6" class="bar s1" data-tip="staggered, 0–7 s: subnet 2 votes 3.6 Mbit/s"/>
+<text x="568.3" y="130.1" class="bar-text" text-anchor="middle" pointer-events="none">subnet 2 votes 3.6</text>
+<rect x="990.0" y="56.2" width="230.0" height="163.8" class="bar s2" data-tip="staggered, 9–12 s: aggregates 9.1 · all 64 subnets Mbit/s"/>
+<text x="1105.0" y="134.1" class="bar-text" text-anchor="middle" pointer-events="none">aggregates 9.1</text>
+<text x="1105.0" y="158.1" class="bar-text small" text-anchor="middle" pointer-events="none">all 64 subnets</text>
+<text x="1244.0" y="121.0" class="total-value">9.1 Mbit/s</text>
+<text x="1244.0" y="147.0" class="side-label">peak · 6.4 average</text>
+<line x1="300.0" x2="1220.0" y1="480.0" y2="480.0" class="baseline"/>
+<text x="290.0" y="486.0" class="tick" text-anchor="end">0</text>
+<line x1="300.0" x2="1220.0" y1="389.5" y2="389.5" class="grid"/>
+<text x="290.0" y="395.5" class="tick" text-anchor="end">5</text>
+<line x1="300.0" x2="1220.0" y1="299.0" y2="299.0" class="grid"/>
+<text x="290.0" y="305.0" class="tick" text-anchor="end">10</text>
+<text x="240.0" y="369.0" class="row-label" text-anchor="end">Subrounds</text>
+<text x="240.0" y="395.0" class="side-label" text-anchor="end">2 subnets × 4 committees</text>
+<text x="240.0" y="417.0" class="side-label" text-anchor="end">625 members each</text>
+<rect x="300.0" y="442.3" width="920.0" height="37.7" class="bar s1" data-tip="subrounds, 0–12 s: subnet 1 votes 2.1 Mbit/s"/>
+<text x="760.0" y="468.2" class="bar-text" text-anchor="middle" pointer-events="none">subnet 1 votes 2.1</text>
+<rect x="300.0" y="404.6" width="920.0" height="37.7" class="bar s1" data-tip="subrounds, 0–12 s: subnet 2 votes 2.1 Mbit/s"/>
+<text x="760.0" y="430.5" class="bar-text" text-anchor="middle" pointer-events="none">subnet 2 votes 2.1</text>
+<rect x="300.0" y="298.6" width="920.0" height="106.0" class="bar s2" data-tip="subrounds, 0–12 s: aggregates 5.9 · all 64 subnets Mbit/s"/>
+<text x="760.0" y="347.6" class="bar-text" text-anchor="middle" pointer-events="none">aggregates 5.9</text>
+<text x="760.0" y="371.6" class="bar-text small" text-anchor="middle" pointer-events="none">all 64 subnets</text>
+<text x="1244.0" y="381.0" class="total-value">10.0 Mbit/s</text>
+<text x="1244.0" y="407.0" class="side-label">peak · 10.0 average</text>
+<text x="290.0" y="16" class="side-label" text-anchor="end">Mbit/s</text>
+</svg>
+<figcaption>FFG traffic only. Each vote group spreads over 1 s, each subround's votes over 3 s, each set of aggregates
+over 3 s.</figcaption></figure>
+<p>This view spreads each burst evenly over its window. It shows the steady load, but it hides the bursts. Votes publish
+within about 200 ms of their scheduled time, and aggregators publish at one instant. The next section models this.</p>
+
+<h2>6. Bursts: contention with the block and Goldfish votes</h2>
+<p>The model: each publication arrives at a node as a box. All of its bytes arrive evenly within 0.5 s (publish jitter
+plus propagation). The block arrives from 70 ms, the payload and columns from 190 ms, the Goldfish votes from 150 ms.
+FFG votes and aggregates arrive at their scheduled times. The slot repeats, so traffic from the end of one slot wraps
+into the next.</p>
+<figure><div class="legend">
+<span><i class="sw" style="background:#009E73"></i>Block, payload, columns</span>
+<span><i class="sw" style="background:#E69F00"></i>Goldfish votes</span>
+<span><i class="sw" style="background:#0072B2"></i>FFG votes</span>
+<span><i class="sw" style="background:#C0428A"></i>FFG aggregates</span>
+</div>
+<div class="panel-head"><b>Staggered publishing (Scenario 1)</b><span id="st-stag"></span></div><div data-burst='{"system": "staggered"}' data-stats="st-stag"></div>
+<div class="panel-head"><b>Subrounds, aligned to the slot</b><span id="st-sub0"></span></div><div data-burst='{"system": "subrounds"}' data-stats="st-sub0"></div>
+<div class="panel-head"><b>Subrounds, shifted 1 s, aggregates 1.5 s after the votes</b><span id="st-best"></span></div><div data-burst='{"system": "subrounds", "phase": 1, "aggOffset": 1.5}' data-stats="st-best"></div>
+<figcaption>Rate per node, stacked. Move the pointer over a chart to see the parts. Slot start = peak from 0 s to
+1 s.</figcaption></figure>
+<ul>
+<li><b>Staggered.</b> The slot start carries 48 Mbit/s: block data 26, Goldfish
+8, group 1 votes 14. The peak is the aggregate burst at 9 s:
+54 Mbit/s.</li>
+<li><b>Subrounds, aligned.</b> Committee 1's votes (25) and committee 4's aggregates
+(35) land on the block data and the Goldfish votes: 94 Mbit/s.</li>
+<li><b>Subrounds, shifted.</b> FFG traffic does not touch the block window, and votes and aggregates do not overlap.
+The peak is one aggregate burst: 35 Mbit/s.</li>
+</ul>
+<p class="callout">The burst width sets the height of the peaks. With 1 s boxes, the peaks are 27,
+47 and 35 Mbit/s. The order stays the same. More blobs make the block window heavier:
+with 14 blobs, the staggered slot start is 63 Mbit/s. This is one more reason to keep FFG traffic
+out of it.</p>
+
+<h2>7. Explore</h2>
+<p>Change the schedule and see the load on one node.</p>
+<div class="presets">
+<button data-preset='{"system":"staggered"}'>Staggered</button>
+<button data-preset='{"system":"staggered","start":1}'>Staggered, groups from 1 s</button>
+<button data-preset='{"system":"subrounds"}'>Subrounds, aligned</button>
+<button data-preset='{"system":"subrounds","phase":1}'>Subrounds, shifted</button>
+<button data-preset='{"system":"subrounds","phase":1,"aggOffset":1.5}'>Shifted + aggregate delay</button>
+<button data-preset='{"system":"subrounds","phase":1,"groups":2}'>Shifted + 2 vote groups</button>
+</div>
+<div class="controls">
+<div class="seg" role="group" aria-label="System">
+<button data-system="staggered" aria-pressed="true">Staggered</button>
+<button data-system="subrounds" aria-pressed="false">Subrounds</button>
+</div>
+<label data-for="staggered">First vote group <input type="range" name="start" min="0" max="2" step="0.25" data-unit="s"><output></output></label>
+<label data-for="subrounds">Grid shift <input type="range" name="phase" min="0" max="2.75" step="0.25" data-unit="s"><output></output></label>
+<label data-for="subrounds">Aggregate delay <input type="range" name="aggOffset" min="0" max="2.75" step="0.25" data-unit="s"><output></output></label>
+<label data-for="subrounds">Vote groups per subround <select name="groups"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+<label>Burst width <input type="range" name="w" min="0.25" max="1.5" step="0.25" data-unit="s"><output></output></label>
+<label>Blobs <input type="range" name="blobs" min="0" max="21" step="1"><output></output></label>
+</div>
+<div class="legend">
+<span><i class="sw" style="background:#009E73"></i>Block, payload, columns</span>
+<span><i class="sw" style="background:#E69F00"></i>Goldfish votes</span>
+<span><i class="sw" style="background:#0072B2"></i>FFG votes</span>
+<span><i class="sw" style="background:#C0428A"></i>FFG aggregates</span>
+</div>
+<div class="panel-head"><b>Rate per node</b><span id="ex-stats"></span></div>
+<div id="ex-chart"></div>
+
+<h2>8. Other possibilities</h2>
+<ul>
+<li><b>Shift the subround grid.</b> A shift of about 1 s keeps FFG traffic out of the block and Goldfish window. The
+shift costs nothing: the pipeline does not use the block.</li>
+<li><b>Separate aggregates from votes.</b> Publish the aggregates of committee k−1 about 1.5 s after committee k
+votes. The two largest FFG bursts then never overlap. The aggregate window grows from 3 s to 4.5 s.</li>
+<li><b>Spread the votes in a subround.</b> Two vote groups, 1.5 s apart, halve the vote burst. Three groups 1 s
+apart always put one group in the block window.</li>
+<li><b>Start staggered groups at 1 s.</b> The slot start falls from 48 to 34 Mbit/s. The
+aggregate burst at 9 s stays at 54 Mbit/s.</li>
+<li><b>Spread the aggregator publications.</b> The 16 aggregators of a committee do not have to publish at the same
+instant. A wider publish window lowers the aggregate burst in both systems.</li>
+<li><b>Use fewer subrounds.</b> 2 or 3 subrounds cut the aggregate overhead (section 4) and keep the free phase. 3
+subrounds of 4 s match the free-running committee clock.</li>
+</ul>
+
+<h2>9. What the model leaves out</h2>
+<ul>
+<li><b>Box shape.</b> Real arrivals have tails. The peaks scale about with 1 / burst width.</li>
+<li><b>IHAVE and IWANT.</b> Control traffic for FFG topics can be large. It is not in the model.</li>
+<li><b>IDONTWANT.</b> It removes some duplicates of large messages, such as the payload. A factor of 5 can be high
+for those.</li>
+<li><b>PTC votes.</b> They arrive at 9 s and add to the staggered aggregate burst. They are not in the model.</li>
+<li><b>Blobs.</b> The model uses 3 blobs. Each blob adds about 2.1 KB to each custody column.</li>
+<li><b>Upload.</b> The model assumes that upload equals download.</li>
+</ul>
+
+<h2>Open questions</h2>
+<ul>
+<li>Is 3 s enough for votes to reach the aggregators from home nodes?</li>
+<li>Where should the subround grid sit relative to the Goldfish deadline?</li>
+<li>Does the different inclusion delay per committee matter for rewards?</li>
+<li>How many aggregators per committee are necessary when committees are 4 times smaller?</li>
+</ul>
+</main>
+<div id="tip"></div>
+<script>
+const DEFAULTS = {
+  slot: 12, D: 5, nodeSubnets: 2, subnets: 64, committee: 2500, vote: 250,
+  aggregators: 16, aggOverhead: 350, block: 10e3, payload: 256e3, blobs: 3, custody: 8,
+  goldfish: 512, goldfishSize: 201, w: 0.5, dt: 0.02,
+  system: 'staggered', start: 0, aggAt: 9, phase: 0, n: 4, groups: 1, aggOffset: 0,
+};
+const KINDS = ['block', 'goldfish', 'votes', 'aggs'];
+
+const bitlist = n => Math.ceil((n + 1) / 8);
+const columnBytes = blobs => blobs * (2048 + 48 + 48) + 356;
+
+function events(cfg) {
+  const c = { ...DEFAULTS, ...cfg };
+  const ev = [
+    { kind: 'block', t: 0.07, bytes: c.block * c.D },
+    { kind: 'block', t: 0.19, bytes: (c.payload + c.custody * columnBytes(c.blobs)) * c.D },
+    { kind: 'goldfish', t: 0.15, bytes: c.goldfish * c.goldfishSize * c.D },
+  ];
+  const vote = members => c.nodeSubnets * members * c.vote * c.D;
+  const aggs = members => c.aggregators * c.subnets * (bitlist(members) + c.aggOverhead) * c.D;
+  if (c.system === 'staggered') {
+    for (let g = 0; g < 7; g++) ev.push({ kind: 'votes', t: c.start + g, bytes: vote(c.committee / 7) });
+    ev.push({ kind: 'aggs', t: c.aggAt, bytes: aggs(c.committee) });
+  } else {
+    const d = c.slot / c.n, members = c.committee / c.n;
+    for (let k = 0; k < c.n; k++) {
+      const t0 = c.phase + k * d;
+      for (let j = 0; j < c.groups; j++) {
+        ev.push({ kind: 'votes', t: t0 + j * d / c.groups, bytes: vote(members / c.groups) });
+      }
+      ev.push({ kind: 'aggs', t: t0 + c.aggOffset, bytes: aggs(members) });
+    }
+  }
+  return ev;
+}
+
+function series(cfg) {
+  const c = { ...DEFAULTS, ...cfg };
+  const bins = Math.round(c.slot / c.dt);
+  const out = Object.fromEntries(KINDS.map(k => [k, new Float64Array(bins)]));
+  for (const e of events(c)) {
+    for (const off of [-c.slot, 0, c.slot]) {
+      const a = e.t + off, b = a + c.w;
+      for (let i = Math.max(0, Math.floor(a / c.dt)); i < bins && i * c.dt < b; i++) {
+        const lo = Math.max(a, i * c.dt), hi = Math.min(b, (i + 1) * c.dt);
+        if (hi > lo) out[e.kind][i] += e.bytes * (hi - lo) / c.w;
+      }
+    }
+  }
+  for (const k of KINDS) for (let i = 0; i < bins; i++) out[k][i] *= 8 / c.dt / 1e6;
+  return { dt: c.dt, bins, out };
+}
+
+function stats(cfg, from = 0, to = Infinity) {
+  const { dt, bins, out } = series(cfg);
+  let peak = 0, at = 0, over25 = 0, over50 = 0, sum = 0;
+  const peakBy = Object.fromEntries(KINDS.map(k => [k, 0]));
+  for (let i = 0; i < bins; i++) {
+    const t = i * dt;
+    const total = KINDS.reduce((s, k) => s + out[k][i], 0);
+    sum += total * dt;
+    if (t < from || t >= to) continue;
+    if (total > peak) { peak = total; at = t; KINDS.forEach(k => { peakBy[k] = out[k][i]; }); }
+    if (total > 25) over25 += dt;
+    if (total > 50) over50 += dt;
+  }
+  return { peak, at, peakBy, over25, over50, avg: sum / (bins * dt) };
+}
+
+if (false) module.exports = { DEFAULTS, KINDS, bitlist, columnBytes, events, series, stats };
+
+
+const COLORS = {block: '#009E73', goldfish: '#E69F00', votes: '#0072B2', aggs: '#C0428A'};
+const NAMES = {block: 'block, payload, columns', goldfish: 'Goldfish votes', votes: 'FFG votes', aggs: 'FFG aggregates'};
+const tip = document.getElementById('tip');
+
+function showTip(e, html) {
+  tip.innerHTML = html;
+  tip.style.display = 'block';
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = Math.min(e.clientX + 14, window.innerWidth - w - 8) + 'px';
+  tip.style.top = Math.min(e.clientY + 14, window.innerHeight - h - 8) + 'px';
+}
+
+function burstSVG(cfg, ymax) {
+  const {dt, bins, out} = series(cfg);
+  const W = 1110, x0 = 64, x1 = 1000, y0 = 282, y1 = 34;
+  const X = t => x0 + t * (x1 - x0) / 12, Y = r => y0 - Math.min(r, ymax) * (y0 - y1) / ymax;
+  const p = [];
+  for (let r = 0; r <= ymax; r += 25) {
+    p.push(`<line x1="${x0}" x2="${x1}" y1="${Y(r)}" y2="${Y(r)}" class="${r ? 'grid' : 'baseline'}"/>`);
+    p.push(`<text x="${x0 - 10}" y="${Y(r) + 5}" class="tick" text-anchor="end">${r}</text>`);
+  }
+  p.push(`<text x="${x0 - 10}" y="${y1 - 18}" class="side-label" text-anchor="end" font-size="14">Mbit/s</text>`);
+  for (let t = 0; t <= 12; t++) p.push(`<text x="${X(t)}" y="${y0 + 24}" class="tick" text-anchor="middle">${t} s</text>`);
+  const lower = new Float64Array(bins);
+  for (const k of KINDS) {
+    const top = lower.map((v, i) => v + out[k][i]);
+    let d = `M${X(0)},${Y(lower[0])}`;
+    for (let i = 0; i < bins; i++) d += ` L${X(i * dt)},${Y(top[i])} L${X((i + 1) * dt)},${Y(top[i])}`;
+    for (let i = bins - 1; i >= 0; i--) d += ` L${X((i + 1) * dt)},${Y(lower[i])} L${X(i * dt)},${Y(lower[i])}`;
+    p.push(`<path d="${d} Z" fill="${COLORS[k]}" class="area"/>`);
+    lower.set(top);
+  }
+  for (const [r, label] of [[25, 'home up 25'], [50, 'home down 50']]) {
+    p.push(`<line x1="${x0}" x2="${x1}" y1="${Y(r)}" y2="${Y(r)}" class="ref"/>`);
+    p.push(`<text x="${x1 + 8}" y="${Y(r) + 5}" class="ref-label">${label}</text>`);
+  }
+  let pi = 0;
+  for (let i = 0; i < bins; i++) if (lower[i] > lower[pi]) pi = i;
+  const px = Math.min(Math.max(X((pi + 0.5) * dt), x0 + 80), x1 - 70);
+  p.push(`<text x="${px}" y="${Math.max(Y(lower[pi]) - 8, y1 - 4)}" class="peak" text-anchor="middle">peak ${lower[pi].toFixed(0)} Mbit/s</text>`);
+  p.push(`<line class="cursor" x1="0" x2="0" y1="${y1}" y2="${y0}" visibility="hidden"/>`);
+  p.push(`<rect class="hit" x="${x0}" y="${y1}" width="${x1 - x0}" height="${y0 - y1}" fill="transparent"/>`);
+  const svg = `<svg viewBox="0 0 ${W} ${y0 + 34}" class="chart burst" role="img" aria-label="Rate per node over one slot, stacked by traffic type">${p.join('')}</svg>`;
+  return {svg, dt, bins, out, X, x0, x1, W};
+}
+
+function renderBurst(el, cfg, ymax = 100) {
+  const r = burstSVG(cfg, ymax);
+  el.innerHTML = r.svg;
+  const svg = el.querySelector('svg'), hit = svg.querySelector('.hit'), cur = svg.querySelector('.cursor');
+  hit.addEventListener('mousemove', e => {
+    const box = svg.getBoundingClientRect();
+    const sx = (e.clientX - box.left) * r.W / box.width;
+    const t = Math.max(0, Math.min(11.999, (sx - r.x0) * 12 / (r.x1 - r.x0)));
+    const i = Math.floor(t / r.dt);
+    cur.setAttribute('x1', sx); cur.setAttribute('x2', sx); cur.setAttribute('visibility', 'visible');
+    let total = 0;
+    const rows = KINDS.slice().reverse().map(k => { total += r.out[k][i]; return `${NAMES[k]}: ${r.out[k][i].toFixed(1)}`; });
+    showTip(e, `<b>${t.toFixed(2)} s · ${total.toFixed(1)} Mbit/s</b><br>${rows.join('<br>')}`);
+  });
+  hit.addEventListener('mouseleave', () => { cur.setAttribute('visibility', 'hidden'); tip.style.display = 'none'; });
+}
+
+function statLine(cfg) {
+  const s = stats(cfg), s0 = stats(cfg, 0, 1);
+  return `peak ${s.peak.toFixed(0)} Mbit/s at ${s.at.toFixed(1)} s · slot start ${s0.peak.toFixed(0)} · ` +
+    `above 50 for ${s.over50.toFixed(1)} s · average ${s.avg.toFixed(1)}`;
+}
+
+document.querySelectorAll('[data-burst]').forEach(el => {
+  const cfg = JSON.parse(el.dataset.burst);
+  renderBurst(el, cfg);
+  const st = document.getElementById(el.dataset.stats);
+  if (st) st.textContent = statLine(cfg);
+});
+
+const ex = {system: 'staggered', start: 0, phase: 0, groups: 1, aggOffset: 0, w: 0.5, blobs: 3};
+const exChart = document.getElementById('ex-chart'), exStats = document.getElementById('ex-stats');
+function drawExplorer() {
+  const cfg = {...ex};
+  const peakNow = stats(cfg).peak;
+  renderBurst(exChart, cfg, Math.max(100, Math.ceil(peakNow / 25) * 25));
+  exStats.textContent = statLine(cfg);
+  document.querySelectorAll('[data-for]').forEach(el => { el.hidden = el.dataset.for !== ex.system; });
+  document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.system === ex.system));
+  document.querySelectorAll('.controls input, .controls select').forEach(inp => {
+    inp.value = ex[inp.name];
+    const o = inp.parentElement.querySelector('output');
+    if (o) o.textContent = inp.dataset.unit === 's' ? `${(+ex[inp.name]).toFixed(2)} s` : ex[inp.name];
+  });
+}
+document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => { ex.system = b.dataset.system; drawExplorer(); }));
+document.querySelectorAll('.controls input, .controls select').forEach(inp => inp.addEventListener('input', () => {
+  ex[inp.name] = +inp.value; drawExplorer();
+}));
+document.querySelectorAll('.presets button').forEach(b => b.addEventListener('click', () => {
+  Object.assign(ex, {start: 0, phase: 0, groups: 1, aggOffset: 0}, JSON.parse(b.dataset.preset));
+  drawExplorer();
+}));
+drawExplorer();
+
+document.addEventListener('mousemove', e => {
+  if (e.target.closest('.hit')) return;
+  const t = e.target.closest('[data-tip]');
+  if (!t) { tip.style.display = 'none'; return; }
+  showTip(e, t.getAttribute('data-tip'));
+});
+
+</script>
+</body>
+</html>
