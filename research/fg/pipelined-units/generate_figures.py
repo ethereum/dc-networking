@@ -49,6 +49,15 @@ UNITS = [(i, 4 * i, 4 * i + VOTE, 4 * i + UNIT)
 assert len(UNITS) == 23
 TODAY_UNITS = 32   # one attestation slot per validator per 32-slot epoch
 
+
+def slot_end_cut(ve):
+    """Option of aggregating only at the end of the slot: aggregators publish only
+    at +8 s of a slot, at the first such cut no earlier than the vote phase's end."""
+    return ve + (SLOT - AGG - ve) % SLOT
+
+
+assert all(slot_end_cut(ve) + AGG <= ROUND for _, _, ve, _ in UNITS)  # same 23 units
+
 # --- palette (Open Color, as in the existing diagrams) ------------------------
 INK = "#243447"
 MUTED = "#94a3b8"
@@ -79,6 +88,7 @@ class Scene:
         self.name = name
         self.els = []
         self.n = 0
+        self.rng = rng
 
     def _id(self):
         self.n += 1
@@ -94,8 +104,8 @@ class Scene:
             "strokeWidth": sw, "strokeStyle": style, "roughness": rough,
             "opacity": opacity, "groupIds": [], "frameId": None,
             "roundness": roundness,
-            "seed": rng.randint(1, 2**31 - 1), "version": 1,
-            "versionNonce": rng.randint(1, 2**31 - 1), "isDeleted": False,
+            "seed": self.rng.randint(1, 2**31 - 1), "version": 1,
+            "versionNonce": self.rng.randint(1, 2**31 - 1), "isDeleted": False,
             "boundElements": [], "updated": STAMP, "link": None, "locked": False,
         }
 
@@ -325,7 +335,7 @@ def fig_round():
     sc.text(tl.x(0), 24, "One 8-slot round = 23 units: three start in every slot, two in the last", 22)
     sc.text(tl.x(0), 56, "each unit is 4 s vote (blue) + 4 s aggregation (orange); units start every 4 s; a unit must finish inside the round", 13, MUTED)
 
-    top, bot = 96, 452
+    top, bot = 96, 806
     slot_grid(sc, tl, top, bot, label_y=100, time_y=80)
     sc.line([(tl.x(0), top - 4), (tl.x(0), bot + 4)], INK, 3)
     sc.line([(tl.x(96), top - 4), (tl.x(96), bot + 4)], INK, 3)
@@ -338,8 +348,8 @@ def fig_round():
     for s in range(SLOTS):
         sc.arrow([(tl.x(s * SLOT), yb), (tl.x(s * SLOT + 4), yb)], BLOCK_C, 4)
 
-    # unit lanes by start offset within the slot
-    lane_y = {0: 178, 4: 232, 8: 286}
+    # (a) unit lanes by start offset within the slot
+    lane_y = {0: 214, 4: 268, 8: 322}
     for off, y in lane_y.items():
         sc.text(tl.x(0) - 12, y + 4, f"units starting at +{off} s", 12, INK, "right")
     for i, st, ve, ae in UNITS:
@@ -351,24 +361,66 @@ def fig_round():
     sc.text(tl.x(100) + 8, yg + 5, "would end 4 s into the next round", 12, DROP_C)
 
     # landings
-    yl = 350
+    yl = 386
     sc.text(tl.x(0) - 12, yl - 6, "aggregates land", 12, MUTED, "right")
     sc.line([(tl.x(0), yl), (tl.x(96), yl)], MUTED, 1)
     for i, st, ve, ae in UNITS:
         sc.ellipse(tl.x(ae) - 5, yl - 5, 10, 10, stroke=AGG_C, bg=AGG_C)
 
-    yc1, yc2 = 385, 418
-    sc.text(tl.x(0) - 12, yc1 - 2, "landings per slot", 12, MUTED, "right")
+    # per-slot counts, the same under (a) and (b)
+    land_b = [sum(1 for _, _, ve, _ in UNITS if slot_end_cut(ve) // SLOT == s) for s in range(SLOTS)]
+    yc1, yc2 = 739, 772
+    sc.text(tl.x(0) - 12, yc1 - 2, "landings per slot, (a) and (b)", 12, MUTED, "right")
     sc.text(tl.x(0) - 12, yc2 - 2, "units starting per slot", 12, MUTED, "right")
     for s in range(SLOTS):
         land = sum(1 for _, _, _, ae in UNITS if (ae - 1) // SLOT == s)
         start = sum(1 for _, st, _, _ in UNITS if st // SLOT == s)
+        assert land == land_b[s]
         sc.text(tl.x(s * SLOT + 6), yc1 - 8, str(land), 18, AGG_C if land == 2 else INK, "center")
         sc.text(tl.x(s * SLOT + 6), yc2 - 8, str(start), 18, VOTE_C if start == 2 else INK, "center")
 
     sc.text(tl.x(48), bot + 40,
             f"Σ = 8 × 3 − 1 = {len(UNITS)} units per round (one full validator pass)  ·  today: {TODAY_UNITS} attestation slots per pass  ·  −{100 * (1 - len(UNITS) / TODAY_UNITS):.1f} %",
             15, INK, "center")
+
+    # Panel titles and option (b) draw from a seed stream of their own, so the
+    # figures after this one keep their Excalidraw seeds.
+    sc.rng = random.Random(245273)
+    sc.text(tl.x(0) - 12, lane_y[0] - 40, "(a) aggregate per unit", 15, INK, "right")
+    sc.line([(tl.x(0) - 180, 418), (tl.x(96), 418)], MUTED, 1)
+    sc.text(tl.x(0) - 12, 432, "(b) option: aggregate only\nat the end of the slot", 15, INK, "right")
+
+    # (b) the same vote phases; aggregators keep collecting until the slot's +8 s cut
+    lane_b = {0: 490, 4: 544, 8: 598}
+    for off, y in lane_b.items():
+        sc.text(tl.x(0) - 12, y + 4, f"units starting at +{off} s", 12, INK, "right")
+    for i, st, ve, ae in UNITS:
+        y, cut = lane_b[st % SLOT], slot_end_cut(ve)
+        sc.phase_bar(tl.x(st) + 1, y, tl.w(VOTE) - 2, 26, VOTE_C, label=f"u{i}", size=11)
+        if cut > ve:
+            sc.phase_bar(tl.x(ve) + 1, y, tl.w(cut - ve) - 2, 26, VOTE_C, bg=VOTE_BG)
+    yg = lane_b[8]
+    sc.rect(tl.x(92) + 1, yg, tl.w(VOTE) - 2, 26, stroke=DROP_C, bg="transparent", sw=2,
+            style="dashed", label="u23", label_color=DROP_C, size=11)
+    sc.text(tl.x(96) + 8, yg + 5, "dropped: its cut is 8 s into the next round", 12, DROP_C)
+
+    ya = 652
+    sc.text(tl.x(0) - 12, ya + 4, "one aggregation per slot", 12, INK, "right")
+    for s in range(SLOTS):
+        cut = s * SLOT + SLOT - AGG
+        us = [i for i, _, ve, _ in UNITS if slot_end_cut(ve) == cut]
+        sc.phase_bar(tl.x(cut) + 1, ya, tl.w(AGG) - 2, 26, AGG_C, label=f"u{us[0]}–{us[-1]}", size=11)
+
+    yl = 704
+    sc.text(tl.x(0) - 12, yl - 6, "aggregates land", 12, MUTED, "right")
+    sc.line([(tl.x(0), yl), (tl.x(96), yl)], MUTED, 1)
+    for s, n in enumerate(land_b):
+        for k in range(n):
+            sc.ellipse(tl.x((s + 1) * SLOT) - 5, yl - 5 + (k - (n - 1) / 2) * 11, 10, 10,
+                       stroke=AGG_C, bg=AGG_C)
+
+    note_box(sc, tl.x(96) + 20, ya - 4, 300,
+             "pale blue: aggregators still collecting\nvote start → cut: 8 s for +0 s units,\n4 s for +4 s, 12 s for +8 s (next slot)\none aggregation phase per slot, as today;\nall land at +12 s, with the next block", 12)
     return sc
 
 

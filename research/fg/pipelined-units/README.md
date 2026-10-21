@@ -52,7 +52,7 @@ In DC vocabulary a unit is a **subround** — "the voting window of one cohort" 
 
 ## The round: 23 units
 
-![One 8-slot round = 23 units](figures/03-round-23-units.svg)
+![One 8-slot round = 23 units, aggregated per unit (a) or only at the end of the slot (b)](figures/03-round-23-units.svg)
 
 Unit *u<sub>i</sub>* (*i* = 0 … 22) starts at *t* = 4*i* s into the round. Its cohort votes during [4*i*, 4*i* + 4) s, its aggregators publish at 4*i* + 4 s, and the aggregates have propagated by 4*i* + 8 s — the unit's **landing** — after which any block can include them. The unit that would start at 92 s (slot 7, +8 s) would land 4 s into the next round and is dropped: with the round over, nothing can be done with it.
 
@@ -62,6 +62,8 @@ Unit *u<sub>i</sub>* (*i* = 0 … 22) starts at *t* = 4*i* s into the round. Its
 | aggregates landing (at +4, +8, +12 s) | **2** | 3 | 3 | 3 | 3 | 3 | 3 | 3 | **23** |
 
 The aggregates published at +0, +4 and +8 s of a slot are all included by the block proposed at +12 s (the next slot's proposer), with 12 s, 8 s and 4 s between publication and proposal. The last of these is exactly today's margin (publish at 8 s, propose at 12 s); the other two have slack. Slot 0 of a round has no predecessor unit, so its aggregation row starts empty and only two aggregates land — the source of the unevenness tracked as [Problem 1](#problem-1--reward-variance-accepted-for-now).
+
+**Option: aggregate only at the end of the slot** (panel b). The vote phases stay on the 4 s grid, but every unit's aggregators hold their votes until the slot's +8 s cut, so a slot has a single aggregation phase, [8, 12) s, as in today's slot. A unit's aggregators publish at the first cut that leaves its voters at least 4 s (P1): +8 s units therefore go to the next slot's cut. The 23 units, the per-slot counts (2, 3, …, 3) and the including block (the one proposed at +12 s) are the same as in (a). Three things change. Aggregators collect for 8 s (+0 s units), 4 s (+4 s units) and 12 s (+8 s units) instead of 4 s each, which sweeps up the +0 s and +8 s units' stragglers without an extra aggregate ([Problem 2](#problem-2--end-of-slot-congestion-and-late-aggregates-open)). No aggregate is in flight while the block propagates. And all of a slot's aggregates go out together: three units' aggregation phases overlap in [8, 12) s, and each has only today's 4 s margin to the next proposal instead of 12, 8 and 4 s.
 
 ![Inside a slot: today one phase at a time, pipelined units two phases at a time](figures/04-slot-zoom.svg)
 
