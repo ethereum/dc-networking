@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "method": "Node DOM harness using real application, real dataset and compressed detail responses; not visual browser QA",
+  "comparison_combinations": 54,
+  "topic_reconciliation_combinations": 135,
+  "checks": [
+    "only the three compared run cards are displayed",
+    "payload and Goldfish reception CDF overlays with bounded percent axes",
+    "reception CDFs use raw 100 ms upper edges, full denominators and matching payload sample counts",
+    "CDF CSV includes percentages, time thresholds and per-node sample counts",
+    "default stacked topic bandwidth in KiB/s, raw 100 ms bins and all seven principal object families",
+    "three-run bandwidth overlay remains selectable",
+    "topic sums match existing RPC profiles for all cohorts, directions and components",
+    "shared-scale panels, raw and optional smoothed object views",
+    "per-object stacking and smoothing conserve total size",
+    "loaded windows and identical three-node cohort",
+    "one-node home cohort",
+    "actual payload sizes and transaction minima",
+    "payload overview count and byte conservation against independent load evidence",
+    "payload selector clears incompatible FFG transport filter",
+    "payload relative-size overview and slot detail",
+    "empty slot explicitly outside comparison",
+    "all metric/cohort/band combinations",
+    "ignored aggregate view",
+    "historical toggle and unverified load label",
+    "all four dataset detail loads with gzip and host-decoded JSON",
+    "slot gap and next captured slot",
+    "all detail metrics",
+    "CSV window, cohort and load-status metadata"
+  ]
+}

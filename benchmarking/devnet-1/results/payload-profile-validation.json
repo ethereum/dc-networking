@@ -1,0 +1,73 @@
+{
+  "passed": true,
+  "source": "results/payload-observations.json",
+  "source_sha256": "d70e2d15bcc456aedf5751f04af53814a7ea7d20a561ecee5e9a82bfa11f8d2b",
+  "method": "Independent reconciliation of every payload profile bin against the previously audited payload reduction; earliest processing entry per slot/root, separate entry and application-log clocks.",
+  "raw_archive_read": false,
+  "matched_nodes": [
+    {
+      "run": "spread",
+      "node": 1,
+      "payloads": 47,
+      "ssz_bytes": 3186470,
+      "comparison_slots": 47
+    },
+    {
+      "run": "spread",
+      "node": 2,
+      "payloads": 47,
+      "ssz_bytes": 3186470,
+      "comparison_slots": 47
+    },
+    {
+      "run": "spread",
+      "node": 202,
+      "payloads": 47,
+      "ssz_bytes": 3186470,
+      "comparison_slots": 47
+    },
+    {
+      "run": "partial",
+      "node": 1,
+      "payloads": 87,
+      "ssz_bytes": 5771417,
+      "comparison_slots": 88
+    },
+    {
+      "run": "partial",
+      "node": 2,
+      "payloads": 87,
+      "ssz_bytes": 5771417,
+      "comparison_slots": 88
+    },
+    {
+      "run": "partial",
+      "node": 202,
+      "payloads": 87,
+      "ssz_bytes": 5771417,
+      "comparison_slots": 88
+    },
+    {
+      "run": "staggered",
+      "node": 1,
+      "payloads": 111,
+      "ssz_bytes": 6226766,
+      "comparison_slots": 111
+    },
+    {
+      "run": "staggered",
+      "node": 2,
+      "payloads": 111,
+      "ssz_bytes": 6226766,
+      "comparison_slots": 111
+    },
+    {
+      "run": "staggered",
+      "node": 202,
+      "payloads": 111,
+      "ssz_bytes": 6226766,
+      "comparison_slots": 111
+    }
+  ],
+  "prior_non_payload_profiles_rpc_delays_blocks_unchanged": null
+}

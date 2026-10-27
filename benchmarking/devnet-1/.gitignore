@@ -1,0 +1,26 @@
+.sources/
+.cache/
+__pycache__/
+*.pyc
+results/inventory.json
+results/nested-inventory.json
+results/ingestion.log
+results/*.tmp
+web/standalone.html
+results/screenshots/
+.openai-draft/
+publication/
+web/* 2*
+results/*-progress.log
+.openai-site/
+# Dashboard data stays out of Git (see PUBLISHING.md)
+data/
+web/*.json.gz
+web/data.js
+web/bandwidth.js
+# Local publication records
+results/cache-migration.json
+results/http-validation.json
+results/publication-ready.json
+results/site-build.log
+results/sites-publication*.json

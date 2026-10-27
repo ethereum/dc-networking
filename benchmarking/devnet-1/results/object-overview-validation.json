@@ -1,0 +1,302 @@
+{
+  "passed": true,
+  "scope": "All observed object families in the matched cohort have SSZ weights or documented lower bounds. New weights affect only columns and beacon blocks.",
+  "baseline_checked": "data.json.gz",
+  "event_counts_timing_rpc_and_vote_payload_sizes_unchanged": true,
+  "matched_nodes": [
+    {
+      "run": "spread",
+      "node": 1,
+      "by_kind": {
+        "FFG vote": {
+          "events": 234477,
+          "ssz_bytes_or_lower_bound": 56274480
+        },
+        "Goldfish vote": {
+          "events": 23677,
+          "ssz_bytes_or_lower_bound": 7221485
+        },
+        "PTC vote": {
+          "events": 22839,
+          "ssz_bytes_or_lower_bound": 3334494
+        },
+        "Data column": {
+          "events": 4862,
+          "ssz_bytes_or_lower_bound": 27348400
+        },
+        "Synced new block": {
+          "events": 47,
+          "ssz_bytes_or_lower_bound": 60422
+        },
+        "Execution payload (applied)": {
+          "events": 47,
+          "ssz_bytes_or_lower_bound": 3186470
+        }
+      }
+    },
+    {
+      "run": "spread",
+      "node": 2,
+      "by_kind": {
+        "FFG vote": {
+          "events": 234494,
+          "ssz_bytes_or_lower_bound": 56278560
+        },
+        "Goldfish vote": {
+          "events": 23688,
+          "ssz_bytes_or_lower_bound": 7224840
+        },
+        "PTC vote": {
+          "events": 22842,
+          "ssz_bytes_or_lower_bound": 3334932
+        },
+        "Data column": {
+          "events": 4340,
+          "ssz_bytes_or_lower_bound": 25858256
+        },
+        "Synced new block": {
+          "events": 47,
+          "ssz_bytes_or_lower_bound": 60422
+        },
+        "Execution payload (applied)": {
+          "events": 47,
+          "ssz_bytes_or_lower_bound": 3186470
+        }
+      }
+    },
+    {
+      "run": "spread",
+      "node": 202,
+      "by_kind": {
+        "FFG vote": {
+          "events": 235655,
+          "ssz_bytes_or_lower_bound": 56557200
+        },
+        "Goldfish vote": {
+          "events": 23799,
+          "ssz_bytes_or_lower_bound": 7258695
+        },
+        "PTC vote": {
+          "events": 22953,
+          "ssz_bytes_or_lower_bound": 3351138
+        },
+        "Data column": {
+          "events": 296,
+          "ssz_bytes_or_lower_bound": 1710144
+        },
+        "Synced new block": {
+          "events": 47,
+          "ssz_bytes_or_lower_bound": 60422
+        },
+        "Execution payload (applied)": {
+          "events": 47,
+          "ssz_bytes_or_lower_bound": 3186470
+        }
+      }
+    },
+    {
+      "run": "partial",
+      "node": 1,
+      "by_kind": {
+        "FFG vote": {
+          "events": 440910,
+          "ssz_bytes_or_lower_bound": 105818400
+        },
+        "Goldfish vote": {
+          "events": 44545,
+          "ssz_bytes_or_lower_bound": 13586225
+        },
+        "FFG aggregate": {
+          "events": 22,
+          "ssz_bytes_or_lower_bound": 16698
+        },
+        "PTC vote": {
+          "events": 42210,
+          "ssz_bytes_or_lower_bound": 6162660
+        },
+        "Data column": {
+          "events": 8313,
+          "ssz_bytes_or_lower_bound": 45749608
+        },
+        "Synced new block": {
+          "events": 87,
+          "ssz_bytes_or_lower_bound": 158872
+        },
+        "Execution payload (applied)": {
+          "events": 87,
+          "ssz_bytes_or_lower_bound": 5771417
+        }
+      }
+    },
+    {
+      "run": "partial",
+      "node": 2,
+      "by_kind": {
+        "FFG vote": {
+          "events": 440909,
+          "ssz_bytes_or_lower_bound": 105818160
+        },
+        "Goldfish vote": {
+          "events": 44558,
+          "ssz_bytes_or_lower_bound": 13590190
+        },
+        "FFG aggregate": {
+          "events": 19,
+          "ssz_bytes_or_lower_bound": 14421
+        },
+        "PTC vote": {
+          "events": 42238,
+          "ssz_bytes_or_lower_bound": 6166748
+        },
+        "Data column": {
+          "events": 7417,
+          "ssz_bytes_or_lower_bound": 43255496
+        },
+        "Synced new block": {
+          "events": 87,
+          "ssz_bytes_or_lower_bound": 158872
+        },
+        "Execution payload (applied)": {
+          "events": 87,
+          "ssz_bytes_or_lower_bound": 5771417
+        }
+      }
+    },
+    {
+      "run": "partial",
+      "node": 202,
+      "by_kind": {
+        "FFG vote": {
+          "events": 443085,
+          "ssz_bytes_or_lower_bound": 106340400
+        },
+        "Goldfish vote": {
+          "events": 44777,
+          "ssz_bytes_or_lower_bound": 13656985
+        },
+        "FFG aggregate": {
+          "events": 25,
+          "ssz_bytes_or_lower_bound": 18975
+        },
+        "PTC vote": {
+          "events": 42454,
+          "ssz_bytes_or_lower_bound": 6198284
+        },
+        "Data column": {
+          "events": 472,
+          "ssz_bytes_or_lower_bound": 2692544
+        },
+        "Synced new block": {
+          "events": 87,
+          "ssz_bytes_or_lower_bound": 158872
+        },
+        "Execution payload (applied)": {
+          "events": 87,
+          "ssz_bytes_or_lower_bound": 5771417
+        }
+      }
+    },
+    {
+      "run": "staggered",
+      "node": 1,
+      "by_kind": {
+        "FFG vote": {
+          "events": 1104459,
+          "ssz_bytes_or_lower_bound": 265070160
+        },
+        "Goldfish vote": {
+          "events": 56042,
+          "ssz_bytes_or_lower_bound": 11488610
+        },
+        "FFG aggregate": {
+          "events": 277,
+          "ssz_bytes_or_lower_bound": 152073
+        },
+        "PTC vote": {
+          "events": 55320,
+          "ssz_bytes_or_lower_bound": 8076720
+        },
+        "Data column": {
+          "events": 10104,
+          "ssz_bytes_or_lower_bound": 51043792
+        },
+        "Synced new block": {
+          "events": 111,
+          "ssz_bytes_or_lower_bound": 190006
+        },
+        "Execution payload (applied)": {
+          "events": 111,
+          "ssz_bytes_or_lower_bound": 6226766
+        }
+      }
+    },
+    {
+      "run": "staggered",
+      "node": 2,
+      "by_kind": {
+        "FFG vote": {
+          "events": 1104432,
+          "ssz_bytes_or_lower_bound": 265063680
+        },
+        "Goldfish vote": {
+          "events": 56073,
+          "ssz_bytes_or_lower_bound": 11494965
+        },
+        "FFG aggregate": {
+          "events": 24,
+          "ssz_bytes_or_lower_bound": 13176
+        },
+        "PTC vote": {
+          "events": 55265,
+          "ssz_bytes_or_lower_bound": 8068690
+        },
+        "Data column": {
+          "events": 8801,
+          "ssz_bytes_or_lower_bound": 46829128
+        },
+        "Synced new block": {
+          "events": 111,
+          "ssz_bytes_or_lower_bound": 190006
+        },
+        "Execution payload (applied)": {
+          "events": 111,
+          "ssz_bytes_or_lower_bound": 6226766
+        }
+      }
+    },
+    {
+      "run": "staggered",
+      "node": 202,
+      "by_kind": {
+        "FFG vote": {
+          "events": 557747,
+          "ssz_bytes_or_lower_bound": 133859280
+        },
+        "Goldfish vote": {
+          "events": 56642,
+          "ssz_bytes_or_lower_bound": 11611610
+        },
+        "FFG aggregate": {
+          "events": 1498,
+          "ssz_bytes_or_lower_bound": 822402
+        },
+        "PTC vote": {
+          "events": 55843,
+          "ssz_bytes_or_lower_bound": 8153078
+        },
+        "Data column": {
+          "events": 688,
+          "ssz_bytes_or_lower_bound": 3341824
+        },
+        "Synced new block": {
+          "events": 111,
+          "ssz_bytes_or_lower_bound": 190006
+        },
+        "Execution payload (applied)": {
+          "events": 111,
+          "ssz_bytes_or_lower_bound": 6226766
+        }
+      }
+    }
+  ]
+}

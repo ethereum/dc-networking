@@ -1,0 +1,2866 @@
+{
+  "archive_sha256": "fb58d86cf3d86e5a08eba936b22d8e6d53d9d08dda1919a5805be135b199a7d1",
+  "archive_bytes": 1549127981,
+  "inventory_members": 597,
+  "selected_members": 73,
+  "incomplete": false,
+  "audit": {
+    "lines": 85056534,
+    "outside_owned_slots": 1276265,
+    "untimed_lines": 2253,
+    "retained_lines": 83778016,
+    "matched_records": 62936540,
+    "rpc_recv_bytes": 62011079479,
+    "rpc_recv_intervals": 408384,
+    "rpc_send_bytes": 60931791700,
+    "rpc_send_intervals": 408384,
+    "rpc_drop_bytes": 197250396,
+    "rpc_drop_intervals": 408384,
+    "parsed_records": 62936540,
+    "observed_events": 49613913,
+    "accepted_events": 49520723,
+    "explicit_decision_events": 41349871,
+    "multi_seat_ac_records": 26372,
+    "ignored_aggregate_events": 364385,
+    "ignored/already_known": 364385,
+    "logger_decision_events": 3786180,
+    "ac_replay_records": 269369,
+    "ac_replay_acceptances": 269369,
+    "ac_observation_without_acceptance": 94679,
+    "payload_profile_applications": 2145,
+    "unmodeled_observed_events": 52006,
+    "duplicate_ac_observations": 249,
+    "ac_acceptance_without_original_observation": 1489
+  },
+  "sources": [
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-1/beacon.log.gz",
+      "node": 1,
+      "chain": 0,
+      "sha256": "8f27837685cf26b45771aede67c7850c1e764bff066abea093f88911a946246d",
+      "owned_slots": [
+        [
+          0,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1969021,
+        "outside_owned_slots": 4427,
+        "untimed_lines": 127,
+        "retained_lines": 1964467,
+        "matched_records": 1959701,
+        "rpc_recv_bytes": 5121377419,
+        "rpc_recv_intervals": 35014,
+        "rpc_send_bytes": 4934951018,
+        "rpc_send_intervals": 35014,
+        "rpc_drop_bytes": 4232,
+        "rpc_drop_intervals": 35014,
+        "parsed_records": 1959701,
+        "observed_events": 1693404,
+        "accepted_events": 1693400,
+        "explicit_decision_events": 1406603,
+        "multi_seat_ac_records": 909,
+        "ignored_aggregate_events": 5429,
+        "ignored/already_known": 5429,
+        "logger_decision_events": 135467,
+        "ac_replay_records": 1800,
+        "ac_replay_acceptances": 1800,
+        "ac_observation_without_acceptance": 4
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 12,
+        "Failed to find peers": 57,
+        "Sync Committee Message is too old to broadcast, discarding it": 60,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 58,
+        "Voting period before genesis + follow distance, using eth1data from head": 2
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-1636-1641/prysm-geth-1/beacon.log",
+      "node": 1,
+      "chain": 0,
+      "sha256": "21e8a9384e89de7961de6989b655c48ccd34aa55b941727dc5ea8e4d5c721945",
+      "owned_slots": [
+        [
+          333,
+          356
+        ]
+      ],
+      "audit": {
+        "lines": 238680,
+        "outside_owned_slots": 6941,
+        "untimed_lines": 10,
+        "retained_lines": 231729,
+        "matched_records": 230808,
+        "observed_events": 146837,
+        "explicit_decision_events": 119757,
+        "accepted_events": 146837,
+        "parsed_records": 230808,
+        "rpc_recv_bytes": 571697644,
+        "rpc_recv_intervals": 2877,
+        "rpc_send_bytes": 511177954,
+        "rpc_send_intervals": 2877,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 2877,
+        "multi_seat_ac_records": 83,
+        "ignored_aggregate_events": 468,
+        "ignored/already_known": 468,
+        "logger_decision_events": 11652,
+        "ac_replay_records": 136,
+        "ac_replay_acceptances": 136
+      },
+      "warnings": {
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 4
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-1641-1646/prysm-geth-1/beacon.log",
+      "node": 1,
+      "chain": 0,
+      "sha256": "49863c990a0d21956a93e47deb71bec36bb168527c03f144635326f9e1846301",
+      "owned_slots": [
+        [
+          357,
+          379
+        ]
+      ],
+      "audit": {
+        "lines": 242081,
+        "outside_owned_slots": 19993,
+        "retained_lines": 222078,
+        "matched_records": 221060,
+        "observed_events": 140662,
+        "explicit_decision_events": 114720,
+        "accepted_events": 140662,
+        "parsed_records": 221060,
+        "rpc_recv_bytes": 558080922,
+        "rpc_recv_intervals": 2752,
+        "rpc_send_bytes": 493873438,
+        "rpc_send_intervals": 2752,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 2752,
+        "ac_replay_records": 143,
+        "multi_seat_ac_records": 69,
+        "untimed_lines": 10,
+        "ignored_aggregate_events": 476,
+        "ignored/already_known": 476,
+        "logger_decision_events": 11187,
+        "ac_replay_acceptances": 143
+      },
+      "warnings": {
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 5
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-1/beacon.log.gz",
+      "node": 1,
+      "chain": 0,
+      "sha256": "da8652cea8094792325a6374e733548c67785e498eb986dfad810987621c5a73",
+      "owned_slots": [
+        [
+          433,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 4271710,
+        "outside_owned_slots": 25117,
+        "untimed_lines": 2,
+        "retained_lines": 4246591,
+        "matched_records": 2477730,
+        "rpc_recv_bytes": 3322223781,
+        "rpc_recv_intervals": 25287,
+        "rpc_send_bytes": 3417762964,
+        "rpc_send_intervals": 25287,
+        "rpc_drop_bytes": 16413533,
+        "rpc_drop_intervals": 25287,
+        "parsed_records": 2477730,
+        "observed_events": 1233783,
+        "accepted_events": 1229402,
+        "multi_seat_ac_records": 722,
+        "explicit_decision_events": 1007656,
+        "ac_replay_records": 6422,
+        "logger_decision_events": 92798,
+        "ignored_aggregate_events": 4043,
+        "ignored/already_known": 4043,
+        "ac_observation_without_acceptance": 4381,
+        "ac_replay_acceptances": 6422
+      },
+      "warnings": {
+        "Could not notify event feed of new chain head": 32,
+        "Could not notify event feed of new chain head_v2": 32,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 18,
+        "Could not notify event feed of head_v2 payload update": 12,
+        "Rolling back insertion of block with root 0x2d7eb4072935de77124411ad74fd3c23f8456c8fdeba62e0a5f0950472242895 due to processing error": 1,
+        "Could not handle p2p pubsub": 7,
+        "Could not get head dependent root to check canonical shuffle": 8,
+        "Rolling back insertion of block with root 0x3fccefb07bdf76285e37c219413b2473b49c4cd56253f047d45a5974b9f081ed due to processing error": 1,
+        "Rolling back insertion of block with root 0xda1841cbb414ff2bf226695f739c234b23570b5dd117b654df14943ece456776 due to processing error": 1,
+        "Submit queue full, dropping attestation": 24186,
+        "Rolling back insertion of block with root 0xb96532d8c9c2211e3cb25d50ccd516b494919982babc0672f301626158453be4 due to processing error": 2,
+        "Rolling back insertion of block with root 0xd80058b8050a9a3925bd290a0c0b518203ebab812c5c291bd0a9c0ad0826b6fa due to processing error": 1,
+        "Rolling back insertion of block with root 0x553d7be7b4023fd94dadbcb2a408ff52a7f93b24db6d65e41f6852177ed6195c due to processing error": 1,
+        "Rolling back insertion of block with root 0x6f3f86c944fced2710eaad8a9b7e478fed6ee5377956fbbab7d5b497d2f7fcc6 due to processing error": 1,
+        "Dropping incoming partial attestation RPC, queue full": 2205,
+        "Voting period before genesis + follow distance, using eth1data from head": 3,
+        "": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-1746-1751/prysm-geth-1/beacon.log",
+      "node": 1,
+      "chain": 0,
+      "sha256": "fa609b2674fff87803950d1910eba413bfa4eb55c00332e0768812af56e061e6",
+      "owned_slots": [
+        [
+          684,
+          707
+        ]
+      ],
+      "audit": {
+        "lines": 564248,
+        "outside_owned_slots": 23326,
+        "retained_lines": 540922,
+        "matched_records": 301242,
+        "parsed_records": 301242,
+        "observed_events": 147361,
+        "explicit_decision_events": 120269,
+        "accepted_events": 147361,
+        "rpc_recv_bytes": 341577300,
+        "rpc_recv_intervals": 2873,
+        "rpc_send_bytes": 332026899,
+        "rpc_send_intervals": 2873,
+        "rpc_drop_bytes": 5730,
+        "rpc_drop_intervals": 2873,
+        "multi_seat_ac_records": 73,
+        "logger_decision_events": 11723,
+        "ignored_aggregate_events": 477,
+        "ignored/already_known": 477,
+        "ac_replay_records": 127,
+        "ac_replay_acceptances": 127
+      },
+      "warnings": {
+        "Submit queue full, dropping attestation": 2917,
+        "Dropping incoming partial attestation RPC, queue full": 606
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-2/beacon.log.gz",
+      "node": 2,
+      "chain": 0,
+      "sha256": "6fccd2c94469d68c17264b6a649e7a58e68cda200edc0e3c5babe2cfe278e847",
+      "owned_slots": [
+        [
+          0,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1964819,
+        "outside_owned_slots": 4217,
+        "untimed_lines": 127,
+        "retained_lines": 1960475,
+        "matched_records": 1955818,
+        "rpc_recv_bytes": 5883338249,
+        "rpc_recv_intervals": 35037,
+        "rpc_send_bytes": 5805808152,
+        "rpc_send_intervals": 35037,
+        "rpc_drop_bytes": 34917,
+        "rpc_drop_intervals": 35037,
+        "parsed_records": 1955818,
+        "observed_events": 1693413,
+        "accepted_events": 1693413,
+        "explicit_decision_events": 1406606,
+        "multi_seat_ac_records": 910,
+        "ignored_aggregate_events": 5643,
+        "ignored/already_known": 5643,
+        "logger_decision_events": 135541,
+        "ac_replay_records": 1488,
+        "ac_replay_acceptances": 1488
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 12,
+        "Failed to find peers": 50,
+        "Sync Committee Message is too old to broadcast, discarding it": 50,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 58
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-1636-1641/prysm-geth-2/beacon.log",
+      "node": 2,
+      "chain": 0,
+      "sha256": "1a1ab84797d585567979eb3150bc3bd4b0494c6f08af0691a15d2f5559970404",
+      "owned_slots": [
+        [
+          333,
+          356
+        ]
+      ],
+      "audit": {
+        "lines": 237970,
+        "outside_owned_slots": 6976,
+        "retained_lines": 230984,
+        "matched_records": 230139,
+        "observed_events": 146844,
+        "explicit_decision_events": 119776,
+        "accepted_events": 146844,
+        "parsed_records": 230139,
+        "rpc_recv_bytes": 636060988,
+        "rpc_recv_intervals": 2880,
+        "rpc_send_bytes": 591255159,
+        "rpc_send_intervals": 2880,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 2880,
+        "ignored_aggregate_events": 465,
+        "ignored/already_known": 465,
+        "multi_seat_ac_records": 83,
+        "logger_decision_events": 11659,
+        "ac_replay_records": 80,
+        "untimed_lines": 10,
+        "ac_replay_acceptances": 80
+      },
+      "warnings": {
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 4
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-1641-1646/prysm-geth-2/beacon.log",
+      "node": 2,
+      "chain": 0,
+      "sha256": "84167e53706feab57c36e9dd607c75ae98d4a9d0dc3518bbbefa2fa457ad01b2",
+      "owned_slots": [
+        [
+          357,
+          379
+        ]
+      ],
+      "audit": {
+        "lines": 241635,
+        "outside_owned_slots": 20588,
+        "retained_lines": 221037,
+        "matched_records": 220353,
+        "observed_events": 140659,
+        "explicit_decision_events": 114718,
+        "accepted_events": 140659,
+        "parsed_records": 220353,
+        "rpc_recv_bytes": 597996967,
+        "rpc_recv_intervals": 2760,
+        "rpc_send_bytes": 555407640,
+        "rpc_send_intervals": 2760,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 2760,
+        "multi_seat_ac_records": 69,
+        "untimed_lines": 10,
+        "ignored_aggregate_events": 461,
+        "ignored/already_known": 461,
+        "logger_decision_events": 11183,
+        "ac_replay_records": 70,
+        "ac_replay_acceptances": 70
+      },
+      "warnings": {
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 5,
+        "": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-2/beacon.log.gz",
+      "node": 2,
+      "chain": 0,
+      "sha256": "aac5c58c3d07c81e775dbc902351d2da9c5923e27e0b191609cda0173eea8000",
+      "owned_slots": [
+        [
+          508,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 2921717,
+        "outside_owned_slots": 23385,
+        "untimed_lines": 2,
+        "retained_lines": 2898330,
+        "matched_records": 1656383,
+        "rpc_recv_bytes": 2235076842,
+        "rpc_recv_intervals": 16316,
+        "rpc_send_bytes": 2094635897,
+        "rpc_send_intervals": 16316,
+        "rpc_drop_bytes": 68725,
+        "rpc_drop_intervals": 16316,
+        "parsed_records": 1656383,
+        "observed_events": 817182,
+        "accepted_events": 816605,
+        "logger_decision_events": 63001,
+        "ignored_aggregate_events": 2672,
+        "ignored/already_known": 2672,
+        "explicit_decision_events": 669078,
+        "multi_seat_ac_records": 440,
+        "ac_replay_records": 2553,
+        "ac_observation_without_acceptance": 577,
+        "ac_replay_acceptances": 2553
+      },
+      "warnings": {
+        "Could not notify event feed of new chain head": 16,
+        "Could not notify event feed of new chain head_v2": 16,
+        "Could not notify event feed of head_v2 payload update": 3,
+        "Rolling back insertion of block with root 0x843cbbb3ac4253923e950b2f0038301a0f930cd2cbeee66a5b2a78a6966e7a52 due to processing error": 3,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 5,
+        "Rolling back insertion of block with root 0x82a51be38a425235a3f83c52629133b3412d741684740c7654519770ed6eebbe due to processing error": 1,
+        "Could not handle p2p pubsub": 1,
+        "Could not get head dependent root to check canonical shuffle": 1,
+        "Bundled attestation rejected": 9,
+        "Submit queue full, dropping attestation": 4903,
+        "Dropping incoming partial attestation RPC, queue full": 1295
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-1746-1751/prysm-geth-2/beacon.log",
+      "node": 2,
+      "chain": 0,
+      "sha256": "e9f984769d31cb6f9d4a8fa7560cb02b6c637bdb3e0fc8a89b4ed8786db1f7db",
+      "owned_slots": [
+        [
+          684,
+          707
+        ]
+      ],
+      "audit": {
+        "lines": 570961,
+        "outside_owned_slots": 23615,
+        "retained_lines": 547346,
+        "matched_records": 307890,
+        "parsed_records": 307890,
+        "observed_events": 147352,
+        "explicit_decision_events": 120277,
+        "accepted_events": 147352,
+        "rpc_recv_bytes": 359214798,
+        "rpc_recv_intervals": 2879,
+        "rpc_send_bytes": 313089001,
+        "rpc_send_intervals": 2879,
+        "rpc_drop_bytes": 24630,
+        "rpc_drop_intervals": 2879,
+        "ac_replay_records": 294,
+        "multi_seat_ac_records": 73,
+        "logger_decision_events": 11734,
+        "ignored_aggregate_events": 403,
+        "ignored/already_known": 403,
+        "ac_replay_acceptances": 294
+      },
+      "warnings": {
+        "Submit queue full, dropping attestation": 2657,
+        "Dropping incoming partial attestation RPC, queue full": 289
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-3/beacon.log.gz",
+      "node": 3,
+      "chain": 0,
+      "sha256": "1985320584c2a3c5513758a9c40a11ce9f1b9e560b17f49cf3260a7639331e0a",
+      "owned_slots": [
+        [
+          0,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1951273,
+        "outside_owned_slots": 4320,
+        "untimed_lines": 127,
+        "retained_lines": 1946826,
+        "matched_records": 1942171,
+        "rpc_recv_bytes": 4389641332,
+        "rpc_recv_intervals": 35039,
+        "rpc_send_bytes": 5230873303,
+        "rpc_send_intervals": 35039,
+        "rpc_drop_bytes": 66860,
+        "rpc_drop_intervals": 35039,
+        "parsed_records": 1942171,
+        "observed_events": 1693382,
+        "accepted_events": 1693382,
+        "explicit_decision_events": 1406598,
+        "multi_seat_ac_records": 901,
+        "ignored_aggregate_events": 5019,
+        "ignored/already_known": 5019,
+        "logger_decision_events": 135501,
+        "ac_replay_records": 202,
+        "ac_replay_acceptances": 202
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 10,
+        "Failed to find peers": 10,
+        "Sync Committee Message is too old to broadcast, discarding it": 10,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 58,
+        "Voting period before genesis + follow distance, using eth1data from head": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-3/beacon.log.gz",
+      "node": 3,
+      "chain": 0,
+      "sha256": "7c6e0447d58e1e2d76dfda157f5f2229775196e6f0d45bccf81197e7995a760e",
+      "owned_slots": [
+        [
+          538,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 2278948,
+        "outside_owned_slots": 22805,
+        "untimed_lines": 2,
+        "retained_lines": 2256141,
+        "matched_records": 1232599,
+        "rpc_recv_bytes": 1179078808,
+        "rpc_recv_intervals": 12720,
+        "rpc_send_bytes": 1549458414,
+        "rpc_send_intervals": 12720,
+        "rpc_drop_bytes": 7001338,
+        "rpc_drop_intervals": 12720,
+        "parsed_records": 1232599,
+        "observed_events": 636969,
+        "accepted_events": 636346,
+        "explicit_decision_events": 521123,
+        "multi_seat_ac_records": 346,
+        "ac_replay_records": 1782,
+        "logger_decision_events": 49063,
+        "ignored_aggregate_events": 2361,
+        "ignored/already_known": 2361,
+        "ac_observation_without_acceptance": 623,
+        "ac_replay_acceptances": 1782
+      },
+      "warnings": {
+        "You are using an insecure gRPC server. If you are running your beacon node and validator on the same machines, you can ignore this message. If you want to know how to enable secure connections, see: https://docs.prylabs.network/docs/prysm-usage/secure-grpc": 1,
+        "Could not notify event feed of new chain head": 15,
+        "Could not notify event feed of new chain head_v2": 15,
+        "Could not notify event feed of head_v2 payload update": 5,
+        "Failed to process sidecars from execution from block": 1,
+        "Rolling back insertion of block with root 0x6bdf98d9f77b6b4a5cf7751b13e9b1fe495df898015bee96e81220f8b888ab98 due to processing error": 1,
+        "Could not handle p2p pubsub": 4,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 3,
+        "Rolling back insertion of block with root 0x49256d3ad45fa904ff08f17dcda81d17628183a6ec78ea6f65047bdecaf45378 due to processing error": 4,
+        "Rolling back insertion of block with root 0x832871d9a8d17db71f3840b35fd5dd3e80410ee67c4f330243c4ae31e066dd5a due to processing error": 1,
+        "Could not get head dependent root to check canonical shuffle": 2,
+        "Rolling back insertion of block with root 0xf571611e919e7b51745221975f2da954720097174c7855265b4764af4e07fd8f due to processing error": 1,
+        "Voting period before genesis + follow distance, using eth1data from head": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-35/beacon.log.gz",
+      "node": 35,
+      "chain": 0,
+      "sha256": "0b51877a0e7b1055410834e132bab68244e99eabe011f233419368324ace003d",
+      "owned_slots": [
+        [
+          0,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1707731,
+        "outside_owned_slots": 1541,
+        "untimed_lines": 127,
+        "retained_lines": 1706063,
+        "matched_records": 1701345,
+        "parsed_records": 1701345,
+        "observed_events": 1693410,
+        "accepted_events": 1693401,
+        "multi_seat_ac_records": 905,
+        "explicit_decision_events": 1406598,
+        "ignored_aggregate_events": 5728,
+        "ignored/already_known": 5728,
+        "logger_decision_events": 135487,
+        "ac_replay_records": 1015,
+        "ac_replay_acceptances": 1015,
+        "ac_observation_without_acceptance": 9
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 11,
+        "Failed to find peers": 27,
+        "Sync Committee Message is too old to broadcast, discarding it": 30,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 58,
+        "Voting period before genesis + follow distance, using eth1data from head": 2
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-35/beacon.log.gz",
+      "node": 35,
+      "chain": 0,
+      "sha256": "aaa8cdf57c0fc6a1f06e241c03d108dba556d11861eb20e902ead2652477098b",
+      "owned_slots": [
+        [
+          449,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 3761569,
+        "outside_owned_slots": 21026,
+        "untimed_lines": 2,
+        "retained_lines": 3740541,
+        "matched_records": 1859682,
+        "parsed_records": 1859682,
+        "observed_events": 1148829,
+        "accepted_events": 1148829,
+        "explicit_decision_events": 943741,
+        "logger_decision_events": 86330,
+        "ignored_aggregate_events": 3657,
+        "ignored/already_known": 3657,
+        "multi_seat_ac_records": 594,
+        "ac_replay_records": 1044,
+        "ac_replay_acceptances": 1044
+      },
+      "warnings": {
+        "Skip processing batched blocks": 1,
+        "Rolling back insertion of block with root 0xbcb05492752e9f68b4831550f9c165e4a53ffc3086f094f3429b61107d4bed0d due to processing error": 2,
+        "Could not delete block with block root 0xbcb05492752e9f68b4831550f9c165e4a53ffc3086f094f3429b61107d4bed0d": 2,
+        "Block processing failure": 4,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 10,
+        "Could not notify event feed of new chain head": 16,
+        "Could not notify event feed of new chain head_v2": 16,
+        "Execution payload envelope processing failure": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-50/beacon.log.gz",
+      "node": 50,
+      "chain": 0,
+      "sha256": "46aa86db516332b057db0792d56e1a05f48b3a7cf8a720e18ecb4de4acb885ac",
+      "owned_slots": [
+        [
+          0,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1706727,
+        "outside_owned_slots": 1483,
+        "untimed_lines": 125,
+        "retained_lines": 1705119,
+        "matched_records": 1700438,
+        "observed_events": 1693384,
+        "accepted_events": 1693382,
+        "parsed_records": 1700438,
+        "explicit_decision_events": 1406604,
+        "multi_seat_ac_records": 903,
+        "logger_decision_events": 135521,
+        "ignored_aggregate_events": 5099,
+        "ignored/already_known": 5099,
+        "ac_replay_records": 801,
+        "ac_replay_acceptances": 801,
+        "ac_observation_without_acceptance": 2
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 12,
+        "Failed to find peers": 18,
+        "Sync Committee Message is too old to broadcast, discarding it": 20,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 58,
+        "Voting period before genesis + follow distance, using eth1data from head": 3
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-50/beacon.log.gz",
+      "node": 50,
+      "chain": 0,
+      "sha256": "a959be2cfc884cf96096caf2d5fab68b2835a003c5ebec4e90a8dcace18e7446",
+      "owned_slots": [
+        [
+          449,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 3496093,
+        "outside_owned_slots": 20116,
+        "untimed_lines": 2,
+        "retained_lines": 3475975,
+        "matched_records": 1719608,
+        "parsed_records": 1719608,
+        "observed_events": 1155764,
+        "accepted_events": 1155744,
+        "explicit_decision_events": 947673,
+        "logger_decision_events": 87225,
+        "ignored_aggregate_events": 4370,
+        "ignored/already_known": 4370,
+        "multi_seat_ac_records": 663,
+        "ac_replay_records": 12808,
+        "ac_replay_acceptances": 12808,
+        "ac_observation_without_acceptance": 20
+      },
+      "warnings": {
+        "Could not notify event feed of new chain head": 39,
+        "Could not notify event feed of new chain head_v2": 39,
+        "context canceled": 2,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 8,
+        "Could not notify event feed of head_v2 payload update": 26,
+        "Rolling back insertion of block with root 0x4e8651d67efa6da480a18e61bdedb9aab13d097658f18dd7ee985cefbea2c0dd due to processing error": 1,
+        "Rolling back insertion of block with root 0x43ba4459e766093e13f469d9265f06709479b5db5fedf639f3d07dacb5c68f6e due to processing error": 2,
+        "Could not handle p2p pubsub": 22,
+        "Could not get head dependent root to check canonical shuffle": 30,
+        "Rolling back insertion of block with root 0x350147ea733141bad816d41baf5efc31aa809b4a65bd88c4cacd024d866d563b due to processing error": 2,
+        "Rolling back insertion of block with root 0xb2534b0c19d3cf40763d5ba6eb9a957b1419f1cfeff096d56092e64929c63f09 due to processing error": 1,
+        "Rolling back insertion of block with root 0x19c8b4323caac547da76e4096747a97e2490023a534843564f621fb572cdb563 due to processing error": 1,
+        "Rolling back insertion of block with root 0x0d5a833c3bcc8c3505b18562cfc5952e43334cadb259e2767c0365f3fcbc8c50 due to processing error": 1,
+        "Rolling back insertion of block with root 0xd7112c3b50f53d55f1aee6a732520b3efa5a6d714267d649231f9e410ca78fce due to processing error": 1,
+        "Rolling back insertion of block with root 0xbc48db5544297d4dd9f48e29c0ec054fc3bf1ff32260d7ce4c2e68df9b80015c due to processing error": 1,
+        "Failed to process sidecars from execution from block": 1,
+        "Rolling back insertion of block with root 0x1e1cc8b4f3e4701d93b20f41d68b794a6c32e3ff3ae8d7584612dca80067ced1 due to processing error": 1,
+        "Rolling back insertion of block with root 0x55fee8aef0ff44af7f1a01ba04d5a06dd1069fe65e007df5861ece2e544c82f2 due to processing error": 2,
+        "Rolling back insertion of block with root 0x0f474f8c7ef14fdbd914d4fed4adca5d4b31525efe027321fd28504ef6a68c3d due to processing error": 2,
+        "Rolling back insertion of block with root 0x872129aa5d7379b195748743cf59774991967955ccff6ba1ce6abb575354282a due to processing error": 1,
+        "Rolling back insertion of block with root 0x9149f1d5553d7a8eeab7cb74a267afec2ca9b60b53d91debe7222e4eb48e86c8 due to processing error": 1,
+        "Rolling back insertion of block with root 0x63f5337ab1ea28387f089f127c0c123f0c1f1541c3f28f7ccd432cfd70e5146d due to processing error": 1,
+        "Rolling back insertion of block with root 0xbb1ff074d360de202f4d567009a85e36494800f5da37d186b5140b1d3b25fe26 due to processing error": 1,
+        "Rolling back insertion of block with root 0xa679d9787ef103f6a910a7592531e1c146d799567c1bd5d7a110bb54f8e6a587 due to processing error": 2,
+        "Rolling back insertion of block with root 0xc42a54079211773099d4131aaff31d48bfb5e15d98c526c6c1d369cde745cfb7 due to processing error": 1,
+        "Rolling back insertion of block with root 0x246324725be4a1d1a1f96fe23127bf5a75440194cd7e7e95cf8e19297b5f6416 due to processing error": 1,
+        "Rolling back insertion of block with root 0xcc7d3c4ea971845ee8f1aeb8c89e56dd9dffd2408bd4cbf863e6f7571587e2a3 due to processing error": 1,
+        "Rolling back insertion of block with root 0x49174aec36790df80db306a12dd2eff83b0662054f24a1b84a98a741b96451f8 due to processing error": 1,
+        "Rolling back insertion of block with root 0xa3bd977dead5d9987993fe76be382364dd69861e8636f5cda01c2593a83e0c08 due to processing error": 1,
+        "Rolling back insertion of block with root 0xc8543956632d59605212579b31f6bb00c782b2aa83473eafeed603ca2102de6c due to processing error": 1,
+        "Rolling back insertion of block with root 0x3c347ccc917a82fcac685100a209ab64ccd75d3843e9dabc121b7ee35e07c311 due to processing error": 1,
+        "Rolling back insertion of block with root 0x26d10b5e47a0170f4a3d3b1d4d5045eb9f6560fd010c7133ea84cdb4deb2e62c due to processing error": 1,
+        "Rolling back insertion of block with root 0xfbd7d1b64edf491c41106ad923306cb33c6a9ae6cc6988efec3fd5caa5ca22f2 due to processing error": 2,
+        "Rolling back insertion of block with root 0x26a6faf44a32750b17db375d12afc6a84135bf42bdf8c6c17eaf99f3c1140a02 due to processing error": 1,
+        "Rolling back insertion of block with root 0x8fa7d5cf9be128b887c828cf309d817ae8d6f2ec1eaec24a155fbd2ace2e6357 due to processing error": 1,
+        "Rolling back insertion of block with root 0x6a613813cfa2f4565a935dfbe7e0ca87aab4312753da13138fa5dc9118cbc574 due to processing error": 1,
+        "Bundled attestation rejected": 17
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-98/beacon.log.gz",
+      "node": 98,
+      "chain": 0,
+      "sha256": "5af073ecbd137e2f9aed4bcd9f291de2274d38a7463b99ccf515ba5af54c6899",
+      "owned_slots": [
+        [
+          30,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1132438,
+        "outside_owned_slots": 1296,
+        "untimed_lines": 107,
+        "retained_lines": 1131035,
+        "matched_records": 1099816,
+        "parsed_records": 1099816,
+        "multi_seat_ac_records": 768,
+        "observed_events": 1097824,
+        "accepted_events": 1063022,
+        "explicit_decision_events": 880768,
+        "logger_decision_events": 85905,
+        "ac_replay_records": 85,
+        "ignored_aggregate_events": 50,
+        "ignored/already_known": 50,
+        "ac_observation_without_acceptance": 34802,
+        "ac_replay_acceptances": 85
+      },
+      "warnings": {
+        "Failed to check builder status": 1,
+        "You are using an insecure gRPC server. If you are running your beacon node and validator on the same machines, you can ignore this message. If you want to know how to enable secure connections, see: https://docs.prylabs.network/docs/prysm-usage/secure-grpc": 1,
+        "Execution client is not syncing": 71,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 72,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 52,
+        "Expanding committee cache size from 4 to 32": 1,
+        "Could not process attestation for fork choice": 28,
+        "Sync Committee Message is too old to broadcast, discarding it": 387,
+        "Failed to find peers": 380,
+        "Reducing committee cache size from 32 to 4": 1,
+        "Voting period before genesis + follow distance, using eth1data from head": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-99/beacon.log.gz",
+      "node": 99,
+      "chain": 0,
+      "sha256": "60fd39ba660165d7d4da1e0beb927e8967f5a71faf3594fae71632e6268735d9",
+      "owned_slots": [
+        [
+          70,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1097196,
+        "outside_owned_slots": 1928,
+        "untimed_lines": 91,
+        "retained_lines": 1095177,
+        "matched_records": 1082999,
+        "parsed_records": 1082999,
+        "observed_events": 1079308,
+        "accepted_events": 1079308,
+        "multi_seat_ac_records": 551,
+        "explicit_decision_events": 895788,
+        "logger_decision_events": 87363,
+        "ignored_aggregate_events": 2452,
+        "ignored/already_known": 2452,
+        "ac_replay_records": 283,
+        "ac_replay_acceptances": 283
+      },
+      "warnings": {
+        "Expanding committee cache size from 4 to 32": 1,
+        "Execution client is not syncing": 37,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 37,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 44,
+        "Block retrieved for finalized checkpoint root is nil. Finalized event will not be emitted": 1,
+        "Reducing committee cache size from 32 to 4": 1,
+        "Voting period before genesis + follow distance, using eth1data from head": 2
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-200/beacon.log.gz",
+      "node": 200,
+      "chain": 0,
+      "sha256": "0a1f045e478ac211cbf03086f58ef1679567018fad3a3419df4f4300c6d105fb",
+      "owned_slots": [
+        [
+          0,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1706961,
+        "outside_owned_slots": 1533,
+        "untimed_lines": 127,
+        "retained_lines": 1705301,
+        "matched_records": 1700733,
+        "observed_events": 1693410,
+        "accepted_events": 1693406,
+        "parsed_records": 1700733,
+        "multi_seat_ac_records": 899,
+        "explicit_decision_events": 1406599,
+        "logger_decision_events": 135528,
+        "ignored_aggregate_events": 5979,
+        "ignored/already_known": 5979,
+        "ac_replay_records": 168,
+        "ac_replay_acceptances": 168,
+        "ac_observation_without_acceptance": 4
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 12,
+        "Failed to find peers": 19,
+        "Sync Committee Message is too old to broadcast, discarding it": 20,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 58,
+        "Voting period before genesis + follow distance, using eth1data from head": 4
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-1636-1641/prysm-geth-200/beacon.log",
+      "node": 200,
+      "chain": 0,
+      "sha256": "3af02cf1c9fd53a5cb6969d10b305e36a81317182c2fe560e0f33c2b4bff03f9",
+      "owned_slots": [
+        [
+          333,
+          355
+        ]
+      ],
+      "audit": {
+        "lines": 153961,
+        "outside_owned_slots": 12212,
+        "retained_lines": 141739,
+        "matched_records": 141296,
+        "observed_events": 140714,
+        "explicit_decision_events": 114798,
+        "accepted_events": 140714,
+        "parsed_records": 141296,
+        "ac_replay_records": 5,
+        "multi_seat_ac_records": 78,
+        "logger_decision_events": 11167,
+        "ignored_aggregate_events": 496,
+        "ignored/already_known": 496,
+        "untimed_lines": 10,
+        "ac_replay_acceptances": 5
+      },
+      "warnings": {
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 4
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-1641-1646/prysm-geth-200/beacon.log",
+      "node": 200,
+      "chain": 0,
+      "sha256": "1d235f02ee7a0b700b10864759387c50b37bfab16366cfd6ebc323e0e4997216",
+      "owned_slots": [
+        [
+          356,
+          379
+        ]
+      ],
+      "audit": {
+        "lines": 154088,
+        "outside_owned_slots": 6173,
+        "retained_lines": 147905,
+        "matched_records": 147391,
+        "observed_events": 146781,
+        "explicit_decision_events": 119697,
+        "accepted_events": 146781,
+        "parsed_records": 147391,
+        "multi_seat_ac_records": 72,
+        "logger_decision_events": 11664,
+        "ignored_aggregate_events": 520,
+        "ignored/already_known": 520,
+        "untimed_lines": 10,
+        "ac_replay_records": 6,
+        "ac_replay_acceptances": 6
+      },
+      "warnings": {
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 5
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-200/beacon.log.gz",
+      "node": 200,
+      "chain": 0,
+      "sha256": "a04823884f1a21df7765777a6db75da916588afc8512b58c9e0b4fce27485423",
+      "owned_slots": [
+        [
+          451,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 3197791,
+        "outside_owned_slots": 19965,
+        "untimed_lines": 2,
+        "retained_lines": 3177824,
+        "matched_records": 1609611,
+        "parsed_records": 1609611,
+        "observed_events": 1136633,
+        "accepted_events": 1136633,
+        "explicit_decision_events": 930512,
+        "logger_decision_events": 86408,
+        "ignored_aggregate_events": 3668,
+        "ignored/already_known": 3668,
+        "multi_seat_ac_records": 656,
+        "ac_replay_records": 12093,
+        "ac_replay_acceptances": 12093
+      },
+      "warnings": {
+        "Could not notify event feed of new chain head": 39,
+        "Could not notify event feed of new chain head_v2": 39,
+        "Could not notify event feed of head_v2 payload update": 28,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 12,
+        "Data columns still missing at slot end": 1,
+        "Rolling back insertion of block with root 0x350147ea733141bad816d41baf5efc31aa809b4a65bd88c4cacd024d866d563b due to processing error": 1,
+        "Could not get head dependent root to check canonical shuffle": 19,
+        "Rolling back insertion of block with root 0xb2534b0c19d3cf40763d5ba6eb9a957b1419f1cfeff096d56092e64929c63f09 due to processing error": 2,
+        "Could not handle p2p pubsub": 21,
+        "Rolling back insertion of block with root 0x19c8b4323caac547da76e4096747a97e2490023a534843564f621fb572cdb563 due to processing error": 2,
+        "Rolling back insertion of block with root 0x0d5a833c3bcc8c3505b18562cfc5952e43334cadb259e2767c0365f3fcbc8c50 due to processing error": 1,
+        "Rolling back insertion of block with root 0xd7112c3b50f53d55f1aee6a732520b3efa5a6d714267d649231f9e410ca78fce due to processing error": 1,
+        "Rolling back insertion of block with root 0xb71711847d783deffe93109f9072a38c73bb84e4f7ef3110469bd221a9882460 due to processing error": 1,
+        "Rolling back insertion of block with root 0x1e1cc8b4f3e4701d93b20f41d68b794a6c32e3ff3ae8d7584612dca80067ced1 due to processing error": 1,
+        "Rolling back insertion of block with root 0x55fee8aef0ff44af7f1a01ba04d5a06dd1069fe65e007df5861ece2e544c82f2 due to processing error": 1,
+        "Rolling back insertion of block with root 0x0f474f8c7ef14fdbd914d4fed4adca5d4b31525efe027321fd28504ef6a68c3d due to processing error": 1,
+        "Rolling back insertion of block with root 0x9149f1d5553d7a8eeab7cb74a267afec2ca9b60b53d91debe7222e4eb48e86c8 due to processing error": 1,
+        "Failed to process sidecars from execution from block": 1,
+        "Rolling back insertion of block with root 0xa679d9787ef103f6a910a7592531e1c146d799567c1bd5d7a110bb54f8e6a587 due to processing error": 2,
+        "Rolling back insertion of block with root 0xc42a54079211773099d4131aaff31d48bfb5e15d98c526c6c1d369cde745cfb7 due to processing error": 2,
+        "Rolling back insertion of block with root 0x246324725be4a1d1a1f96fe23127bf5a75440194cd7e7e95cf8e19297b5f6416 due to processing error": 1,
+        "Rolling back insertion of block with root 0xcc7d3c4ea971845ee8f1aeb8c89e56dd9dffd2408bd4cbf863e6f7571587e2a3 due to processing error": 2,
+        "Rolling back insertion of block with root 0x49174aec36790df80db306a12dd2eff83b0662054f24a1b84a98a741b96451f8 due to processing error": 2,
+        "Rolling back insertion of block with root 0xa3bd977dead5d9987993fe76be382364dd69861e8636f5cda01c2593a83e0c08 due to processing error": 1,
+        "Rolling back insertion of block with root 0x3c347ccc917a82fcac685100a209ab64ccd75d3843e9dabc121b7ee35e07c311 due to processing error": 2,
+        "Rolling back insertion of block with root 0x26d10b5e47a0170f4a3d3b1d4d5045eb9f6560fd010c7133ea84cdb4deb2e62c due to processing error": 2,
+        "Rolling back insertion of block with root 0xfbd7d1b64edf491c41106ad923306cb33c6a9ae6cc6988efec3fd5caa5ca22f2 due to processing error": 2,
+        "Rolling back insertion of block with root 0x26a6faf44a32750b17db375d12afc6a84135bf42bdf8c6c17eaf99f3c1140a02 due to processing error": 2,
+        "Rolling back insertion of block with root 0x8fa7d5cf9be128b887c828cf309d817ae8d6f2ec1eaec24a155fbd2ace2e6357 due to processing error": 1,
+        "Rolling back insertion of block with root 0x6a613813cfa2f4565a935dfbe7e0ca87aab4312753da13138fa5dc9118cbc574 due to processing error": 2,
+        "Bundled attestation rejected": 33
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-201/beacon.log.gz",
+      "node": 201,
+      "chain": 0,
+      "sha256": "3266fe59bd354054377d4dc4520a3c66c6fd3de077fea610c7eff2c56a355930",
+      "owned_slots": [
+        [
+          0,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1952891,
+        "outside_owned_slots": 4342,
+        "untimed_lines": 127,
+        "retained_lines": 1948422,
+        "matched_records": 1944812,
+        "rpc_recv_bytes": 5048822980,
+        "rpc_recv_intervals": 35024,
+        "rpc_send_bytes": 5240980997,
+        "rpc_send_intervals": 35024,
+        "rpc_drop_bytes": 22976037,
+        "rpc_drop_intervals": 35024,
+        "parsed_records": 1944812,
+        "observed_events": 1692718,
+        "accepted_events": 1692718,
+        "explicit_decision_events": 1413456,
+        "multi_seat_ac_records": 923,
+        "logger_decision_events": 136202,
+        "ignored_aggregate_events": 5207,
+        "ignored/already_known": 5207,
+        "ac_replay_records": 3416,
+        "ac_replay_acceptances": 3416
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 15,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 58
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-201/beacon.log.gz",
+      "node": 201,
+      "chain": 0,
+      "sha256": "f680ad3cd1df497f7b4ad8f58cf22ebfd89e446771b9d986afda2b419e8324a5",
+      "owned_slots": [
+        [
+          479,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 3056711,
+        "outside_owned_slots": 21929,
+        "untimed_lines": 2,
+        "retained_lines": 3034780,
+        "matched_records": 1623441,
+        "rpc_recv_bytes": 1977517794,
+        "rpc_recv_intervals": 19799,
+        "rpc_send_bytes": 2054110898,
+        "rpc_send_intervals": 19799,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 19799,
+        "parsed_records": 1623441,
+        "observed_events": 969231,
+        "accepted_events": 969226,
+        "explicit_decision_events": 809679,
+        "logger_decision_events": 76296,
+        "ignored_aggregate_events": 3143,
+        "ignored/already_known": 3143,
+        "multi_seat_ac_records": 531,
+        "ac_replay_records": 1646,
+        "ac_observation_without_acceptance": 5,
+        "ac_replay_acceptances": 1646
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 6,
+        "Could not notify event feed of new chain head": 16,
+        "Could not notify event feed of new chain head_v2": 16,
+        "Bundled attestation rejected": 15,
+        "Failed to process sidecars from execution from block": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-1746-1751/prysm-geth-201/beacon.log",
+      "node": 201,
+      "chain": 0,
+      "sha256": "dc4d278021cab4662f7ed8302addf2fbb41c7715f049335bc130fd5cc4e39d88",
+      "owned_slots": [
+        [
+          684,
+          707
+        ]
+      ],
+      "audit": {
+        "lines": 522180,
+        "outside_owned_slots": 20994,
+        "retained_lines": 501186,
+        "matched_records": 254362,
+        "rpc_recv_bytes": 252249486,
+        "rpc_recv_intervals": 2880,
+        "rpc_send_bytes": 260334193,
+        "rpc_send_intervals": 2880,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 2880,
+        "parsed_records": 254362,
+        "observed_events": 145044,
+        "explicit_decision_events": 120859,
+        "accepted_events": 145044,
+        "multi_seat_ac_records": 73,
+        "ignored_aggregate_events": 512,
+        "ignored/already_known": 512,
+        "logger_decision_events": 11791,
+        "ac_replay_records": 160,
+        "ac_replay_acceptances": 160
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-202/beacon.log.gz",
+      "node": 202,
+      "chain": 0,
+      "sha256": "73705eb005587cad75e9a32a69b65f5dab60b2c269debcfc50d1612d0e7fab3c",
+      "owned_slots": [
+        [
+          0,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1954220,
+        "outside_owned_slots": 4306,
+        "untimed_lines": 127,
+        "retained_lines": 1949787,
+        "matched_records": 1946404,
+        "rpc_recv_bytes": 5786147839,
+        "rpc_recv_intervals": 34971,
+        "rpc_send_bytes": 5458440692,
+        "rpc_send_intervals": 34971,
+        "rpc_drop_bytes": 15401487,
+        "rpc_drop_intervals": 34971,
+        "parsed_records": 1946404,
+        "observed_events": 1692876,
+        "accepted_events": 1692872,
+        "explicit_decision_events": 1413612,
+        "multi_seat_ac_records": 942,
+        "logger_decision_events": 136199,
+        "ignored_aggregate_events": 3953,
+        "ignored/already_known": 3953,
+        "ac_replay_records": 5938,
+        "ac_replay_acceptances": 5938,
+        "ac_observation_without_acceptance": 4
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 11,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 58
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-1636-1641/prysm-geth-202/beacon.log",
+      "node": 202,
+      "chain": 0,
+      "sha256": "42799b538c0c617ac6785692f0cd3c83108c7a118fd7be2c169b55444f865046",
+      "owned_slots": [
+        [
+          333,
+          356
+        ]
+      ],
+      "audit": {
+        "lines": 178908,
+        "outside_owned_slots": 6989,
+        "retained_lines": 171909,
+        "matched_records": 171426,
+        "rpc_recv_bytes": 488088827,
+        "rpc_recv_intervals": 2880,
+        "rpc_send_bytes": 475150427,
+        "rpc_send_intervals": 2880,
+        "rpc_drop_bytes": 2550,
+        "rpc_drop_intervals": 2880,
+        "parsed_records": 171426,
+        "observed_events": 144414,
+        "explicit_decision_events": 120363,
+        "accepted_events": 144414,
+        "multi_seat_ac_records": 91,
+        "ac_replay_records": 740,
+        "untimed_lines": 10,
+        "logger_decision_events": 11716,
+        "ignored_aggregate_events": 346,
+        "ignored/already_known": 346,
+        "ac_replay_acceptances": 740
+      },
+      "warnings": {
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 5
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-1641-1646/prysm-geth-202/beacon.log",
+      "node": 202,
+      "chain": 0,
+      "sha256": "6aa09a5c85c2802c9eec3b71f4a9b70d7595bc8729292b3576c96ba8bf197844",
+      "owned_slots": [
+        [
+          357,
+          379
+        ]
+      ],
+      "audit": {
+        "lines": 179952,
+        "outside_owned_slots": 14515,
+        "retained_lines": 165427,
+        "matched_records": 164969,
+        "rpc_recv_bytes": 485035927,
+        "rpc_recv_intervals": 2760,
+        "rpc_send_bytes": 441755491,
+        "rpc_send_intervals": 2760,
+        "rpc_drop_bytes": 11505430,
+        "rpc_drop_intervals": 2760,
+        "parsed_records": 164969,
+        "observed_events": 138361,
+        "explicit_decision_events": 115292,
+        "accepted_events": 138361,
+        "multi_seat_ac_records": 73,
+        "ac_replay_records": 656,
+        "ignored_aggregate_events": 345,
+        "ignored/already_known": 345,
+        "logger_decision_events": 11237,
+        "untimed_lines": 10,
+        "ac_replay_acceptances": 656
+      },
+      "warnings": {
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 5,
+        "": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-1706-1711/prysm-geth-202/beacon.log",
+      "node": 202,
+      "chain": 0,
+      "sha256": "edd824549a402696a1ebcffcafe3b7426b3555b8cdcfc6a30192cfa8f3e25664",
+      "owned_slots": [
+        [
+          483,
+          506
+        ]
+      ],
+      "audit": {
+        "lines": 177508,
+        "outside_owned_slots": 7051,
+        "retained_lines": 170449,
+        "matched_records": 169920,
+        "rpc_recv_bytes": 404822443,
+        "rpc_recv_intervals": 2875,
+        "rpc_send_bytes": 393463945,
+        "rpc_send_intervals": 2875,
+        "rpc_drop_bytes": 3328790,
+        "rpc_drop_intervals": 2875,
+        "parsed_records": 169920,
+        "observed_events": 142434,
+        "explicit_decision_events": 119457,
+        "accepted_events": 142434,
+        "ac_replay_records": 590,
+        "multi_seat_ac_records": 94,
+        "untimed_lines": 8,
+        "logger_decision_events": 10761,
+        "ignored_aggregate_events": 461,
+        "ignored/already_known": 461,
+        "ac_replay_acceptances": 590
+      },
+      "warnings": {
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 5
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-202/beacon.log.gz",
+      "node": 202,
+      "chain": 0,
+      "sha256": "e1adfa525c5c39432cd3fe6b5641c8fd0f54823b58e72bd90b74cf2860740274",
+      "owned_slots": [
+        [
+          510,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 2472655,
+        "outside_owned_slots": 21524,
+        "untimed_lines": 2,
+        "retained_lines": 2451129,
+        "matched_records": 1369185,
+        "parsed_records": 1369185,
+        "rpc_recv_bytes": 1574648190,
+        "rpc_recv_intervals": 15939,
+        "rpc_send_bytes": 1152481811,
+        "rpc_send_intervals": 15939,
+        "rpc_drop_bytes": 24125,
+        "rpc_drop_intervals": 15939,
+        "observed_events": 768018,
+        "accepted_events": 767359,
+        "explicit_decision_events": 638739,
+        "multi_seat_ac_records": 466,
+        "logger_decision_events": 61753,
+        "ac_replay_records": 9346,
+        "ignored_aggregate_events": 2665,
+        "ignored/already_known": 2665,
+        "ac_replay_acceptances": 9346,
+        "ac_observation_without_acceptance": 659
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 6,
+        "Could not notify event feed of new chain head_v2": 18,
+        "Could not notify event feed of new chain head": 18,
+        "Submit queue full, dropping attestation": 9514,
+        "Failed to process sidecars from execution from block": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-1746-1751/prysm-geth-202/beacon.log",
+      "node": 202,
+      "chain": 0,
+      "sha256": "faa9204d5fecd736db3033fa27d2c5078063323962f3049decbf00ca0226f69a",
+      "owned_slots": [
+        [
+          684,
+          707
+        ]
+      ],
+      "audit": {
+        "lines": 523804,
+        "outside_owned_slots": 20979,
+        "retained_lines": 502825,
+        "matched_records": 258024,
+        "parsed_records": 258024,
+        "observed_events": 145044,
+        "explicit_decision_events": 120859,
+        "accepted_events": 145044,
+        "rpc_recv_bytes": 251858401,
+        "rpc_recv_intervals": 2856,
+        "rpc_send_bytes": 207677682,
+        "rpc_send_intervals": 2856,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 2856,
+        "ac_replay_records": 799,
+        "multi_seat_ac_records": 74,
+        "logger_decision_events": 11792,
+        "ignored_aggregate_events": 533,
+        "ignored/already_known": 533,
+        "ac_replay_acceptances": 799
+      },
+      "warnings": {
+        "Submit queue full, dropping attestation": 2567
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-203/beacon.log.gz",
+      "node": 203,
+      "chain": 0,
+      "sha256": "d99478b3bcffc514e0a4029ee1d0a6c0bb2655222af33b1b21eac97eabd32e07",
+      "owned_slots": [
+        [
+          0,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1951761,
+        "outside_owned_slots": 4388,
+        "untimed_lines": 127,
+        "retained_lines": 1947246,
+        "matched_records": 1944113,
+        "rpc_recv_bytes": 4772542181,
+        "rpc_recv_intervals": 35039,
+        "rpc_send_bytes": 4605295536,
+        "rpc_send_intervals": 35039,
+        "rpc_drop_bytes": 120280938,
+        "rpc_drop_intervals": 35039,
+        "parsed_records": 1944113,
+        "observed_events": 1692885,
+        "accepted_events": 1692879,
+        "explicit_decision_events": 1413617,
+        "multi_seat_ac_records": 903,
+        "ignored_aggregate_events": 4942,
+        "ignored/already_known": 4942,
+        "logger_decision_events": 136199,
+        "ac_replay_records": 385,
+        "ac_replay_acceptances": 385,
+        "ac_observation_without_acceptance": 6
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 12,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 58
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-203/beacon.log.gz",
+      "node": 203,
+      "chain": 0,
+      "sha256": "adc026b32e8d411ebb850762ad22a4b7397b397249baed47e1d5c3255de60832",
+      "owned_slots": [
+        [
+          541,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 1995671,
+        "outside_owned_slots": 20671,
+        "untimed_lines": 2,
+        "retained_lines": 1974998,
+        "matched_records": 1056661,
+        "rpc_recv_bytes": 1071141010,
+        "rpc_recv_intervals": 12360,
+        "rpc_send_bytes": 1268436559,
+        "rpc_send_intervals": 12360,
+        "rpc_drop_bytes": 836,
+        "rpc_drop_intervals": 12360,
+        "parsed_records": 1056661,
+        "observed_events": 610229,
+        "accepted_events": 609337,
+        "logger_decision_events": 48025,
+        "ignored_aggregate_events": 2116,
+        "ignored/already_known": 2116,
+        "multi_seat_ac_records": 333,
+        "explicit_decision_events": 509024,
+        "ac_replay_records": 1021,
+        "ac_observation_without_acceptance": 892,
+        "ac_replay_acceptances": 1021
+      },
+      "warnings": {
+        "Could not notify event feed of new chain head": 15,
+        "Could not notify event feed of new chain head_v2": 15,
+        "Could not notify event feed of head_v2 payload update": 2,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 5,
+        "Rolling back insertion of block with root 0xf571611e919e7b51745221975f2da954720097174c7855265b4764af4e07fd8f due to processing error": 1,
+        "Could not handle p2p pubsub": 1,
+        "": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-257/beacon.log.gz",
+      "node": 257,
+      "chain": 0,
+      "sha256": "e94c12cd4d47d4d1916249002bc8e671b3052a7a971b7f1e986fed6a5a5755df",
+      "owned_slots": [
+        [
+          0,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1732979,
+        "outside_owned_slots": 865,
+        "untimed_lines": 127,
+        "retained_lines": 1731987,
+        "matched_records": 1728190,
+        "parsed_records": 1728190,
+        "observed_events": 1692629,
+        "accepted_events": 1692624,
+        "explicit_decision_events": 1413593,
+        "multi_seat_ac_records": 1088,
+        "logger_decision_events": 135966,
+        "ignored_aggregate_events": 4524,
+        "ignored/already_known": 4524,
+        "ac_replay_records": 30192,
+        "ac_replay_acceptances": 30192,
+        "ac_observation_without_acceptance": 5
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 10,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 58
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-257/beacon.log.gz",
+      "node": 257,
+      "chain": 0,
+      "sha256": "34caab4c9f7a1162ad5a0c2e4127c3c7a2b83cebac6dd4d706a1c8b7fcf8643a",
+      "owned_slots": [
+        [
+          512,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 1982375,
+        "outside_owned_slots": 19473,
+        "untimed_lines": 2,
+        "retained_lines": 1962900,
+        "matched_records": 1167781,
+        "parsed_records": 1167781,
+        "observed_events": 583426,
+        "explicit_decision_events": 464544,
+        "accepted_events": 581367,
+        "multi_seat_ac_records": 405,
+        "logger_decision_events": 56449,
+        "ignored_aggregate_events": 1271,
+        "ignored/already_known": 1271,
+        "ac_replay_records": 2457,
+        "ac_observation_without_acceptance": 2059,
+        "ac_replay_acceptances": 2457
+      },
+      "warnings": {
+        "You are using an insecure gRPC server. If you are running your beacon node and validator on the same machines, you can ignore this message. If you want to know how to enable secure connections, see: https://docs.prylabs.network/docs/prysm-usage/secure-grpc": 1,
+        "Skip processing batched blocks": 1,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 7,
+        "Execution payload envelope processing failure": 1,
+        "Submit queue full, dropping attestation": 138731,
+        "Validation queue full, dropping bundle": 84680,
+        "Dropping incoming partial attestation RPC, queue full": 15966
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-263/beacon.log.gz",
+      "node": 263,
+      "chain": 0,
+      "sha256": "b908024c55801d2da816ccb661484f0e2599a2e6a8d903610ed694c53564670e",
+      "owned_slots": [
+        [
+          0,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1704163,
+        "outside_owned_slots": 1956,
+        "untimed_lines": 125,
+        "retained_lines": 1702082,
+        "matched_records": 1675294,
+        "parsed_records": 1675294,
+        "observed_events": 1649419,
+        "accepted_events": 1647823,
+        "explicit_decision_events": 1391576,
+        "multi_seat_ac_records": 1033,
+        "logger_decision_events": 115212,
+        "ignored_aggregate_events": 2222,
+        "ignored/already_known": 2222,
+        "ac_replay_records": 22802,
+        "ac_replay_acceptances": 22802,
+        "ac_observation_without_acceptance": 1596
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 15,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 58,
+        "Could not update next slot state cache": 1,
+        "Could not handle epoch boundary": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-263/beacon.log.gz",
+      "node": 263,
+      "chain": 0,
+      "sha256": "8ba096d57024359467749d370d3b5a08f57e612480357d4760d17ba2e5a2feee",
+      "owned_slots": [
+        [
+          547,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 971061,
+        "outside_owned_slots": 10851,
+        "untimed_lines": 2,
+        "retained_lines": 960208,
+        "matched_records": 590845,
+        "parsed_records": 590845,
+        "observed_events": 237942,
+        "accepted_events": 232459,
+        "explicit_decision_events": 159683,
+        "multi_seat_ac_records": 289,
+        "logger_decision_events": 36508,
+        "ignored_aggregate_events": 358,
+        "ignored/already_known": 358,
+        "ac_replay_records": 7678,
+        "duplicate_ac_observations": 249,
+        "ac_observation_without_acceptance": 5483,
+        "ac_replay_acceptances": 7678
+      },
+      "warnings": {
+        "You are using an insecure gRPC server. If you are running your beacon node and validator on the same machines, you can ignore this message. If you want to know how to enable secure connections, see: https://docs.prylabs.network/docs/prysm-usage/secure-grpc": 1,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 14,
+        "Submit queue full, dropping attestation": 30910,
+        "Dropping incoming partial attestation RPC, queue full": 2028,
+        "Validation queue full, dropping bundle": 102460,
+        "Data columns still missing at slot end": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-305/beacon.log.gz",
+      "node": 305,
+      "chain": 0,
+      "sha256": "d1d39de8e7f2d7713ccdece884d58a3e7b5d060a5f608d42e18caa8af0162475",
+      "owned_slots": [
+        [
+          0,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1725865,
+        "outside_owned_slots": 1215,
+        "untimed_lines": 127,
+        "retained_lines": 1724523,
+        "matched_records": 1721038,
+        "parsed_records": 1721038,
+        "observed_events": 1692890,
+        "accepted_events": 1692886,
+        "explicit_decision_events": 1413609,
+        "multi_seat_ac_records": 1059,
+        "logger_decision_events": 136210,
+        "ignored_aggregate_events": 3810,
+        "ignored/already_known": 3810,
+        "ac_replay_records": 23487,
+        "ac_replay_acceptances": 23487,
+        "ac_observation_without_acceptance": 4
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 12,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 58
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-305/beacon.log.gz",
+      "node": 305,
+      "chain": 0,
+      "sha256": "665ec9a7e46937d4102af4e7fd5c1dce802c2c5b24a2ac057c1d9dbb29c75121",
+      "owned_slots": [
+        [
+          452,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 3594826,
+        "outside_owned_slots": 20326,
+        "untimed_lines": 2,
+        "retained_lines": 3574498,
+        "matched_records": 1900723,
+        "parsed_records": 1900723,
+        "observed_events": 1104671,
+        "accepted_events": 1104671,
+        "explicit_decision_events": 923237,
+        "logger_decision_events": 85539,
+        "ac_replay_records": 17525,
+        "ignored_aggregate_events": 3822,
+        "ignored/already_known": 3822,
+        "multi_seat_ac_records": 682,
+        "ac_replay_acceptances": 17525
+      },
+      "warnings": {
+        "You are using an insecure gRPC server. If you are running your beacon node and validator on the same machines, you can ignore this message. If you want to know how to enable secure connections, see: https://docs.prylabs.network/docs/prysm-usage/secure-grpc": 1,
+        "Could not notify event feed of new chain head_v2": 39,
+        "Could not notify event feed of new chain head": 39,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 14,
+        "Could not notify event feed of head_v2 payload update": 26,
+        "Rolling back insertion of block with root 0xbc48db5544297d4dd9f48e29c0ec054fc3bf1ff32260d7ce4c2e68df9b80015c due to processing error": 1,
+        "Could not handle p2p pubsub": 18,
+        "Submit queue full, dropping attestation": 117607,
+        "Rolling back insertion of block with root 0xb71711847d783deffe93109f9072a38c73bb84e4f7ef3110469bd221a9882460 due to processing error": 2,
+        "Rolling back insertion of block with root 0x1e1cc8b4f3e4701d93b20f41d68b794a6c32e3ff3ae8d7584612dca80067ced1 due to processing error": 1,
+        "Rolling back insertion of block with root 0x55fee8aef0ff44af7f1a01ba04d5a06dd1069fe65e007df5861ece2e544c82f2 due to processing error": 2,
+        "Rolling back insertion of block with root 0x0f474f8c7ef14fdbd914d4fed4adca5d4b31525efe027321fd28504ef6a68c3d due to processing error": 1,
+        "Rolling back insertion of block with root 0x872129aa5d7379b195748743cf59774991967955ccff6ba1ce6abb575354282a due to processing error": 2,
+        "Rolling back insertion of block with root 0x9149f1d5553d7a8eeab7cb74a267afec2ca9b60b53d91debe7222e4eb48e86c8 due to processing error": 1,
+        "Dropping incoming partial attestation RPC, queue full": 7167,
+        "Rolling back insertion of block with root 0xa679d9787ef103f6a910a7592531e1c146d799567c1bd5d7a110bb54f8e6a587 due to processing error": 2,
+        "Rolling back insertion of block with root 0xc42a54079211773099d4131aaff31d48bfb5e15d98c526c6c1d369cde745cfb7 due to processing error": 2,
+        "Rolling back insertion of block with root 0x246324725be4a1d1a1f96fe23127bf5a75440194cd7e7e95cf8e19297b5f6416 due to processing error": 1,
+        "Rolling back insertion of block with root 0xcc7d3c4ea971845ee8f1aeb8c89e56dd9dffd2408bd4cbf863e6f7571587e2a3 due to processing error": 1,
+        "Rolling back insertion of block with root 0x49174aec36790df80db306a12dd2eff83b0662054f24a1b84a98a741b96451f8 due to processing error": 1,
+        "Rolling back insertion of block with root 0xa3bd977dead5d9987993fe76be382364dd69861e8636f5cda01c2593a83e0c08 due to processing error": 1,
+        "Rolling back insertion of block with root 0x3c347ccc917a82fcac685100a209ab64ccd75d3843e9dabc121b7ee35e07c311 due to processing error": 1,
+        "Rolling back insertion of block with root 0x26d10b5e47a0170f4a3d3b1d4d5045eb9f6560fd010c7133ea84cdb4deb2e62c due to processing error": 1,
+        "Rolling back insertion of block with root 0xfbd7d1b64edf491c41106ad923306cb33c6a9ae6cc6988efec3fd5caa5ca22f2 due to processing error": 1,
+        "Rolling back insertion of block with root 0x26a6faf44a32750b17db375d12afc6a84135bf42bdf8c6c17eaf99f3c1140a02 due to processing error": 1,
+        "Rolling back insertion of block with root 0x8fa7d5cf9be128b887c828cf309d817ae8d6f2ec1eaec24a155fbd2ace2e6357 due to processing error": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-312/beacon.log.gz",
+      "node": 312,
+      "chain": 0,
+      "sha256": "a5acd7581ad3c913a3568f9c311f9f6a4aeb1d01a95c5b6f4c1af9732464e526",
+      "owned_slots": [
+        [
+          0,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1707056,
+        "outside_owned_slots": 639,
+        "untimed_lines": 127,
+        "retained_lines": 1706290,
+        "matched_records": 1682793,
+        "parsed_records": 1682793,
+        "observed_events": 1652308,
+        "accepted_events": 1652096,
+        "explicit_decision_events": 1392242,
+        "multi_seat_ac_records": 1087,
+        "logger_decision_events": 116996,
+        "ignored_aggregate_events": 2510,
+        "ignored/already_known": 2510,
+        "ac_replay_records": 27120,
+        "ac_replay_acceptances": 27120,
+        "ac_observation_without_acceptance": 212
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 20,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 58
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-312/beacon.log.gz",
+      "node": 312,
+      "chain": 0,
+      "sha256": "a591362085b792dd2b4729b8bd8e8c96826d8605975f28cb58e0be5caccf9c1a",
+      "owned_slots": [
+        [
+          515,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 973314,
+        "outside_owned_slots": 11887,
+        "retained_lines": 961425,
+        "untimed_lines": 2,
+        "matched_records": 319096,
+        "parsed_records": 319096,
+        "observed_events": 74372,
+        "explicit_decision_events": 7688,
+        "accepted_events": 63496,
+        "multi_seat_ac_records": 648,
+        "logger_decision_events": 8968,
+        "ignored_aggregate_events": 1,
+        "ignored/already_known": 1,
+        "ac_replay_records": 46560,
+        "ac_replay_acceptances": 46560,
+        "ac_observation_without_acceptance": 10876
+      },
+      "warnings": {
+        "You are using an insecure gRPC server. If you are running your beacon node and validator on the same machines, you can ignore this message. If you want to know how to enable secure connections, see: https://docs.prylabs.network/docs/prysm-usage/secure-grpc": 1,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 37,
+        "Validation queue full, dropping bundle": 12201,
+        "Could not update epoch boundary caches": 4,
+        "Dropping incoming partial attestation RPC, queue full": 824,
+        "Could not update next slot state cache": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/node-355-start-1646/beacon.log.gz",
+      "node": 355,
+      "chain": 0,
+      "sha256": "732a73cb714a0612b1c79f1335fe4e41280fdda2a84bf2d5bd6ae7aaef79e784",
+      "owned_slots": [
+        [
+          0,
+          379
+        ]
+      ],
+      "audit": {
+        "lines": 1852399,
+        "outside_owned_slots": 779,
+        "untimed_lines": 163,
+        "retained_lines": 1851457,
+        "matched_records": 1795705,
+        "parsed_records": 1795705,
+        "observed_events": 1785490,
+        "accepted_events": 1762430,
+        "explicit_decision_events": 1469029,
+        "multi_seat_ac_records": 1124,
+        "logger_decision_events": 142163,
+        "ignored_aggregate_events": 4766,
+        "ignored/already_known": 4766,
+        "ac_replay_records": 4320,
+        "ac_replay_acceptances": 4320,
+        "ac_observation_without_acceptance": 23060
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 78,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 76,
+        "Execution client is not syncing": 33,
+        "Execution payload envelope processing failure": 4
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-355/beacon.log.gz",
+      "node": 355,
+      "chain": 0,
+      "sha256": "b4d5e0e25faa3b3535a1d20c44396e575dc64782db356d7d1143ae06375c4ea0",
+      "owned_slots": [
+        [
+          451,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 3588828,
+        "outside_owned_slots": 18811,
+        "untimed_lines": 2,
+        "retained_lines": 3570015,
+        "matched_records": 1707221,
+        "parsed_records": 1707221,
+        "observed_events": 1092886,
+        "accepted_events": 1092434,
+        "explicit_decision_events": 915216,
+        "logger_decision_events": 84318,
+        "ignored_aggregate_events": 4064,
+        "ignored/already_known": 4064,
+        "multi_seat_ac_records": 582,
+        "ac_replay_records": 1423,
+        "ac_observation_without_acceptance": 452,
+        "ac_replay_acceptances": 1423
+      },
+      "warnings": {
+        "You are using an insecure gRPC server. If you are running your beacon node and validator on the same machines, you can ignore this message. If you want to know how to enable secure connections, see: https://docs.prylabs.network/docs/prysm-usage/secure-grpc": 1,
+        "Execution client is not syncing": 6,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 13,
+        "Data columns still missing at slot end": 1,
+        "Bundled attestation rejected": 14
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/full-start-1628/prysm-geth-405/beacon.log.gz",
+      "node": 405,
+      "chain": 0,
+      "sha256": "b5392cfadd9cb4ba52f34f0972665e67bc5862e9732a50fbb1e3ee2ae5b056c2",
+      "owned_slots": [
+        [
+          0,
+          291
+        ]
+      ],
+      "audit": {
+        "lines": 1703161,
+        "outside_owned_slots": 1503,
+        "untimed_lines": 127,
+        "retained_lines": 1701531,
+        "matched_records": 1698413,
+        "parsed_records": 1698413,
+        "observed_events": 1692878,
+        "accepted_events": 1692878,
+        "explicit_decision_events": 1413617,
+        "multi_seat_ac_records": 902,
+        "ignored_aggregate_events": 4051,
+        "ignored/already_known": 4051,
+        "logger_decision_events": 136197,
+        "ac_replay_records": 638,
+        "ac_replay_acceptances": 638
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 10,
+        "Failed to call relayer status endpoint, perhaps mev-boost or relayers are down": 58
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-405/beacon.log.gz",
+      "node": 405,
+      "chain": 0,
+      "sha256": "b725b83810880fa3dabed2c9d1586647b630a56bfd67720a627021aef6ec08ba",
+      "owned_slots": [
+        [
+          454,
+          643
+        ]
+      ],
+      "audit": {
+        "lines": 3296097,
+        "outside_owned_slots": 19451,
+        "untimed_lines": 2,
+        "retained_lines": 3276644,
+        "matched_records": 1633978,
+        "parsed_records": 1633978,
+        "observed_events": 1111461,
+        "accepted_events": 1111461,
+        "multi_seat_ac_records": 632,
+        "explicit_decision_events": 929098,
+        "ac_replay_records": 10324,
+        "logger_decision_events": 85964,
+        "ignored_aggregate_events": 3635,
+        "ignored/already_known": 3635,
+        "ac_replay_acceptances": 10324
+      },
+      "warnings": {
+        "You are using an insecure gRPC server. If you are running your beacon node and validator on the same machines, you can ignore this message. If you want to know how to enable secure connections, see: https://docs.prylabs.network/docs/prysm-usage/secure-grpc": 1,
+        "Could not notify event feed of new chain head": 39,
+        "Could not notify event feed of new chain head_v2": 39,
+        "Could not notify event feed of head_v2 payload update": 21,
+        "Rolling back insertion of block with root 0x0d5a833c3bcc8c3505b18562cfc5952e43334cadb259e2767c0365f3fcbc8c50 due to processing error": 1,
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 11,
+        "Rolling back insertion of block with root 0xd7112c3b50f53d55f1aee6a732520b3efa5a6d714267d649231f9e410ca78fce due to processing error": 1,
+        "Could not handle p2p pubsub": 20,
+        "Rolling back insertion of block with root 0xb71711847d783deffe93109f9072a38c73bb84e4f7ef3110469bd221a9882460 due to processing error": 2,
+        "Rolling back insertion of block with root 0x1e1cc8b4f3e4701d93b20f41d68b794a6c32e3ff3ae8d7584612dca80067ced1 due to processing error": 2,
+        "Rolling back insertion of block with root 0x55fee8aef0ff44af7f1a01ba04d5a06dd1069fe65e007df5861ece2e544c82f2 due to processing error": 2,
+        "Rolling back insertion of block with root 0x0f474f8c7ef14fdbd914d4fed4adca5d4b31525efe027321fd28504ef6a68c3d due to processing error": 2,
+        "Rolling back insertion of block with root 0x872129aa5d7379b195748743cf59774991967955ccff6ba1ce6abb575354282a due to processing error": 2,
+        "Rolling back insertion of block with root 0x9149f1d5553d7a8eeab7cb74a267afec2ca9b60b53d91debe7222e4eb48e86c8 due to processing error": 1,
+        "Submit queue full, dropping attestation": 788,
+        "Rolling back insertion of block with root 0xbb1ff074d360de202f4d567009a85e36494800f5da37d186b5140b1d3b25fe26 due to processing error": 2,
+        "Rolling back insertion of block with root 0xa679d9787ef103f6a910a7592531e1c146d799567c1bd5d7a110bb54f8e6a587 due to processing error": 2,
+        "Rolling back insertion of block with root 0xc42a54079211773099d4131aaff31d48bfb5e15d98c526c6c1d369cde745cfb7 due to processing error": 2,
+        "Rolling back insertion of block with root 0x246324725be4a1d1a1f96fe23127bf5a75440194cd7e7e95cf8e19297b5f6416 due to processing error": 1,
+        "Rolling back insertion of block with root 0xcc7d3c4ea971845ee8f1aeb8c89e56dd9dffd2408bd4cbf863e6f7571587e2a3 due to processing error": 2,
+        "Rolling back insertion of block with root 0x49174aec36790df80db306a12dd2eff83b0662054f24a1b84a98a741b96451f8 due to processing error": 2,
+        "Rolling back insertion of block with root 0xa3bd977dead5d9987993fe76be382364dd69861e8636f5cda01c2593a83e0c08 due to processing error": 1,
+        "Rolling back insertion of block with root 0x3c347ccc917a82fcac685100a209ab64ccd75d3843e9dabc121b7ee35e07c311 due to processing error": 2,
+        "Rolling back insertion of block with root 0x26d10b5e47a0170f4a3d3b1d4d5045eb9f6560fd010c7133ea84cdb4deb2e62c due to processing error": 2,
+        "Rolling back insertion of block with root 0xfbd7d1b64edf491c41106ad923306cb33c6a9ae6cc6988efec3fd5caa5ca22f2 due to processing error": 2,
+        "Rolling back insertion of block with root 0x26a6faf44a32750b17db375d12afc6a84135bf42bdf8c6c17eaf99f3c1140a02 due to processing error": 2,
+        "Rolling back insertion of block with root 0x8fa7d5cf9be128b887c828cf309d817ae8d6f2ec1eaec24a155fbd2ace2e6357 due to processing error": 1,
+        "Rolling back insertion of block with root 0x6a613813cfa2f4565a935dfbe7e0ca87aab4312753da13138fa5dc9118cbc574 due to processing error": 2
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-1951-1956/prysm-geth-1/beacon.log",
+      "node": 1,
+      "chain": 1,
+      "sha256": "a863f1e1001365de3175923b1111a570fd62f97742fc9134145738ad67b76af9",
+      "owned_slots": [
+        [
+          109,
+          132
+        ]
+      ],
+      "audit": {
+        "lines": 315407,
+        "outside_owned_slots": 12588,
+        "retained_lines": 302819,
+        "matched_records": 302205,
+        "observed_events": 264280,
+        "accepted_events": 264280,
+        "parsed_records": 302205,
+        "explicit_decision_events": 237487,
+        "rpc_recv_bytes": 767210422,
+        "rpc_recv_intervals": 2879,
+        "rpc_send_bytes": 701659582,
+        "rpc_send_intervals": 2879,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 2879,
+        "multi_seat_ac_records": 47,
+        "ignored_aggregate_events": 6634,
+        "ignored/already_known": 6634,
+        "logger_decision_events": 11860,
+        "ac_replay_records": 54,
+        "ac_replay_acceptances": 54
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2020-2025/prysm-geth-1/beacon.log",
+      "node": 1,
+      "chain": 1,
+      "sha256": "78038b46a291a9f7a9ca8a28028ae925bfb12fd86d9e755ebb72a99a76feca19",
+      "owned_slots": [
+        [
+          251,
+          274
+        ]
+      ],
+      "audit": {
+        "lines": 373703,
+        "retained_lines": 357259,
+        "matched_records": 356025,
+        "observed_events": 268081,
+        "accepted_events": 268081,
+        "parsed_records": 356025,
+        "explicit_decision_events": 238798,
+        "rpc_recv_bytes": 821677891,
+        "rpc_recv_intervals": 2853,
+        "rpc_send_bytes": 723105848,
+        "rpc_send_intervals": 2853,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 2853,
+        "ignored_aggregate_events": 6837,
+        "ignored/already_known": 6837,
+        "multi_seat_ac_records": 34,
+        "logger_decision_events": 11986,
+        "ac_replay_records": 45,
+        "outside_owned_slots": 16444,
+        "ac_replay_acceptances": 45
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2026-2036/prysm-geth-1/beacon.log",
+      "node": 1,
+      "chain": 1,
+      "sha256": "4a1449fc0e2ac0efbb91253d644ac77d5709dc95c4998628731449bfb4b1c5e0",
+      "owned_slots": [
+        [
+          284,
+          321
+        ]
+      ],
+      "audit": {
+        "lines": 750674,
+        "outside_owned_slots": 172303,
+        "retained_lines": 578371,
+        "matched_records": 576456,
+        "observed_events": 425147,
+        "accepted_events": 425147,
+        "parsed_records": 576456,
+        "explicit_decision_events": 378094,
+        "rpc_recv_bytes": 1365891553,
+        "rpc_recv_intervals": 4442,
+        "rpc_send_bytes": 1215563962,
+        "rpc_send_intervals": 4442,
+        "rpc_drop_bytes": 87886,
+        "rpc_drop_intervals": 4442,
+        "multi_seat_ac_records": 70,
+        "ignored_aggregate_events": 10442,
+        "ignored/already_known": 10442,
+        "logger_decision_events": 19085,
+        "ac_replay_records": 106,
+        "ac_replay_acceptances": 106
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2034-2044/prysm-geth-1/beacon.log",
+      "node": 1,
+      "chain": 1,
+      "sha256": "fe6cf116170b00f71df2a5c846aeef9b46c9df4e585e184301c80055dcc267b2",
+      "owned_slots": [
+        [
+          322,
+          370
+        ]
+      ],
+      "audit": {
+        "lines": 752812,
+        "outside_owned_slots": 15177,
+        "retained_lines": 737635,
+        "matched_records": 735083,
+        "observed_events": 547934,
+        "accepted_events": 547934,
+        "parsed_records": 735083,
+        "explicit_decision_events": 487567,
+        "rpc_recv_bytes": 1817361221,
+        "rpc_recv_intervals": 5805,
+        "rpc_send_bytes": 1584535458,
+        "rpc_send_intervals": 5805,
+        "rpc_drop_bytes": 2792,
+        "rpc_drop_intervals": 5805,
+        "multi_seat_ac_records": 84,
+        "ignored_aggregate_events": 13955,
+        "ignored/already_known": 13955,
+        "logger_decision_events": 24526,
+        "ac_replay_records": 148,
+        "ac_replay_acceptances": 148
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-1951-1956/prysm-geth-2/beacon.log",
+      "node": 2,
+      "chain": 1,
+      "sha256": "74699bf59d9e18677dc211e298b1b019dd8b559ffd309630bfbb75ac7c1ad5fa",
+      "owned_slots": [
+        [
+          109,
+          132
+        ]
+      ],
+      "audit": {
+        "lines": 321292,
+        "outside_owned_slots": 12872,
+        "retained_lines": 308420,
+        "matched_records": 307821,
+        "observed_events": 264280,
+        "accepted_events": 264280,
+        "parsed_records": 307821,
+        "explicit_decision_events": 237496,
+        "rpc_recv_bytes": 857711016,
+        "rpc_recv_intervals": 2880,
+        "rpc_send_bytes": 759091778,
+        "rpc_send_intervals": 2880,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 2880,
+        "multi_seat_ac_records": 46,
+        "ignored_aggregate_events": 7031,
+        "ignored/already_known": 7031,
+        "logger_decision_events": 11866,
+        "ac_replay_records": 8,
+        "ac_replay_acceptances": 8
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2020-2025/prysm-geth-2/beacon.log",
+      "node": 2,
+      "chain": 1,
+      "sha256": "08700086c3569e30734c2fd4abb666005fc1f76c660dc8e0a8304ed8cf154e7b",
+      "owned_slots": [
+        [
+          251,
+          274
+        ]
+      ],
+      "audit": {
+        "lines": 381251,
+        "retained_lines": 364466,
+        "matched_records": 363299,
+        "observed_events": 268076,
+        "explicit_decision_events": 238804,
+        "accepted_events": 268076,
+        "parsed_records": 363299,
+        "rpc_recv_bytes": 924428511,
+        "rpc_recv_intervals": 2880,
+        "rpc_send_bytes": 842893215,
+        "rpc_send_intervals": 2880,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 2880,
+        "multi_seat_ac_records": 34,
+        "ignored_aggregate_events": 6659,
+        "ignored/already_known": 6659,
+        "logger_decision_events": 11962,
+        "outside_owned_slots": 16785
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2026-2036/prysm-geth-2/beacon.log",
+      "node": 2,
+      "chain": 1,
+      "sha256": "4f92e2b69b4d52ce322e2fd50d05c8dd3566340316f8bb60a9dc60995a7f74e1",
+      "owned_slots": [
+        [
+          284,
+          332
+        ]
+      ],
+      "audit": {
+        "lines": 771115,
+        "outside_owned_slots": 15931,
+        "retained_lines": 755184,
+        "matched_records": 753050,
+        "observed_events": 547572,
+        "accepted_events": 547572,
+        "parsed_records": 753050,
+        "explicit_decision_events": 487526,
+        "rpc_recv_bytes": 1906777622,
+        "rpc_recv_intervals": 5880,
+        "rpc_send_bytes": 1758654938,
+        "rpc_send_intervals": 5880,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 5880,
+        "multi_seat_ac_records": 93,
+        "ignored_aggregate_events": 14106,
+        "ignored/already_known": 14106,
+        "logger_decision_events": 24402,
+        "ac_replay_records": 32,
+        "ac_replay_acceptances": 32
+      },
+      "warnings": {
+        "Voting period before genesis + follow distance, using eth1data from head": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2034-2044/prysm-geth-2/beacon.log",
+      "node": 2,
+      "chain": 1,
+      "sha256": "8f27b7324231f58cf9db10009c74368ba010d835481b5ed90cf3901d99e56b12",
+      "owned_slots": [
+        [
+          333,
+          370
+        ]
+      ],
+      "audit": {
+        "lines": 771949,
+        "outside_owned_slots": 178910,
+        "retained_lines": 593039,
+        "matched_records": 591311,
+        "observed_events": 425139,
+        "explicit_decision_events": 378102,
+        "accepted_events": 425139,
+        "parsed_records": 591311,
+        "rpc_recv_bytes": 1500717817,
+        "rpc_recv_intervals": 4559,
+        "rpc_send_bytes": 1350070697,
+        "rpc_send_intervals": 4559,
+        "rpc_drop_bytes": 19560,
+        "rpc_drop_intervals": 4559,
+        "multi_seat_ac_records": 61,
+        "ignored_aggregate_events": 10777,
+        "ignored/already_known": 10777,
+        "logger_decision_events": 18925,
+        "ac_replay_records": 11,
+        "ac_replay_acceptances": 11
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2026-2036/prysm-geth-35/beacon.log",
+      "node": 35,
+      "chain": 1,
+      "sha256": "e2c488d0518ec574d2f246eb757eb43cabfd4504ef973dd561e0434f508660e7",
+      "owned_slots": [
+        [
+          284,
+          292
+        ]
+      ],
+      "audit": {
+        "lines": 119322,
+        "outside_owned_slots": 15446,
+        "retained_lines": 103876,
+        "matched_records": 103410,
+        "observed_events": 100809,
+        "explicit_decision_events": 89566,
+        "accepted_events": 100809,
+        "parsed_records": 103410,
+        "multi_seat_ac_records": 11,
+        "ignored_aggregate_events": 2481,
+        "ignored/already_known": 2481,
+        "logger_decision_events": 4477
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2034-2044/prysm-geth-35/beacon.log",
+      "node": 35,
+      "chain": 1,
+      "sha256": "2ff5d7a5b940ecd0a8467e9370d0667d43ddacdb7b9f7a71e2bf00220f027d17",
+      "owned_slots": [
+        [
+          322,
+          370
+        ]
+      ],
+      "audit": {
+        "lines": 575930,
+        "retained_lines": 564392,
+        "matched_records": 562430,
+        "observed_events": 547845,
+        "explicit_decision_events": 487537,
+        "accepted_events": 547845,
+        "parsed_records": 562430,
+        "multi_seat_ac_records": 84,
+        "ignored_aggregate_events": 13890,
+        "ignored/already_known": 13890,
+        "logger_decision_events": 24421,
+        "ac_replay_records": 31,
+        "outside_owned_slots": 11538,
+        "ac_replay_acceptances": 31
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2026-2036/prysm-geth-50/beacon.log",
+      "node": 50,
+      "chain": 1,
+      "sha256": "50f9e0dd7fb9e821d722c0aa41f751061ef7cb52b1b36d2c04e05c472e0a1f24",
+      "owned_slots": [
+        [
+          284,
+          297
+        ]
+      ],
+      "audit": {
+        "lines": 167034,
+        "outside_owned_slots": 5181,
+        "retained_lines": 161853,
+        "matched_records": 161328,
+        "observed_events": 156811,
+        "accepted_events": 156811,
+        "parsed_records": 161328,
+        "explicit_decision_events": 139291,
+        "multi_seat_ac_records": 21,
+        "ignored_aggregate_events": 4340,
+        "ignored/already_known": 4340,
+        "logger_decision_events": 6989
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2034-2044/prysm-geth-50/beacon.log",
+      "node": 50,
+      "chain": 1,
+      "sha256": "8b284e4e3b8a8649c5960b0cc7ba110f24f8116450556650d0c14a03318c1e47",
+      "owned_slots": [
+        [
+          322,
+          370
+        ]
+      ],
+      "audit": {
+        "lines": 576974,
+        "outside_owned_slots": 11569,
+        "retained_lines": 565405,
+        "matched_records": 563572,
+        "observed_events": 547716,
+        "accepted_events": 547716,
+        "parsed_records": 563572,
+        "explicit_decision_events": 487537,
+        "multi_seat_ac_records": 84,
+        "ignored_aggregate_events": 15191,
+        "ignored/already_known": 15191,
+        "logger_decision_events": 24429,
+        "ac_replay_records": 2,
+        "ac_replay_acceptances": 2
+      },
+      "warnings": {
+        "Voting period before genesis + follow distance, using eth1data from head": 1
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2026-2036/prysm-geth-200/beacon.log",
+      "node": 200,
+      "chain": 1,
+      "sha256": "242b7a367cbfe97ea2f04ec3c87b6cfc28ee78f7497cfcfbf2ed26a5de430cdd",
+      "owned_slots": [
+        [
+          284,
+          317
+        ]
+      ],
+      "audit": {
+        "lines": 219780,
+        "outside_owned_slots": 4151,
+        "retained_lines": 215629,
+        "matched_records": 215100,
+        "observed_events": 205950,
+        "explicit_decision_events": 170848,
+        "accepted_events": 205950,
+        "parsed_records": 215100,
+        "multi_seat_ac_records": 62,
+        "ignored_aggregate_events": 8998,
+        "ignored/already_known": 8998,
+        "logger_decision_events": 17479,
+        "ac_replay_records": 4,
+        "ac_replay_acceptances": 4
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2034-2044/prysm-geth-200/beacon.log",
+      "node": 200,
+      "chain": 1,
+      "sha256": "fbc7fb2dc07f8cf2d77a23b2d6551fe7bea46704c89b0b6cc10fad2e6536f220",
+      "owned_slots": [
+        [
+          322,
+          370
+        ]
+      ],
+      "audit": {
+        "lines": 316932,
+        "outside_owned_slots": 6361,
+        "retained_lines": 310571,
+        "matched_records": 309799,
+        "observed_events": 296873,
+        "explicit_decision_events": 246215,
+        "accepted_events": 296873,
+        "parsed_records": 309799,
+        "multi_seat_ac_records": 84,
+        "ignored_aggregate_events": 12702,
+        "ignored/already_known": 12702,
+        "logger_decision_events": 25270,
+        "ac_replay_records": 4,
+        "ac_replay_acceptances": 4
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-1951-1956/prysm-geth-201/beacon.log",
+      "node": 201,
+      "chain": 1,
+      "sha256": "78e0966838fe78d198b555ec67e294f2fb26bbd0143a62e486537e35b6e855fa",
+      "owned_slots": [
+        [
+          109,
+          132
+        ]
+      ],
+      "audit": {
+        "lines": 197638,
+        "outside_owned_slots": 9912,
+        "retained_lines": 187726,
+        "matched_records": 187453,
+        "observed_events": 157239,
+        "explicit_decision_events": 132516,
+        "accepted_events": 157239,
+        "parsed_records": 187453,
+        "rpc_recv_bytes": 407835702,
+        "rpc_recv_intervals": 2878,
+        "rpc_send_bytes": 431070329,
+        "rpc_send_intervals": 2878,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 2878,
+        "ignored_aggregate_events": 6842,
+        "ignored/already_known": 6842,
+        "multi_seat_ac_records": 46,
+        "logger_decision_events": 12518,
+        "ac_replay_records": 50,
+        "ac_replay_acceptances": 50
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2020-2025/prysm-geth-201/beacon.log",
+      "node": 201,
+      "chain": 1,
+      "sha256": "d160cae93e2bcb01a93a4c50714b8bedf0ace5d20b7c4e6063b308aff55cd84c",
+      "owned_slots": [
+        [
+          251,
+          274
+        ]
+      ],
+      "audit": {
+        "lines": 238812,
+        "retained_lines": 228717,
+        "matched_records": 228317,
+        "observed_events": 193213,
+        "explicit_decision_events": 168354,
+        "accepted_events": 193213,
+        "parsed_records": 228317,
+        "rpc_recv_bytes": 520955528,
+        "rpc_recv_intervals": 2877,
+        "rpc_send_bytes": 519257612,
+        "rpc_send_intervals": 2877,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 2877,
+        "ignored_aggregate_events": 6933,
+        "ignored/already_known": 6933,
+        "multi_seat_ac_records": 34,
+        "logger_decision_events": 12434,
+        "ac_replay_records": 90,
+        "outside_owned_slots": 10095,
+        "ac_replay_acceptances": 90
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2026-2036/prysm-geth-201/beacon.log",
+      "node": 201,
+      "chain": 1,
+      "sha256": "99dd18f2c368cd4bdc6ae5f76c9ed447f8e05af45555574dc7621ffb5c508818",
+      "owned_slots": [
+        [
+          284,
+          332
+        ]
+      ],
+      "audit": {
+        "lines": 372307,
+        "outside_owned_slots": 7468,
+        "retained_lines": 364839,
+        "matched_records": 363988,
+        "observed_events": 297155,
+        "explicit_decision_events": 246213,
+        "accepted_events": 297155,
+        "parsed_records": 363988,
+        "rpc_recv_bytes": 837262406,
+        "rpc_recv_intervals": 5879,
+        "rpc_send_bytes": 893531862,
+        "rpc_send_intervals": 5879,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 5879,
+        "ac_replay_records": 70,
+        "multi_seat_ac_records": 92,
+        "ignored_aggregate_events": 13994,
+        "ignored/already_known": 13994,
+        "logger_decision_events": 25570,
+        "ac_replay_acceptances": 70
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2034-2044/prysm-geth-201/beacon.log",
+      "node": 201,
+      "chain": 1,
+      "sha256": "3231e147ecaad2a013e9fb9845540072f9ec0c84bc97c690eb426acf5b4c8e7d",
+      "owned_slots": [
+        [
+          333,
+          370
+        ]
+      ],
+      "audit": {
+        "lines": 372214,
+        "outside_owned_slots": 88947,
+        "retained_lines": 283267,
+        "matched_records": 282567,
+        "observed_events": 230663,
+        "explicit_decision_events": 190949,
+        "accepted_events": 230663,
+        "parsed_records": 282567,
+        "rpc_recv_bytes": 679476567,
+        "rpc_recv_intervals": 4559,
+        "rpc_send_bytes": 698367514,
+        "rpc_send_intervals": 4559,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 4559,
+        "multi_seat_ac_records": 61,
+        "ignored_aggregate_events": 10905,
+        "ignored/already_known": 10905,
+        "logger_decision_events": 20005,
+        "ac_replay_records": 94,
+        "ac_replay_acceptances": 94
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-1951-1956/prysm-geth-202/beacon.log",
+      "node": 202,
+      "chain": 1,
+      "sha256": "5e83025404723e4549b7d3f3b7eee2daaaa7d6d7eb0af2b722678e7b1993b826",
+      "owned_slots": [
+        [
+          109,
+          132
+        ]
+      ],
+      "audit": {
+        "lines": 193500,
+        "outside_owned_slots": 7225,
+        "retained_lines": 186275,
+        "matched_records": 186005,
+        "observed_events": 156949,
+        "explicit_decision_events": 132498,
+        "accepted_events": 156949,
+        "parsed_records": 186005,
+        "rpc_recv_bytes": 415674257,
+        "rpc_recv_intervals": 2880,
+        "rpc_send_bytes": 377086044,
+        "rpc_send_intervals": 2880,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 2880,
+        "ignored_aggregate_events": 6203,
+        "ignored/already_known": 6203,
+        "multi_seat_ac_records": 47,
+        "logger_decision_events": 12245,
+        "ac_replay_records": 79,
+        "ac_replay_acceptances": 79
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2020-2025/prysm-geth-202/beacon.log",
+      "node": 202,
+      "chain": 1,
+      "sha256": "52c74912c318262e073f4664706bca8a14a9839b890af79ab5d77daa988c2555",
+      "owned_slots": [
+        [
+          251,
+          274
+        ]
+      ],
+      "audit": {
+        "lines": 183741,
+        "retained_lines": 176344,
+        "matched_records": 175931,
+        "observed_events": 145438,
+        "explicit_decision_events": 120591,
+        "accepted_events": 145438,
+        "parsed_records": 175931,
+        "rpc_recv_bytes": 408821729,
+        "rpc_recv_intervals": 2880,
+        "rpc_send_bytes": 361563380,
+        "rpc_send_intervals": 2880,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 2880,
+        "multi_seat_ac_records": 34,
+        "ignored_aggregate_events": 5754,
+        "ignored/already_known": 5754,
+        "logger_decision_events": 12423,
+        "ac_replay_records": 67,
+        "outside_owned_slots": 7397,
+        "ac_replay_acceptances": 67
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2026-2036/prysm-geth-202/beacon.log",
+      "node": 202,
+      "chain": 1,
+      "sha256": "384955c34afc564e65a2b1893d6c38e5a0fea716a9be897998adea273a0a58da",
+      "owned_slots": [
+        [
+          284,
+          321
+        ]
+      ],
+      "audit": {
+        "lines": 367925,
+        "outside_owned_slots": 87565,
+        "retained_lines": 280360,
+        "matched_records": 279623,
+        "observed_events": 230237,
+        "explicit_decision_events": 190940,
+        "accepted_events": 230237,
+        "parsed_records": 279623,
+        "rpc_recv_bytes": 685375689,
+        "rpc_recv_intervals": 4558,
+        "rpc_send_bytes": 622876937,
+        "rpc_send_intervals": 4558,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 4558,
+        "multi_seat_ac_records": 71,
+        "logger_decision_events": 19602,
+        "ignored_aggregate_events": 9348,
+        "ignored/already_known": 9348,
+        "ac_replay_records": 156,
+        "ac_replay_acceptances": 156
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2034-2044/prysm-geth-202/beacon.log",
+      "node": 202,
+      "chain": 1,
+      "sha256": "037a3bcd05a0e11b379a7c9d86cb40e276743b1829581466dc3ea80bc0c5aec9",
+      "owned_slots": [
+        [
+          322,
+          370
+        ]
+      ],
+      "audit": {
+        "lines": 367174,
+        "outside_owned_slots": 7359,
+        "retained_lines": 359815,
+        "matched_records": 358909,
+        "observed_events": 296919,
+        "explicit_decision_events": 246216,
+        "accepted_events": 296919,
+        "parsed_records": 358909,
+        "rpc_recv_bytes": 785661420,
+        "rpc_recv_intervals": 5878,
+        "rpc_send_bytes": 704014474,
+        "rpc_send_intervals": 5878,
+        "rpc_drop_bytes": 0,
+        "rpc_drop_intervals": 5878,
+        "multi_seat_ac_records": 84,
+        "ignored_aggregate_events": 11950,
+        "ignored/already_known": 11950,
+        "logger_decision_events": 25316,
+        "ac_replay_records": 83,
+        "ac_replay_acceptances": 83
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2026-2036/prysm-geth-305/beacon.log",
+      "node": 305,
+      "chain": 1,
+      "sha256": "483ccd3be5cffb7d012e23c78d6136bc643255ec84757171270936ae0decf02a",
+      "owned_slots": [
+        [
+          284,
+          295
+        ]
+      ],
+      "audit": {
+        "lines": 80290,
+        "outside_owned_slots": 3276,
+        "retained_lines": 77014,
+        "matched_records": 76714,
+        "observed_events": 72696,
+        "explicit_decision_events": 60298,
+        "accepted_events": 72696,
+        "parsed_records": 76714,
+        "ignored_aggregate_events": 3326,
+        "ignored/already_known": 3326,
+        "ac_replay_records": 642,
+        "multi_seat_ac_records": 16,
+        "logger_decision_events": 6160,
+        "ac_replay_acceptances": 642
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2034-2044/prysm-geth-305/beacon.log",
+      "node": 305,
+      "chain": 1,
+      "sha256": "1195aa5d16e25b2f3e2c59c1eaa91a2feb4c1f96e009da2a51645415a504fdf2",
+      "owned_slots": [
+        [
+          322,
+          370
+        ]
+      ],
+      "audit": {
+        "lines": 320889,
+        "outside_owned_slots": 6372,
+        "retained_lines": 314517,
+        "matched_records": 313405,
+        "observed_events": 296764,
+        "explicit_decision_events": 246211,
+        "accepted_events": 296764,
+        "parsed_records": 313405,
+        "ac_replay_records": 2441,
+        "multi_seat_ac_records": 92,
+        "ignored_aggregate_events": 13976,
+        "ignored/already_known": 13976,
+        "logger_decision_events": 25162,
+        "ac_replay_acceptances": 2441
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2026-2036/prysm-geth-376/beacon.log",
+      "node": 376,
+      "chain": 1,
+      "sha256": "b6fecf600201cdae9c02ebf8175aa90f897db06c70a8a70995cb99da324e8596",
+      "owned_slots": [
+        [
+          284,
+          288
+        ]
+      ],
+      "audit": {
+        "lines": 39642,
+        "outside_owned_slots": 4723,
+        "retained_lines": 34919,
+        "matched_records": 34602,
+        "observed_events": 32827,
+        "explicit_decision_events": 27638,
+        "accepted_events": 32827,
+        "parsed_records": 34602,
+        "multi_seat_ac_records": 7,
+        "ac_replay_records": 914,
+        "ignored_aggregate_events": 837,
+        "ignored/already_known": 837,
+        "logger_decision_events": 2590,
+        "ac_replay_acceptances": 914
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2034-2044/prysm-geth-376/beacon.log",
+      "node": 376,
+      "chain": 1,
+      "sha256": "0728134c7e32c582fafaa8333849ca1e70ef972e8b1a0e864137005e3898bef1",
+      "owned_slots": [
+        [
+          322,
+          370
+        ]
+      ],
+      "audit": {
+        "lines": 14426,
+        "outside_owned_slots": 170,
+        "retained_lines": 14256,
+        "matched_records": 10576,
+        "ac_replay_records": 1489,
+        "parsed_records": 10576,
+        "multi_seat_ac_records": 42,
+        "observed_events": 8949,
+        "accepted_events": 1494,
+        "ac_acceptance_without_original_observation": 1489,
+        "ac_replay_acceptances": 1489,
+        "ac_observation_without_acceptance": 8944
+      },
+      "warnings": {
+        "Beacon node is not respecting the follow distance. EL client is syncing.": 42,
+        "Execution client is not syncing": 27
+      },
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2026-2036/prysm-geth-405/beacon.log",
+      "node": 405,
+      "chain": 1,
+      "sha256": "fe54f60eca0367bb0335ae1a89eb82f47dd9e09e883103542897d1b3cc926856",
+      "owned_slots": [
+        [
+          284,
+          310
+        ]
+      ],
+      "audit": {
+        "lines": 177221,
+        "outside_owned_slots": 5732,
+        "retained_lines": 171489,
+        "matched_records": 170960,
+        "observed_events": 163504,
+        "explicit_decision_events": 135670,
+        "accepted_events": 163504,
+        "parsed_records": 170960,
+        "multi_seat_ac_records": 46,
+        "ignored_aggregate_events": 7320,
+        "ignored/already_known": 7320,
+        "logger_decision_events": 13842,
+        "ac_replay_records": 24,
+        "ac_replay_acceptances": 24
+      },
+      "warnings": {},
+      "errors": []
+    },
+    {
+      "name": "dc-devnet-1-logs/run2-genesis-1930/full-2034-2044/prysm-geth-405/beacon.log",
+      "node": 405,
+      "chain": 1,
+      "sha256": "48ab1001a62e4d6baed151aa01dfb8f186bd01548c6ed672111153eb2ed434f5",
+      "owned_slots": [
+        [
+          322,
+          370
+        ]
+      ],
+      "audit": {
+        "lines": 350577,
+        "outside_owned_slots": 6341,
+        "retained_lines": 344236,
+        "matched_records": 343394,
+        "observed_events": 329316,
+        "explicit_decision_events": 278861,
+        "accepted_events": 329316,
+        "parsed_records": 343394,
+        "multi_seat_ac_records": 84,
+        "ignored_aggregate_events": 13761,
+        "ignored/already_known": 13761,
+        "logger_decision_events": 25068,
+        "ac_replay_records": 97,
+        "ac_replay_acceptances": 97
+      },
+      "warnings": {},
+      "errors": []
+    }
+  ]
+}

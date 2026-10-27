@@ -1,0 +1,160 @@
+{
+  "passed": true,
+  "build": "6c026c484c05c256c7858e9f4a1e8580dd898dbe",
+  "archive_sha256": "fb58d86cf3d86e5a08eba936b22d8e6d53d9d08dda1919a5805be135b199a7d1",
+  "method": "Stream selected node logs, verify every expanded source hash, and retain only SSZ sizing metadata. No files extracted.",
+  "nodes": [
+    1,
+    2,
+    202
+  ],
+  "sources": [
+    {
+      "member": "dc-devnet-1-logs/full-start-1628/prysm-geth-2/beacon.log.gz",
+      "expanded_sha256": "6fccd2c94469d68c17264b6a649e7a58e68cda200edc0e3c5babe2cfe278e847",
+      "records": 279
+    },
+    {
+      "member": "dc-devnet-1-logs/full-start-1628/prysm-geth-1/beacon.log.gz",
+      "expanded_sha256": "8f27837685cf26b45771aede67c7850c1e764bff066abea093f88911a946246d",
+      "records": 279
+    },
+    {
+      "member": "dc-devnet-1-logs/full-start-1628/prysm-geth-202/beacon.log.gz",
+      "expanded_sha256": "73705eb005587cad75e9a32a69b65f5dab60b2c269debcfc50d1612d0e7fab3c",
+      "records": 279
+    },
+    {
+      "member": "dc-devnet-1-logs/full-1636-1641/prysm-geth-1/beacon.log",
+      "expanded_sha256": "21e8a9384e89de7961de6989b655c48ccd34aa55b941727dc5ea8e4d5c721945",
+      "records": 2584
+    },
+    {
+      "member": "dc-devnet-1-logs/full-1636-1641/prysm-geth-2/beacon.log",
+      "expanded_sha256": "1a1ab84797d585567979eb3150bc3bd4b0494c6f08af0691a15d2f5559970404",
+      "records": 2584
+    },
+    {
+      "member": "dc-devnet-1-logs/full-1636-1641/prysm-geth-202/beacon.log",
+      "expanded_sha256": "42799b538c0c617ac6785692f0cd3c83108c7a118fd7be2c169b55444f865046",
+      "records": 184
+    },
+    {
+      "member": "dc-devnet-1-logs/full-1641-1646/prysm-geth-1/beacon.log",
+      "expanded_sha256": "49863c990a0d21956a93e47deb71bec36bb168527c03f144635326f9e1846301",
+      "records": 2455
+    },
+    {
+      "member": "dc-devnet-1-logs/full-1641-1646/prysm-geth-2/beacon.log",
+      "expanded_sha256": "84167e53706feab57c36e9dd607c75ae98d4a9d0dc3518bbbefa2fa457ad01b2",
+      "records": 2455
+    },
+    {
+      "member": "dc-devnet-1-logs/full-1641-1646/prysm-geth-202/beacon.log",
+      "expanded_sha256": "6aa09a5c85c2802c9eec3b71f4a9b70d7595bc8729292b3576c96ba8bf197844",
+      "records": 175
+    },
+    {
+      "member": "dc-devnet-1-logs/full-1706-1711/prysm-geth-202/beacon.log",
+      "expanded_sha256": "edd824549a402696a1ebcffcafe3b7426b3555b8cdcfc6a30192cfa8f3e25664",
+      "records": 167
+    },
+    {
+      "member": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-1/beacon.log.gz",
+      "expanded_sha256": "da8652cea8094792325a6374e733548c67785e498eb986dfad810987621c5a73",
+      "records": 19163
+    },
+    {
+      "member": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-2/beacon.log.gz",
+      "expanded_sha256": "aac5c58c3d07c81e775dbc902351d2da9c5923e27e0b191609cda0173eea8000",
+      "records": 12610
+    },
+    {
+      "member": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-202/beacon.log.gz",
+      "expanded_sha256": "e1adfa525c5c39432cd3fe6b5641c8fd0f54823b58e72bd90b74cf2860740274",
+      "records": 898
+    },
+    {
+      "member": "dc-devnet-1-logs/post-partial/full-1746-1751/prysm-geth-1/beacon.log",
+      "expanded_sha256": "fa609b2674fff87803950d1910eba413bfa4eb55c00332e0768812af56e061e6",
+      "records": 2456
+    },
+    {
+      "member": "dc-devnet-1-logs/post-partial/full-1746-1751/prysm-geth-2/beacon.log",
+      "expanded_sha256": "e9f984769d31cb6f9d4a8fa7560cb02b6c637bdb3e0fc8a89b4ed8786db1f7db",
+      "records": 2456
+    },
+    {
+      "member": "dc-devnet-1-logs/post-partial/full-1746-1751/prysm-geth-202/beacon.log",
+      "expanded_sha256": "faa9204d5fecd736db3033fa27d2c5078063323962f3049decbf00ca0226f69a",
+      "records": 176
+    },
+    {
+      "member": "dc-devnet-1-logs/run2-genesis-1930/full-1951-1956/prysm-geth-1/beacon.log",
+      "expanded_sha256": "a863f1e1001365de3175923b1111a570fd62f97742fc9134145738ad67b76af9",
+      "records": 24
+    },
+    {
+      "member": "dc-devnet-1-logs/run2-genesis-1930/full-1951-1956/prysm-geth-2/beacon.log",
+      "expanded_sha256": "74699bf59d9e18677dc211e298b1b019dd8b559ffd309630bfbb75ac7c1ad5fa",
+      "records": 24
+    },
+    {
+      "member": "dc-devnet-1-logs/run2-genesis-1930/full-1951-1956/prysm-geth-202/beacon.log",
+      "expanded_sha256": "5e83025404723e4549b7d3f3b7eee2daaaa7d6d7eb0af2b722678e7b1993b826",
+      "records": 24
+    },
+    {
+      "member": "dc-devnet-1-logs/run2-genesis-1930/full-2020-2025/prysm-geth-1/beacon.log",
+      "expanded_sha256": "78038b46a291a9f7a9ca8a28028ae925bfb12fd86d9e755ebb72a99a76feca19",
+      "records": 2328
+    },
+    {
+      "member": "dc-devnet-1-logs/run2-genesis-1930/full-2020-2025/prysm-geth-2/beacon.log",
+      "expanded_sha256": "08700086c3569e30734c2fd4abb666005fc1f76c660dc8e0a8304ed8cf154e7b",
+      "records": 2328
+    },
+    {
+      "member": "dc-devnet-1-logs/run2-genesis-1930/full-2020-2025/prysm-geth-202/beacon.log",
+      "expanded_sha256": "52c74912c318262e073f4664706bca8a14a9839b890af79ab5d77daa988c2555",
+      "records": 168
+    },
+    {
+      "member": "dc-devnet-1-logs/run2-genesis-1930/full-2026-2036/prysm-geth-1/beacon.log",
+      "expanded_sha256": "4a1449fc0e2ac0efbb91253d644ac77d5709dc95c4998628731449bfb4b1c5e0",
+      "records": 4262
+    },
+    {
+      "member": "dc-devnet-1-logs/run2-genesis-1930/full-2026-2036/prysm-geth-2/beacon.log",
+      "expanded_sha256": "4f92e2b69b4d52ce322e2fd50d05c8dd3566340316f8bb60a9dc60995a7f74e1",
+      "records": 5043
+    },
+    {
+      "member": "dc-devnet-1-logs/run2-genesis-1930/full-2026-2036/prysm-geth-202/beacon.log",
+      "expanded_sha256": "384955c34afc564e65a2b1893d6c38e5a0fea716a9be897998adea273a0a58da",
+      "records": 302
+    },
+    {
+      "member": "dc-devnet-1-logs/run2-genesis-1930/full-2034-2044/prysm-geth-1/beacon.log",
+      "expanded_sha256": "fe6cf116170b00f71df2a5c846aeef9b46c9df4e585e184301c80055dcc267b2",
+      "records": 5298
+    },
+    {
+      "member": "dc-devnet-1-logs/run2-genesis-1930/full-2034-2044/prysm-geth-2/beacon.log",
+      "expanded_sha256": "8f27b7324231f58cf9db10009c74368ba010d835481b5ed90cf3901d99e56b12",
+      "records": 4390
+    },
+    {
+      "member": "dc-devnet-1-logs/run2-genesis-1930/full-2034-2044/prysm-geth-202/beacon.log",
+      "expanded_sha256": "037a3bcd05a0e11b379a7c9d86cb40e276743b1829581466dc3ea80bc0c5aec9",
+      "records": 377
+    }
+  ],
+  "column_records": 71774,
+  "column_formula": "56 + 2096 * logged kzgCommitmentCount",
+  "block_formula": "at least 924 + 241*attestations + 48*blob commitments + 416*proposer slashings + 112*voluntary exits",
+  "block_scope": "Enrich only unique node/slot block-transition joins; otherwise structural 924-byte floor. Unlogged dynamic lists and full attestation bitlist lengths omitted.",
+  "unique_block_transition_slots": 1972,
+  "ambiguous_block_transition_slots": 11,
+  "outer_gzip_crc_passed": true
+}

@@ -21,6 +21,6 @@ validator-set scale.
 | [`research/`](research/) | Reasoning behind design decisions and design options: [`open_questions.md`](research/open_questions.md) (settled vs. open tracker), [`ssz.md`](research/ssz.md) (wire objects & byte accounting), [`ac/`](research/ac/) (AC slot structure), [`fg/`](research/fg/) (FG round; [`fg/pipelined-units/`](research/fg/pipelined-units/) — 4 s + 4 s vote units, three per slot), [`transitions/`](research/transitions/) (epoch/height transition timing vs. early FG votes) |
 | [`specs/`](specs/) | Exact specifications (to come) — meanwhile [`README.md`](specs/README.md) points at Francesco's executable Simplex pyspec |
 | [`poc/`](poc/) | Proof of concept: [`poc.md`](poc/poc.md) (Shadow → Prysm-on-Shadow → Kurtosis) |
-| [`benchmarking/`](benchmarking/) | Benchmark results |
+| [`benchmarking/`](benchmarking/) | Benchmark results: [`devnet-0/`](benchmarking/devnet-0/) (non-finality devnet) and [`devnet-1/`](benchmarking/devnet-1/) (loaded-run comparison, [dashboard](https://dc-devnet-1-comparison.citrusvole32.chatgpt.site)) |
 | [`meetings/`](meetings/) | Meeting notes, one file per call: `YYYY-MM-DD.md` |
 | `personal/<name>/` | Personal scratchpads — unreviewed |

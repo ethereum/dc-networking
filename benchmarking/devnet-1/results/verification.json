@@ -1,0 +1,45 @@
+{
+  "passed": true,
+  "source_members": 73,
+  "unique_owned_node_slots": 8566,
+  "totals": {
+    "observed_events": 49613913,
+    "accepted_events": 49520723,
+    "ignored_aggregate_events": 364385,
+    "lines": 85056534
+  },
+  "raw_samples": [
+    {
+      "member": "dc-devnet-1-logs/full-1636-1641/prysm-geth-1/beacon.log",
+      "slot": 350,
+      "ffg_gossip_successes": 4988,
+      "exact_observed_and_accepted_bin_match": true,
+      "rpc_received_bytes": 27561086.90359,
+      "independent_rpc_absolute_error_bytes": 1.934915781021118e-05
+    },
+    {
+      "member": "dc-devnet-1-logs/post-partial/full-start-1739/prysm-geth-1/beacon.log.gz",
+      "slot": 620,
+      "ffg_gossip_successes": 5011,
+      "exact_observed_and_accepted_bin_match": true,
+      "rpc_received_bytes": 14700514.10751,
+      "independent_rpc_absolute_error_bytes": 9.449757635593414e-05
+    },
+    {
+      "member": "dc-devnet-1-logs/run2-genesis-1930/full-2026-2036/prysm-geth-1/beacon.log",
+      "slot": 300,
+      "ffg_gossip_successes": 9939,
+      "exact_observed_and_accepted_bin_match": true,
+      "rpc_received_bytes": 21988536.83707,
+      "independent_rpc_absolute_error_bytes": 0.00010039284825325012
+    }
+  ],
+  "block_clock_anchors": 8310,
+  "max_block_clock_residual_ms": 44.053955078125,
+  "block_clock_p99_residual_ms": 9.869384765625,
+  "block_clock_residuals_above_10ms": 5,
+  "archive_sha256_after": "fb58d86cf3d86e5a08eba936b22d8e6d53d9d08dda1919a5805be135b199a7d1",
+  "archive_unchanged": true,
+  "outer_gzip_crc_checked": true,
+  "scope": "Complete cache conservation/ownership checks; independent raw reconciliation of three node-slot samples, not an independent full-data parser or protocol verification."
+}
