@@ -184,40 +184,36 @@
   .s-title .standfirst { margin: 56px auto 0; max-width: 28em; font-size: 30px; }
   .s-title .rule { width: 72px; height: 1px; background: var(--hairline); margin: 52px auto 0; }
 
-  /* ---- The three choices ---- */
-  .ov { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 48px; margin-top: 54px; }
+  /* ---- The four choices ---- */
+  .ov { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 40px; margin-top: 60px; }
   .ov-c { display: block; color: var(--ink); text-decoration: none; border-top: 3px solid var(--accent); padding-top: 14px; }
-  .ov-c .label { display: flex; justify-content: space-between; color: var(--ink); font-size: 15px; }
-  .ov-c .label .go { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .ov-c .label { display: flex; justify-content: space-between; color: var(--muted); font-size: 14px; }
+  .ov-c .label .go { font-variant-numeric: tabular-nums; }
   .ov-c:hover h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; }
-  .ov-c h3 { font-weight: 400; font-size: 38px; margin: 6px 0 0; }
-  .ov-c .alt { margin: 18px 0 0; font-size: 24px; line-height: 1.35; }
-  .ov-c .alt b { display: block; font: 700 13px var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 2px; }
-  .ov-c .or { margin: 14px 0 0; font: 600 13px var(--sans); letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
-  .openq { margin: auto 0 0; padding-top: 20px; border-top: 1px solid var(--hairline); font-size: 26px; line-height: 1.4; }
-  .openq b { font: 700 13px var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-right: 14px; }
+  .ov-c h3 { font-weight: 400; font-size: 38px; margin: 4px 0 0; }
+  .ov-c .alt { margin: 24px 0 0; font-size: 27px; line-height: 1.3; }
+  .ov-c .or { margin: 10px 0 0; font: 600 13px var(--sans); letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .ov-c .or + .alt { margin-top: 10px; }
 
   /* ---- A or B, side by side ---- */
-  .pair { display: grid; grid-template-columns: 650px 650px; gap: 0 60px; margin-top: 40px; }
+  .pair { display: grid; grid-template-columns: 650px 650px; gap: 0 60px; margin-top: 44px; }
   .panel .label { color: var(--ink); font-size: 15px; }
   .panel .label .k { color: var(--accent); margin-right: 10px; }
-  .panel svg { margin-top: 12px; }
-  .cap-t { margin: 16px 0 0; font-size: 22px; line-height: 1.4; color: var(--muted); }
+  .panel svg { margin-top: 14px; }
 
-  /* ---- Open questions and properties ---- */
+  /* ---- Open questions ---- */
+  .bigq { list-style: none; margin: 60px 0 0; padding: 0; display: flex; flex-direction: column; gap: 36px; font-size: 52px; line-height: 1.15; }
+  .bigq li { position: relative; padding-left: 56px; }
+  .bigq li::before { content: ""; position: absolute; left: 8px; top: 0.4em; width: 16px; height: 16px; background: var(--accent); transform: rotate(45deg); }
+
+  /* ---- Properties, and pro / against ---- */
   .cards { display: grid; grid-template-columns: repeat(var(--c, 3), minmax(0, 1fr)); gap: 30px 48px; margin-top: 44px; }
   .card { border-top: 3px solid var(--accent); padding-top: 14px; }
   .card.cost { border-top-color: var(--agg); }
-  .card.open { border-top: 3px dashed var(--muted); }
   .card h3 { font: 700 13px var(--sans); letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 12px; }
   .card h3 .mk { color: var(--accent); margin-right: 6px; }
   .card.cost h3 .mk { color: var(--agg); }
-  .card.open h3 .mk { color: var(--muted); }
-  .card ul.begins { font-size: 22px; line-height: 1.38; }
   .card.cost ul.begins li::before { background: var(--agg); }
-  .card.open ul.begins li::before { background: var(--muted); }
-  .cards.qs .card h3 { font: 400 34px/1.2 var(--serif); letter-spacing: 0; text-transform: none; margin-bottom: 16px; }
-  .cards.qs ul.begins { font-size: 21px; color: var(--muted); }
   .props ul.begins { font-size: 24px; line-height: 1.3; gap: 12px; }
   .props .new { color: var(--ink); }
   .props .new .chip { margin-left: 10px; }
@@ -237,20 +233,26 @@
   }
   .src { margin: auto 0 0; font-family: var(--sans); font-size: 16px; color: var(--muted); }
 
-  /* ---- Option slides: picture, then plus and minus ---- */
-  .fig { margin-top: 30px; }
-  .pc { display: grid; grid-template-columns: 1fr 1fr; gap: 0 60px; margin-top: 30px; }
+  /* ---- Option slides: the picture, then pro and against ---- */
+  .fig { margin-top: 34px; }
+  .pc { display: grid; grid-template-columns: 1fr 1fr; gap: 0 60px; margin-top: 34px; }
   .pc .card { padding-top: 12px; }
+  .pc ul.begins { font-size: 28px; line-height: 1.3; gap: 8px; }
+
+  /* ---- Option 4's parameters ---- */
+  .params { display: grid; grid-template-columns: 170px repeat(4, minmax(0, 1fr)); gap: 0 32px; margin-top: 40px; }
+  .params .grp { font: 700 13px var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); padding-top: 24px; border-top: 2px solid var(--ink); }
+  .params .p { border-top: 2px solid var(--ink); padding: 16px 0 24px; }
+  .params .p b { display: block; font: 500 42px/1.1 var(--sans); font-variant-numeric: tabular-nums; }
+  .params .p span { display: block; margin-top: 6px; font: 600 15px/1.35 var(--sans); color: var(--muted); }
 
   /* ---- Side by side ---- */
-  .mx { width: 100%; border-collapse: collapse; margin-top: 44px; font-size: 25px; }
-  .mx th { font: 700 12px var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 0 16px 12px 0; border-bottom: 2px solid var(--ink); }
+  .mx { width: 100%; border-collapse: collapse; margin-top: 44px; font-size: 24px; }
+  .mx th { font: 700 12px var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); text-align: left; vertical-align: bottom; padding: 0 16px 12px 0; border-bottom: 2px solid var(--ink); }
   .mx td { padding: 16px 16px 15px 0; border-bottom: 1px solid var(--hairline); line-height: 1.3; }
-  .mx td.o { font-family: var(--sans); font-size: 17px; font-weight: 600; width: 340px; }
+  .mx td.o { font-family: var(--sans); font-size: 17px; font-weight: 600; width: 310px; }
   .mx td.num, .mx th.num { text-align: right; font-family: var(--sans); font-variant-numeric: tabular-nums; }
   .mx td.num { font-size: 22px; font-weight: 500; }
-  .mx .yes { color: var(--accent); }
-  .mx .no { color: var(--muted); }
   .mx tr.me td { background: color-mix(in srgb, var(--accent) 9%, transparent); }
   .mx tr.me td:first-child { box-shadow: inset 4px 0 0 var(--accent); padding-left: 14px; }
 
@@ -288,6 +290,12 @@
   .viz.big .ul { font-size: 13px; }
   .viz.big .bl { font-size: 12px; }
   .viz.big .cap { font-size: 15px; }
+  .viz.mid .tk { font-size: 13px; }
+  .viz.mid .rl { font-size: 14px; }
+  .viz.mid .ul { font-size: 12px; }
+  .viz.mid .bl { font-size: 11.5px; }
+  .viz.mid .cap { font-size: 14px; }
+  .viz .capl { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 7 5; }
   .viz .fade { opacity: 0; }
   .anim .viz .mv { transition: transform 1.1s cubic-bezier(0.45, 0, 0.2, 1); }
   .anim .viz .fade { transition: opacity 0.5s ease 0.35s; }
@@ -328,102 +336,102 @@
     <div class="in">
       <h1>FG votes in the slot<span class="place">Options and a proposal</span></h1>
       <p class="dateline">FF + Networking sync · Tuesday 27 October 2026</p>
-      <p class="standfirst">Three choices, four options, one proposal.</p>
+      <p class="standfirst">Four choices, four options, one proposal.</p>
       <div class="rule"></div>
     </div>
     <footer class="foot"><span>FG slot structure · 27 Oct</span><span class="n"></span></footer>
   </section>
 
-  <!-- 2 · The three choices -->
-  <section class="slide" id="sl-choices" aria-label="Three choices">
+  <!-- 2 · The four choices -->
+  <section class="slide" id="sl-choices" aria-label="Four choices">
     <div class="in">
       <p class="eyebrow">The design space</p>
-      <h2>Three choices, mix and match</h2>
+      <h2>Four choices, mix and match</h2>
       <div class="ov">
-        <a class="ov-c" data-ref="sl-c1"><p class="label"><span>Choice 1</span><span class="go"></span></p><h3>Pipelining</h3>
-          <p class="alt"><b>No</b>One committee votes, then aggregates.</p>
-          <p class="alt"><b>Yes</b>The next committee votes while the last one aggregates.</p></a>
-        <a class="ov-c" data-ref="sl-c2"><p class="label"><span>Choice 2</span><span class="go"></span></p><h3>Vote timing</h3>
-          <p class="alt"><b>Honest behavior</b>Validators stagger themselves.</p>
-          <p class="alt"><b>Enforced</b>Each committee gets its own 4 s.</p></a>
-        <a class="ov-c" data-ref="sl-c3"><p class="label"><span>Choice 3</span><span class="go"></span></p><h3>Aggregation</h3>
-          <p class="alt"><b>Right away</b>After each committee’s votes propagate.</p>
-          <p class="alt"><b>At the end</b>Once, just before the slot ends.</p></a>
+        <a class="ov-c" data-ref="sl-prio"><p class="label"><span>Choice 1</span><span class="go"></span></p><h3>Prioritization</h3>
+          <p class="alt">Yes</p><p class="or">or</p><p class="alt">No</p></a>
+        <a class="ov-c" data-ref="sl-c1"><p class="label"><span>Choice 2</span><span class="go"></span></p><h3>Pipelining</h3>
+          <p class="alt">No</p><p class="or">or</p><p class="alt">Yes</p></a>
+        <a class="ov-c" data-ref="sl-c2"><p class="label"><span>Choice 3</span><span class="go"></span></p><h3>Vote timing</h3>
+          <p class="alt">Honest staggering</p><p class="or">or</p><p class="alt">Enforced windows</p></a>
+        <a class="ov-c" data-ref="sl-c3"><p class="label"><span>Choice 4</span><span class="go"></span></p><h3>Aggregation</h3>
+          <p class="alt">Right after each committee</p><p class="or">or</p><p class="alt">Once, at the end of the slot</p></a>
       </div>
-      <p class="openq"><b>Open</b>What is simple? What is PQ-aligned, and does that matter for I*?</p>
     </div>
     <footer class="foot"><span>FG slot structure · 27 Oct</span><span class="n"></span></footer>
   </section>
 
-  <!-- 3 · Choice 1: pipelining -->
-  <section class="slide" id="sl-c1" aria-label="Choice 1: pipelining">
+  <!-- 3 · Choice 1: prioritization -->
+  <section class="slide" id="sl-prio" aria-label="Choice 1: prioritization">
     <div class="in">
-      <p class="eyebrow">Choice 1 <span class="who">· pipelining</span></p>
+      <p class="eyebrow">Choice 1 <span class="who">· prioritization</span></p>
+      <h2>Prioritization, or not?</h2>
+      <div class="pair">
+        <div class="panel"><p class="label"><span class="k">A</span>Prioritization</p>
+          <svg id="f-p1a" class="viz mid" viewBox="0 0 650 340" role="img" aria-label="All FG votes at slot start go over capacity on top of the block, so the block has to go first"></svg></div>
+        <div class="panel"><p class="label"><span class="k">B</span>No prioritization</p>
+          <svg id="f-p1b" class="viz mid" viewBox="0 0 650 340" role="img" aria-label="The same FG votes spread over the slot stay under capacity next to the block"></svg></div>
+      </div>
+    </div>
+    <footer class="foot"><span>FG slot structure · 27 Oct</span><span class="n"></span></footer>
+  </section>
+
+  <!-- 4 · Choice 2: pipelining -->
+  <section class="slide" id="sl-c1" aria-label="Choice 2: pipelining">
+    <div class="in">
+      <p class="eyebrow">Choice 2 <span class="who">· pipelining</span></p>
       <h2>Pipelining, or not?</h2>
       <div class="pair">
         <div class="panel"><p class="label"><span class="k">A</span>No pipelining</p>
-          <svg id="f-c1a" class="viz" viewBox="0 0 650 300" role="img" aria-label="One committee per slot votes from 0 to 8 s and aggregates from 8 to 12 s; nobody votes from 8 to 12 s"></svg>
-          <p class="cap-t">One committee per slot: votes, then aggregates. Nobody votes while it aggregates.</p></div>
+          <svg id="f-c1a" class="viz mid" viewBox="0 0 650 340" role="img" aria-label="One committee per slot votes from 0 to 8 s and aggregates from 8 to 12 s; nobody votes from 8 to 12 s"></svg></div>
         <div class="panel"><p class="label"><span class="k">B</span>Pipelining</p>
-          <svg id="f-c1b" class="viz" viewBox="0 0 650 300" role="img" aria-label="A new committee every 4 s votes for 4 s, then aggregates for 4 s while the next one votes"></svg>
-          <p class="cap-t">Every 4 s a new committee votes while the last one aggregates. Votes fill the slot.</p></div>
+          <svg id="f-c1b" class="viz mid" viewBox="0 0 650 340" role="img" aria-label="A new committee every 4 s votes for 4 s, then aggregates for 4 s while the next one votes"></svg></div>
       </div>
     </div>
     <footer class="foot"><span>FG slot structure · 27 Oct</span><span class="n"></span></footer>
   </section>
 
-  <!-- 4 · Choice 2: vote timing -->
-  <section class="slide" id="sl-c2" aria-label="Choice 2: vote timing">
+  <!-- 5 · Choice 3: vote timing -->
+  <section class="slide" id="sl-c2" aria-label="Choice 3: vote timing">
     <div class="in">
-      <p class="eyebrow">Choice 2 <span class="who">· vote timing</span></p>
+      <p class="eyebrow">Choice 3 <span class="who">· vote timing</span></p>
       <h2>Stagger by honest behavior, or enforce it?</h2>
       <div class="pair">
         <div class="panel"><p class="label"><span class="k">A</span>Honest behavior</p>
-          <svg id="f-c2a" class="viz" viewBox="0 0 650 300" role="img" aria-label="Seven groups scheduled at 0 to 6 s, every vote valid until the 9 s aggregation; a group sending at 0 s is still valid"></svg>
-          <p class="cap-t">Seven groups at 0–6 s. Every vote counts until the 9 s cut, so nothing stops a burst.</p></div>
+          <svg id="f-c2a" class="viz mid" viewBox="0 0 650 340" role="img" aria-label="Seven groups scheduled at 0 to 6 s, every vote valid until the 9 s aggregation; a group sending at 0 s still counts"></svg></div>
         <div class="panel"><p class="label"><span class="k">B</span>Enforced</p>
-          <svg id="f-c2b" class="viz" viewBox="0 0 650 300" role="img" aria-label="Three committees, each with its own 4 s window; a vote outside its window is dropped"></svg>
-          <p class="cap-t">Each committee owns a 4 s window. Votes outside it are dropped.</p></div>
+          <svg id="f-c2b" class="viz mid" viewBox="0 0 650 340" role="img" aria-label="Three committees, each with its own 4 s window; a vote outside its window is dropped"></svg></div>
       </div>
     </div>
     <footer class="foot"><span>FG slot structure · 27 Oct</span><span class="n"></span></footer>
   </section>
 
-  <!-- 5 · Choice 3: aggregation -->
-  <section class="slide" id="sl-c3" aria-label="Choice 3: aggregation">
+  <!-- 6 · Choice 4: aggregation -->
+  <section class="slide" id="sl-c3" aria-label="Choice 4: aggregation">
     <div class="in">
-      <p class="eyebrow">Choice 3 <span class="who">· aggregation</span></p>
+      <p class="eyebrow">Choice 4 <span class="who">· aggregation</span></p>
       <h2>Aggregate right away, or at the end of the slot?</h2>
       <div class="pair">
         <div class="panel"><p class="label"><span class="k">A</span>Right after each committee</p>
-          <svg id="f-c3a" class="viz" viewBox="0 0 650 300" role="img" aria-label="Each committee aggregates in the 4 s after its votes: three aggregation phases per slot"></svg>
-          <p class="cap-t">Three aggregation phases per slot. Aggregates are always in flight.</p></div>
+          <svg id="f-c3a" class="viz mid" viewBox="0 0 650 340" role="img" aria-label="Each committee aggregates in the 4 s after its votes: three aggregation phases per slot"></svg></div>
         <div class="panel"><p class="label"><span class="k">B</span>Once, before the slot ends</p>
-          <svg id="f-c3b" class="viz" viewBox="0 0 650 300" role="img" aria-label="One aggregation phase at 8 to 12 s takes every committee whose vote window has closed"></svg>
-          <p class="cap-t">One phase at 8–12 s takes every committee whose window has closed.</p></div>
+          <svg id="f-c3b" class="viz mid" viewBox="0 0 650 340" role="img" aria-label="One aggregation phase at 8 to 12 s takes every committee whose vote window has closed"></svg></div>
       </div>
     </div>
     <footer class="foot"><span>FG slot structure · 27 Oct</span><span class="n"></span></footer>
   </section>
 
-  <!-- 6 · Open questions -->
+  <!-- 7 · Open questions -->
   <section class="slide" id="sl-open" aria-label="Open questions">
     <div class="in">
-      <p class="eyebrow">Open questions</p>
-      <h2>Simple, PQ-aligned, or both?</h2>
-      <div class="cards qs">
-        <div class="card open"><h3>What is simple?</h3>
-          <ul class="begins"><li>To spec</li><li>To build in every client</li><li>To reason about: looks like today</li></ul></div>
-        <div class="card open"><h3>What is PQ-aligned?</h3>
-          <ul class="begins"><li>1,000 PQ signatures take 2.6–11 s to prove (EIP-8292)</li><li>Small committees fit; J* may add a second aggregation stage</li></ul></div>
-        <div class="card open"><h3>Does PQ matter for I*?</h3>
-          <ul class="begins"><li>20 Oct: ship the baseline first, PQ networking later</li><li>Lodestar’s pushback on the Cambridge slides: PQ compatibility</li></ul></div>
-      </div>
+      <p class="eyebrow">To discuss</p>
+      <h2>Open questions</h2>
+      <ul class="bigq"><li>What is simple?</li><li>What is PQ-aligned?</li><li>Does PQ alignment matter for I*?</li></ul>
     </div>
     <footer class="foot"><span>FG slot structure · 27 Oct</span><span class="n"></span></footer>
   </section>
 
-  <!-- 7 · Properties -->
+  <!-- 8 · Properties -->
   <section class="slide" id="sl-props" aria-label="Properties">
     <div class="in">
       <p class="eyebrow">What we want</p>
@@ -433,101 +441,119 @@
           <ul class="begins"><li>Small networking change</li><li>Forward compatible with J*</li></ul></div>
         <div class="card"><h3>Needed in I* and J*</h3>
           <ul class="begins"><li>Low fork dependence of bitlists</li><li>Fair vote timing</li><li>Fair rewards for validators</li><li>Fair rewards for proposers</li><li>Uses the whole round</li><li>Degrades gracefully</li>
-            <li class="new">Reliable<span class="chip">new</span><small>Votes still make it on chain in degraded networks</small></li></ul></div>
+            <li class="new">Reliable<span class="chip">new</span><small>votes land even in degraded networks</small></li></ul></div>
         <div class="card"><h3>Nice in I*, needed in J*</h3>
           <ul class="begins"><li>Fast progress in good conditions</li><li>Enables a safety gadget</li><li>Anonymity enhancing</li><li>Enables aggregation builders</li></ul></div>
       </div>
-      <p class="src">Each with a proposal: <a href="https://github.com/ethereum/dc-networking/blob/main/properties.md">dc-networking / properties.md</a></p>
+      <p class="src"><a href="https://github.com/ethereum/dc-networking/blob/main/properties.md">properties.md</a></p>
     </div>
     <footer class="foot"><span>FG slot structure · 27 Oct</span><span class="n"></span></footer>
   </section>
 
-  <!-- 8 · Option 1 -->
+  <!-- 9 · Option 1 -->
   <section class="slide" id="sl-o1" aria-label="Option 1: current design plus prioritization">
     <div class="in">
       <p class="eyebrow">Option 1</p>
       <h2>Current design + prioritization</h2>
-      <p class="standfirst">The whole committee votes at slot start; one aggregation at 9 s. Prioritization keeps blocks and goldfish votes ahead of the burst.</p>
       <div class="fig"><svg id="f-o1" class="viz big" viewBox="0 0 1360 220" role="img" aria-label="Each slot: all votes at 0 s, propagating until 9 s, aggregates from 9 to 12 s; blocks prioritized"></svg></div>
       <div class="pc">
-        <div class="card"><h3><span class="mk">+</span>For</h3>
-          <ul class="begins"><li>Simple: what the devnets run</li></ul></div>
+        <div class="card"><h3><span class="mk">+</span>Pro</h3>
+          <ul class="begins"><li>Simple</li></ul></div>
         <div class="card cost"><h3><span class="mk">−</span>Against</h3>
-          <ul class="begins"><li>Needs prioritization: not clear we can get it in I*</li><li>No pipelining: one burst per slot</li></ul></div>
+          <ul class="begins"><li>Needs prioritization</li><li>No pipelining</li></ul></div>
       </div>
-      <p class="fn">Devnet default: FG vote at slot start (+ ≤ 200 ms jitter, always on from Heze), aggregate due at 9 s (Sukun’s Prysm 6c026c4, devnet-1 SOURCE_MODEL). Prioritization: 20 Oct call; breakout next step (Kamil: networking forks).</p>
     </div>
     <footer class="foot"><span>FG slot structure · 27 Oct</span><span class="n"></span></footer>
   </section>
 
-  <!-- 9 · Option 2 -->
+  <!-- 10 · Option 2 -->
   <section class="slide" id="sl-o2" aria-label="Option 2: staggering instead of prioritization">
     <div class="in">
       <p class="eyebrow">Option 2</p>
       <h2>Staggering instead of prioritization</h2>
-      <p class="standfirst">Same slot, but the committee publishes in seven groups at 0–6 s. Aggregation at 9 s, or smarter.</p>
       <div class="fig"><svg id="f-o2" class="viz big" viewBox="0 0 1360 220" role="img" aria-label="Each slot: seven vote groups at 0 to 6 s, every vote valid until 9 s, aggregates from 9 to 12 s"></svg></div>
       <div class="pc">
-        <div class="card"><h3><span class="mk">+</span>For</h3>
-          <ul class="begins"><li>No prioritization: staggering spreads the load</li><li>Rest as today, with room for smarter aggregates</li></ul></div>
+        <div class="card"><h3><span class="mk">+</span>Pro</h3>
+          <ul class="begins"><li>No prioritization</li><li>Rest as today</li><li>Smarter aggregates possible</li></ul></div>
         <div class="card cost"><h3><span class="mk">−</span>Against</h3>
-          <ul class="begins"><li>Staggering is honest behavior: nothing enforces it</li><li>No pipelining: no votes after 6 s</li></ul></div>
+          <ul class="begins"><li>Not enforced</li><li>No pipelining</li></ul></div>
       </div>
-      <p class="fn">Devnet-1 “spread”: seven groups at 0, 1, …, 6 s, aggregate at 9 s. Smarter aggregates, from the breakout: aggregate as votes arrive, publish a better aggregate later, proposers top up until 12 s.</p>
     </div>
     <footer class="foot"><span>FG slot structure · 27 Oct</span><span class="n"></span></footer>
   </section>
 
-  <!-- 10 · Option 3 -->
+  <!-- 11 · Option 3 -->
   <section class="slide" id="sl-o3" aria-label="Option 3: multiple committees">
     <div class="in">
       <p class="eyebrow">Option 3</p>
       <h2>Multiple committees</h2>
-      <p class="standfirst">Today’s slot, three times a slot: every 4 s a committee votes, then aggregates for 4 s.</p>
       <div class="fig"><svg id="f-o3" class="viz big" viewBox="0 0 1360 320" role="img" aria-label="Seven committees over two slots: each votes for 4 s, then aggregates for 4 s"></svg></div>
       <div class="pc">
-        <div class="card"><h3><span class="mk">+</span>For</h3>
-          <ul class="begins"><li>Simple: today’s unit, repeated</li><li>Pipelined, and the windows are enforced</li></ul></div>
+        <div class="card"><h3><span class="mk">+</span>Pro</h3>
+          <ul class="begins"><li>Simple</li><li>Pipelining</li></ul></div>
         <div class="card cost"><h3><span class="mk">−</span>Against</h3>
-          <ul class="begins"><li>Changes aggregation: 3,072 aggregates per slot, not 1,024, always in flight</li><li>Looks different from today</li></ul></div>
+          <ul class="begins"><li>Changes aggregation: 3× aggregates</li><li>Looks different from today</li></ul></div>
       </div>
-      <p class="fn">Devnet-1 ran X = 3 (batches at 0, 3, 6 s); drawn here with 4 s units (Q17). Aggregates: 64 subnets × 16 aggregators per aggregation phase.</p>
     </div>
     <footer class="foot"><span>FG slot structure · 27 Oct</span><span class="n"></span></footer>
   </section>
 
-  <!-- 11 · Option 4: the proposal (builds: option 3 → move the aggregation → one aggregate) -->
+  <!-- 12 · Option 4: the proposal (builds: option 3 → move the aggregation → one aggregate) -->
   <section class="slide" id="sl-o4" aria-label="Option 4: multiple committees, one aggregation phase">
     <div class="in">
       <p class="eyebrow">Option 4 <span class="who">· proposal</span></p>
       <h2>Multiple committees, one aggregation phase</h2>
-      <p class="standfirst">Option 3, with every aggregation moved to just before the slot ends.</p>
       <div class="fig"><svg id="f-o4" class="viz big" viewBox="0 0 1360 320" role="img" aria-label="Option 3's aggregates slide to one aggregation phase at 8 to 12 s of each slot and merge into one aggregate per subnet"></svg></div>
       <div class="pc" data-step="2">
-        <div class="card"><h3><span class="mk">+</span>For</h3>
-          <ul class="begins"><li>Looks like today: one aggregation phase, 8–12 s</li><li>Least aggregation: 1,024 per slot, none during the block</li><li>Staggering, but enforced, and pipelined</li><li>Longer collection: late votes still make it</li></ul></div>
-        <div class="card open"><h3><span class="mk">?</span>Open</h3>
-          <ul class="begins"><li>An aggregate spans several committees: bitlist encoding</li><li>C3 waits for the next phase, but lands in the same block as in option 3</li></ul></div>
+        <div class="card"><h3><span class="mk">+</span>Pro</h3>
+          <ul class="begins"><li>Looks like today</li><li>Minimal aggregation traffic</li><li>Staggering, but enforced</li><li>Pipelining</li></ul></div>
+        <div class="card cost"><h3><span class="mk">−</span>Against</h3>
+          <ul class="begins"><li>Aggregates span committees</li></ul></div>
       </div>
     </div>
     <footer class="foot"><span>FG slot structure · 27 Oct</span><span class="n"></span></footer>
   </section>
 
-  <!-- 12 · Side by side -->
+  <!-- 13 · Side by side -->
   <section class="slide" id="sl-mx" aria-label="The four options side by side">
     <div class="in">
       <p class="eyebrow">Side by side</p>
-      <h2>Four options on the three choices</h2>
+      <h2>Four options on the four choices</h2>
       <table class="mx">
-        <thead><tr><th></th><th>Pipelining</th><th>Vote timing</th><th>Aggregation</th><th class="num">Aggregates / slot</th></tr></thead>
+        <thead><tr><th></th><th>Prioritization</th><th>Pipelining</th><th>Vote timing</th><th>Aggregation</th><th class="num">Aggregates / slot</th></tr></thead>
         <tbody>
-          <tr><td class="o">1 · Current + prioritization</td><td class="no">no</td><td>all at 0 s</td><td>once, at 9 s</td><td class="num">1,024</td></tr>
-          <tr><td class="o">2 · Staggering</td><td class="no">no</td><td>staggered, honest</td><td>once, at 9 s</td><td class="num">1,024</td></tr>
-          <tr><td class="o">3 · Multiple committees</td><td class="yes">yes</td><td>enforced, 4 s each</td><td>after each committee</td><td class="num">3,072</td></tr>
-          <tr class="me"><td class="o">4 · Proposal</td><td class="yes">yes</td><td>enforced, 4 s each</td><td>once, at 8 s</td><td class="num">1,024</td></tr>
+          <tr><td class="o">1 · Current + prioritization</td><td>yes</td><td>no</td><td>all at 0 s</td><td>once, 9 s</td><td class="num">1,024</td></tr>
+          <tr><td class="o">2 · Staggering</td><td>no</td><td>no</td><td>staggered, honest</td><td>once, 9 s</td><td class="num">1,024</td></tr>
+          <tr><td class="o">3 · Multiple committees</td><td>no</td><td>yes</td><td>enforced, 4 s</td><td>per committee</td><td class="num">3,072</td></tr>
+          <tr class="me"><td class="o">4 · Proposal</td><td>no</td><td>yes</td><td>enforced, 4 s</td><td>once, 8 s</td><td class="num">1,024</td></tr>
         </tbody>
       </table>
-      <p class="fn">Aggregates per slot: 64 subnets × 16 aggregators per aggregation phase. Option 4 counts one aggregate per subnet for all committees whose window has closed (needs one signed message, or multi-message aggregation); if each committee keeps its own, it is 3,072, all sent at 8 s.</p>
+    </div>
+    <footer class="foot"><span>FG slot structure · 27 Oct</span><span class="n"></span></footer>
+  </section>
+
+  <!-- 14 · Option 4: the parameters -->
+  <section class="slide" id="sl-params" aria-label="Option 4: the parameters">
+    <div class="in">
+      <p class="eyebrow">Option 4 <span class="who">· parameters</span></p>
+      <h2>The proposal in numbers</h2>
+      <div class="params">
+        <div class="grp">Timing</div>
+        <div class="p"><b>12 s</b><span>slot</span></div>
+        <div class="p"><b>4 s</b><span>vote window</span></div>
+        <div class="p"><b>3</b><span>committees per slot and subnet</span></div>
+        <div class="p"><b>8–12 s</b><span>aggregation phase</span></div>
+        <div class="grp">Aggregation</div>
+        <div class="p"><b>3</b><span>committees per aggregate</span></div>
+        <div class="p"><b>4–12 s</b><span>collection time per committee</span></div>
+        <div class="p"><b>16 × 64</b><span>aggregators × subnets</span></div>
+        <div class="p"><b>1,024</b><span>aggregates per slot</span></div>
+        <div class="grp">Round</div>
+        <div class="p"><b>8</b><span>slots per round</span></div>
+        <div class="p"><b>24</b><span>committees per round</span></div>
+        <div class="p"><b>≈ 716</b><span>per committee and subnet, at 1.1M validators</span></div>
+        <div class="p"><b>next block</b><span>includes the slot’s aggregates</span></div>
+      </div>
     </div>
     <footer class="foot"><span>FG slot structure · 27 Oct</span><span class="n"></span></footer>
   </section>
@@ -637,9 +663,39 @@
   }
   var PHASES = [[8, 12, "aggregation phase"], [20, 24, "aggregation phase"]];
 
-  /* ---------------- Choice 1 · pipelining ---------------- */
+  /* ---------------- Choice 1 · prioritization: traffic in one slot ---------------- */
+  function load(svg, burst) {
+    var W = 650, H = 340, x0 = 128, x1 = W - 8, k = (x1 - x0) / 12, base = 300, cap = 130, top = 220;
+    function X(t) { return x0 + t * k; }
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    svg.setAttribute("width", W);
+    svg.setAttribute("height", H);
+    for (var t = 0; t <= 12; t += 4) {
+      S("line", { x1: X(t), x2: X(t), y1: 20, y2: base, class: t % 12 === 0 ? "rb" : "sl" }, svg);
+      T(svg, X(t), 12, t + " s", { class: "tk", "text-anchor": "middle" });
+    }
+    S("line", { x1: x0, x2: x1, y1: base, y2: base, class: "sep" }, svg);
+    T(svg, x0 - 12, 64, "traffic", { class: "rl", "text-anchor": "end" });
+    S("rect", { x: X(0) + 1, y: top, width: 4 * k - 2, height: base - top, rx: 4, class: "blk" }, svg);
+    T(svg, X(2), (top + base) / 2 + 5, "block", { class: "ul dk", "text-anchor": "middle" });
+    if (burst) {   // every FG vote at slot start, on top of the block
+      S("rect", { x: X(0) + 1, y: 56, width: 1.2 * k - 2, height: top - 56, rx: 4, class: "v" }, svg);
+      T(svg, X(1.6), 84, "FG votes, all at 0 s", { class: "cap ink" });
+      T(svg, X(1.6), 104, "over capacity: block first", { class: "cap bad" });
+    } else {       // the same votes spread over the slot
+      var h = 22;
+      S("path", { d: "M" + X(0) + "," + (top - h) + " H" + X(4) + " V" + (base - h) + " H" + X(12) + " V" + base + " H" + X(4) + " V" + top + " H" + X(0) + " Z", class: "v" }, svg);
+      T(svg, X(8), base - h - 12, "FG votes, spread out", { class: "cap ink", "text-anchor": "middle" });
+    }
+    S("line", { x1: x0, x2: x1, y1: cap, y2: cap, class: "capl" }, svg);
+    T(svg, x1, cap - 8, "capacity", { class: "cap", "text-anchor": "end" });
+  }
+  load(document.getElementById("f-p1a"), true);
+  load(document.getElementById("f-p1b"), false);
+
+  /* ---------------- Choice 2 · pipelining ---------------- */
   fig(document.getElementById("f-c1a"), {
-    t: [0, 26], rh: 56, bh: 26,
+    t: [0, 26], x0: 128, cw: 7, rh: 75, bh: 30,
     rows: [
       { label: "committee · n", bars: [[0, 8, "v", "votes"], [8, 12, "g", "aggregate"]] },
       { label: "committee · n+1", bars: [[12, 20, "v", "votes"], [20, 24, "g", "aggregate"]] },
@@ -648,44 +704,44 @@
     lane: { label: "vote traffic", bars: [[0, 8, "v"], [8, 12, "idle", "idle", "ul mut"], [12, 20, "v"], [20, 24, "idle", "idle", "ul mut"], [24, 26, "v"]] }
   });
   fig(document.getElementById("f-c1b"), {
-    t: [0, 26], rh: 24, bh: 18,
+    t: [0, 26], x0: 128, cw: 7, rh: 32, bh: 22,
     rows: committees(aggRightAway),
     lane: { label: "vote traffic", bars: [[0, 26, "v", "no gaps"]] }
   });
 
-  /* ---------------- Choice 2 · vote timing ---------------- */
+  /* ---------------- Choice 3 · vote timing ---------------- */
   (function () {
     var rows = [];
     for (var gi = 0; gi < 7; gi++) rows.push({ label: "group " + (gi + 1), bars: gi < 6 ? [[gi, gi + 0.6, "v"]] : [] });
     rows.push({ label: "aggregators", bars: [[9, 12, "g", "aggregate"]] });
-    var f = fig(document.getElementById("f-c2a"), { t: [0, 12], rh: 26, bh: 14, rows: rows, tints: [[0, 9, 0, 6, "vt"]] });
-    T(f.g, f.X(4.5), 56, "every vote counts until 9 s", { class: "bl v", "text-anchor": "middle" });
+    var f = fig(document.getElementById("f-c2a"), { t: [0, 12], cw: 7, rh: 34, bh: 16, rows: rows, tints: [[0, 9, 0, 6, "vt"]] });
+    T(f.g, f.X(4.5), 56, "all valid until 9 s", { class: "bl v", "text-anchor": "middle" });
     // group 7: scheduled at 6 s, sends at 0 s, and it still counts
     var y = f.yRow(6);
     S("rect", { x: f.X(6) + 1, y: y, width: 0.6 * f.k - 2, height: f.bh, rx: 3, class: "ghost" }, f.g);
     S("rect", { x: f.X(0.1) + 1, y: y, width: 0.6 * f.k - 2, height: f.bh, rx: 3, class: "bad" }, f.g);
     S("line", { x1: f.X(5.9), y1: y + f.bh / 2, x2: f.X(0.95), y2: y + f.bh / 2, class: "badl", "marker-end": "url(#ah-bad)" }, f.g);
-    T(f.g, f.X(6.9), y + f.bh / 2 + 4, "sent at 0 s: still counts", { class: "cap bad" });
+    T(f.g, f.X(6.9), y + f.bh / 2 + 5, "early: still counts", { class: "cap bad" });
 
     var f2 = fig(document.getElementById("f-c2b"), {
-      t: [0, 12], rh: 69, bh: 26,
+      t: [0, 12], cw: 7, rh: 90, bh: 30,
       rows: [0, 1, 2].map(function (c) { return { label: "C" + (c + 1), bars: [[4 * c + 0.15, 4 * c + 3.85, "v", "votes"]] }; })
     });
     [0, 1, 2].forEach(function (c) {
       var y = f2.yRow(c);
-      S("rect", { x: f2.X(4 * c) + 1, y: y - 9, width: 4 * f2.k - 2, height: f2.bh + 18, rx: 6, class: "win" }, f2.g);
-      T(f2.g, f2.X(4 * c + 2), y - 13, "C" + (c + 1) + "’s window", { class: "cap", "text-anchor": "middle" });
+      S("rect", { x: f2.X(4 * c) + 1, y: y - 10, width: 4 * f2.k - 2, height: f2.bh + 20, rx: 6, class: "win" }, f2.g);
     });
+    T(f2.g, f2.X(2), f2.yRow(0) - 16, "4 s window", { class: "cap", "text-anchor": "middle" });
     var y3 = f2.yRow(2);
     S("rect", { x: f2.X(1) + 1, y: y3, width: 0.6 * f2.k - 2, height: f2.bh, rx: 3, class: "bad" }, f2.g);
-    T(f2.g, f2.X(1.9), y3 + f2.bh / 2 + 5, "outside its window: dropped", { class: "cap bad" });
+    T(f2.g, f2.X(1.9), y3 + f2.bh / 2 + 5, "outside window: dropped", { class: "cap bad" });
   })();
 
-  /* ---------------- Choice 3 · aggregation ---------------- */
-  fig(document.getElementById("f-c3a"), { t: [0, 26], rh: 30, bh: 20, rows: committees(aggRightAway) });
+  /* ---------------- Choice 4 · aggregation ---------------- */
+  fig(document.getElementById("f-c3a"), { t: [0, 26], cw: 7, rh: 39, bh: 26, rows: committees(aggRightAway) });
   (function () {
-    var f = fig(document.getElementById("f-c3b"), { t: [0, 26], rh: 30, bh: 20, rows: committees(aggAtEnd), bands: PHASES });
-    T(f.svg, f.X(26) - 2, f.yRow(6) + f.bh / 2 + 4, "→ n+2", { class: "cap", "text-anchor": "end" });
+    var f = fig(document.getElementById("f-c3b"), { t: [0, 26], cw: 7, rh: 39, bh: 26, rows: committees(aggAtEnd), bands: PHASES });
+    T(f.svg, f.X(26) - 2, f.yRow(6) + f.bh / 2 + 5, "→ n+2", { class: "cap", "text-anchor": "end" });
   })();
 
   /* ---------------- Options 1 and 2 ---------------- */
@@ -699,18 +755,18 @@
       b2.push([s + 9, s + 12, "g", "aggregate"]);
       r2.push({ label: "committee · " + sl, bars: b2 });
     });
-    var f1 = fig(document.getElementById("f-o1"), { t: [0, 26], x0: 170, cw: 7.6, rh: 44, bh: 28, rows: r1, blockLabel: "block · priority" });
+    var f1 = fig(document.getElementById("f-o1"), { t: [0, 26], x0: 170, cw: 7.6, rh: 60, bh: 34, rows: r1, blockLabel: "block · priority" });
     T(f1.g, f1.X(1.1), f1.yRow(0) + f1.bh / 2 + 5, "whole committee at 0 s", { class: "cap ink" });
-    var f2 = fig(document.getElementById("f-o2"), { t: [0, 26], x0: 170, cw: 7.6, rh: 44, bh: 28, rows: r2 });
+    var f2 = fig(document.getElementById("f-o2"), { t: [0, 26], x0: 170, cw: 7.6, rh: 60, bh: 34, rows: r2 });
     T(f2.g, f2.X(6.8), f2.yRow(0) + f2.bh / 2 + 5, "7 groups", { class: "cap ink" });
   })();
 
   /* ---------------- Options 3 and 4 ---------------- */
-  fig(document.getElementById("f-o3"), { t: [0, 26], x0: 170, cw: 7.6, rh: 32, bh: 23, rows: committees(aggRightAway) });
+  fig(document.getElementById("f-o3"), { t: [0, 26], x0: 170, cw: 7.6, rh: 34, bh: 24, rows: committees(aggRightAway) });
 
   var HOOKS = {};
   (function () {
-    var f = fig(document.getElementById("f-o4"), { t: [0, 26], x0: 170, cw: 7.6, rh: 32, bh: 23, rows: committees(aggRightAway, true), bands: PHASES });
+    var f = fig(document.getElementById("f-o4"), { t: [0, 26], x0: 170, cw: 7.6, rh: 34, bh: 24, rows: committees(aggRightAway, true), bands: PHASES });
     f.bands.classList.add("fade");
     // step 2: the committees in one phase become one aggregate per subnet
     var merge = S("g", { class: "fade" }, f.g);
