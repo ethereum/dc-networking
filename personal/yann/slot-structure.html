@@ -180,9 +180,9 @@
   .ro .s b.warn, .ro .v.warn { color: var(--agg); }
   .ro .s b.ok, .ro .v.ok { color: var(--accent); }
   .ro.big .v { font-size: 40px; color: var(--vote); }
-  .ro .pqline { margin: 2px 0 0; display: flex; align-items: baseline; gap: 14px; }
-  .ro .pqline .v { font-size: 26px; margin: 0; }
-  .ro .pqline .s { margin: 0; }
+  .ro .vline { margin: 2px 0 0; display: flex; align-items: baseline; gap: 14px; }
+  .ro .vline .v { font-size: 26px; margin: 0; }
+  .ro .vline .s { margin: 0; }
   #m-gl { width: 404px; height: 66px; margin-top: 6px; }
   .gl .bl { font-size: 11.5px; font-weight: 600; fill: var(--muted); }
   .gl .bv { font-size: 13px; font-weight: 600; fill: var(--ink); font-variant-numeric: tabular-nums; }
@@ -219,8 +219,7 @@
             <div class="ro"><p class="k">Global topic · per slot</p>
               <svg id="m-gl" class="viz gl" viewBox="0 0 404 66" role="img" aria-label="Aggregate bytes per slot on the global topic: today, multiple committees each aggregating, one aggregation phase"></svg>
               <p class="s" id="ro-gl-s"></p></div>
-            <div class="ro"><p class="k">Window open → block · mean</p><p class="pqline"><span class="v" id="ro-lat">12 s</span><span class="s" id="ro-lat-s"></span></p><p class="s" id="ro-lat-s2"></p></div>
-            <div class="ro"><p class="k">PQ proof per subnet · 8 cores</p><p class="pqline"><span class="v" id="ro-pq">≈ 7.9 s</span><span class="s" id="ro-pq-s"></span></p></div>
+            <div class="ro"><p class="k">Window open → block · mean</p><p class="vline"><span class="v" id="ro-lat">12 s</span><span class="s" id="ro-lat-s"></span></p><p class="s" id="ro-lat-s2"></p></div>
           </div>
         </div>
         <div class="ctl">
@@ -243,7 +242,7 @@
             <span class="seg" data-bind="S"><button type="button" data-v="32">32</button><button type="button" data-v="64">64</button><button type="button" data-v="128">128</button></span></div>
         </div>
       </div>
-      <p class="fn">Committees at in-slot offsets 0, Δ, 2Δ, …; each validator votes once per round. One aggregate per subnet needs every committee to sign the same data (or multi-message aggregation): 16 aggregators per subnet, ⌈bits/8⌉ + 240 B each. Multiple committees: each aggregates for G s right after its window. PQ: EIP-8292, 1,000 signatures in 3.7 s on 8 cores, all of a subnet’s in the phase, 1 s left to send.</p>
+      <p class="fn">Committees at in-slot offsets 0, Δ, 2Δ, …; each validator votes once per round. One aggregate per subnet needs every committee to sign the same data (or multi-message aggregation): 16 aggregators per subnet, ⌈bits/8⌉ + 240 B each. Multiple committees: each aggregates for G s right after its window.</p>
     </div>
     <footer class="foot"><span>FG slot structure · proposal</span><span>Draft</span></footer>
   </section>
@@ -421,12 +420,6 @@
       " · same block as multiple committees";
     document.getElementById("ro-lat-s2").textContent = "collection time " +
       (wt.lo === wt.hi ? fmtS(M.a + wt.lo) : fmtS(M.a + wt.lo).replace(" s", "") + "–" + fmtS(M.a + wt.hi)) + " per committee";
-
-    // PQ: EIP-8292 proves 1,000 signatures in ~3.7 s on 8 cores; scaled linearly, ~1 s left to send the proof
-    var pq = 3.7 * kc / 1000, fits = pq <= M.G - 1, pqEl = document.getElementById("ro-pq");
-    pqEl.textContent = "≈ " + (pq < 10 ? pq.toFixed(1) : Math.round(pq)) + " s";
-    pqEl.className = "v " + (fits ? "ok" : "warn");
-    document.getElementById("ro-pq-s").textContent = fmt(kc) + " signatures · " + (fits ? "fits" : "misses") + " the " + M.G + " s phase";
     document.getElementById("m-cv").textContent = fmtC(Math.pow(2, M.lc));
     document.getElementById("m-vv").textContent = fmtV(mo.V) + " validators";
   }
