@@ -16,7 +16,7 @@ bigger signatures and multi-stage aggregation.
 - **Small networking change.** DC is already a big consensus change, so
   networking shouldn't become the critical path. Stick to the conservative
   delta: today's gossip path and one aggregation layer
-  ([settled](../research/open_questions.md)).
+  ([settled](research/open_questions.md)).
   - Proposal: reuse today's pipeline: subnets → aggregators → global
     aggregate topic.
 - **Forward compatible with J\*.** Whatever I* adds should survive the move to
@@ -24,7 +24,7 @@ bigger signatures and multi-stage aggregation.
   - Proposal: bitlists that cover exactly 1/8 of the validator set, one
     slot's worth with 8-slot rounds. That's about 16 KB at ~1M validators.
   - Don't foreclose multi-stage aggregation
-    ([requirements](requirements.md#pq-forwardness)).
+    ([requirements](design/requirements.md#pq-forwardness)).
   - No new BLS-only dependencies (selection proofs, randomness).
 
 ## Needed in I* and J*
@@ -42,23 +42,23 @@ bigger signatures and multi-stage aggregation.
   time, e.g. right before a deadline. This is the same as fairness across
   geolocations and being friendly to home stakers.
   - Proposal: rotate each validator's send time across the slot
-    ([Q18](../research/fg/staggered-committees/README.md),
-    [Q19](../research/fg/free-running-committees/README.md)).
+    ([Q18](research/fg/staggered-committees/README.md),
+    [Q19](research/fg/free-running-committees/README.md)).
 - **Fair rewards for validators.** Rewards shouldn't depend on location or on
   which unit you vote in.
-  - Proposal: reward one vote per epoch ([incentives](incentives.md)).
+  - Proposal: reward one vote per epoch ([incentives](design/incentives.md)).
 - **Fair rewards for proposers.** A home staker's proposal should earn about
   as much as a big operator's. It's unfair if most of the rewards stay among
   the big stakers because they aggregate their own votes.
-  - Proposal: cap inclusion rewards per proposal ([incentives](incentives.md)).
+  - Proposal: cap inclusion rewards per proposal ([incentives](design/incentives.md)).
 - **Uses the whole round.** Votes that arrive late should still count and
   still pay until the round ends. Then slow validators aren't wasted and
   participation gets close to 100 %.
   - Proposal: late aggregates includable until the round ends; rewards that
-    make missing votes valuable ([incentives](incentives.md)).
+    make missing votes valuable ([incentives](design/incentives.md)).
 - **Degrades gracefully.** Under bad network conditions we should slow down,
   not stall.
-  - Proposal: back-off ([Q9](../research/open_questions.md)): fall back to
+  - Proposal: back-off ([Q9](research/open_questions.md)): fall back to
     about one epoch to finality, much faster otherwise.
 
 ## Nice in I*, needed in J*
@@ -70,7 +70,7 @@ bigger signatures and multi-stage aggregation.
     the round.
 - **Enables a safety gadget.** A safety gadget needs close to 100 % of votes
   to work. We want epochs where almost every vote lands.
-  - Proposal: follows from the [incentives](incentives.md).
+  - Proposal: follows from the [incentives](design/incentives.md).
 - **Anonymity enhancing.** Today a validator can be found by the subnets it
   sends to ([Heimbach et al.](https://arxiv.org/abs/2409.04366)). If a node
   only sends in subnets it is subscribed to anyway, its own votes look like
@@ -81,7 +81,7 @@ bigger signatures and multi-stage aggregation.
 - **Enables aggregation builders.** We already accept PBS. Same model here: a
   market of aggregation builders, so any proposer can always get a bid for the
   best aggregate. More important once aggregation gets expensive (PQ).
-  - Open. Related: [Q12](../research/open_questions.md) (optimistic
+  - Open. Related: [Q12](research/open_questions.md) (optimistic
     aggregation through brokers).
 
 ## Conclusions
@@ -91,27 +91,27 @@ bigger signatures and multi-stage aggregation.
    include, big operators can choose which blocks carry their votes, e.g.
    only the ones they propose. They collect much more of the rewards and
    grief the other proposers, who have fewer votes left to include. The
-   [incentives proposal](incentives.md) is meant to counter this.
+   [incentives proposal](design/incentives.md) is meant to counter this.
 
 ## Other properties to look at
 
 Not in the list yet, but they are written down elsewhere:
 
 - Low client load, tracked separately for validators and non-validator nodes.
-  Networking must not be the binding fault bound ([requirements](requirements.md#load)).
+  Networking must not be the binding fault bound ([requirements](design/requirements.md#load)).
 - Griefing resistance: lazy aggregators, spam, votes timed at phase boundaries
-  ([Q15](../research/open_questions.md)).
+  ([Q15](research/open_questions.md)).
 - Time for epoch/height transitions when votes start early
-  ([Q16](../research/open_questions.md), [transitions/](../research/transitions/README.md)).
-- Transition from today's pipeline ([Q14](../research/open_questions.md)).
+  ([Q16](research/open_questions.md), [transitions/](research/transitions/README.md)).
+- Transition from today's pipeline ([Q14](research/open_questions.md)).
 - Orbit SSF goals: solo-staking viability, validator capping
   ([ethresear.ch/t/19928](https://ethresear.ch/t/19928)).
 
 ## References
 
-- [requirements.md](requirements.md), [incentives.md](incentives.md), [open_questions.md](../research/open_questions.md)
-- Q17 [pipelined units](../research/fg/pipelined-units/README.md), Q18 [staggered committees](../research/fg/staggered-committees/README.md), Q19 [free-running committees](../research/fg/free-running-committees/README.md)
-- [2026-10-06 meeting](../meetings/2026-10-06.md): keep anchoring the bitfield at finality
+- [requirements.md](design/requirements.md), [incentives.md](design/incentives.md), [open_questions.md](research/open_questions.md)
+- Q17 [pipelined units](research/fg/pipelined-units/README.md), Q18 [staggered committees](research/fg/staggered-committees/README.md), Q19 [free-running committees](research/fg/free-running-committees/README.md)
+- [2026-10-06 meeting](meetings/2026-10-06.md): keep anchoring the bitfield at finality
 - Decoupled consensus: [ethresear.ch/t/24527](https://ethresear.ch/t/24527)
 - Validator deanonymization: Heimbach, Vonlanthen et al., USENIX Security '25 ([arXiv:2409.04366](https://arxiv.org/abs/2409.04366)), [ethresear.ch/t/20463](https://ethresear.ch/t/20463)
 - 8192 signatures per slot: [ethresear.ch/t/17989](https://ethresear.ch/t/17989)

@@ -4,12 +4,12 @@ title: Incentives
 
 # Incentives proposal
 
-*Draft, 2026-10-20. Split out of [properties.md](properties.md) on 2026-10-27.*
+*Draft, 2026-10-20. Split out of [properties.md](../properties.md) on 2026-10-27.*
 
-One proposal that covers several of the [networking properties](properties.md):
+One proposal that covers several of the [networking properties](../properties.md):
 fair rewards for validators, fair rewards for proposers, using the whole round,
 and enabling a safety gadget. It is meant to counter
-[conclusion 1](properties.md#conclusions): prioritization alone gives very
+[conclusion 1](../properties.md#conclusions): prioritization alone gives very
 uneven rewards.
 
 ## Proposal
