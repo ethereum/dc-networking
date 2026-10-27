@@ -164,5 +164,5 @@ Devnet-1 ran 120 000 validators in 8 slots over 6 subnets (committees of 2 500, 
 - [`research/open_questions.md`](../../open_questions.md) — Q17 tracks this note; P2 propagation-path decision of 2026-07-20.
 - [`research/transitions/boundary-pipelining.md`](../../transitions/boundary-pipelining.md) — round-start freeze and the justification dependency.
 - [`meetings/2026-09-08.md`](../../../meetings/2026-09-08.md), [`meetings/2026-08-25.md`](../../../meetings/2026-08-25.md), [`meetings/2026-07-28.md`](../../../meetings/2026-07-28.md).
-- [`benchmarking/eth-slot-sim.md`](../../../benchmarking/eth-slot-sim.md), [`benchmarking/nft-devnet-1/description.md`](../../../benchmarking/nft-devnet-1/description.md).
+- [`benchmarking/eth-slot-sim.md`](../../../benchmarking/eth-slot-sim.md), [`benchmarking/devnet-0/description.md`](../../../benchmarking/devnet-0/description.md).
 - EIP-8334 *Bundled attestation propagation* (Tarachandani), PR-stage: [ethereum/EIPs#11905](https://github.com/ethereum/EIPs/pull/11905).
