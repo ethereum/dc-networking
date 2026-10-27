@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One aggregation phase · slot structure</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  /* Tokens and type: slot-options.html (votes blue, aggregation orange, blocks gold). */
+  :root {
+    --paper: #F8FAF9;
+    --ink: #1A2C29;
+    --muted: #5C6F6A;
+    --accent: #1F6F63;
+    --hairline: #D9E2DD;
+    --vote: #1971c2;
+    --agg: #e8590c;
+    --agg-deep: #a8400a;
+    --blk: #e9b949;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", "URW Palladio L", Georgia, serif;
+    --sans: "Avenir Next", Avenir, Seravek, "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #111917;
+      --ink: #E5ECE8;
+      --muted: #93A69E;
+      --accent: #A9CBB9;
+      --hairline: #2B3833;
+      --vote: #4d9be6;
+      --agg: #f07f3c;
+      --agg-deep: #ffb07d;
+      --blk: #d9ab3f;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #111917;
+    --ink: #E5ECE8;
+    --muted: #93A69E;
+    --accent: #A9CBB9;
+    --hairline: #2B3833;
+    --vote: #4d9be6;
+    --agg: #f07f3c;
+    --agg-deep: #ffb07d;
+    --blk: #d9ab3f;
+  }
+
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  body { overflow: hidden; }
+
+  /* ---- One fixed 1600×900 slide, scaled to fit ---- */
+  .deck { position: fixed; inset: 0; }
+  .slide {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1600px;
+    height: 900px;
+    margin: -450px 0 0 -800px;
+    padding: 64px 120px 130px;
+    transform: scale(var(--scale, 1));
+    display: flex;
+    flex-direction: column;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .anim .slide > .in { animation: settle 0.6s ease-out both; }
+    @keyframes settle {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: none; }
+    }
+  }
+  .in { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+
+  .foot {
+    position: absolute;
+    left: 120px;
+    right: 120px;
+    bottom: 46px;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 18px;
+    border-top: 1px solid var(--hairline);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+  .eyebrow .who { color: var(--muted); }
+  h2 { font-weight: 400; letter-spacing: 0.01em; margin: 0; text-wrap: balance; font-size: 56px; line-height: 1.1; }
+
+  .prop {
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    margin: 16px 0 0;
+    font-size: 23px;
+    line-height: 1.38;
+  }
+  .prop .tag {
+    flex: none;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--accent);
+    padding: 5px 10px 4px;
+    border-radius: 4px;
+    position: relative;
+    top: -3px;
+  }
+  .body { margin-top: 26px; display: flex; flex-direction: column; gap: 18px; flex: 1; min-height: 0; justify-content: safe center; }
+
+  /* controls */
+  .ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 30px; font-family: var(--sans); }
+  .ctl .grp { display: flex; align-items: center; gap: 10px; }
+  .ctl .lab { font-size: 12px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); }
+  .ctl .val { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; min-width: 2.6em; text-align: center; }
+  .ctl .sub { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .seg { display: inline-flex; border: 1px solid var(--hairline); border-radius: 8px; overflow: hidden; }
+  .seg button { font: 600 15px var(--sans); color: var(--ink); background: transparent; border: 0; padding: 6px 12px; cursor: pointer; }
+  .seg button + button { border-left: 1px solid var(--hairline); }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .pm { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--hairline); background: transparent; color: var(--ink); font: 600 17px/1 var(--sans); cursor: pointer; padding: 0; }
+  .pm:disabled { opacity: 0.35; cursor: default; }
+  .ctl input[type="range"] { width: 200px; accent-color: var(--accent); }
+
+  svg text { font-family: var(--sans); }
+  .viz { display: block; overflow: visible; }
+  .viz .tk { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; fill: var(--muted); }
+  .viz .rl { font-size: 12px; font-weight: 600; fill: var(--muted); }
+  .viz .ul { font-size: 11px; font-weight: 700; fill: #FFFFFF; }
+  .viz .ul.dk { fill: #1A2C29; }
+  .viz .sl { stroke: var(--hairline); stroke-width: 1; stroke-dasharray: 3 4; }
+  .viz .rb { stroke: var(--ink); stroke-width: 2.2; }
+  .viz .nr { fill: var(--ink); opacity: 0.045; }
+  .viz .blk { fill: var(--blk); }
+  .viz .v { fill: var(--vote); }
+  .viz .vt { fill: var(--vote); opacity: 0.2; }
+  .viz .g { fill: var(--agg); }
+  .viz .ax { stroke: var(--muted); stroke-width: 1; }
+  .viz .cut { stroke: var(--agg-deep); stroke-width: 1.6; stroke-dasharray: 5 4; }
+  .viz .cut.faint { opacity: 0.4; }
+  .viz .cutl { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; fill: var(--agg-deep); }
+  .viz .band { fill: var(--agg); opacity: 0.13; }
+  .viz .hint { font-size: 13px; font-style: italic; fill: var(--muted); font-family: var(--serif); }
+
+  /* timeline left, readouts right */
+  .u-grid { display: grid; grid-template-columns: 910px minmax(0, 1fr); gap: 0 46px; align-items: start; }
+  #m-tl { width: 910px; height: 340px; }
+  .u-right { display: flex; flex-direction: column; gap: 10px; }
+  .ro .k { font: 700 11px var(--sans); letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin: 0; }
+  .ro .v { font: 500 30px/1.15 var(--sans); font-variant-numeric: tabular-nums; margin: 2px 0 0; }
+  .ro .s { font: 600 12px/1.35 var(--sans); color: var(--muted); margin: 2px 0 0; white-space: nowrap; }
+  .ro .s b.warn, .ro .v.warn { color: var(--agg); }
+  .ro .s b.ok, .ro .v.ok { color: var(--accent); }
+  .ro.big .v { font-size: 40px; color: var(--vote); }
+  .ro .pqline { margin: 2px 0 0; display: flex; align-items: baseline; gap: 14px; }
+  .ro .pqline .v { font-size: 26px; margin: 0; }
+  .ro .pqline .s { margin: 0; }
+  #m-gl { width: 404px; height: 66px; margin-top: 6px; }
+  .gl .bl { font-size: 11.5px; font-weight: 600; fill: var(--muted); }
+  .gl .bv { font-size: 13px; font-weight: 600; fill: var(--ink); font-variant-numeric: tabular-nums; }
+  .gl .td { fill: var(--muted); opacity: 0.45; }
+  .gl .mc { fill: var(--agg); opacity: 0.38; }
+  .gl .op { fill: var(--agg); }
+
+  .fn { margin: 14px 0 0; font-family: var(--sans); font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+
+  /* ---- Print / PDF: the slide at the default setting ---- */
+  @page { size: 1600px 900px; margin: 0; }
+  @media print {
+    html, body { height: auto; overflow: visible; }
+    .deck { position: static; }
+    .slide { position: relative; left: auto; top: auto; margin: 0; transform: none !important; }
+    .slide > .in { animation: none !important; }
+    .ctl { display: none; }
+  }
+</style>
+</head>
+<body>
+<main class="deck">
+
+  <section class="slide" aria-label="Slot structure: multiple committees, one aggregation phase">
+    <div class="in">
+      <p class="eyebrow">Proposal <span class="who">· slot structure</span></p>
+      <h2>Multiple committees, one aggregation phase</h2>
+      <p class="prop"><span class="tag">Proposal</span><span>Every <i>Δ</i> s a new committee votes in its own <i>a</i> s window, with no aggregation of its own. One phase in the last <i>G</i> s of each slot aggregates every committee whose window has closed: one aggregate per subnet.</span></p>
+      <div class="body">
+        <div class="u-grid">
+          <svg id="m-tl" class="viz" viewBox="0 0 910 340" role="img" aria-label="Slot s: committee vote windows on a Δ-second grid in blue; one aggregation phase in the last G seconds of the slot takes every committee whose window closed since the previous phase, for the next block"></svg>
+          <div class="u-right">
+            <div class="ro big"><p class="k">Committee (per subnet)</p><p class="v" id="ro-com">716</p><p class="s" id="ro-com-s"></p></div>
+            <div class="ro"><p class="k">Global topic · per slot</p>
+              <svg id="m-gl" class="viz gl" viewBox="0 0 404 66" role="img" aria-label="Aggregate bytes per slot on the global topic: today, multiple committees each aggregating, one aggregation phase"></svg>
+              <p class="s" id="ro-gl-s"></p></div>
+            <div class="ro"><p class="k">Window open → block · mean</p><p class="pqline"><span class="v" id="ro-lat">12 s</span><span class="s" id="ro-lat-s"></span></p><p class="s" id="ro-lat-s2"></p></div>
+            <div class="ro"><p class="k">PQ proof per subnet · 8 cores</p><p class="pqline"><span class="v" id="ro-pq">≈ 7.9 s</span><span class="s" id="ro-pq-s"></span></p></div>
+          </div>
+        </div>
+        <div class="ctl">
+          <div class="grp"><span class="lab">Committee every</span>
+            <span class="seg" data-bind="dt"><button type="button" data-v="1">1 s</button><button type="button" data-v="2">2 s</button><button type="button" data-v="3">3 s</button><button type="button" data-v="4">4 s</button></span></div>
+          <div class="grp"><span class="lab">Vote window</span>
+            <button type="button" class="pm" data-k="a" data-d="-1" aria-label="shorter">−</button><span class="val" data-val="a">4 s</span><button type="button" class="pm" data-k="a" data-d="1" aria-label="longer">+</button></div>
+          <div class="grp"><span class="lab">Aggregation phase</span>
+            <button type="button" class="pm" data-k="G" data-d="-1" aria-label="shorter">−</button><span class="val" data-val="G">4 s</span><button type="button" class="pm" data-k="G" data-d="1" aria-label="longer">+</button></div>
+          <div class="grp"><span class="lab">Slot</span>
+            <span class="seg" data-bind="L"><button type="button" data-v="6">6 s</button><button type="button" data-v="8">8 s</button><button type="button" data-v="10">10 s</button><button type="button" data-v="12">12 s</button></span></div>
+        </div>
+        <div class="ctl">
+          <div class="grp"><span class="lab">Round</span>
+            <span class="seg" data-bind="slots"><button type="button" data-v="8">8 slots</button><button type="button" data-v="4">4 slots</button></span></div>
+          <div class="grp"><span class="lab">Consolidation</span>
+            <input type="range" id="m-c" min="0" max="6" step="0.05" value="0" aria-label="consolidation factor, log scale">
+            <span class="val" id="m-cv">1×</span><span class="sub" id="m-vv">1.1M validators</span></div>
+          <div class="grp"><span class="lab">Subnets</span>
+            <span class="seg" data-bind="S"><button type="button" data-v="32">32</button><button type="button" data-v="64">64</button><button type="button" data-v="128">128</button></span></div>
+        </div>
+      </div>
+      <p class="fn">Committees at in-slot offsets 0, Δ, 2Δ, …; each validator votes once per round. One aggregate per subnet needs every committee to sign the same data (or multi-message aggregation): 16 aggregators per subnet, ⌈bits/8⌉ + 240 B each. Multiple committees: each aggregates for G s right after its window. PQ: EIP-8292, 1,000 signatures in 3.7 s on 8 cores, all of a subnet’s in the phase, 1 s left to send.</p>
+    </div>
+    <footer class="foot"><span>FG slot structure · proposal</span><span>Draft</span></footer>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var params = new URLSearchParams(location.search);
+  var STATIC = params.has("static") ||
+    (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  /* ---------------- small SVG kit (slot-options.html) ---------------- */
+  var NS = "http://www.w3.org/2000/svg";
+  function S(tag, attrs, parent) {
+    var e = document.createElementNS(NS, tag);
+    if (attrs) for (var k in attrs) if (attrs[k] !== undefined) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function T(parent, x, y, s, attrs) {
+    var a = { x: x, y: y };
+    if (attrs) for (var k in attrs) a[k] = attrs[k];
+    var t = S("text", a, parent);
+    t.textContent = s;
+    return t;
+  }
+  function clear(el) { while (el.firstChild) el.removeChild(el.firstChild); }
+  function fmt(n) {   // thin-space thousands, as in the dc-networking notes
+    return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  }
+  function fmtV(n) { return n >= 1e6 ? (n / 1e6).toFixed(2).replace(/0$/, "") + "M" : n >= 1e4 ? Math.round(n / 1e3) + "k" : (n / 1e3).toFixed(1) + "k"; }
+  function fmtC(c) { return c < 9.95 ? (Math.round(c * 10) / 10).toString().replace(/\.0$/, "") + "×" : Math.round(c) + "×"; }
+  function fmtB(b) { return b >= 1e6 ? (b / 1e6).toFixed(2) + " MB" : b >= 1e4 ? fmt(b / 1e3) + " kB" : b >= 1e3 ? (b / 1e3).toFixed(1) + " kB" : fmt(b) + " B"; }
+  function fmtS(t) { return (Math.abs(t - Math.round(t)) < 0.05 ? String(Math.round(t)) : t.toFixed(1)) + " s"; }
+
+  /* ---------------- the model ----------------
+     dt = a new committee every dt s, at in-slot offsets 0, dt, 2dt, …; a = its vote window; G = the one
+     aggregation phase, the last G s of every slot; L = slot length; lc = log2(consolidation);
+     slots = round length in slots; S = subnets. */
+  var V0 = 1.1e6, TODAY = V0 / 32 / 64;   // mainnet today: 1.1M validators, 32 slots × 64 subnets → ≈ 537
+  var M = { dt: 4, a: 4, G: 4, L: 12, lc: 0, slots: 8, S: 64 };
+  var LIMITS = { a: [1, 6], G: [1, 6] };
+  function lim(key) { return key === "G" ? [LIMITS.G[0], Math.min(LIMITS.G[1], M.L - 1)] : LIMITS[key]; }
+
+  function model() {
+    var L = M.L, k = Math.ceil(L / M.dt - 1e-9);
+    var V = V0 / Math.pow(2, M.lc), c = V / (M.slots * k) / M.S;
+    var cs = [];
+    for (var i = 0; i < k; i++) {
+      var o = i * M.dt, e = o + M.a;
+      // the first phase to start once the window has closed, m slots on; it ends at the first slot boundary
+      // at or after e + G, so the aggregate rides the block a G s aggregation right after the window would
+      var m = Math.max(0, Math.ceil((e - (L - M.G)) / L - 1e-9));
+      cs.push({ o: o, m: m, lat: (m + 1) * L - o, wait: (m + 1) * L - M.G - e });
+    }
+    function stat(key) {
+      var v = cs.map(function (q) { return q[key]; });
+      return { mean: v.reduce(function (s, x) { return s + x; }, 0) / k, lo: Math.min.apply(null, v), hi: Math.max.apply(null, v) };
+    }
+    return { k: k, V: V, c: c, cs: cs, lat: stat("lat"), wait: stat("wait") };
+  }
+
+  /* ---------------- the timeline: the committees slot s's aggregation phase takes ---------------- */
+  var tl = document.getElementById("m-tl");
+  function slotName(j, pre) { return pre + "s" + (j === 0 ? "" : (j > 0 ? "+" : "−") + Math.abs(j)); }
+  function drawTimeline(mo) {
+    clear(tl);
+    var L = M.L, G = M.G, A = M.a, k = mo.k, bw = Math.min(4, L / 3);
+    var w0 = -G, w1 = L + bw + 0.3;
+    mo.cs.forEach(function (q) { w0 = Math.min(w0, q.o - q.m * L); });
+    w0 -= 0.5;
+    var x0 = 78, x1 = 904, kx = (x1 - x0) / (w1 - w0);
+    function X(t) { return x0 + (Math.max(w0, Math.min(w1, t)) - w0) * kx; }
+    var yB = 24, top = 60, area = 166, yD = 244, yM = 260, yA = 300;
+
+    // slots: s in white, its neighbours shaded
+    S("rect", { x: X(w0), y: 18, width: X(0) - X(w0), height: yA - 18, class: "nr" }, tl);
+    S("rect", { x: X(L), y: 18, width: X(w1) - X(L), height: yA - 18, class: "nr" }, tl);
+    for (var j = Math.floor(w0 / L); j * L < w1; j++) {
+      var s0 = Math.max(w0, j * L), s1 = Math.min(w1, (j + 1) * L);
+      if (X(s1) - X(s0) >= 56) T(tl, (X(s0) + X(s1)) / 2, 12, slotName(j, "slot "), { class: "tk", "text-anchor": "middle" });
+      if (j * L >= w0) S("line", { x1: X(j * L), x2: X(j * L), y1: 18, y2: yA, class: (j === 0 || j === 1) ? "rb" : "sl" }, tl);
+    }
+
+    // blocks: the first third of every slot
+    T(tl, x0 - 10, yB + 12, "blocks", { class: "rl", "text-anchor": "end" });
+    for (j = Math.ceil(w0 / L); j * L < w1; j++) {
+      var bx = X(j * L) + 1, bwx = Math.min(bw * kx - 2, X(w1) - bx);
+      S("rect", { x: bx, y: yB, width: bwx, height: 16, rx: 4, class: "blk", opacity: (j === 0 || j === 1) ? 1 : 0.45 }, tl);
+      if (bwx >= 66) T(tl, bx + 8, yB + 12, slotName(j, "block "), { class: "ul dk" });
+    }
+
+    // the cuts: each aggregation phase starts G s before its slot ends
+    for (j = Math.floor(w0 / L) - 1; j * L < w1; j++) {
+      var tc = j * L + L - G;
+      if (tc < w0 || tc > w1) continue;
+      S("line", { x1: X(tc), x2: X(tc), y1: yB + 20, y2: yM + 24, class: j === 0 ? "cut" : "cut faint" }, tl);
+      T(tl, X(tc), top - 6, "cut", { class: "cutl", "text-anchor": "middle", opacity: j === 0 ? 1 : 0.5 });
+    }
+
+    // committees, one row per in-slot offset: the window this phase takes, labelled with its slot,
+    // and a tint to the cut while its late votes still count
+    var rh = area / k, bh = Math.min(30, rh * 0.74), rx = Math.min(4, bh / 3), longest = null;
+    mo.cs.forEach(function (q, i) {
+      var ry = top + i * rh, y = ry + (rh - bh) / 2, t0 = q.o - q.m * L;
+      if (rh >= 13 || i % 2 === 0) T(tl, x0 - 10, ry + rh / 2 + 4, "+" + q.o + " s", { class: "rl", "text-anchor": "end" });
+      if (q.wait > 0) S("rect", { x: X(t0 + A), y: ry + rh / 2 - bh * 0.18, width: X(L - G) - X(t0 + A), height: bh * 0.36, class: "vt" }, tl);
+      S("rect", { x: X(t0) + 0.6, y: y, width: Math.max(1, A * kx - 1.2), height: bh, rx: rx, class: "v" }, tl);
+      if (A * kx >= 34 && bh >= 14) T(tl, X(t0 + A / 2), y + bh / 2 + 4, slotName(-q.m, ""), { class: "ul", "text-anchor": "middle" });
+      S("circle", { cx: X(t0 + A), cy: yD, r: k > 6 ? 2.4 : 3.6, class: "v" }, tl);
+      if (!longest || q.wait > longest.q.wait) longest = { q: q, ry: ry, x: X(t0 + A) };
+    });
+    if (rh >= 30 && longest.q.wait * kx >= 190)
+      T(tl, longest.x + 8, longest.ry + rh / 2 - bh * 0.18 - 6, "late votes still count", { class: "hint" });
+
+    // closed since the last cut → taken by this phase
+    T(tl, x0 - 10, yD + 4, "closed", { class: "rl", "text-anchor": "end" });
+    S("rect", { x: X(-G), y: yD - 7, width: X(L - G) - X(-G), height: 14, rx: 7, class: "band" }, tl);
+
+    // the aggregation phases: the last G s of each slot, into the block that opens the next
+    T(tl, x0 - 10, yM + 16, "aggregate", { class: "rl", "text-anchor": "end" });
+    for (j = Math.floor(w0 / L) - 1; j * L < w1; j++) {
+      var m0 = Math.max(w0, j * L + L - G), m1 = Math.min(w1, (j + 1) * L);
+      if (m1 <= m0) continue;
+      S("rect", { x: X(m0) + 1, y: yM, width: Math.max(1, X(m1) - X(m0) - 2), height: 24, rx: 5, class: "g", opacity: j === 0 ? 1 : 0.3 }, tl);
+      if (j !== 0) continue;
+      var lab = G * kx >= 124 ? k + " → 1 per subnet" : G * kx >= 64 ? "one phase" : "";
+      if (lab) T(tl, (X(m0) + X(m1)) / 2, yM + 16, lab, { class: "ul", "text-anchor": "middle", "font-size": 12 });
+    }
+
+    // time axis, relative to the start of slot s
+    S("line", { x1: X(w0), x2: X(w1), y1: yA, y2: yA, class: "ax" }, tl);
+    var step = [2, 4, 6, 8, 12].filter(function (st) { return st * kx >= 34; })[0] || 12;
+    for (var t = Math.ceil(w0 / step) * step; t <= w1; t += step) {
+      S("line", { x1: X(t), x2: X(t), y1: yA, y2: yA + 6, class: "ax" }, tl);
+      T(tl, X(t), yA + 22, t === 0 ? "0" : (t < 0 ? "−" : "") + Math.abs(t) + " s", { class: "tk", "text-anchor": "middle" });
+    }
+  }
+
+  /* ---------------- readouts ---------------- */
+  var gl = document.getElementById("m-gl");
+  function drawGlobal(bars) {   // bytes per slot on the global topic, one bar each
+    clear(gl);
+    var lx = 124, maxW = 404 - lx - 66, top = Math.max.apply(null, bars.map(function (b) { return b[1]; }));
+    bars.forEach(function (b, i) {
+      var y = 3 + i * 22, w = Math.max(2, maxW * b[1] / top);
+      T(gl, 0, y + 11, b[0], { class: "bl" });
+      S("rect", { x: lx, y: y, width: w, height: 14, rx: 2, class: b[2] }, gl);
+      T(gl, lx + w + 6, y + 12, fmtB(b[1]), { class: "bv" });
+    });
+  }
+  function readouts(mo) {
+    var c = mo.c, k = mo.k, ratio = c / TODAY;
+    document.getElementById("ro-com").textContent = c >= 10 ? fmt(c) : c.toFixed(1);
+    document.getElementById("ro-com-s").innerHTML = '<b class="' + (ratio > 1.0001 ? "warn" : "ok") + '">' +
+      (ratio >= 10 ? ratio.toFixed(1) : ratio.toFixed(2)) + "×</b> today’s " + fmt(TODAY) +
+      " · " + fmt(M.slots * k) + " per round ÷ " + M.S + " subnets";
+
+    // global topic: 16 aggregates per subnet and aggregation phase, ⌈bits/8⌉ + 240 B each; one phase per
+    // slot here, one per committee when each aggregates on its own
+    var kc = k * c, A1 = Math.min(16, kc), b1 = Math.ceil(kc / 8) + 240, one = M.S * A1 * b1;
+    var A2 = Math.min(16, c), b2 = Math.ceil(c / 8) + 240, each = M.S * A2 * b2 * k;
+    var today = 1024 * (Math.ceil(TODAY / 8) + 240);   // today's 1,024 aggregates per slot, same model
+    drawGlobal([["today", today, "td"], ["multiple committees", each, "mc"], ["one phase", one, "op"]]);
+    var clash = M.G > M.L - Math.min(4, M.L / 3);   // the phase reaches back into the block's third of the slot
+    document.getElementById("ro-gl-s").innerHTML = fmt(M.S * A1) + " aggregates × " + fmt(b1) + " B · " +
+      (one / M.L * 8 / 1e6).toFixed(2) + " Mbit/s · " + (clash ? '<b class="warn">overlaps the block</b>' : "none during the block");
+
+    // latency: the mean over the slot's committees; collection: a committee's window plus its wait for the phase
+    var lt = mo.lat, wt = mo.wait;
+    document.getElementById("ro-lat").textContent = fmtS(lt.mean);
+    document.getElementById("ro-lat-s").textContent = (lt.lo === lt.hi ? "every committee" : fmtS(lt.lo).replace(" s", "") + "–" + fmtS(lt.hi)) +
+      " · same block as multiple committees";
+    document.getElementById("ro-lat-s2").textContent = "collection time " +
+      (wt.lo === wt.hi ? fmtS(M.a + wt.lo) : fmtS(M.a + wt.lo).replace(" s", "") + "–" + fmtS(M.a + wt.hi)) + " per committee";
+
+    // PQ: EIP-8292 proves 1,000 signatures in ~3.7 s on 8 cores; scaled linearly, ~1 s left to send the proof
+    var pq = 3.7 * kc / 1000, fits = pq <= M.G - 1, pqEl = document.getElementById("ro-pq");
+    pqEl.textContent = "≈ " + (pq < 10 ? pq.toFixed(1) : Math.round(pq)) + " s";
+    pqEl.className = "v " + (fits ? "ok" : "warn");
+    document.getElementById("ro-pq-s").textContent = fmt(kc) + " signatures · " + (fits ? "fits" : "misses") + " the " + M.G + " s phase";
+    document.getElementById("m-cv").textContent = fmtC(Math.pow(2, M.lc));
+    document.getElementById("m-vv").textContent = fmtV(mo.V) + " validators";
+  }
+  function render() { var mo = model(); drawTimeline(mo); readouts(mo); }
+
+  /* ---------------- controls: data-bind segments, data-k steppers, data-val values ---------------- */
+  function sync() {
+    Array.prototype.forEach.call(document.querySelectorAll(".seg[data-bind]"), function (host) {
+      var key = host.getAttribute("data-bind");
+      Array.prototype.forEach.call(host.querySelectorAll("button"), function (b) {
+        b.setAttribute("aria-pressed", String(+b.getAttribute("data-v") === M[key]));
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-val]"), function (el) {
+      el.textContent = M[el.getAttribute("data-val")] + " s";
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".pm[data-k]"), function (b) {
+      var key = b.getAttribute("data-k"), v = M[key] + +b.getAttribute("data-d"), l = lim(key);
+      b.disabled = v < l[0] || v > l[1];
+    });
+  }
+  function changed() { M.G = Math.min(M.G, M.L - 1); sync(); render(); }
+  Array.prototype.forEach.call(document.querySelectorAll(".seg[data-bind]"), function (host) {
+    var key = host.getAttribute("data-bind");
+    Array.prototype.forEach.call(host.querySelectorAll("button"), function (b) {
+      b.addEventListener("click", function () { M[key] = +b.getAttribute("data-v"); changed(); b.blur(); });
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll(".pm[data-k]"), function (b) {
+    b.addEventListener("click", function () {
+      var key = b.getAttribute("data-k"), v = M[key] + +b.getAttribute("data-d"), l = lim(key);
+      if (v >= l[0] && v <= l[1]) { M[key] = v; changed(); }
+      b.blur();
+    });
+  });
+  var slider = document.getElementById("m-c");
+  slider.addEventListener("input", function () {
+    // snap to whole doublings, and to parity: the committee no larger than today's
+    var v = +slider.value, par = Math.log2(V0 / (TODAY * M.slots * model().k * M.S));
+    [0, 1, 2, 3, 4, 5, 6, par].forEach(function (s) { if (Math.abs(v - s) < 0.08) v = s; });
+    M.lc = v; changed();
+  });
+  slider.addEventListener("change", function () { slider.blur(); });
+
+  /* ---------------- stage ---------------- */
+  function fit() {
+    var k = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    document.documentElement.style.setProperty("--scale", k);
+  }
+  document.addEventListener("keydown", function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === "f") {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+      else document.exitFullscreen && document.exitFullscreen();
+    } else if (e.key === "t") {
+      var root = document.documentElement;
+      var dark = root.dataset.theme ? root.dataset.theme === "dark"
+        : window.matchMedia("(prefers-color-scheme: dark)").matches;
+      root.dataset.theme = dark ? "light" : "dark";
+    }
+  });
+  window.addEventListener("resize", fit);
+
+  if (!STATIC) document.documentElement.classList.add("anim");
+  fit();
+  sync();
+  render();
+})();
+</script>
+</body>
+</html>
