@@ -60,6 +60,11 @@ bigger signatures and multi-stage aggregation.
   not stall.
   - Proposal: back-off ([Q9](research/open_questions.md)): fall back to
     about one epoch to finality, much faster otherwise.
+- **Reliable.** Votes still make it on chain when the network is degraded:
+  slow, lossy or partly partitioned. Not full asynchrony, just tolerance.
+  - Open. Related: late votes ([Q17](research/fg/pipelined-units/README.md),
+    problem 2); aggregating only at the end of the slot gives aggregators
+    longer to collect (Q17, figure 3).
 
 ## Nice in I*, needed in J*
 
