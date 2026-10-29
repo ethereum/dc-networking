@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 438" width="760" height="438" role="img" aria-labelledby="t d">
+<title id="t">Gossip traffic: Silver's own numbers vs the 2 Gbit/s claim</title>
+<desc id="d">Mainnet supernode, average each way: 0.10 Gbit/s; Mainnet supernode, bursts: 0.50 Gbit/s; Announcement snapshot, p2p in: 0.24 Gbit/s; Announcement snapshot, p2p out: 0.39 Gbit/s; Claimed: up to 2 Gbit/s of gossip: 2.00 Gbit/s; Column burst in 1 s, 8-peer mesh: 0.33 Gbit/s; Column burst in 0.25 s, 8-peer mesh: 1.30 Gbit/s; Column burst in 0.25 s, 12-peer mesh: 2.04 Gbit/s</desc>
+<rect x="0.5" y="0.5" width="759" height="437" rx="12" fill="#fcfcfb" stroke="rgba(11,11,11,0.10)"/>
+<g font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<text x="24.0" y="34.0" font-size="15" font-weight="600" fill="#0b0b0b" text-anchor="start">Gossip traffic: Silver's own numbers vs the 2 Gbit/s claim</text>
+<text x="24.0" y="54.0" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">Gbit/s. Estimates are a supernode's outbound data-column burst at 21 blobs per block.</text>
+<rect x="24" y="73" width="10" height="10" rx="3" fill="#2a78d6"/>
+<text x="40.0" y="82.0" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">Silver's own measurements</text>
+<rect x="226.0" y="73" width="10" height="10" rx="3" fill="#eb6834"/>
+<text x="242.0" y="82.0" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">Claimed capacity</text>
+<rect x="370.4" y="73" width="10" height="10" rx="3" fill="#1baf7a"/>
+<text x="386.4" y="82.0" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">Back-of-envelope estimate</text>
+<line x1="402.0" y1="98" x2="402.0" y2="348" stroke="#e1e0d9" stroke-width="1"/>
+<line x1="488.0" y1="98" x2="488.0" y2="348" stroke="#e1e0d9" stroke-width="1"/>
+<line x1="574.0" y1="98" x2="574.0" y2="348" stroke="#e1e0d9" stroke-width="1"/>
+<line x1="660.0" y1="98" x2="660.0" y2="348" stroke="#e1e0d9" stroke-width="1"/>
+<path d="M316.0,106.0 h13.2 a4,4 0 0 1 4,4 v6.0 a4,4 0 0 1 -4,4 h-13.2 z" fill="#2a78d6"/>
+<text x="304.0" y="117.0" font-size="12.5" font-weight="400" fill="#0b0b0b" text-anchor="end">Mainnet supernode, average each way</text>
+<text x="340.2" y="117.0" font-size="12" font-weight="400" fill="#52514e" text-anchor="start" font-variant-numeric="tabular-nums" stroke="#fcfcfb" stroke-width="4" stroke-linejoin="round" paint-order="stroke">0.10</text>
+<path d="M316.0,134.0 h82.0 a4,4 0 0 1 4,4 v6.0 a4,4 0 0 1 -4,4 h-82.0 z" fill="#2a78d6"/>
+<text x="304.0" y="145.0" font-size="12.5" font-weight="400" fill="#0b0b0b" text-anchor="end">Mainnet supernode, bursts</text>
+<text x="409.0" y="145.0" font-size="12" font-weight="400" fill="#52514e" text-anchor="start" font-variant-numeric="tabular-nums" stroke="#fcfcfb" stroke-width="4" stroke-linejoin="round" paint-order="stroke">0.50</text>
+<path d="M316.0,162.0 h37.4 a4,4 0 0 1 4,4 v6.0 a4,4 0 0 1 -4,4 h-37.4 z" fill="#2a78d6"/>
+<text x="304.0" y="173.0" font-size="12.5" font-weight="400" fill="#0b0b0b" text-anchor="end">Announcement snapshot, p2p in</text>
+<text x="364.4" y="173.0" font-size="12" font-weight="400" fill="#52514e" text-anchor="start" font-variant-numeric="tabular-nums" stroke="#fcfcfb" stroke-width="4" stroke-linejoin="round" paint-order="stroke">0.24</text>
+<path d="M316.0,190.0 h63.8 a4,4 0 0 1 4,4 v6.0 a4,4 0 0 1 -4,4 h-63.8 z" fill="#2a78d6"/>
+<text x="304.0" y="201.0" font-size="12.5" font-weight="400" fill="#0b0b0b" text-anchor="end">Announcement snapshot, p2p out</text>
+<text x="390.8" y="201.0" font-size="12" font-weight="400" fill="#52514e" text-anchor="start" font-variant-numeric="tabular-nums" stroke="#fcfcfb" stroke-width="4" stroke-linejoin="round" paint-order="stroke">0.39</text>
+<path d="M316.0,230.0 h340.0 a4,4 0 0 1 4,4 v6.0 a4,4 0 0 1 -4,4 h-340.0 z" fill="#eb6834"/>
+<text x="304.0" y="241.0" font-size="12.5" font-weight="400" fill="#0b0b0b" text-anchor="end">Claimed: up to 2 Gbit/s of gossip</text>
+<text x="667.0" y="241.0" font-size="12" font-weight="400" fill="#52514e" text-anchor="start" font-variant-numeric="tabular-nums" stroke="#fcfcfb" stroke-width="4" stroke-linejoin="round" paint-order="stroke">2.00</text>
+<path d="M316.0,270.0 h51.9 a4,4 0 0 1 4,4 v6.0 a4,4 0 0 1 -4,4 h-51.9 z" fill="#1baf7a"/>
+<text x="304.0" y="281.0" font-size="12.5" font-weight="400" fill="#0b0b0b" text-anchor="end">Column burst in 1 s, 8-peer mesh</text>
+<text x="378.9" y="281.0" font-size="12" font-weight="400" fill="#52514e" text-anchor="start" font-variant-numeric="tabular-nums" stroke="#fcfcfb" stroke-width="4" stroke-linejoin="round" paint-order="stroke">0.33</text>
+<path d="M316.0,298.0 h219.8 a4,4 0 0 1 4,4 v6.0 a4,4 0 0 1 -4,4 h-219.8 z" fill="#1baf7a"/>
+<text x="304.0" y="309.0" font-size="12.5" font-weight="400" fill="#0b0b0b" text-anchor="end">Column burst in 0.25 s, 8-peer mesh</text>
+<text x="546.8" y="309.0" font-size="12" font-weight="400" fill="#52514e" text-anchor="start" font-variant-numeric="tabular-nums" stroke="#fcfcfb" stroke-width="4" stroke-linejoin="round" paint-order="stroke">1.30</text>
+<path d="M316.0,326.0 h347.7 a4,4 0 0 1 4,4 v6.0 a4,4 0 0 1 -4,4 h-347.7 z" fill="#1baf7a"/>
+<text x="304.0" y="337.0" font-size="12.5" font-weight="400" fill="#0b0b0b" text-anchor="end">Column burst in 0.25 s, 12-peer mesh</text>
+<text x="674.7" y="337.0" font-size="12" font-weight="400" fill="#52514e" text-anchor="start" font-variant-numeric="tabular-nums" stroke="#fcfcfb" stroke-width="4" stroke-linejoin="round" paint-order="stroke">2.04</text>
+<line x1="316" y1="98" x2="316" y2="348" stroke="#c3c2b7" stroke-width="1"/>
+<text x="316.0" y="366.0" font-size="11.5" font-weight="400" fill="#898781" text-anchor="middle">0.0</text>
+<text x="402.0" y="366.0" font-size="11.5" font-weight="400" fill="#898781" text-anchor="middle">0.5</text>
+<text x="488.0" y="366.0" font-size="11.5" font-weight="400" fill="#898781" text-anchor="middle">1.0</text>
+<text x="574.0" y="366.0" font-size="11.5" font-weight="400" fill="#898781" text-anchor="middle">1.5</text>
+<text x="660.0" y="366.0" font-size="11.5" font-weight="400" fill="#898781" text-anchor="middle">2.0</text>
+<text x="703.0" y="366.0" font-size="11.5" font-weight="400" fill="#898781" text-anchor="start">Gbit/s</text>
+<text x="24.0" y="396.0" font-size="11" font-weight="400" fill="#898781" text-anchor="start">README figures are approximate. Snapshot: tile-flow image in the 29 Oct 2026 announcement (28.68 / 46.96 MiB/s).</text>
+<text x="24.0" y="412.0" font-size="11" font-weight="400" fill="#898781" text-anchor="start">Estimates: 128 columns × 45.4 kB per block, each forwarded to every other mesh member, before IDONTWANT savings.</text>
+</g>
+</svg>

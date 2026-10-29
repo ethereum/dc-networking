@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400" role="img" aria-labelledby="t d">
+<title id="t">Over-subscribed mesh: what survives a trim</title>
+<desc id="d">Two panels. gossipsub v1.1 (go-libp2p, rust-libp2p): a mesh of 12 is trimmed to 8, keeping 4 peers by score, 4 at random and at least 2 outbound; inbound GRAFTs at 12 are refused. Silver: only a mesh above 12 is trimmed, to the 8 best by topic-local score, with no random share and no outbound quota; GRAFTs at 12 are accepted.</desc>
+<rect x="0.5" y="0.5" width="759" height="399" rx="12" fill="#1a1a19" stroke="rgba(255,255,255,0.10)"/>
+<g font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<text x="24.0" y="34.0" font-size="15" font-weight="600" fill="#f0efec" text-anchor="start">Over-subscribed mesh: what survives a trim</text>
+<text x="24.0" y="54.0" font-size="12" font-weight="400" fill="#c3c2b7" text-anchor="start">D = 8, D_high = 12. Each dot is a mesh peer, highest score on the left.</text>
+<circle cx="29" cy="78" r="5" fill="#3987e5"/>
+<text x="40.0" y="82.0" font-size="12" font-weight="400" fill="#c3c2b7" text-anchor="start">kept: highest score</text>
+<circle cx="192.60000000000002" cy="78" r="5" fill="#199e70"/>
+<text x="203.6" y="82.0" font-size="12" font-weight="400" fill="#c3c2b7" text-anchor="start">kept: at random</text>
+<circle cx="330.6" cy="78" r="4.5" fill="none" stroke="#898781" stroke-width="1.5"/>
+<text x="341.6" y="82.0" font-size="12" font-weight="400" fill="#c3c2b7" text-anchor="start">pruned</text>
+<text x="411.0" y="82.0" font-size="13" font-weight="600" fill="#c3c2b7" text-anchor="middle">↗</text>
+<text x="422.0" y="82.0" font-size="12" font-weight="400" fill="#c3c2b7" text-anchor="start">outbound (we dialed it)</text>
+<rect x="16" y="98" width="728" height="136" rx="10" fill="#242422"/>
+<text x="32.0" y="124.0" font-size="13" font-weight="600" fill="#f0efec" text-anchor="start">gossipsub v1.1 spec, as implemented by go-libp2p and rust-libp2p</text>
+<text x="32.0" y="145.0" font-size="12" font-weight="400" fill="#c3c2b7" text-anchor="start">Trim at 12 peers: keep the 4 best by score, 4 at random, at least 2 outbound.</text>
+<circle cx="44" cy="190" r="9" fill="#3987e5" stroke="#242422" stroke-width="2"/>
+<circle cx="74" cy="190" r="9" fill="#3987e5" stroke="#242422" stroke-width="2"/>
+<text x="83.0" y="180.0" font-size="12" font-weight="600" fill="#c3c2b7" text-anchor="middle">↗</text>
+<circle cx="104" cy="190" r="9" fill="#3987e5" stroke="#242422" stroke-width="2"/>
+<circle cx="134" cy="190" r="9" fill="#3987e5" stroke="#242422" stroke-width="2"/>
+<circle cx="164" cy="190" r="8.5" fill="none" stroke="#898781" stroke-width="1.5"/>
+<circle cx="194" cy="190" r="9" fill="#199e70" stroke="#242422" stroke-width="2"/>
+<circle cx="224" cy="190" r="8.5" fill="none" stroke="#898781" stroke-width="1.5"/>
+<circle cx="254" cy="190" r="9" fill="#199e70" stroke="#242422" stroke-width="2"/>
+<circle cx="284" cy="190" r="8.5" fill="none" stroke="#898781" stroke-width="1.5"/>
+<circle cx="314" cy="190" r="9" fill="#199e70" stroke="#242422" stroke-width="2"/>
+<text x="323.0" y="180.0" font-size="12" font-weight="600" fill="#c3c2b7" text-anchor="middle">↗</text>
+<circle cx="344" cy="190" r="8.5" fill="none" stroke="#898781" stroke-width="1.5"/>
+<circle cx="374" cy="190" r="9" fill="#199e70" stroke="#242422" stroke-width="2"/>
+<text x="32.0" y="222.0" font-size="11.5" font-weight="400" fill="#898781" text-anchor="start">12 peers → 8 kept</text>
+<text x="470.0" y="184.0" font-size="12.5" font-weight="600" fill="#f0efec" text-anchor="start">GRAFT from an inbound peer at ≥ 12</text>
+<text x="470.0" y="203.0" font-size="12" font-weight="400" fill="#c3c2b7" text-anchor="start">refused; an outbound peer may still join</text>
+<rect x="16" y="248" width="728" height="136" rx="10" fill="#242422"/>
+<text x="32.0" y="274.0" font-size="13" font-weight="600" fill="#f0efec" text-anchor="start">Silver</text>
+<text x="32.0" y="295.0" font-size="12" font-weight="400" fill="#c3c2b7" text-anchor="start">Trim only above 12: keep the 8 best by topic-local score. No random share, no outbound quota.</text>
+<circle cx="44" cy="340" r="9" fill="#3987e5" stroke="#242422" stroke-width="2"/>
+<circle cx="74" cy="340" r="9" fill="#3987e5" stroke="#242422" stroke-width="2"/>
+<circle cx="104" cy="340" r="9" fill="#3987e5" stroke="#242422" stroke-width="2"/>
+<circle cx="134" cy="340" r="9" fill="#3987e5" stroke="#242422" stroke-width="2"/>
+<circle cx="164" cy="340" r="9" fill="#3987e5" stroke="#242422" stroke-width="2"/>
+<circle cx="194" cy="340" r="9" fill="#3987e5" stroke="#242422" stroke-width="2"/>
+<circle cx="224" cy="340" r="9" fill="#3987e5" stroke="#242422" stroke-width="2"/>
+<circle cx="254" cy="340" r="9" fill="#3987e5" stroke="#242422" stroke-width="2"/>
+<circle cx="284" cy="340" r="8.5" fill="none" stroke="#898781" stroke-width="1.5"/>
+<circle cx="314" cy="340" r="8.5" fill="none" stroke="#898781" stroke-width="1.5"/>
+<circle cx="344" cy="340" r="8.5" fill="none" stroke="#898781" stroke-width="1.5"/>
+<circle cx="374" cy="340" r="8.5" fill="none" stroke="#898781" stroke-width="1.5"/>
+<circle cx="404" cy="340" r="8.5" fill="none" stroke="#898781" stroke-width="1.5"/>
+<text x="32.0" y="372.0" font-size="11.5" font-weight="400" fill="#898781" text-anchor="start">13 peers → 8 kept; a mesh of exactly 12 is never trimmed</text>
+<text x="470.0" y="334.0" font-size="12.5" font-weight="600" fill="#f0efec" text-anchor="start">GRAFT at ≥ 12 peers</text>
+<text x="470.0" y="353.0" font-size="12" font-weight="400" fill="#c3c2b7" text-anchor="start">accepted if score ≥ 0 and not backed off</text>
+</g>
+</svg>
