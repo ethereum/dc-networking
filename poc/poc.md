@@ -1,7 +1,7 @@
 # DC/FF Proof-of-Concept Implementation
 
-Wire-format and load baseline:
-[`ssz.md`](../research/ssz.md). It distinguishes the executable AC/FG containers
+BLS-era wire-format and load baseline:
+[`bls/ssz.md`](../bls/ssz.md). It distinguishes the executable AC/FG containers
 from deprecated compact votes and from the healing paper's currently
 unspecified SG pre-vote.
 

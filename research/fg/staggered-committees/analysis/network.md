@@ -342,7 +342,7 @@ The backbone stays as it is: 2 subnets per node, chosen by node id and rotated e
 - **Slide-by-1 changes a validator's unit only every V/C rounds,** i.e. every 48 days at 1M. It is the slowest possible positional rotation, which is Lane A's fairness question.
 - **A per-round reshuffle leaves at most 96 s to find peers on a new subnet.** Today's validator guide budgets an epoch for that (`specs/phase0/validator.md:335-360`; `research/transitions/survey.md:416-418`).
 - **Privacy.** A stable validator→subnet map makes the subnet-fingerprinting surface static. That is accepted in phase 1 (`design/requirements.md:76-79`), but flagged here.
-- **A secret VRF duty** (`design/explainer.md:21`) needs a proof in every vote (the open item at `design/explainer.md:41`). That adds 96 B, i.e. 48 % of a 200 B vote, plus one more BLS verification per vote. A public deterministic map needs no proof.
+- **A secret VRF duty** (`bls/explainer.md:23`) needs a proof in every vote (the open item at `bls/explainer.md:43`). That adds 96 B, i.e. 48 % of a 200 B vote, plus one more BLS verification per vote. A public deterministic map needs no proof.
 
 ## 5. Aggregation and inclusion (RQ6)
 

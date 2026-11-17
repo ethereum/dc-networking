@@ -1,5 +1,7 @@
 # SSZ and wire objects for decoupled consensus
 
+> **BLS-era byte accounting, kept for reference.** Moved here from `research/` on 2026-11-17, after [ACDC #191](https://forkcast.org/calls/acdc/191) (2026-11-12) dropped BLS decoupled consensus. Sizes assume 96 B BLS signatures and the `simplex-healing` containers. See [`README.md`](README.md).
+
 Status: working PoC note, 2026-07-23.
 
 This note answers three implementation questions:
@@ -272,7 +274,7 @@ The networking PoC should initially model:
 4. One aggregate-and-proof wrapper per published aggregate.
 5. Vote-data disagreement and the resulting aggregate fragmentation.
 6. Vote in slot `i`, aggregate in `i+1`, include in `i+2`, as specified in
-   [`explainer.md`](../design/explainer.md).
+   [`explainer.md`](explainer.md).
 
 Run compact batching and a separate healing SG pre-vote only as explicitly
 labelled variants. This keeps the baseline aligned with both the conservative

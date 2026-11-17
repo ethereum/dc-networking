@@ -43,8 +43,8 @@ ATT_DATA2 = 8 + (8 + 32) + (8 + 32)          # AttestationData2, mk:311-318 -> 8
 ATT_DATA_P0 = 8 + 8 + 32 + 40 + 40           # phase0/beacon-chain.md:404-410 -> 128
 SINGLE_ELECTRA = 8 + 8 + ATT_DATA_P0 + 96    # electra/beacon-chain.md:309-313 -> 240
 SINGLE_DC = 8 + 8 + ATT_DATA2 + 96           # same envelope, AttestationData2 -> 200
-SINGLE_SSZ_MD = 248                          # research/ssz.md:144 (Simplex baseline)
-WRAPPER = 208                                # SignedAggregateAndProof, research/ssz.md:206
+SINGLE_SSZ_MD = 248                          # bls/ssz.md:146 (Simplex baseline)
+WRAPPER = 208                                # SignedAggregateAndProof, bls/ssz.md:208
 MK_COMMITTEE_BITS = MK_COMMITTEES_PER_ROUND // 8   # Bitvector[2048], mk:245-251 -> 256
 ELECTRA_COMMITTEE_BITS = MAX_COMMITTEES_PER_SLOT // 8  # Bitvector[64] -> 8
 
@@ -504,7 +504,7 @@ def s7():
               f"{uniq * 8 / 1e6 / 4:.2f} Mbit/s unique, {7 * uniq * 8 / 1e6 / 4:.2f} Mbit/s at kappa 7 "
               f"(+{c * ihave_per_msg(12) * 8 / 1e6 / 4:.2f} Mbit/s IHAVE); today's subnet at kappa 7: "
               f"{7 * today(V)['per_subnet_b'] * 8 / 1e6 / 12:.2f} Mbit/s")
-    print(f"secret-VRF duty (explainer.md:21,41): proof per vote = 96 B BLS signature -> "
+    print(f"secret-VRF duty (bls/explainer.md:23,43): proof per vote = 96 B BLS signature -> "
           f"{SINGLE_DC} -> {SINGLE_DC + 96} B (+{100 * 96 / SINGLE_DC:.0f} %) and one more BLS verify per vote")
 
 

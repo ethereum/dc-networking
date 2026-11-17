@@ -316,7 +316,7 @@ Under a **seeded era shuffle with era ≤ 256 epochs** whose seed is revealed �
 
 - **latency** equals a per-round reshuffle: 0.787 / 0.980 / 1.892 vs fixed 0.696 / 0.826 / 1.130 (E1a);
 - **no globally known assignment**, so no small bitvectors (msg 1478, property 1); this is Lane C's layout question;
-- **per-vote eligibility proofs** in gossip (`design/explainer.md:41`);
+- **per-vote eligibility proofs** in gossip (`bls/explainer.md:43`);
 - **cohort-size variance:** the largest cohort is +0.9% at 10⁶ and +9.2% at 10⁴ (E12c);
 - **it lets a validator hide an earlier duty**, which breaks Rolling-FFG-style window accountability (continuous-fg `README.md:562-564`).
 

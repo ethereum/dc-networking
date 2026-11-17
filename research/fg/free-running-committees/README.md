@@ -21,6 +21,8 @@ provenance: agent
 >
 > **Nonbinding.** It answers Q19 in [`open_questions.md`](../../open_questions.md) with a strawman, and does not modify `requirements.md`, Q17 or Q18.
 >
+> **BLS assumptions** (added 2026-11-17, after [ACDC #191](https://forkcast.org/calls/acdc/191) dropped BLS DC). The committee clock, seat rotation, pick-your-seat analysis and the target appendix do not depend on the signature scheme. The sub-round unit's 2 s final aggregation at +10 s assumes BLS-speed aggregation: one leanVM leaf proof plus one recursion step takes about 0.75–3 s on the current benchmark machines. See [`pq/`](../../pq/README.md).
+>
 > **Interactive version:** [`free-running-committees.html`](free-running-committees.html) (self-contained; open it locally). It has the figures referred to below.
 
 # Free-running FG committees

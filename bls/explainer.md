@@ -5,6 +5,8 @@ title: Decoupled Voting
 
 # Decoupled Voting
 
+> **BLS-era proposal, kept for reference.** Moved here from `design/` on 2026-11-17, after [ACDC #191](https://forkcast.org/calls/acdc/191) (2026-11-12) dropped BLS decoupled consensus. The pipelining idea still informs the PQ-DC work; the VRF duties and byte counts assume BLS. See [`README.md`](README.md).
+
 ## Current Proposal
 
 ![5fg](https://notes.ethereum.org/_uploads/rk9ov21mMl.png)

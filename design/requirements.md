@@ -7,7 +7,7 @@ title: Requirements
 The binding parameter envelope for the design, benchmarking, and PoC efforts.
 All three cite this file rather than carrying their own copies of parameters.
 Open items are marked with their number in [open_questions.md](../research/open_questions.md);
-narrative context lives in [explainer.md](explainer.md); the PoC plan and
+narrative context lives in [explainer.md](../bls/explainer.md); the PoC plan and
 milestones in [poc.md](../poc/poc.md).
 
 *Vetted line-by-line by Yann, 2026-07-20. Changes to this file are decisions —

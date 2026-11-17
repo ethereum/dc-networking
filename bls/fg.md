@@ -1,6 +1,6 @@
 # FG
 
-Implementation reference: [SSZ and wire objects for decoupled consensus](../ssz.md)
+Implementation reference: [SSZ and wire objects for decoupled consensus](ssz.md)
 documents the current executable vote containers, exact byte sizes,
 aggregation-bitfield costs, and the unresolved healing SG-pre-vote question.
 

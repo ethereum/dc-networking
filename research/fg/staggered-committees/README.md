@@ -14,7 +14,9 @@ provenance: agent
 > - Anton Nashatyrev: traffic simulations.
 > - Yann: the three properties, and the operator-concentration and single-operator-committee concerns.
 >
-> **Nonbinding.** This answers [Q18](../../open_questions.md) with a concrete strawman. It does not modify [`requirements.md`](../../../design/requirements.md), the [explainer](../../../design/explainer.md) or [Q17](../pipelined-units/README.md). Where a lane note differs from this README, the README is normative (each lane note lists what it supersedes).
+> **Nonbinding.** This answers [Q18](../../open_questions.md) with a concrete strawman. It does not modify [`requirements.md`](../../../design/requirements.md), the [explainer](../../../bls/explainer.md) or [Q17](../pipelined-units/README.md). Where a lane note differs from this README, the README is normative (each lane note lists what it supersedes).
+>
+> **BLS assumptions** (added 2026-11-17, after [ACDC #191](https://forkcast.org/calls/acdc/191) dropped BLS DC). The schedule and anchor lanes do not depend on the signature scheme: who votes when, who votes together, the index set and anchor, and the enforcement windows. The network lane's byte counts, the strawman's BLS `selection_proof`, the merged-aggregate inclusion and the slashing-evidence sizes (§7) assume BLS. See [`pq/`](../../pq/README.md).
 
 # Staggered FG committees
 
@@ -445,7 +447,7 @@ Red team (ii) checked all five branches of Prysm's `getAttPreState` (`process_at
 
 **fradamt executable Simplex spec.** The epoch shuffle is repeated per round and gossip resolves committees through a checkpoint state (`simplex/beacon-chain.md:1164-1207`, `p2p-interface.md:759-783`). This design dominates it on latency near the threshold (1.136 vs 1.332 rounds/height), fairness (5.8 h vs 35 h), churn (0 vs 225/day) and state needs.
 
-**Explainer** (`design/explainer.md:21-27`). It proposes a per-epoch VRF for sub-round, subnet and aggregator. Replace it with the public schedule. Aggregator selection stays a self-selection lottery over the committee. *Not edited here.*
+**Explainer** (`bls/explainer.md:23-29`). It proposes a per-epoch VRF for sub-round, subnet and aggregator. Replace it with the public schedule. Aggregator selection stays a self-selection lottery over the committee. *Not edited here.*
 
 **Pattern note** (`design/pattern-exploration/fg-vote-dissemination.md`, uncommitted). Its per-round re-randomisation of "tail-light" cohorts pays the reshuffle cost (C = 8: 2.000 vs 1.375 rounds/height at p = .67). Ex-ante fairness comes cheaper from the rotation (§3). Its requirement that cohorts have "concentration and grinding bounds" on signer count and balance is met by the era re-draw (§4).
 

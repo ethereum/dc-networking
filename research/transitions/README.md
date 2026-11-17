@@ -9,7 +9,7 @@ status: wip
 
 ## Problem
 
-In the current design ([explainer](../../design/explainer.md),
+In the current design ([explainer](../../bls/explainer.md),
 [requirements](../../design/requirements.md)), FG votes are sent early in the
 assigned slot — T = 4s + X with X ∈ [0, 8]s, and variants push the vote even
 earlier (start of slot, or the tail of the previous slot). Duty assignment
@@ -23,7 +23,7 @@ the first slot, the available window is ~one block-propagation delay — or
 negative, if votes start in the previous slot. Worse, the FG height cadence is
 not slot-aligned: checkpoints can finalize mid-epoch (commonly slot 17/25), so
 "height transition" work can be triggered at arbitrary points
-([explainer, open checkbox](../../design/explainer.md)).
+([explainer, open checkbox](../../bls/explainer.md)).
 
 ## Candidate resolutions
 
