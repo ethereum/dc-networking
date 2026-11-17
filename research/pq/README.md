@@ -83,7 +83,7 @@ What follows from it:
 - Q17–Q19 keep their schedule logic. The parts that assume BLS are flagged at the top of each note.
 - [`requirements.md`](../../design/requirements.md) is next: votes & crypto, aggregation, PQ-forwardness.
 - [`properties.md`](../../properties.md) drops the I\*/J\* split.
-- [`gasper-avenues.md`](gasper-avenues.md), first written for PQ Gasper: its five avenues apply to PQ-DC too, at 4× the per-slot volume.
+- [`../pq-gasper/`](../pq-gasper/README.md): the PQ Gasper alternative, avenues and compromises. Several apply to PQ-DC too, at 4× the per-slot volume.
 - All [benchmarking](../../benchmarking/) runs so far carry BLS votes.
 
 ## Open questions
