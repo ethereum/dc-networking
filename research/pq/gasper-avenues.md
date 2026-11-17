@@ -9,6 +9,9 @@ provenance: agent
 > **Scope: pqGasper, not DC.** Today's Gasper (per-slot attesting committees
 > over 64 attestation subnets, aggregation as today) with hash-based
 > post-quantum signatures. Nothing here assumes decoupled consensus.
+>
+> *Moved into `research/pq/` on 2026-11-17. The avenues apply to PQ-DC as
+> well, at 4× the per-slot volume of an 8-slot round ([README](README.md)).*
 
 **Problem.** A hash-based PQ signature is kilobytes, not BLS's 96 B, and
 aggregates only through a SNARK, so every attestation subnet carries a far
