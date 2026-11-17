@@ -2,32 +2,41 @@
 title: Properties
 ---
 
-# Networking properties for I* and J*
+# Networking properties for PQ decoupled consensus
 
-*Draft, 2026-10-20.*
+*Draft, 2026-10-20. The I\*/J\* split was dropped on 2026-11-17, after
+[ACDC #191](https://forkcast.org/calls/acdc/191) dropped BLS decoupled
+consensus.*
 
-What we want from the p2p layer. For I* (decoupled consensus) the goal is to
-keep networking changes light. Every change should still be forward compatible
-with J*, and ideally de-risk something J* needs. J* may bring PQ signatures:
-bigger signatures and multi-stage aggregation.
+What we want from the p2p layer. DC now ships with post-quantum signatures
+from the start: votes are hash-based signatures of a few kilobytes, and
+aggregation is proof-based and multi-stage ([`research/pq/`](research/pq/README.md)).
+There is no BLS phase to keep light and no later PQ fork to stay compatible
+with.
 
-## Ground rules for I*
+## Ground rules
 
 - **Small networking change.** DC is already a big consensus change, so
-  networking shouldn't become the critical path. Stick to the conservative
-  delta: today's gossip path and one aggregation layer
-  ([settled](research/open_questions.md)).
-  - Proposal: reuse today's pipeline: subnets → aggregators → global
-    aggregate topic.
-- **Forward compatible with J\*.** Whatever I* adds should survive the move to
-  PQ, and ideally de-risk it.
-  - Proposal: bitlists that cover exactly 1/8 of the validator set, one
-    slot's worth with 8-slot rounds. That's about 16 KB at ~1M validators.
-  - Don't foreclose multi-stage aggregation
-    ([requirements](design/requirements.md#pq-forwardness)).
-  - No new BLS-only dependencies (selection proofs, randomness).
+  networking shouldn't become the critical path.
+  - Was: the conservative delta, today's gossip path and one aggregation
+    layer ([settled](research/open_questions.md) 2026-07-20). Under PQ one
+    layer doesn't carry the load: leaf proofs need a recursion tier before
+    the global topic ([Q21](research/open_questions.md)), and whether
+    GossipSub carries kilobyte votes at DC volume is open
+    ([Q20](research/open_questions.md)).
+  - Open: how much of today's pipeline (subnets → aggregators → global
+    aggregate topic) survives.
+- **PQ from day one.** Every vote and every aggregate is post-quantum.
+  - No BLS dependencies: selection proofs, RANDAO reveals, VRF duties
+    ([Q24](research/open_questions.md)).
+  - Multi-stage aggregation is required, not just "not foreclosed"
+    ([Q21](research/open_questions.md)).
+  - Proposal (unchanged): bitlists that cover exactly 1/8 of the validator
+    set, one slot's worth with 8-slot rounds. That's about 16 KB at ~1M
+    validators. What sits next to a proof is open
+    ([Q25](research/open_questions.md)).
 
-## Needed in I* and J*
+## Needed
 
 - **Low fork dependence of bitlists.** Forks and reorgs shouldn't force us to
   redo RANDAO, committee assignment and bitlists. Ideally many forks share the
@@ -66,7 +75,10 @@ bigger signatures and multi-stage aggregation.
     problem 2); aggregating only at the end of the slot gives aggregators
     longer to collect (Q17, figure 3).
 
-## Nice in I*, needed in J*
+## Also needed
+
+*Were "nice in I\*, needed in J\*". With PQ from day one they count as
+needed; to re-tier together.*
 
 - **Fast progress in good conditions.** When most votes arrive early,
   finality should follow quickly. This also keeps the door open for
@@ -85,7 +97,8 @@ bigger signatures and multi-stage aggregation.
     churn).
 - **Enables aggregation builders.** We already accept PBS. Same model here: a
   market of aggregation builders, so any proposer can always get a bid for the
-  best aggregate. More important once aggregation gets expensive (PQ).
+  best aggregate. Aggregation is expensive under PQ: leaf proofs and
+  recursion ([`research/pq/`](research/pq/README.md)).
   - Open. Related: [Q12](research/open_questions.md) (optimistic
     aggregation through brokers).
 
@@ -115,6 +128,7 @@ Not in the list yet, but they are written down elsewhere:
 ## References
 
 - [requirements.md](design/requirements.md), [incentives.md](design/incentives.md), [open_questions.md](research/open_questions.md)
+- PQ-DC: [research/pq/](research/pq/README.md), [ACDC #191](https://forkcast.org/calls/acdc/191)
 - Q17 [pipelined units](research/fg/pipelined-units/README.md), Q18 [staggered committees](research/fg/staggered-committees/README.md), Q19 [free-running committees](research/fg/free-running-committees/README.md)
 - [2026-10-06 meeting](meetings/2026-10-06.md): keep anchoring the bitfield at finality
 - Decoupled consensus: [ethresear.ch/t/24527](https://ethresear.ch/t/24527)
