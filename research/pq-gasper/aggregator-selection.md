@@ -5,7 +5,7 @@ date: 2026-11-18
 provenance: agent
 ---
 
-> **Provenance: agent.** Written 2026-11-18 by an agent, expanding avenue 9 of [README.md](README.md) ("Reduce number of Aggregators"). Yann has not reviewed it line by line. Every number comes from [`sim/aggregator_dos.py`](sim/aggregator_dos.py) (stdlib; run `python3 sim/aggregator_dos.py`). The model is back-of-envelope:
+> **Provenance: agent.** Written 2026-11-18 by an agent, expanding avenue 9 of [README.md](README.md) ("Reduce number of Aggregators"). Yann has not reviewed it line by line. Every number comes from [`sim/aggregator_dos.py`](sim/aggregator_dos.py) or [`sim/blind_attack.py`](sim/blind_attack.py) (stdlib; run them with `python3`). The model is back-of-envelope:
 > - V = 800,000 validators, 16 subnets, so n ≈ 1,563 voters per subnet per slot and 512 committee-slots per epoch;
 > - an aggregate that never appears loses its committee's votes for good, unless a fallback exists.
 
@@ -20,8 +20,9 @@ provenance: agent
 - **Machines to flood to kill one subnet's aggregate for one slot:**
   - draw-4: **at most 4**, named 32–64 slots ahead if the draw reuses the committee seed.
   - lottery-16, attacker watching subnet joins: **up to 16**, and it sees only the aggregators that had to join the subnet. Prysm, the one client checked, announces the duty up to two epochs ahead.
-  - lottery-16, attacker not watching: **every machine that hosts a committee member, ~510–1,420**.
-  - So the draw is **4× cheaper** to attack than a watched lottery and **~130–350× cheaper** than an unwatched one.
+  - lottery-16, attacker not watching: **~500–1,410 machines** for a 90 % chance, i.e. every machine hosting a committee member except the ~10 least-loaded ([Blind attacker](#blind-attacker-if-the-aggregators-were-secret)).
+  - So the draw is **4× cheaper** to attack than a watched lottery and **~125–350× cheaper** than an unwatched one.
+- **If aggregators were secret, 4 vs 16 barely matters.** Killing all of them with 90 % probability takes 1,523 of 1,563 members with 4 and 1,553 with 16, i.e. 97.4 % vs 99.4 % of the committee. Secrecy, not the count, is what makes the attack expensive.
 - **Halting finality** means suppressing 171 of the epoch's 512 committee-slots.
   - draw-4 with a full validator→IP map: **~21 machines** flooded at any moment, i.e. 684 floods of a few seconds per epoch.
   - With a partial map, finality halts once **76 %** of honest stake sits on machines the attacker can find and flood, or 55 % if it also holds 20 % of stake. A watched lottery-16 needs **93 %** (86 %) spotted in real time.
@@ -71,16 +72,53 @@ provenance: agent
 
 | Target | draw-4 | lottery-16, watched | lottery-16, not watched |
 |---|---:|---:|---:|
-| one subnet, one slot | ≤ 4 | ≤ 16 (visible ones only) | ~510–1,420 |
+| one subnet, one slot | ≤ 4 | ≤ 16 (visible ones only) | ~500–1,410 (90 % kill) |
 | all 16 subnets, one slot | ≤ 64 | ≤ 256 | most validator machines |
 | finality halt, at any moment | ~21 | ~86 | most validator machines, continuously |
 | notice | 32–64 slots | up to 2 epochs (Prysm) | none |
 
-- **Where ~510–1,420 comes from.** It is the expected number of machines hosting at least one of a committee's 1,563 members.
-  - Heimbach et al.'s heavy-tailed shape (27 % of machines host one validator, over half host at most 4, 11 % host more than 100) gives 510–940 on 5,000–10,000 validator machines.
-  - An even spread would give 1,340–1,420.
-  - Flooding them silences the committee's votes, not just its aggregators.
+- **Where ~500–1,410 comes from.** It is the blind attacker's budget for a 90 % kill, worked out in the [next section](#blind-attacker-if-the-aggregators-were-secret). Flooding that many machines silences the committee's votes too, not just its aggregators.
 - **The draw's targets are named in advance.** A shorter lookahead (a seed from the parent block, ~1 slot of notice) does not change the count, because an attacker that already holds a map needs only seconds. It also makes the aggregator set head-dependent for gossip validation, and gives the previous proposer a 1-bit choice over the draw.
+
+## Blind attacker: if the aggregators were secret
+
+The attacker knows the committee (public) and every member's machine (its map), but not who aggregates. It floods members blind and wins only if every aggregator is among them. Exact numbers for one subnet-slot, N = 1,563 members, are from [`sim/blind_attack.py`](sim/blind_attack.py).
+
+- **secret-k**: exactly k aggregators, kept secret. This would need a secret election, and Whisk-style SSLE is not PQ. Flooding m members kills all k with probability C(m, k) / C(N, k) ≈ (m/N)^k.
+- **lottery-k**: today's rule, where each member aggregates with p = 1 / (N // k). Flooding m members kills all with probability (1 − p)^(N − m) ≈ e^(−k(1 − m/N)).
+
+Members to flood:
+
+| rule | P(kill) ≥ 50 % | ≥ 90 % | ≥ 99 % | mean |
+|---|---:|---:|---:|---:|
+| draw-4 (public) | 4 | 4 | 4 | 4 |
+| secret-4 | 1,315 (84 %) | 1,523 (97.4 %) | 1,560 | 1,251 |
+| lottery-4 | 1,294 (83 %) | 1,522 (97.4 %) | 1,560 | 1,181 |
+| secret-16 | 1,498 (96 %) | 1,553 (99.4 %) | all 1,563 | 1,472 |
+| lottery-16 | 1,497 (96 %) | 1,553 (99.4 %) | all 1,563 | 1,467 |
+
+- **"mean"** is the expected number of members flooded, in random order, until the last aggregator is hit. For secret-k it is k(N + 1)/(k + 1).
+- **The count barely matters once aggregators are secret.** Going from 4 to 16 raises the 90 % budget by 2 % (1,523 → 1,553) and the 50 % budget by 14 %. Secrecy is the factor of ~380 (1,523 vs 4).
+- **What the attacker may leave alone.** With 4 secret aggregators: 248, 40 and 3 members at 50, 90 and 99 %. With 16: 65, 10 and 0. Killing all 16 subnets of a slot with 90 % probability leaves ~2 members per subnet to spare with 4, and none with 16.
+- **Partial floods rarely work.**
+  - Flooding half the committee kills 4 secret aggregators 6.2 % of the time, and 16 only 0.0014 % of the time.
+  - Flooding 90 % kills them 66 % and 18 % of the time.
+  - lottery-4 is easier on small budgets (13.5 % at half): 1.8 % of subnets draw no aggregator, and others draw only one or two.
+
+Machines: the attacker floods the most-loaded machines first, so its budget is the number of machines hosting at least one member, minus the members it may leave alone. The table gives the median over 300 random committees for a 90 % kill:
+
+| hosting scenario | machines hosting a member | secret-4 | lottery-16 |
+|---|---:|---:|---:|
+| Heimbach shape, 5,000 machines | 509 | 469 | 499 |
+| Heimbach shape, 8,000 machines | 785 | 745 | 775 |
+| Heimbach shape, 10,000 machines | 936 | 896 | 926 |
+| 8,000 machines, 96 % of stake on the large ones | 672 | 632 | 662 |
+| even spread, 100 per machine | 1,421 | 1,381 | 1,411 |
+
+- **Heimbach shape**: Heimbach et al. found that 27 % of machines host one validator, over half host at most 4, and 11 % host more than 100. Here those 11 % hold 85–92 % of stake. The 96 % row is Kamil's super-node share.
+- **So secret-4 needs ~470–1,380 machines and lottery-16 ~500–1,410**, against 4 for the public draw.
+- **For finality this route is pointless.** Killing a third of the aggregates means flooding 76 % (secret-4) or 93 % (16) of each committee. That silences those members' own votes anyway, and flooding a third of the voters directly is cheaper. Secret aggregators stop being the weak point. Public ones cost 4 floods per committee.
+- **"Secret" assumes nothing leaks.** Under a watched lottery the budget drops to the aggregators that show up joining the subnet ([Attacker](#attacker)).
 
 ## Partial maps: when finality halts
 
