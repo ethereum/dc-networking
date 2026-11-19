@@ -106,9 +106,10 @@ up as a single validator however far it consolidates. Same snapshot, same
 
 A withdrawal address with one validator is not always a solo staker: some pools
 deploy one contract per validator. Each address was classified with
-`eth_getCode`, and contracts were grouped by bytecode.
+`eth_getCode`, and contracts were grouped by bytecode. Cells count 0x01
+validators; rows match the first table.
 
-| Validators per address | Plain wallet (EOA) | Owner contract | Pool, one contract per validator | Other contract |
+| Validators sharing one withdrawal address | Plain wallet (EOA) | Owner contract | Pool, one contract per validator | Other contract |
 |---|---:|---:|---:|---:|
 | 1 | 4,106 | 233 | 13,678 | 21 |
 | 2–9 | 9,642 | 906 | 0 | 35 |
