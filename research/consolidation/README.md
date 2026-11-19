@@ -12,8 +12,13 @@ provenance: agent
 **Question.** Of the validators that have not consolidated, how many belong to
 small entities (fewer than 10, or fewer than 100, validators)?
 
+**Unit.** Everything below is counted per **unique withdrawal address**, the
+party that has to sign a consolidation request. That is a proxy for an entity,
+not the same thing: one operator can sit behind many addresses, and many
+operators behind one (see [Caveats](#caveats)).
+
 **Answer.** Few. Grouping the 750,795 non-consolidated (0x01) validators by
-withdrawal address:
+unique withdrawal address:
 
 - addresses with **fewer than 10** validators hold **28,621 (3.8 %)**;
 - addresses with **fewer than 100** validators hold **86,767 (11.6 %)**;
@@ -24,10 +29,10 @@ Half of the under-10 group are per-validator contracts of pools (mostly Rocket
 Pool minipools), so plain-wallet small stakers are closer to 1.8 % (under 10)
 and 8.1 % (under 100).
 
-Small entities are a small share of what is left to consolidate, but they are
+Small addresses are a small share of what is left to consolidate, but they are
 most of what remains after everyone else has: with every address merged down to
 2,048 ETH validators the set is about 55,000 validators, and 31,000 of those
-belong to entities with fewer than 10 validators' worth of stake.
+belong to addresses with fewer than 10 validators' worth of stake.
 
 ## Snapshot
 
@@ -44,15 +49,15 @@ Finalized state at slot 15,688,352 (2026-11-19), active validators only.
 tables:
 
 - **0x00**: 8,657 validators that cannot be a consolidation source until they
-  set a withdrawal address. Counting all of them as single-validator entities
+  set a withdrawal address. Counting each of them as its own address
   raises the under-10 share to 4.9 % of 759,452.
 - **0x02 still at 32 ETH or less**: 7,668 validators behind 1,851 addresses,
   converted but not merged.
 
-## Non-consolidated validators by entity size
+## Non-consolidated validators per unique withdrawal address
 
-An entity here is a withdrawal address, the party that has to sign a
-consolidation request. Percentages are of the 750,795 0x01 validators.
+Percentages are of the 750,795 0x01 validators, which sit behind 23,498 unique
+withdrawal addresses.
 
 | Validators per address | Addresses | Validators | Share | Cumulative |
 |---|---:|---:|---:|---:|
@@ -102,10 +107,10 @@ address), and the under-100 figure from 8.1 % to 11.6 %.
 
 ## The floor if everyone consolidates
 
-If every entity merged down to ⌈stake / 2,048 ETH⌉ validators (all credential
-types, 0x00 validators counted one entity each):
+If every withdrawal address merged down to ⌈stake / 2,048 ETH⌉ validators (all
+credential types, 0x00 validators counted one address each):
 
-| Entity size (32 ETH units) | Entities | Validators today | Validators at the floor |
+| Stake per address (32 ETH units) | Addresses | Validators today | Validators at the floor |
 |---|---:|---:|---:|
 | 1 | 25,920 | 25,920 | 25,920 |
 | 2–9 | 5,394 | 14,384 | 5,394 |
@@ -115,22 +120,22 @@ types, 0x00 validators counted one entity each):
 | 10,000+ | 6 | 306,343 | 7,348 |
 | Total | 36,184 | 784,436 | 54,845 |
 
-- Entities under 10 units are 5.1 % of validators today and 57 % of the floor.
-- The floor overstates small entities by the roughly 13,700 per-validator pool
+- Addresses under 10 units are 5.1 % of validators today and 57 % of the floor.
+- The floor overstates small stakers by the roughly 13,700 per-validator pool
   contracts; with those merged into their pools it is nearer 41,000.
 - For [`requirements.md`](../../design/requirements.md): the $V \to 10^4$ end
   of the range needs small stakers to pool or exit, not just large entities to
-  consolidate. Large entities alone get to about $5 \times 10^4$.
+  consolidate. Large holders alone get to about $5 \times 10^4$.
 
 ## Caveats
 
 - **Withdrawal address is not operator.** A staking-as-a-service customer with
-  three validators counts as a small entity although a large operator runs the
+  three validators counts as a small address although a large operator runs the
   nodes. For "who must act to consolidate" the owner is the right unit; for
   node counts it is not.
 - **Small operators inside large addresses are invisible.** Lido's Community
   Staking Module and Simple DVT operators all sit behind the Lido vault.
-- **One owner can use several addresses**, which makes entities look smaller
+- **One owner can use several addresses**, which makes owners look smaller
   than they are. Clustering by deposit address (the heuristic behind hildobby's
   Dune labels) would catch some of this; not done here.
 - **Unverified families** are classed as per-validator pool contracts on the
@@ -141,7 +146,7 @@ types, 0x00 validators counted one entity each):
 - stakefish, snapshot of 2026-10-22: 790,476 0x01 validators, 41.5 % of stake
   on 0x02
   ([blog](https://blog.stake.fish/ethereum-validator-consolidation-2026/)).
-  Consistent with 750,795 and 45.2 % four weeks later. No breakdown by entity
+  Consistent with 750,795 and 45.2 % four weeks later. No breakdown by holder
   size there.
 - Benseddik, Kraner, Tessone, *When Staking Rewards Compound*
   ([arXiv:2606.23337](https://arxiv.org/abs/2606.23337)), data of 2026-04-07:
