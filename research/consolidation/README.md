@@ -56,10 +56,12 @@ tables:
 
 ## Non-consolidated validators per unique withdrawal address
 
-Percentages are of the 750,795 0x01 validators, which sit behind 23,498 unique
-withdrawal addresses.
+Mainnet, finalized state at slot 15,688,352 (19 Nov 2026): 750,795
+non-consolidated (0x01) validators behind 23,498 unique withdrawal addresses.
+Read as: addresses with fewer than 10 validators hold 3.8 % of them, addresses
+with fewer than 100 hold 11.6 %.
 
-| Validators per address | Addresses | Validators | Share | Cumulative |
+| Validators sharing one withdrawal address | Unique withdrawal addresses | Validators | Share of non-consolidated validators | Cumulative |
 |---|---:|---:|---:|---:|
 | 1 | 18,038 | 18,038 | 2.4 % | 2.4 % |
 | 2–9 | 2,773 | 10,583 | 1.4 % | 3.8 % |
