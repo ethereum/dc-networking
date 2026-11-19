@@ -1,0 +1,236 @@
+{
+ "slot": 15688352,
+ "active_validators": 784436,
+ "effective_balance_eth": 44339265,
+ "by_credential_type": {
+  "0x00": {
+   "validators": 8657,
+   "eth": 276768
+  },
+  "0x01": {
+   "validators": 750795,
+   "eth": 24025039
+  },
+  "0x02": {
+   "validators": 24984,
+   "eth": 20037458
+  }
+ },
+ "unconsolidated_0x01": {
+  "validators": 750795,
+  "withdrawal_addresses": 23498,
+  "by_cluster_size": {
+   "1": {
+    "eoa": {
+     "addresses": 4106,
+     "validators": 4106
+    },
+    "other_contract": {
+     "addresses": 21,
+     "validators": 21
+    },
+    "owner_contract": {
+     "addresses": 233,
+     "validators": 233
+    },
+    "pool_per_validator": {
+     "addresses": 13678,
+     "validators": 13678
+    }
+   },
+   "100-999": {
+    "eoa": {
+     "addresses": 672,
+     "validators": 168333
+    },
+    "other_contract": {
+     "addresses": 5,
+     "validators": 1464
+    },
+    "owner_contract": {
+     "addresses": 129,
+     "validators": 29692
+    }
+   },
+   "2-9": {
+    "eoa": {
+     "addresses": 2540,
+     "validators": 9642
+    },
+    "other_contract": {
+     "addresses": 7,
+     "validators": 35
+    },
+    "owner_contract": {
+     "addresses": 226,
+     "validators": 906
+    }
+   },
+   "10-99": {
+    "eoa": {
+     "addresses": 1578,
+     "validators": 47391
+    },
+    "other_contract": {
+     "addresses": 7,
+     "validators": 337
+    },
+    "owner_contract": {
+     "addresses": 229,
+     "validators": 10418
+    }
+   },
+   "1000-9999": {
+    "eoa": {
+     "addresses": 42,
+     "validators": 97025
+    },
+    "other_contract": {
+     "addresses": 12,
+     "validators": 45528
+    },
+    "owner_contract": {
+     "addresses": 9,
+     "validators": 22839
+    }
+   },
+   "10000+": {
+    "eoa": {
+     "addresses": 2,
+     "validators": 93314
+    },
+    "other_contract": {
+     "addresses": 2,
+     "validators": 205833
+    }
+   }
+  },
+  "contract_families": {
+   "EigenPod (BeaconProxy)": {
+    "addresses": 482,
+    "validators": 32403
+   },
+   "Safe proxy": {
+    "addresses": 127,
+    "validators": 18184
+   },
+   "Rocket Pool minipool (RocketMinipoolBase clone)": {
+    "addresses": 7423,
+    "validators": 7423
+   },
+   "BitGo WalletSimple clone": {
+    "addresses": 47,
+    "validators": 5401
+   },
+   "Rocket Pool minipool (RocketMinipool)": {
+    "addresses": 3538,
+    "validators": 3538
+   },
+   "StakeWise EthVault (ERC1967Proxy)": {
+    "addresses": 18,
+    "validators": 3036
+   },
+   "Safe proxy (older)": {
+    "addresses": 43,
+    "validators": 2933
+   },
+   "Rocket Pool megapool (RocketMegapoolProxy clone)": {
+    "addresses": 109,
+    "validators": 2131
+   },
+   "unverified clone family (target 0x3517d4c4\u20265025)": {
+    "addresses": 1862,
+    "validators": 1862
+   },
+   "Kiln FeeRecipient clone": {
+    "addresses": 738,
+    "validators": 738
+   },
+   "unverified clone family (target 0x460f5e52\u202677be)": {
+    "addresses": 117,
+    "validators": 117
+   }
+  },
+  "top_addresses": [
+   {
+    "address": "0xb9d7934878b5fb9610b3fe8a5e441e8fad7e293f",
+    "validators": 189039
+   },
+   {
+    "address": "0x8e609ac80f4324e499a6efd24f221a2caa868224",
+    "validators": 72999
+   },
+   {
+    "address": "0x7e2a2fa2a064f693f0a55c5639476d913ff12d05",
+    "validators": 20315
+   },
+   {
+    "address": "0x6be457e04092b28865e0cba84e3b2cfa0f871e67",
+    "validators": 16794
+   },
+   {
+    "address": "0x2bf916f8169ed2a77324d3e168284fc252ae4087",
+    "validators": 9407
+   },
+   {
+    "address": "0x08ec37e2eb451ab6fb29fc14d215b0aeef170040",
+    "validators": 9106
+   },
+   {
+    "address": "0x0afd81862eea47322cf85db39d3d07e8a3c25154",
+    "validators": 8563
+   },
+   {
+    "address": "0x8696e84ab5e78983f2456bcb5c199eea9648c8c2",
+    "validators": 8011
+   },
+   {
+    "address": "0xd78941173a6f7ac8aed5adc96a0f603b9bafffa6",
+    "validators": 7280
+   },
+   {
+    "address": "0x51b4096d4bde1b883f6d6ca3b1b7eb54dc20b913",
+    "validators": 6580
+   }
+  ]
+ },
+ "0x02_at_32_eth": {
+  "validators": 7668,
+  "addresses": 1851
+ },
+ "floor_full_consolidation": {
+  "validators": 54845,
+  "by_entity_size": {
+   "1": {
+    "entities": 25920,
+    "validators_now": 25920,
+    "validators_floor": 25920
+   },
+   "10-99": {
+    "entities": 3005,
+    "validators_now": 60973,
+    "validators_floor": 3282
+   },
+   "2-9": {
+    "entities": 5394,
+    "validators_now": 14384,
+    "validators_floor": 5394
+   },
+   "100-999": {
+    "entities": 1721,
+    "validators_now": 201265,
+    "validators_floor": 7733
+   },
+   "1000-9999": {
+    "entities": 138,
+    "validators_now": 175551,
+    "validators_floor": 5168
+   },
+   "10000+": {
+    "entities": 6,
+    "validators_now": 306343,
+    "validators_floor": 7348
+   }
+  }
+ }
+}
