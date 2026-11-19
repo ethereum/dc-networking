@@ -44,7 +44,7 @@ Follow-up to [PQ Gasper: possible avenues](README.md). That list filed "rely on 
 - **Proposers** include the most complete aggregate they have, from anyone. They verify one proof, about 13 ms in Anton's measurements, instead of merging 16.
 - **Everyone else** leaves the vote-subnet backbone, publishes its own vote, and receives a builder's aggregate instead of 16–64 subnet proofs.
 - **Fallback.** The spec's four aggregators per subnet stay.
-  - They hold their proof until a second deadline, for example 8 s. They publish it if it adds votes to the best aggregate seen, or if none has arrived.
+  - They hold their proof until a second deadline, for example 7 s, which still lets it reach the last node before the next block. They publish it if it adds votes to the best aggregate seen, or if none has arrived.
   - A proposer left with proofs for only k of the 16 subnets merges them and earns k/16 of the reward: 0.0063 ETH for two.
 - **Spec changes.**
   - A global topic for full-slot aggregates, signed by a staked builder, with the spec's two forwarding rules: more attesting balance during the slot, new votes after it.
@@ -112,7 +112,10 @@ Follow-up to [PQ Gasper: possible avenues](README.md). That list filed "rely on 
 - It would if the aggregate went only to the next proposer.
   - A node on no vote subnet sees none of slot N's votes, and a node on two sees an eighth.
   - The proposer of N+1 gets a 40 % boost, so it could reorg block N for such nodes.
-- So the aggregate has to reach every node before the next votes are due at 15 s. One 303 KiB message has that time. Today 16 or more messages do the same job.
+- So the votes have to reach every node from someone else, before the next block does. Attesters vote as soon as that block arrives, and it can arrive at 12 s.
+  - Votes from over 40 % of the slot's stake are enough, so 7 to 10 of the 16 subnets.
+  - One 303 KiB message makes it: the last node has it by 10.4 s in the slow case. Today 16 or more messages do the same job, by about 10.6 s.
+- No aggregation design removes this step. Builders shrink it and start it earlier.
 
 **What if every builder is down?**
 - The fallback is today's spec on a thinner mesh. The vote subnets then hold the aggregators and the large operators only. In Kamil's model those operators hold 96 % of the stake.
