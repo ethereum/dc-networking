@@ -49,8 +49,9 @@ Finalized state at slot 15,688,352 (2026-11-19), active validators only.
 tables:
 
 - **0x00**: 8,657 validators that cannot be a consolidation source until they
-  set a withdrawal address. Counting each of them as its own address
-  raises the under-10 share to 4.9 % of 759,452.
+  set a withdrawal address. They sit behind 6,184 distinct BLS credentials
+  (the largest shared by 1,172 validators); 6,386 of them are in groups of
+  fewer than 10, which would raise the under-10 share to 4.6 % of 759,452.
 - **0x02 still at 32 ETH or less**: 7,668 validators behind 1,851 addresses,
   converted but not merged.
 
@@ -135,10 +136,16 @@ address), and the under-100 figure from 8.1 % to 11.6 %.
 
 ## The floor if everyone consolidates
 
-If every withdrawal address merged down to ⌈stake / 2,048 ETH⌉ validators (all
-credential types, 0x00 validators counted one address each):
+If every withdrawal address merged down to ⌈stake / 2,048 ETH⌉ validators.
+This table is not the 0x01-only view above: addresses are sized by their total
+stake across all credential types, so an address that has already consolidated
+counts by its 0x02 stake, and 0x00 validators are grouped by their BLS
+credential. That is why 144 addresses reach 1,000+ units here against 67 with
+1,000+ 0x01 validators: 15 more get there with 0x02 stake on top of fewer 0x01
+validators, 61 hold no 0x01 at all, and one is a 0x00 credential shared by
+1,172 validators.
 
-| Stake per address (32 ETH units) | Addresses | Validators today | Validators at the floor |
+| Total stake per address (32 ETH units, all credential types) | Addresses | Validators today | Validators at the floor |
 |---|---:|---:|---:|
 | 1 | 25,920 | 25,920 | 25,920 |
 | 2–9 | 5,394 | 14,384 | 5,394 |
