@@ -159,6 +159,16 @@ def main():
             fam[name][0] += 1
             fam[name][1] += k
 
+    # same clusters in power-of-two buckets: 64 validators x 32 ETH = one
+    # full 2,048 ETH (MAX_EFFECTIVE_BALANCE_ELECTRA) validator
+    pow2 = collections.defaultdict(lambda: [0, 0, 0])
+    for addr, k in c01.items():
+        lo = 1 << (k.bit_length() - 1)
+        cell = pow2[lo]
+        cell[0] += 1
+        cell[1] += k
+        cell[2] += math.ceil(k / 64)
+
     # floor: every entity merges down to ceil(stake / 2048) validators
     floor = collections.defaultdict(lambda: [0, 0, 0])
     for key, s in stake.items():
@@ -177,6 +187,9 @@ def main():
             "withdrawal_addresses": len(c01),
             "by_cluster_size": {b: {k: {"addresses": x[0], "validators": x[1]} for k, x in sorted(row.items())}
                                 for b, row in table.items()},
+            "by_power_of_two": {f"{lo}-{2 * lo - 1}": {"addresses": x[0], "validators": x[1],
+                                                       "validators_if_merged_to_2048": x[2]}
+                                for lo, x in sorted(pow2.items())},
             "contract_families": {name: {"addresses": x[0], "validators": x[1]}
                                   for name, x in sorted(fam.items(), key=lambda kv: -kv[1][1])},
             "top_addresses": [{"address": "0x" + ad, "validators": k} for ad, k in c01.most_common(10)],

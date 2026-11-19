@@ -77,6 +77,45 @@ as 265,000+ validators into about 4,000,
 block is already scheduled to go. The next three (72,999, 20,315 and 16,794
 validators) are not labelled here.
 
+## The same in powers of two (MAX_EB = 2,048 ETH)
+
+64 validators × 32 ETH = 2,048 ETH, one full validator at the maximum effective
+balance. An address with fewer than 64 validators cannot fill even one; it ends
+up as a single validator however far it consolidates. Same snapshot, same
+750,795 validators and 23,498 unique withdrawal addresses.
+
+| Validators sharing one withdrawal address | Unique withdrawal addresses | Validators | Share of non-consolidated validators | Cumulative | Validators left if merged to 2,048 ETH |
+|---|---:|---:|---:|---:|---:|
+| 1 | 18,038 | 18,038 | 2.4 % | 2.4 % | 18,038 |
+| 2–3 | 1,593 | 3,808 | 0.5 % | 2.9 % | 1,593 |
+| 4–7 | 950 | 4,842 | 0.6 % | 3.6 % | 950 |
+| 8–15 | 675 | 7,175 | 1.0 % | 4.5 % | 675 |
+| 16–31 | 711 | 16,480 | 2.2 % | 6.7 % | 711 |
+| 32–63 | 459 | 20,720 | 2.8 % | 9.5 % | 459 |
+| **Fewer than 64** | **22,426** | **71,063** | **9.5 %** | | **22,426** |
+| 64–127 | 538 | 51,186 | 6.8 % | 16.3 % | 1,054 |
+| 128–255 | 119 | 21,777 | 2.9 % | 19.2 % | 401 |
+| 256–511 | 300 | 107,766 | 14.4 % | 33.5 % | 1,830 |
+| 512–1,023 | 53 | 39,510 | 5.3 % | 38.8 % | 643 |
+| 1,024–2,047 | 37 | 55,666 | 7.4 % | 46.2 % | 891 |
+| 2,048–4,095 | 10 | 28,330 | 3.8 % | 50.0 % | 447 |
+| 4,096–8,191 | 8 | 49,274 | 6.6 % | 56.5 % | 773 |
+| 8,192–16,383 | 3 | 27,076 | 3.6 % | 60.2 % | 424 |
+| 16,384–32,767 | 2 | 37,109 | 4.9 % | 65.1 % | 581 |
+| 32,768–65,535 | 0 | 0 | 0 % | 65.1 % | 0 |
+| 65,536–131,071 | 1 | 72,999 | 9.7 % | 74.8 % | 1,141 |
+| 131,072–262,143 | 1 | 189,039 | 25.2 % | 100 % | 2,954 |
+| **64 or more** | **1,072** | **679,732** | **90.5 %** | | **11,139** |
+
+- **90.5 %** of non-consolidated validators belong to addresses that can fill
+  at least one 2,048 ETH validator. If only those 1,072 addresses consolidated
+  fully, their 679,732 validators would become 11,139.
+- The **9.5 %** below 64 are 22,426 addresses. Each can shrink to one validator
+  at most, so together they go from 71,063 to 22,426 and no further.
+- The last column counts 0x01 validators only (⌈validators / 64⌉ per address);
+  the [floor section](#the-floor-if-everyone-consolidates) also includes 0x00
+  and 0x02.
+
 ## What kind of address is it?
 
 A withdrawal address with one validator is not always a solo staker: some pools

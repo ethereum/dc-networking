@@ -105,6 +105,93 @@
     }
    }
   },
+  "by_power_of_two": {
+   "1-1": {
+    "addresses": 18038,
+    "validators": 18038,
+    "validators_if_merged_to_2048": 18038
+   },
+   "2-3": {
+    "addresses": 1593,
+    "validators": 3808,
+    "validators_if_merged_to_2048": 1593
+   },
+   "4-7": {
+    "addresses": 950,
+    "validators": 4842,
+    "validators_if_merged_to_2048": 950
+   },
+   "8-15": {
+    "addresses": 675,
+    "validators": 7175,
+    "validators_if_merged_to_2048": 675
+   },
+   "16-31": {
+    "addresses": 711,
+    "validators": 16480,
+    "validators_if_merged_to_2048": 711
+   },
+   "32-63": {
+    "addresses": 459,
+    "validators": 20720,
+    "validators_if_merged_to_2048": 459
+   },
+   "64-127": {
+    "addresses": 538,
+    "validators": 51186,
+    "validators_if_merged_to_2048": 1054
+   },
+   "128-255": {
+    "addresses": 119,
+    "validators": 21777,
+    "validators_if_merged_to_2048": 401
+   },
+   "256-511": {
+    "addresses": 300,
+    "validators": 107766,
+    "validators_if_merged_to_2048": 1830
+   },
+   "512-1023": {
+    "addresses": 53,
+    "validators": 39510,
+    "validators_if_merged_to_2048": 643
+   },
+   "1024-2047": {
+    "addresses": 37,
+    "validators": 55666,
+    "validators_if_merged_to_2048": 891
+   },
+   "2048-4095": {
+    "addresses": 10,
+    "validators": 28330,
+    "validators_if_merged_to_2048": 447
+   },
+   "4096-8191": {
+    "addresses": 8,
+    "validators": 49274,
+    "validators_if_merged_to_2048": 773
+   },
+   "8192-16383": {
+    "addresses": 3,
+    "validators": 27076,
+    "validators_if_merged_to_2048": 424
+   },
+   "16384-32767": {
+    "addresses": 2,
+    "validators": 37109,
+    "validators_if_merged_to_2048": 581
+   },
+   "65536-131071": {
+    "addresses": 1,
+    "validators": 72999,
+    "validators_if_merged_to_2048": 1141
+   },
+   "131072-262143": {
+    "addresses": 1,
+    "validators": 189039,
+    "validators_if_merged_to_2048": 2954
+   }
+  },
   "contract_families": {
    "EigenPod (BeaconProxy)": {
     "addresses": 482,
