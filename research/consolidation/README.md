@@ -84,28 +84,13 @@ balance. An address with fewer than 64 validators cannot fill even one; it ends
 up as a single validator however far it consolidates. Same snapshot, same
 750,795 validators and 23,498 unique withdrawal addresses.
 
-| Validators sharing one withdrawal address | Unique withdrawal addresses | Validators | Share of non-consolidated validators | Cumulative | Validators left if merged to 2,048 ETH |
-|---|---:|---:|---:|---:|---:|
-| 1 | 18,038 | 18,038 | 2.4 % | 2.4 % | 18,038 |
-| 2–3 | 1,593 | 3,808 | 0.5 % | 2.9 % | 1,593 |
-| 4–7 | 950 | 4,842 | 0.6 % | 3.6 % | 950 |
-| 8–15 | 675 | 7,175 | 1.0 % | 4.5 % | 675 |
-| 16–31 | 711 | 16,480 | 2.2 % | 6.7 % | 711 |
-| 32–63 | 459 | 20,720 | 2.8 % | 9.5 % | 459 |
-| **Fewer than 64** | **22,426** | **71,063** | **9.5 %** | | **22,426** |
-| 64–127 | 538 | 51,186 | 6.8 % | 16.3 % | 1,054 |
-| 128–255 | 119 | 21,777 | 2.9 % | 19.2 % | 401 |
-| 256–511 | 300 | 107,766 | 14.4 % | 33.5 % | 1,830 |
-| 512–1,023 | 53 | 39,510 | 5.3 % | 38.8 % | 643 |
-| 1,024–2,047 | 37 | 55,666 | 7.4 % | 46.2 % | 891 |
-| 2,048–4,095 | 10 | 28,330 | 3.8 % | 50.0 % | 447 |
-| 4,096–8,191 | 8 | 49,274 | 6.6 % | 56.5 % | 773 |
-| 8,192–16,383 | 3 | 27,076 | 3.6 % | 60.2 % | 424 |
-| 16,384–32,767 | 2 | 37,109 | 4.9 % | 65.1 % | 581 |
-| 32,768–65,535 | 0 | 0 | 0 % | 65.1 % | 0 |
-| 65,536–131,071 | 1 | 72,999 | 9.7 % | 74.8 % | 1,141 |
-| 131,072–262,143 | 1 | 189,039 | 25.2 % | 100 % | 2,954 |
-| **64 or more** | **1,072** | **679,732** | **90.5 %** | | **11,139** |
+| Validators sharing one withdrawal address | Unique withdrawal addresses | Validators | Share of non-consolidated validators | Validators left if merged to 2,048 ETH |
+|---|---:|---:|---:|---:|
+| 1 | 18,038 | 18,038 | 2.4 % | 18,038 |
+| 2–63 (less than one full validator) | 4,388 | 53,025 | 7.1 % | 4,388 |
+| 64–1,023 | 1,010 | 220,239 | 29.3 % | 3,928 |
+| 1,024 or more | 62 | 459,493 | 61.2 % | 7,211 |
+| **Total** | **23,498** | **750,795** | **100 %** | **33,565** |
 
 - **90.5 %** of non-consolidated validators belong to addresses that can fill
   at least one 2,048 ETH validator. If only those 1,072 addresses consolidated
@@ -114,7 +99,8 @@ up as a single validator however far it consolidates. Same snapshot, same
   at most, so together they go from 71,063 to 22,426 and no further.
 - The last column counts 0x01 validators only (⌈validators / 64⌉ per address);
   the [floor section](#the-floor-if-everyone-consolidates) also includes 0x00
-  and 0x02.
+  and 0x02. Finer power-of-two buckets are in the results file
+  (`by_power_of_two`).
 
 ## What kind of address is it?
 
