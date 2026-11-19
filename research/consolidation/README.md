@@ -85,7 +85,7 @@ balance. An address with fewer than 64 validators cannot fill even one; it ends
 up as a single validator however far it consolidates. Same snapshot, same
 750,795 validators and 23,498 unique withdrawal addresses.
 
-| Validators sharing one withdrawal address | Unique withdrawal addresses | Validators | Share of non-consolidated validators | Validators left if merged to 2,048 ETH |
+| Validators sharing one withdrawal address | Unique withdrawal addresses | Validators | Share of non-consolidated validators | Validators after full consolidation |
 |---|---:|---:|---:|---:|
 | 1 | 18,038 | 18,038 | 2.4 % | 18,038 |
 | 2–63 (less than one full validator) | 4,388 | 53,025 | 7.1 % | 4,388 |
@@ -99,8 +99,8 @@ up as a single validator however far it consolidates. Same snapshot, same
 - The **9.5 %** below 64 are 22,426 addresses. Each can shrink to one validator
   at most, so together they go from 71,063 to 22,426 and no further.
 - The last column counts 0x01 validators only (⌈validators / 64⌉ per address);
-  the [floor section](#the-floor-if-everyone-consolidates) also includes 0x00
-  and 0x02. Finer power-of-two buckets are in the results file
+  the [After full consolidation](#after-full-consolidation) table also
+  includes 0x00 and 0x02. Finer power-of-two buckets are in the results file
   (`by_power_of_two`).
 
 ## What kind of address is it?
@@ -134,7 +134,7 @@ validators; rows match the first table.
 So the under-10 figure ranges from 1.8 % (plain wallets only) to 3.8 % (every
 address), and the under-100 figure from 8.1 % to 11.6 %.
 
-## The floor if everyone consolidates
+## After full consolidation
 
 If every withdrawal address merged down to ⌈stake / 2,048 ETH⌉ validators.
 This table is not the 0x01-only view above: addresses are sized by their total
@@ -145,7 +145,7 @@ credential. That is why 144 addresses reach 1,000+ units here against 67 with
 validators, 61 hold no 0x01 at all, and one is a 0x00 credential shared by
 1,172 validators.
 
-| Total stake per address (32 ETH units, all credential types) | Addresses | Validators today | Validators at the floor |
+| Total stake per address (32 ETH units, all credential types) | Addresses | Validators today | Validators after full consolidation |
 |---|---:|---:|---:|
 | 1 | 25,920 | 25,920 | 25,920 |
 | 2–9 | 5,394 | 14,384 | 5,394 |
@@ -155,8 +155,9 @@ validators, 61 hold no 0x01 at all, and one is a 0x00 credential shared by
 | 10,000+ | 6 | 306,343 | 7,348 |
 | Total | 36,184 | 784,436 | 54,845 |
 
-- Addresses under 10 units are 5.1 % of validators today and 57 % of the floor.
-- The floor overstates small stakers by the roughly 13,700 per-validator pool
+- Addresses under 10 units are 5.1 % of validators today and 57 % of the validators
+  left after full consolidation.
+- The after-consolidation count overstates small stakers by the roughly 13,700 per-validator pool
   contracts; with those merged into their pools it is nearer 41,000.
 - For [`requirements.md`](../../design/requirements.md): the $V \to 10^4$ end
   of the range needs small stakers to pool or exit, not just large entities to
