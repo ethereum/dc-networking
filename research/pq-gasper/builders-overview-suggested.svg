@@ -10,27 +10,20 @@
 <text x="122.0" y="142" font-size="15" fill="#1d2430" font-weight="700" text-anchor="middle">Slot N</text>
 <text x="122.0" y="164" font-size="12" fill="#596372" text-anchor="middle">24,648 votes, cast by 3 s</text>
 <text x="122.0" y="182" font-size="12" fill="#596372" text-anchor="middle">on 16 attestation subnets</text>
-<rect x="320" y="28" width="350" height="76" rx="9" fill="#eef0f3" stroke="#6b7480" stroke-width="1.5" stroke-dasharray="6 4"/>
-<text x="495.0" y="54" font-size="13.5" fill="#1d2430" font-weight="700" text-anchor="middle">Regular path</text>
-<text x="495.0" y="73" font-size="11.5" fill="#596372" text-anchor="middle">subnet aggregators prove, global aggregators merge</text>
-<text x="495.0" y="89" font-size="11.5" fill="#596372" text-anchor="middle">open to anyone, as far as its machine allows</text>
-<line x1="224" y1="160.0" x2="314" y2="66.0" stroke="#6b7480" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arr-g)"/>
-<line x1="676" y1="66.0" x2="794" y2="66.0" stroke="#6b7480" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arr-g)"/>
-<text x="735.0" y="57.0" font-size="11.5" fill="#6b7480" font-weight="600" text-anchor="middle">may be late</text>
-<rect x="320" y="122" width="350" height="76" rx="9" fill="#dce8f7" stroke="#2f6db5" stroke-width="1.5"/>
-<text x="495.0" y="148" font-size="13.5" fill="#1d2430" font-weight="700" text-anchor="middle">Option 1: builders</text>
-<text x="495.0" y="167" font-size="11.5" fill="#596372" text-anchor="middle">sit on all 16 subnets and prove the whole slot</text>
-<text x="495.0" y="183" font-size="11.5" fill="#596372" text-anchor="middle">publish it to protect their own blocks</text>
-<line x1="224" y1="160.0" x2="314" y2="160.0" stroke="#2f6db5" stroke-width="1.6" marker-end="url(#arr-b)"/>
-<line x1="676" y1="160.0" x2="794" y2="160.0" stroke="#2f6db5" stroke-width="2" marker-end="url(#arr-b)"/>
-<text x="735.0" y="151.0" font-size="11.5" fill="#2f6db5" font-weight="600" text-anchor="middle">the full aggregate</text>
-<rect x="320" y="216" width="350" height="76" rx="9" fill="#e4f0da" stroke="#3f7f2f" stroke-width="1.5"/>
-<text x="495.0" y="242" font-size="13.5" fill="#1d2430" font-weight="700" text-anchor="middle">Option 2: the last W proposers (say 8)</text>
-<text x="495.0" y="261" font-size="11.5" fill="#596372" text-anchor="middle">any of them that can aggregate may publish</text>
-<text x="495.0" y="277" font-size="11.5" fill="#596372" text-anchor="middle">one honest one is enough</text>
-<line x1="224" y1="160.0" x2="314" y2="254.0" stroke="#3f7f2f" stroke-width="1.6" marker-end="url(#arr-n)"/>
-<line x1="676" y1="254.0" x2="794" y2="254.0" stroke="#3f7f2f" stroke-width="2" marker-end="url(#arr-n)"/>
-<text x="735.0" y="245.0" font-size="11.5" fill="#3f7f2f" font-weight="600" text-anchor="middle">full or partial</text>
+<rect x="320" y="60" width="350" height="76" rx="9" fill="#eef0f3" stroke="#6b7480" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="495.0" y="86" font-size="13.5" fill="#1d2430" font-weight="700" text-anchor="middle">Regular path</text>
+<text x="495.0" y="105" font-size="11.5" fill="#596372" text-anchor="middle">subnet aggregators prove, global aggregators merge</text>
+<text x="495.0" y="121" font-size="11.5" fill="#596372" text-anchor="middle">open to anyone, as far as its machine allows</text>
+<line x1="224" y1="160.0" x2="314" y2="98.0" stroke="#6b7480" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arr-g)"/>
+<line x1="676" y1="98.0" x2="794" y2="98.0" stroke="#6b7480" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arr-g)"/>
+<text x="735.0" y="89.0" font-size="11.5" fill="#6b7480" font-weight="600" text-anchor="middle">may be late</text>
+<rect x="320" y="184" width="350" height="76" rx="9" fill="#e4f0da" stroke="#3f7f2f" stroke-width="1.5"/>
+<text x="495.0" y="210" font-size="13.5" fill="#1d2430" font-weight="700" text-anchor="middle">The last W proposers (say 8)</text>
+<text x="495.0" y="229" font-size="11.5" fill="#596372" text-anchor="middle">each may publish, with its own proof or its builder's</text>
+<text x="495.0" y="245" font-size="11.5" fill="#596372" text-anchor="middle">one honest one is enough</text>
+<line x1="224" y1="160.0" x2="314" y2="222.0" stroke="#3f7f2f" stroke-width="1.6" marker-end="url(#arr-n)"/>
+<line x1="676" y1="222.0" x2="794" y2="222.0" stroke="#3f7f2f" stroke-width="2" marker-end="url(#arr-n)"/>
+<text x="735.0" y="213.0" font-size="11.5" fill="#3f7f2f" font-weight="600" text-anchor="middle">full or partial</text>
 <rect x="800" y="28" width="276" height="264" rx="9" fill="#ffffff" stroke="#1d2430" stroke-width="1.5"/>
 <text x="938.0" y="68" font-size="15" fill="#1d2430" font-weight="700" text-anchor="middle">Every node</text>
 <text x="938.0" y="105" font-size="12" fill="#1d2430" text-anchor="middle">needs slot N's votes</text>
@@ -66,8 +59,8 @@
 <text x="817.5" y="365" font-size="11" fill="#596372" text-anchor="middle">subnet proofs at 7.2 s, merge, gossip</text>
 <rect x="955.0" y="352" width="50.0" height="18" rx="4" fill="#a3394a"/>
 <text x="928" y="385" font-size="12" fill="#a3394a" font-weight="600" text-anchor="start">12.7–13.7 s: too late</text>
-<text x="24" y="412" font-size="12.5" fill="#1d2430" font-weight="700" text-anchor="start">Option 1 or 2</text>
-<text x="24" y="427" font-size="11" fill="#596372" text-anchor="start">same timing, different sender</text>
+<text x="24" y="412" font-size="12.5" fill="#1d2430" font-weight="700" text-anchor="start">Recent proposers</text>
+<text x="24" y="427" font-size="11" fill="#596372" text-anchor="start">with a builder's links and servers</text>
 <rect x="470.0" y="398" width="300.0" height="18" rx="4" fill="#e4f0da"/>
 <text x="620.0" y="411" font-size="11" fill="#596372" text-anchor="middle">votes at 3 s, one proof, then gossip</text>
 <rect x="770.0" y="398" width="70.0" height="18" rx="4" fill="#3f7f2f"/>

@@ -5,8 +5,9 @@ Bottom: when the last home node has them, against the arrival of block N+1.
 
 Stdlib only, deterministic. Run: python3 builders_overview.py
 With --suggested it writes ../builders-overview-suggested.svg instead, the figure of the
-suggested short version: builders publish to protect their own blocks, and the box on the
-right no longer gives a 40 % threshold (that only holds against the boost alone).
+suggested short version: one design, in which the last W proposers publish with their own
+proof or their builder's, and no 40 % threshold in the box on the right (that only holds
+against the boost alone).
 Times (seconds from the start of slot N), see ../builders.md:
 - regular path: the first subnet proofs go out at 7.2 s (pq spec @ 4c29678), reach a
   global aggregator 0.6 s later, are merged in 0.37-1.33 s, and the full aggregate needs
@@ -58,18 +59,21 @@ text(LX + LW / 2, LY + 54, "24,648 votes, cast by 3 s", 12, MUTE, None, "middle"
 text(LX + LW / 2, LY + 72, "on 16 attestation subnets", 12, MUTE, None, "middle")
 
 RX, RW, RH = 320, 350, 76
-if SUGGESTED:
-    BUILDERS_DO, BUILDERS_SEND = "publish it to protect their own blocks", "the full aggregate"
+REGULAR = ["subnet aggregators prove, global aggregators merge", "open to anyone, as far as its machine allows"]
+if SUGGESTED:      # one design: recent proposers publish, with their own proof or their builder's
+    RELAYS = [
+        (60, "Regular path", REGULAR, GREY, GREY_BG, "g", True, "may be late"),
+        (184, "The last W proposers (say 8)", ["each may publish, with its own proof or its builder's",
+                                               "one honest one is enough"], GREEN, GREEN_BG, "n", False, "full or partial"),
+    ]
 else:
-    BUILDERS_DO, BUILDERS_SEND = "the full aggregate goes with their offer", "a good enough view"
-RELAYS = [
-    (28, "Regular path", ["subnet aggregators prove, global aggregators merge",
-                          "open to anyone, as far as its machine allows"], GREY, GREY_BG, "g", True, "may be late"),
-    (122, "Option 1: builders", ["sit on all 16 subnets and prove the whole slot",
-                                 BUILDERS_DO], BLUE, BLUE_BG, "b", False, BUILDERS_SEND),
-    (216, "Option 2: the last W proposers (say 8)", ["any of them that can aggregate may publish",
-                                                     "one honest one is enough"], GREEN, GREEN_BG, "n", False, "full or partial"),
-]
+    RELAYS = [
+        (28, "Regular path", REGULAR, GREY, GREY_BG, "g", True, "may be late"),
+        (122, "Option 1: builders", ["sit on all 16 subnets and prove the whole slot",
+                                     "the full aggregate goes with their offer"], BLUE, BLUE_BG, "b", False, "a good enough view"),
+        (216, "Option 2: the last W proposers (say 8)", ["any of them that can aggregate may publish",
+                                                         "one honest one is enough"], GREEN, GREEN_BG, "n", False, "full or partial"),
+    ]
 EX, EY, EW, EH = 800, 28, 276, 264
 for y, title, subs, col, bg, mk, dash, lab in RELAYS:
     box(RX, y, RW, RH, bg, col, dash)
@@ -115,10 +119,12 @@ for t in range(0, 15):
 for t in (0, 3, 6, 9, 12):
     text(x(t), AX + 16, f"{t} s", 12, MUTE, None, "middle")
 
+RELAY_NAME, RELAY_SUB = (("Recent proposers", "with a builder's links and servers") if SUGGESTED
+                         else ("Option 1 or 2", "same timing, different sender"))
 ROWS = [
     (352, "Regular path", None, 7.2, 12.7, 13.7, GREY, GREY_BG,
      "subnet proofs at 7.2 s, merge, gossip", "12.7–13.7 s: too late", "end"),
-    (398, "Option 1 or 2", "same timing, different sender", 3.0, 9.0, 10.4, GREEN, GREEN_BG,
+    (398, RELAY_NAME, RELAY_SUB, 3.0, 9.0, 10.4, GREEN, GREEN_BG,
      "votes at 3 s, one proof, then gossip", "9.0–10.4 s: at least 1.6 s to spare", "middle"),
 ]
 for y, name, sub, t_from, t_a, t_b, col, bg, inside, verdict, anchor in ROWS:
