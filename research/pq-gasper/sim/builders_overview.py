@@ -2,8 +2,9 @@
 
 Two lanes that read left to right, and two finish lines.
 - Regular path: 16 attestation subnets, 16 aggregation subnets, one global aggregation
-  topic. It only has to deliver by block N+2 (24 s), when the votes are included
-  (pq spec @ 4c29678: two-slot inclusion delay).
+  topic. Whether it delivers by block N+1 is open, hence the dashed arrow and the question
+  mark. It does deliver by block N+2 (24 s), when the votes are included (pq spec @ 4c29678:
+  two-slot inclusion delay).
 - What we add: recent proposers, or their builders, take the raw votes and publish on a
   lightweight global topic. It delivers by block N+1 (12 s), which is what fork choice needs.
 The lines are deadlines, not measurements, and the horizontal axis is not to scale.
@@ -46,8 +47,9 @@ def node(x, y, w, title, sub=None, added=False):
         text(x + w / 2, y + BH / 2 + 5, title, 14, INK, 600, "middle")
 
 
-def arrow(x1, x2, y, col, mk):
-    a(f'<line x1="{x1}" y1="{y}" x2="{x2}" y2="{y}" stroke="{col}" stroke-width="1.6" marker-end="url(#arr-{mk})"/>')
+def arrow(x1, x2, y, col, mk, dash=False):
+    d = ' stroke-dasharray="5 4"' if dash else ""
+    a(f'<line x1="{x1}" y1="{y}" x2="{x2}" y2="{y}" stroke="{col}" stroke-width="1.6"{d} marker-end="url(#arr-{mk})"/>')
 
 
 # grid: three columns of boxes, a start line and two finish lines
@@ -57,8 +59,9 @@ LANE_A, LANE_B = 100, 190
 MID_A, MID_B = LANE_A + BH / 2, LANE_B + BH / 2
 TOP, BOTTOM = 58, 250
 
-# the regular path reaches block N+2, the added lane reaches block N+1
-arrow(C3 + W3 + 5, F2 - 2, MID_A, GREY, "g")
+# the regular path may or may not make block N+1 and does make block N+2; the added lane makes block N+1
+arrow(C3 + W3 + 5, F1 - 13, MID_A, GREY, "g", dash=True)
+arrow(F1 + 13, F2 - 2, MID_A, GREY, "g")
 arrow(C3 + W3 + 5, F1 - 2, MID_B, GREEN, "n")
 
 # start line and finish lines, with what each deadline is for
@@ -70,6 +73,9 @@ for x, name, when, col, purpose in ((X0, "votes", "3 s", GREY_LINE, None),
     text(x, 45, when, 12, MUTE, None, "middle")
     if purpose:
         text(x, BOTTOM + 22, purpose, 12.5, col, 600, "middle")
+# whether the regular path is in time for fork choice is the open question
+a(f'<circle cx="{F1}" cy="{MID_A}" r="10.5" fill="#ffffff" stroke="{GREY}" stroke-width="1.5"/>')
+text(F1, MID_A + 5, "?", 14, GREY, 700, "middle")
 
 # lane 1: the regular path
 text(C1, LANE_A - 11, "REGULAR PATH", 10.5, GREY, 700, spacing="0.7")
