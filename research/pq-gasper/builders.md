@@ -1,44 +1,127 @@
 ---
-title: PQ Gasper through builders
+title: Emergency PQ consensus could rely on builders
 status: wip
-date: 2026-11-18
+date: 2026-11-23
 provenance: agent
 ---
 
-> **Provenance: agent.** Drafted 2026-11-18 by an agent from Yann's dictated argument, as a follow-up to avenue 5 of [README.md](README.md). Yann has not reviewed it line by line.
-> - Reward numbers come from [`sim/builder_rewards.py`](sim/builder_rewards.py), the figures from [`sim/builders_timeline.py`](sim/builders_timeline.py) and [`sim/builders_flow.py`](sim/builders_flow.py).
+> **Provenance: agent.** The short version is Yann's text of 23 Nov 2026, edited by an agent. The long version is an agent draft of 18–22 Nov. Yann has not reviewed the result line by line.
+> - Reward numbers come from [`sim/builder_rewards.py`](sim/builder_rewards.py), the relay arithmetic from [`sim/relay_window.py`](sim/relay_window.py), the figures from [`sim/builders_timeline.py`](sim/builders_timeline.py) and [`sim/builders_flow.py`](sim/builders_flow.py).
 > - Spec references are to the consensus-specs `pq` branch @ `ee867e9` (2026-11-17), described in [design.md](design.md).
 > - Market numbers are mainnet, 7 days to 2026-11-18: 46,784 MEV-Boost blocks from the relay data APIs, stake from the beacon API.
 > - Network times are from Anton Nashatyrev's simulation at 1M validators, proving times from leanVM's benchmarks @ `29077b733`.
 
-# PQ Gasper through builders
+# Emergency PQ Consensus Could Rely on Builders
 
-Follow-up to [PQ Gasper: possible avenues](README.md). That list filed "rely on builders to aggregate" as one compromise among nine. This note argues it is the cleanest one.
+**Context.** We are exploring PQ Gasper as a way to get to PQAI as soon as possible. Networking is the hard part. There are [several avenues that could make PQ Gasper work](https://notes.ethereum.org/_rGnW7YuRWurwyA8zFhsog), but I believe most of them are either unrealistic or come with harsh consequences. This post explores one of them: low-bandwidth nodes rely on builders. In an emergency, that is perhaps not as outlandish as it seems at first glance.
 
-**Claim.** If PQ Gasper ships as a one-fork bridge to PQ-DC, builders should aggregate its votes. They prove the whole slot and publish one aggregate, and the next proposer includes it. The spec's own aggregation path stays as the fallback.
+> **Disclaimer.** This write-up does not mean that I believe this is the right path forward. It is an exploration, since the idea has been brought up semi-seriously a couple of times.
+
+**Main idea.** We keep a very simple regular path for attestation aggregation, and accept that it may not let EIP-7870 nodes obtain a full aggregate in time by themselves. For the duration of a single fork, low-bandwidth nodes that want the full attestation reward can rely on builders. To keep fork choice safe, someone other than the next proposer also publishes each slot's votes: builders in the simple version, recent proposers in the principled one.
 
 ## Why
 
-1. **It has to last one fork.**
-   - [ACDC #191](https://forkcast.org/calls/acdc/191) left the choice between PQ-DC and PQ Gasper open, with PQ Gasper framed as the quick-deploy fallback. If it ships in I\* and PQ-DC follows in J\*, its aggregation design lives for one fork.
-   - That rules out a new p2p stack and makes a shortcut acceptable. PQ-DC has four times the votes per slot and should not inherit this one.
-2. **The version that fits in 12 s already depends on big machines.**
-   - The spec: votes are due at 3 s. Four aggregators per subnet each prove ~1,540 votes and publish at 6 s. The next proposer merges 16 proofs into the 303 KiB proof in its block ([design.md](design.md)).
-   - Kamil Salakhiev and Anton Nashatyrev report that their simulations keep 12 s slots. [Anton's](https://github.com/Nashatyrev/jvm-libp2p/blob/pq-gasper/pq-gasper.md) does so, at 1M validators, with 10 Gbit/s pools as aggregators and with 50/25 Mbit/s home nodes off every vote subnet.
-   - There is a reason they are off. A node on two vote subnets takes in 73–128 MB per slot ([mesh degree 4–8](https://github.com/Nashatyrev/jvm-libp2p/blob/pq-gasper/pq-gasper-mesh-degree.md)). That averages 49–85 Mbit/s and arrives in bursts. EIP-7870 recommends 50.
-   - The proposer stays tight. The last home node has all 16 aggregates 4.6 s after they go out, so at about 10.6 s. The merge then takes 0.37–1.33 s on [leanVM's benchmark machines](https://leanvm.org), which can leave 0.1 s. On Kamil's €50 VPS it takes "5 seconds" (ACDC #191 chat).
-   - Potuz: "even 12 seconds may be too short to ship PQ with our current consensus algorithm" ([post](https://www.potuz.net/posts/pq/)). The `pq-dc` spec branch: "The aggregation load of PQ-Gasper looks infeasible within a slot" ([commit](https://github.com/ethereum/consensus-specs/commit/bde2349e1e86763aed845e8a064cb22805628e0c)).
-3. **We already rely on builders.**
-   - 93.1 % of last week's blocks came through MEV-Boost. [Relayscan](https://www.relayscan.io/overview?t=7d) puts Titan at 53.6 % of those and the top three builders at 83 %.
-   - A local block earned a median 0.004 ETH in priority fees and used 8.6M gas. The median builder payment was 0.0089 ETH, for a block of 29.8M gas. In 2024 the gap was 0.0076 against 0.038 ETH ([Toni Wahrstätter](https://ethresear.ch/t/is-it-worth-using-mev-boost/19753)).
-   - ePBS (EIP-7732, part of Glamsterdam, now on testnets) makes builders staked protocol participants. Self-building stays possible. Today it is 7 % of blocks.
-4. **The aggregate is the most valuable thing in most blocks.**
-   - With 44.2M ETH staked, including one slot's votes pays the proposer 0.051 ETH: 0.013 for head votes, 0.013 for source and 0.024 for target.
-   - 95 % of winning bids are below that, and the median bid is 0.0089 ETH. Head credit alone, which needs the aggregate in the very next block, beats 71 % of winning bids.
-   - The spec's path already delivers this when it runs on time. What builders add is the margin: late votes, slow proposers and missed deadlines, each of which costs head credit.
-5. **Builders have the time.** Their proof is at the proposer by 4.6–6.0 s. A home proposer that merges for itself finishes at 11.9 s in the slow case ([figure](#timelines)).
+1. **It has to last one fork only.** This post assumes PQ-DC follows one fork after PQ Gasper. [ACDC #191](https://forkcast.org/calls/acdc/191) left that choice open and framed PQ Gasper as the quick-deploy fallback.
+2. **No large networking change means emergency PQ consensus is ready sooner.** Shipping intermediate solutions is a core ethos of Ethereum, and it is still unclear how much the networking layer has to change.
+3. **It frees up capacity to design the stack from the ground up.**
+4. **We already rely on builders.**
+   - Last week 93.1 % of blocks came through MEV-Boost, and ePBS keeps that choice.
+   - A local block earned a median 0.004 ETH in priority fees, against a median builder payment of 0.0089 ETH. In 2024 the gap was 0.0076 against 0.038 ETH ([Toni's post](https://ethresear.ch/t/is-it-worth-using-mev-boost/19753)).
+5. **The aggregate is the most valuable thing in most blocks.** If the network becomes unstable, this structure might emerge on its own.
+   - Including one slot's votes pays the proposer 0.051 ETH: 0.013 for head votes, 0.013 for source and 0.024 for target.
+   - **95 % of winning bids are below that.** Head credit alone, which needs the aggregate in the very next block, beats 71 % of them.
+6. **The roles already exist.** Under ePBS builders are staked protocol participants, and the state transition already accepts an attestation proof from anyone.
+7. **Nobody has to use a builder.** A proposer includes whatever the regular path gives it.
+8. **Incentives line up.** A builder wants its payload to stay on chain, and every later vote adds weight to its block.
+
+## Why not
+
+- **Enshrining** something we do not want long term.
+- **Distraction** from redesigning the networking stack, which is the valuable long-term work.
+- **Few parties.** Three builders make 83 % of MEV-Boost blocks.
+- **Self-built blocks are less protected.** Nobody with a fast link publishes their votes. Where the regular path is late, the next proposer can orphan them at a net cost of about 0.013 ETH.
+- **Vote privacy.** A vote's first hop becomes a builder or a large operator.
+- **It may not be needed.** Kamil Salakhiev and Anton Nashatyrev report that their simulations keep 12 s slots. Anton's does so with pools aggregating and home nodes off the attestation subnets.
 
 ## The design
+
+### Regular path
+
+- **16 attestation subnets**, each with a committee of about 1,600 per slot. One costs roughly 10–35 Mbit/s of download averaged over a slot ([Anton's simulation](https://github.com/Nashatyrev/jvm-libp2p/blob/pq-gasper/pq-gasper-mesh-degree.md), 1M validators). Low-bandwidth nodes join none and only publish their own vote.
+- **16 aggregation subnets.** Each subnet's aggregators prove their committee's votes (209 KiB).
+- **1 global aggregation topic.** Global aggregators merge the 16 proofs into one full-slot aggregate (303 KiB).
+- **A node follows what its machine allows.** The global topic alone is cheapest. The aggregation subnets add a merge of 0.4–1.3 s. The attestation subnets are the most expensive, on both bandwidth and CPU.
+- **A proposer includes the best aggregate it has.** A block carries a single proof, so two subnets' proofs have to be merged first.
+
+By my arithmetic from Anton's per-hop times, the full-slot aggregate of this path reaches the last home node at about 11.5–12.5 s. That is too late to be sure of the next block, and it is the gap the rest of the design fills.
+
+### The problem: the next proposer
+
+The above alone is not safe. The proposer of slot N+1 could orphan block N by building on N−1 and leaving out the votes for N. Its block carries a 40 % boost, and a node that has not seen slot N's votes weighs block N at nothing.
+
+So slot N's votes have to reach every node before block N+1 does, from someone other than that proposer. Votes from over 40 % of the slot's stake are enough, so 7 to 10 of the 16 subnets. The two options differ in who may publish them.
+
+### Option 1, naive: builders publish
+
+- Builders sit on all 16 attestation subnets, prove the whole slot and publish a full-slot aggregate. They also hand it to the next proposer next to their bid.
+- Nodes that are not on enough subnets themselves rely on these aggregates.
+- Builders have their proof by about 6 s, so nodes have 6 s to fetch it. Even 3 s at 20 Mbit/s is room for 8–10 aggregates with duplicate copies.
+
+**For:** it is simple. Builders build 93 % of blocks and do not want theirs orphaned, so at least one should want to share a full aggregate.
+
+**Against:**
+- It needs one honest, reachable builder. Colluding builders can withhold votes, orphan honest blocks and stall justification. They cannot finalize conflicting blocks.
+- A self-built block has no builder to speak for it, and a builder that regrets its bid wants its own block orphaned.
+
+### Option 2, principled: recent proposers publish
+
+- The proposers of the last W slots, say W = 8, may each publish one aggregate per slot.
+- Every later vote adds weight to their own block, so they want the votes known.
+- The set is small and staked, so spam is bounded at W aggregates per slot: 2.4 MiB for W = 8, against the 13.1 MiB today's spec allows.
+- We assume an honest proposer in such a window anyway.
+
+**What it guarantees:**
+- In a simplified model where every validator votes every slot, it is machine-checked in Lean (not yet published): an honest block is never reorged if one proposer among the last W is honest and can aggregate.
+- With 1/32 committees there is only arithmetic so far. With W = 8, an attacker with 20 % of the stake needs 32 proposers in a row to mislead a committee, and one with a third needs 16.
+
+**Against:**
+- A relay has to hold the raw votes and prove them: roughly a 32-core server for a whole slot, or a strong desktop for half the subnets. Partial aggregates add up.
+- The relays are a public list of at most W validators, which can be flooded.
+- It needs three rule changes: fork choice counts only relayed votes, gossip forwards every permitted aggregate that adds a vote, and attesters freeze their view before the slot. With the freeze, this is view-merge in which past proposers also speak.
+
+### What changes
+
+- A global topic for full-slot aggregates with a restricted sender set: staked builders in option 1, the last W proposers in option 2.
+- Small nodes stop subscribing to attestation subnets.
+- Option 2 adds the three rules above.
+- The state transition does not change.
+
+## Q&A
+
+**Does the aggregate ride in the bid?** No, next to it. Bids are re-gossiped each time they rise and have no room for a 303 KiB proof. It should not be bound to the bid either, or a staker with 18 % of the stake could feed its votes only to its own builder and start every auction a median bid ahead.
+
+**Can a builder censor votes?** Not in bulk: leaving out 10 % of a slot costs the proposer 0.005 ETH against any aggregate that has those votes. A single 32 ETH vote is worth only 1,173 gwei, so what protects it is that anyone's aggregate counts.
+
+**What if every builder is down?** The regular path remains. Some subnets miss the next block and lose head credit. Finality continues, because target votes have until the end of the next epoch.
+
+**Why not EIP-8292's super-aggregators?** It is the same role. [EIP-8292](https://eips.ethereum.org/EIPS/eip-8292) asks nodes with 32 ETH per subnet to aggregate every subnet, unpaid, and leaves incentives open. Builders already exist, are staked, and have their own block to protect.
+
+More questions, the timelines and the sources are in the long version below.
+
+---
+
+# Long version
+
+## Regular path, notes
+
+- **What each level costs.**
+  - Global topic: one 303 KiB proof and a check of about 13 ms.
+  - Aggregation subnets: 16 proofs of 209 KiB, and a merge of 0.37–1.33 s, 5 s on a cheap VPS.
+  - Attestation subnets: 441–863 MB of votes per slot for all 16, and a proof of 0.24–1.1 s per subnet.
+- **Difference from the `pq` spec.** The spec today has no aggregation subnets. Its subnet proofs go straight to one global topic, and the proposer merges them.
+- **One fork.** The last two forks were 7 and more than 11 months apart.
+
+## Option 1 in detail
 
 - **Builders** join all 16 vote subnets, prove them in parallel, merge, and publish one 303 KiB aggregate proof for the slot on a global topic. They also hand it to the next proposer next to their bid.
 - **Proposers** include the most complete aggregate they have, from anyone. They verify one proof, about 13 ms in Anton's measurements, instead of merging 16.
@@ -61,6 +144,32 @@ Follow-up to [PQ Gasper: possible avenues](README.md). That list filed "rely on 
 | Proving by the proposer | merge 16 → 1: 0.37–1.33 s, 5 s on a cheap VPS | none, if it includes the builder's proof as it is |
 | Who has to be well provisioned | the slot's 64 aggregators and its proposer | a few builders, with the 64 aggregators as backup |
 
+## Option 2 in detail
+
+- **Rule.** For each slot, the proposers of the last W slots may each publish one aggregate of that slot's votes on the global topic. Gossip forwards an aggregate from a permitted sender if it adds votes to what the node already holds. Fork choice counts only votes that arrived this way or in a block.
+- **Why not let anyone publish.** An open fallback is a spam vector. If each forwarded aggregate had to add 5 % of a committee, an attacker on the subnets could force about 20 proofs per committee per slot, 65 MiB, with no stake at risk.
+- **Machine-checked in Lean, on a simplified model.** Every validator votes every slot, latest votes never expire, and attesters merge the proposer's view. The project is not yet published.
+  - A block is under every honest head forever once the votes of an honest majority for it are known to all. Nothing is assumed about any other slot.
+  - So an honest block is never reorged if one proposer among the last W slots is honest and can aggregate. Its own proposer need not aggregate.
+  - With no relay and an adversarial next proposer, the block is reorged.
+  - The same design fails with votes that expire after one slot, as in Goldfish.
+- **With 1/32 committees, arithmetic only** ([`sim/relay_window.py`](sim/relay_window.py)). One committee votes per slot and a new block carries a 40 % boost. The table gives the adversarial proposers needed in a row after an honest block whose proposer can aggregate.
+
+  | Adversarial stake | W = 1 | W = 2 | W = 4 | W = 8 |
+  |---|---:|---:|---:|---:|
+  | 20 % | 4 | 8 | 16 | 32 |
+  | 25 % | 3 | 6 | 12 | 24 |
+  | One third | 2 | 4 | 8 | 16 |
+
+  - W = 1 means that only the block's own proposer relays.
+  - Below one third, the block returns once an honest proposer reveals the hidden votes.
+  - With every honest vote visible, as today, the attack never works below half the stake.
+- **What a relay needs** (estimates from the leanVM benchmarks and Anton's simulation).
+  - Whole slot: 441–863 MB of votes in per slot, about 1.4 s of proving on a 32-core server, and 55–85 GB of RAM for 16 proofs in parallel.
+  - A strong desktop (16 cores, 64 GB, gigabit) covers about half the subnets in time.
+  - Partial aggregates add up, and half the subnets is about what protection against the boost needs.
+- **Window size.** Back to the last finalized block would be 64 to 96 slots. Eight is enough by the table, and bounds the extra traffic at 2.4 MiB per slot.
+
 ## Timelines
 
 ![One slot of PQ Gasper votes: the network aggregates vs builders aggregate](builders-timeline.svg)
@@ -75,7 +184,7 @@ Follow-up to [PQ Gasper: possible avenues](README.md). That list filed "rely on 
   - The spare time goes to late votes, which today's 6 s deadline drops.
 - **Unchanged.** The block still carries the 303 KiB proof. At today's release times it needs 0.9–3.3 s to reach attesters, who vote at 3 s. The upper end extrapolates [ethPandaOps' fit](https://investigations.ethpandaops.io/2026-05/block-size-vs-propagation/) beyond its largest bin of 224 KB.
 
-## Q&A
+## Q&A, complete
 
 **Does the aggregate travel with the bid?**
 - Next to it, not inside it. Gloas gossips every higher bid, and the PQ bid bound of 199,240 B has no room for a 303 KiB proof.
@@ -148,3 +257,5 @@ Follow-up to [PQ Gasper: possible avenues](README.md). That list filed "rely on 
 - **Vote privacy.** With home nodes off the subnets, a vote's first hop is a builder or a large operator.
 - **The proposer's merge.** A proposer that adds anything to the builder's proof has to merge, whether late votes or a subnet's proof. Anton measured 0.22–0.33 s for two proofs.
 - **Reliability.** Whether unpaid builders publish every slot, or the producer needs a share.
+- **Committees in the proof.** The Lean result covers a full committee only. The 1/32-committee numbers for option 2 are arithmetic.
+- **Flooding the relays.** In option 2 the permitted relays are public. How many of them can be flooded for a few seconds is the same question as for the spec's four aggregators per subnet ([aggregator-selection.md](aggregator-selection.md)).
