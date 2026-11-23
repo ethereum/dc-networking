@@ -48,24 +48,24 @@ So slot N's votes have to reach every node before block N+1 does.
 
 ### Suggested solution: lightweight global topic with only recent proposers publishing
 
-- The proposers of the last W slots, say W = 8, may each publish one aggregate per slot, in a new lightweight global topic, specifically for EIP-7870 nodes.
+- The proposers of the last k slots, say k = 8, may each publish one aggregate per slot, in a new lightweight global topic, specifically for EIP-7870 nodes.
 
 **Why it could work:**
 - We assume an honest proposer in such a window anyway, under synchrony they (or their builder) will see all votes, and propagate them.
 - In the good case, the incentives align: every later vote adds weight to a proposer's block, so they want the votes known.
 - A proposer need not make the proof itself. Its builder has the servers and the same block to protect, and a proof is valid whoever made it.
-- The set is small and staked, so spam is bounded at W aggregates per slot: 2.4 MiB for W = 8, against the 13.1 MiB today's spec allows for the global topic.
+- The set is small and staked, so spam is bounded at k aggregates per slot: 2.4 MiB for k = 8, against the 13.1 MiB today's spec allows for the global topic.
 - With a builder's links and servers the proof is ready by about 6 s, so nodes have 6 s to fetch it. Even 3 s at 20 Mbit/s is room for 8–10 aggregates with duplicate copies.
 
 **What it guarantees:**
-- An honest block is never reorged if one proposer among the last W is honest and can aggregate.
+- An honest block is never reorged if one proposer among the last k is honest and can aggregate.
 
 **Where it could go wrong:**
-- Under long periods of asynchrony above W the arguments don't really hold anymore, and it's unclear if this design could make recovering from asynchrony harder.
+- Under long periods of asynchrony above k the arguments don't really hold anymore, and it's unclear if this design could make recovering from asynchrony harder.
 
 ### What changes
 
-- A global topic for full-slot aggregates with a restricted sender set: the proposers of the last W slots.
+- A global topic for full-slot aggregates with a restricted sender set: the proposers of the last k slots.
 - EIP-7870 nodes stop subscribing to attestation subnets.
 
 ## Q&A
