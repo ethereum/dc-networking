@@ -1,85 +1,53 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 480" width="1100" height="480" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
-<title>The regular path of PQ Gasper votes, and the lightweight global topic added to it</title>
-<rect width="1100" height="480" rx="10" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 396" width="1100" height="396" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title>The regular path of PQ Gasper votes, the lightweight global topic added to it, and their deadlines</title>
+<rect width="1100" height="396" rx="10" fill="#ffffff"/>
 <defs>
 <marker id="arr-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7480"/></marker>
 <marker id="arr-n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3f7f2f"/></marker>
 </defs>
-<text x="168" y="24" font-size="12.5" fill="#6b7480" font-weight="700" text-anchor="start">Regular path</text>
-<rect x="20" y="36" width="120" height="88" rx="9" fill="#ffffff" stroke="#1d2430" stroke-width="1.5"/>
-<text x="80.0" y="66" font-size="15" fill="#1d2430" font-weight="700" text-anchor="middle">Slot N</text>
-<text x="80.0" y="87" font-size="11" fill="#596372" text-anchor="middle">24,648 votes</text>
-<text x="80.0" y="103" font-size="11" fill="#596372" text-anchor="middle">cast by 3 s</text>
-<rect x="168" y="36" width="180" height="88" rx="9" fill="#eef0f3" stroke="#6b7480" stroke-width="1.5"/>
-<text x="258.0" y="66" font-size="13" fill="#1d2430" font-weight="700" text-anchor="middle">16 attestation subnets</text>
-<text x="258.0" y="87" font-size="11" fill="#596372" text-anchor="middle">about 1,500 raw votes each</text>
-<text x="258.0" y="103" font-size="11" fill="#596372" text-anchor="middle">EIP-7870 nodes join none</text>
-<rect x="370" y="36" width="180" height="88" rx="9" fill="#eef0f3" stroke="#6b7480" stroke-width="1.5"/>
-<text x="460.0" y="66" font-size="13" fill="#1d2430" font-weight="700" text-anchor="middle">16 aggregation subnets</text>
-<text x="460.0" y="87" font-size="11" fill="#596372" text-anchor="middle">one proof per subnet</text>
-<text x="460.0" y="103" font-size="11" fill="#596372" text-anchor="middle">209 KiB each</text>
-<rect x="572" y="36" width="210" height="88" rx="9" fill="#eef0f3" stroke="#6b7480" stroke-width="1.5"/>
-<text x="677.0" y="66" font-size="13" fill="#1d2430" font-weight="700" text-anchor="middle">1 global aggregation topic</text>
-<text x="677.0" y="87" font-size="11" fill="#596372" text-anchor="middle">one merged proof per slot</text>
-<text x="677.0" y="103" font-size="11" fill="#596372" text-anchor="middle">303 KiB</text>
-<line x1="144" y1="80.0" x2="162" y2="80.0" stroke="#6b7480" stroke-width="1.6" marker-end="url(#arr-g)"/>
-<line x1="352" y1="80.0" x2="364" y2="80.0" stroke="#6b7480" stroke-width="1.6" marker-end="url(#arr-g)"/>
-<line x1="554" y1="80.0" x2="566" y2="80.0" stroke="#6b7480" stroke-width="1.6" marker-end="url(#arr-g)"/>
-<text x="370" y="166" font-size="12.5" fill="#3f7f2f" font-weight="700" text-anchor="start">What we add</text>
-<rect x="370" y="176" width="412" height="88" rx="9" fill="#e4f0da" stroke="#3f7f2f" stroke-width="1.5"/>
-<text x="576.0" y="206" font-size="13.5" fill="#1d2430" font-weight="700" text-anchor="middle">Lightweight global topic</text>
-<text x="576.0" y="227" font-size="11" fill="#596372" text-anchor="middle">only the proposers of the last W slots publish (say 8)</text>
-<text x="576.0" y="243" font-size="11" fill="#596372" text-anchor="middle">their own proof or their builder's, at most W per slot</text>
-<path d="M258,128 V220.0 H364" fill="none" stroke="#3f7f2f" stroke-width="1.6" marker-end="url(#arr-n)"/>
-<text x="250" y="196.0" font-size="11" fill="#3f7f2f" font-weight="600" text-anchor="end">recent proposers, or their</text>
-<text x="250" y="212.0" font-size="11" fill="#3f7f2f" font-weight="600" text-anchor="end">builders, prove the whole slot</text>
-<rect x="860" y="36" width="220" height="228" rx="9" fill="#ffffff" stroke="#1d2430" stroke-width="1.5"/>
-<text x="970.0" y="72" font-size="15" fill="#1d2430" font-weight="700" text-anchor="middle">Every node</text>
-<text x="970.0" y="100" font-size="12" fill="#1d2430" text-anchor="middle">needs slot N's votes</text>
-<text x="970.0" y="118" font-size="12" fill="#1d2430" text-anchor="middle">before block N+1 arrives.</text>
-<text x="970.0" y="150" font-size="11.5" fill="#596372" text-anchor="middle">EIP-7870 nodes follow</text>
-<text x="970.0" y="166" font-size="11.5" fill="#596372" text-anchor="middle">only these two topics.</text>
-<text x="970.0" y="204" font-size="12" fill="#a3394a" font-weight="600" text-anchor="middle">Otherwise the boost of</text>
-<text x="970.0" y="221" font-size="12" fill="#a3394a" font-weight="600" text-anchor="middle">block N+1 is enough</text>
-<text x="970.0" y="238" font-size="12" fill="#a3394a" font-weight="600" text-anchor="middle">to orphan block N.</text>
-<line x1="786" y1="80.0" x2="854" y2="80.0" stroke="#6b7480" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arr-g)"/>
-<text x="821.0" y="71.0" font-size="11.5" fill="#6b7480" font-weight="600" text-anchor="middle">may be late</text>
-<line x1="786" y1="220.0" x2="854" y2="220.0" stroke="#3f7f2f" stroke-width="2" marker-end="url(#arr-n)"/>
-<text x="821.0" y="211.0" font-size="11.5" fill="#3f7f2f" font-weight="600" text-anchor="middle">in time</text>
-<line x1="12" y1="290" x2="1088" y2="290" stroke="#e3e6ea"/>
-<text x="24" y="316" font-size="13" fill="#1d2430" font-weight="700" text-anchor="start">When the last home node has the votes</text>
-<line x1="320" y1="328" x2="320" y2="424" stroke="#e3e6ea"/>
-<line x1="370" y1="328" x2="370" y2="424" stroke="#e3e6ea"/>
-<line x1="420" y1="328" x2="420" y2="424" stroke="#e3e6ea"/>
-<line x1="470" y1="328" x2="470" y2="424" stroke="#e3e6ea"/>
-<line x1="520" y1="328" x2="520" y2="424" stroke="#e3e6ea"/>
-<line x1="570" y1="328" x2="570" y2="424" stroke="#e3e6ea"/>
-<line x1="620" y1="328" x2="620" y2="424" stroke="#e3e6ea"/>
-<line x1="670" y1="328" x2="670" y2="424" stroke="#e3e6ea"/>
-<line x1="720" y1="328" x2="720" y2="424" stroke="#e3e6ea"/>
-<line x1="770" y1="328" x2="770" y2="424" stroke="#e3e6ea"/>
-<line x1="820" y1="328" x2="820" y2="424" stroke="#e3e6ea"/>
-<line x1="870" y1="328" x2="870" y2="424" stroke="#e3e6ea"/>
-<line x1="920" y1="328" x2="920" y2="424" stroke="#e3e6ea"/>
-<line x1="970" y1="328" x2="970" y2="424" stroke="#e3e6ea"/>
-<line x1="1020" y1="328" x2="1020" y2="424" stroke="#e3e6ea"/>
-<text x="320" y="440" font-size="12" fill="#596372" text-anchor="middle">0 s</text>
-<text x="470" y="440" font-size="12" fill="#596372" text-anchor="middle">3 s</text>
-<text x="620" y="440" font-size="12" fill="#596372" text-anchor="middle">6 s</text>
-<text x="770" y="440" font-size="12" fill="#596372" text-anchor="middle">9 s</text>
-<text x="920" y="440" font-size="12" fill="#596372" text-anchor="middle">12 s</text>
-<text x="24" y="344" font-size="12.5" fill="#1d2430" font-weight="700" text-anchor="start">Regular path</text>
-<rect x="680.0" y="330" width="275.0" height="18" rx="4" fill="#eef0f3"/>
-<text x="817.5" y="343" font-size="11" fill="#596372" text-anchor="middle">subnet proofs at 7.2 s, merge, gossip</text>
-<rect x="955.0" y="330" width="50.0" height="18" rx="4" fill="#a3394a"/>
-<text x="928" y="363" font-size="12" fill="#a3394a" font-weight="600" text-anchor="start">12.7–13.7 s: too late</text>
-<text x="24" y="390" font-size="12.5" fill="#1d2430" font-weight="700" text-anchor="start">Lightweight topic</text>
-<text x="24" y="405" font-size="11" fill="#596372" text-anchor="start">with a builder's links and servers</text>
-<rect x="470.0" y="376" width="300.0" height="18" rx="4" fill="#e4f0da"/>
-<text x="620.0" y="389" font-size="11" fill="#596372" text-anchor="middle">votes at 3 s, one proof, then gossip</text>
-<rect x="770.0" y="376" width="70.0" height="18" rx="4" fill="#3f7f2f"/>
-<text x="805.0" y="409" font-size="12" fill="#3f7f2f" font-weight="600" text-anchor="middle">9.0–10.4 s: at least 1.6 s to spare</text>
-<line x1="920" y1="306" x2="920" y2="424" stroke="#a3394a" stroke-width="1.8" stroke-dasharray="6 4"/>
-<text x="912" y="316" font-size="12" fill="#a3394a" font-weight="600" text-anchor="end">block N+1 arrives</text>
-<text x="24" y="466" font-size="11" fill="#596372" text-anchor="start">Times from Anton Nashatyrev's simulation (1M validators) and leanVM's benchmarks.</text>
+<text x="168" y="28" font-size="12.5" fill="#6b7480" font-weight="700" text-anchor="start">Regular path</text>
+<rect x="20" y="40" width="120" height="60" rx="9" fill="#ffffff" stroke="#1d2430" stroke-width="1.5"/>
+<text x="80.0" y="75.0" font-size="13" fill="#1d2430" font-weight="700" text-anchor="middle">Slot N votes</text>
+<rect x="168" y="40" width="180" height="60" rx="9" fill="#eef0f3" stroke="#6b7480" stroke-width="1.5"/>
+<text x="258.0" y="75.0" font-size="13" fill="#1d2430" font-weight="700" text-anchor="middle">16 attestation subnets</text>
+<rect x="370" y="40" width="180" height="60" rx="9" fill="#eef0f3" stroke="#6b7480" stroke-width="1.5"/>
+<text x="460.0" y="75.0" font-size="13" fill="#1d2430" font-weight="700" text-anchor="middle">16 aggregation subnets</text>
+<rect x="572" y="40" width="210" height="60" rx="9" fill="#eef0f3" stroke="#6b7480" stroke-width="1.5"/>
+<text x="677.0" y="75.0" font-size="13" fill="#1d2430" font-weight="700" text-anchor="middle">1 global aggregation topic</text>
+<line x1="144" y1="70.0" x2="162" y2="70.0" stroke="#6b7480" stroke-width="1.6" marker-end="url(#arr-g)"/>
+<line x1="352" y1="70.0" x2="364" y2="70.0" stroke="#6b7480" stroke-width="1.6" marker-end="url(#arr-g)"/>
+<line x1="554" y1="70.0" x2="566" y2="70.0" stroke="#6b7480" stroke-width="1.6" marker-end="url(#arr-g)"/>
+<text x="370" y="138" font-size="12.5" fill="#3f7f2f" font-weight="700" text-anchor="start">What we add</text>
+<rect x="370" y="150" width="180" height="60" rx="9" fill="#e4f0da" stroke="#3f7f2f" stroke-width="1.5"/>
+<text x="460.0" y="177.0" font-size="13" fill="#1d2430" font-weight="700" text-anchor="middle">Recent proposers</text>
+<text x="460.0" y="195.0" font-size="11.5" fill="#596372" text-anchor="middle">or their builders</text>
+<rect x="572" y="150" width="210" height="60" rx="9" fill="#e4f0da" stroke="#3f7f2f" stroke-width="1.5"/>
+<text x="677.0" y="185.0" font-size="13" fill="#1d2430" font-weight="700" text-anchor="middle">Lightweight global topic</text>
+<path d="M258,104 V180.0 H364" fill="none" stroke="#3f7f2f" stroke-width="1.6" marker-end="url(#arr-n)"/>
+<line x1="554" y1="180.0" x2="566" y2="180.0" stroke="#3f7f2f" stroke-width="1.6" marker-end="url(#arr-n)"/>
+<rect x="860" y="40" width="220" height="170" rx="9" fill="#ffffff" stroke="#1d2430" stroke-width="1.5"/>
+<text x="970.0" y="130.0" font-size="15" fill="#1d2430" font-weight="700" text-anchor="middle">Every node</text>
+<line x1="786" y1="70.0" x2="854" y2="70.0" stroke="#6b7480" stroke-width="2" marker-end="url(#arr-g)"/>
+<line x1="786" y1="180.0" x2="854" y2="180.0" stroke="#3f7f2f" stroke-width="2" marker-end="url(#arr-n)"/>
+<line x1="12" y1="240" x2="1088" y2="240" stroke="#e3e6ea"/>
+<text x="24" y="266" font-size="13" fill="#1d2430" font-weight="700" text-anchor="start">Deadlines</text>
+<rect x="182.5" y="284" width="367.5" height="22" rx="4" fill="#e4f0da"/>
+<line x1="550.0" y1="278" x2="550.0" y2="346" stroke="#3f7f2f" stroke-width="2.5"/>
+<text x="366.2" y="299" font-size="12" fill="#3f7f2f" font-weight="600" text-anchor="middle">Lightweight topic: fork choice</text>
+<rect x="182.5" y="312" width="857.5" height="22" rx="4" fill="#eef0f3"/>
+<line x1="1040.0" y1="306" x2="1040.0" y2="346" stroke="#6b7480" stroke-width="2.5"/>
+<text x="795.0" y="327" font-size="12" fill="#6b7480" font-weight="600" text-anchor="middle">Regular path: inclusion</text>
+<line x1="60.0" y1="346" x2="1040.0" y2="346" stroke="#596372" stroke-width="1.2"/>
+<line x1="60.0" y1="341" x2="60.0" y2="351" stroke="#596372" stroke-width="1.2"/>
+<text x="60.0" y="367" font-size="12" fill="#1d2430" font-weight="600" text-anchor="middle">0 s</text>
+<text x="60.0" y="383" font-size="11.5" fill="#596372" text-anchor="middle">block N</text>
+<line x1="182.5" y1="341" x2="182.5" y2="351" stroke="#596372" stroke-width="1.2"/>
+<text x="182.5" y="367" font-size="12" fill="#1d2430" font-weight="600" text-anchor="middle">3 s</text>
+<text x="182.5" y="383" font-size="11.5" fill="#596372" text-anchor="middle">votes</text>
+<line x1="550.0" y1="341" x2="550.0" y2="351" stroke="#596372" stroke-width="1.2"/>
+<text x="550.0" y="367" font-size="12" fill="#1d2430" font-weight="600" text-anchor="middle">12 s</text>
+<text x="550.0" y="383" font-size="11.5" fill="#596372" text-anchor="middle">block N+1</text>
+<line x1="1040.0" y1="341" x2="1040.0" y2="351" stroke="#596372" stroke-width="1.2"/>
+<text x="1040.0" y="367" font-size="12" fill="#1d2430" font-weight="600" text-anchor="middle">24 s</text>
+<text x="1040.0" y="383" font-size="11.5" fill="#596372" text-anchor="middle">block N+2</text>
 </svg>
