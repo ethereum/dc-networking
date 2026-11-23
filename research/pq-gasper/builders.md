@@ -38,10 +38,6 @@ provenance: agent
 
 - **Enshrining** something we do not want long term.
 - **Distraction** from redesigning the networking stack, which is the valuable long-term work.
-- **Few parties.** Three builders make 83 % of MEV-Boost blocks.
-- **Self-built blocks are less protected.** Nobody with a fast link publishes their votes. Where the regular path is late, the next proposer can orphan them at a net cost of about 0.013 ETH.
-- **Vote privacy.** A vote's first hop becomes a builder or a large operator.
-- **It may not be needed.** Kamil Salakhiev and Anton Nashatyrev report that their simulations keep 12 s slots. Anton's does so with pools aggregating and home nodes off the attestation subnets.
 
 ## The design
 
@@ -70,8 +66,9 @@ So slot N's votes have to reach every node before block N+1 does, from someone o
 **For:** it is simple. Builders build 93 % of blocks and do not want theirs orphaned, so at least one should want to share a full aggregate.
 
 **Against:**
-- It needs one honest, reachable builder. Colluding builders can withhold votes, orphan honest blocks and stall justification. They cannot finalize conflicting blocks.
-- A self-built block has no builder to speak for it, and a builder that regrets its bid wants its own block orphaned.
+- It needs one honest, reachable builder, and there are few: three builders make 83 % of MEV-Boost blocks. Colluding builders can withhold votes, orphan honest blocks and stall justification. They cannot finalize conflicting blocks.
+- A self-built block has no builder to speak for it. Where the regular path is late, the next proposer can orphan it at a net cost of about 0.013 ETH.
+- A builder that regrets its bid wants its own block orphaned.
 
 ### Option 2, principled: recent proposers publish
 
@@ -119,6 +116,8 @@ More questions, the timelines and the sources are in the long version below.
   - Aggregation subnets: 16 proofs of 209 KiB, and a merge of 0.37–1.33 s, 5 s on a cheap VPS.
   - Attestation subnets: 441–863 MB of votes per slot for all 16, and a proof of 0.24–1.1 s per subnet.
 - **Difference from the `pq` spec.** The spec today has no aggregation subnets. Its subnet proofs go straight to one global topic, and the proposer merges them.
+- **Sizes.** 209 KiB and 303 KiB are leanVM's proof sizes for 1,400 signatures per subnet. They are the proof alone. On the wire an aggregate also carries one bit per committee member (0.2 KiB for a subnet, 3 KiB for a full slot) and the sender's 2.4 KiB signature.
+- **Vote privacy is unchanged.** A validator that is not an aggregator already publishes through peers on a subnet it does not subscribe to (`specs/phase0/validator.md:356`).
 - **One fork.** The last two forks were 7 and more than 11 months apart.
 
 ## Option 1 in detail
@@ -254,7 +253,6 @@ More questions, the timelines and the sources are in the long version below.
 
 - **Builders' links and servers.** Anton's pools take in 441–863 MB per slot on 16 subnets, at 1M validators. That needs 10 Gbit/s: on 1 Gbit/s it takes 3.5–7 s to arrive. Proving 16 subnets at once on one server is not benchmarked.
 - **A thinner fallback.** With home nodes off the vote subnets, the backup aggregators collect from fewer peers, and a joint failure of the top builders hits every node at once.
-- **Vote privacy.** With home nodes off the subnets, a vote's first hop is a builder or a large operator.
 - **The proposer's merge.** A proposer that adds anything to the builder's proof has to merge, whether late votes or a subnet's proof. Anton measured 0.22–0.33 s for two proofs.
 - **Reliability.** Whether unpaid builders publish every slot, or the producer needs a share.
 - **Committees in the proof.** The Lean result covers a full committee only. The 1/32-committee numbers for option 2 are arithmetic.
