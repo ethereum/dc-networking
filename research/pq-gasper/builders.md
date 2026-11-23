@@ -123,8 +123,10 @@ Of course there are still open questions:
 > - **The argument.** With the two-slot delay the proposer has the aggregate for free before its slot, so it no longer comes with the bid. It is published by whoever wants their block to stay. This changes the main idea, Why 5, 7 and 8, two bullets of option 1, the bid question and the payment question.
 > - **Delayed inclusion is not a given.** A new paragraph says so, and that the post only considers the version with it. A new question covers the version without, where the builder hands the aggregate over with its offer.
 > - **Lean.** The other assumptions of the model are named: an honest majority, view-merge, no proposer boost.
+> - **The 40 % threshold.** "Votes from over 40 % of the slot's stake are enough" is gone from the problem and from option 1. It only holds against the boost alone, not once adversarial votes are on the other branch. One caveated sentence is left under "Capacity".
+> - **Figure.** `builders-overview-suggested.png`, from `sim/builders_overview.py --suggested`: builders publish to protect their own blocks, and the box on the right gives no threshold.
 > - **Not from Yann's text or comments.** "About 0.06 ETH" (0.051 plus the 0.0089 median bid), the open question "Stake off the subnets", and the second sentence of "Measurements". The reward split has four digits so that it sums to 0.051.
-> - **If adopted,** the figure's option 1 box still says "the full aggregate goes with their offer", and the long version needs the same pass.
+> - **If adopted,** the suggested figure replaces `builders-overview.png`, and the long version needs the same pass, including its own 40 % sentence.
 
 **Context.** We are exploring PQ Gasper as a way to get to PQAI as soon as possible. Networking is the hard part. There are [several avenues that could make PQ Gasper work](https://notes.ethereum.org/_rGnW7YuRWurwyA8zFhsog), but I believe most of them are either unrealistic or come with harsh consequences. This post explores one of them: low-bandwidth nodes rely on builders. In an emergency, that is perhaps not as outlandish as it seems at first glance.
 
@@ -134,7 +136,7 @@ Of course there are still open questions:
 
 **Delayed inclusion.** The two-slot delay entered the `pq` spec on 18 Nov and is not a given. This post only considers the version with it. The version without can do very well too: the builder then hands the aggregate to the next proposer with its offer, possibly for a price (see the Q&A).
 
-![Who gets a slot of PQ Gasper votes to every node, and when: the regular path, builders, or the last W proposers](builders-overview.png)
+![Who gets a slot of PQ Gasper votes to every node, and when: the regular path, builders, or the last W proposers](builders-overview-suggested.png)
 
 ## Why
 
@@ -173,13 +175,13 @@ By my arithmetic from Anton's per-hop times and the spec's current schedule, whe
 
 The above alone is not safe. The proposer of slot N+1 could orphan block N by building on N−1. Its block carries a boost worth 40 % of one slot's stake, and a node that has not seen slot N's votes weighs block N at nothing.
 
-So slot N's votes have to reach every node before block N+1 does, from someone other than that proposer. No block brings them in time: with the two-slot inclusion delay they are first included in block N+2. Votes from over 40 % of the slot's stake are enough, so 7 to 10 of the 16 subnets. The two options differ in who may publish them.
+So slot N's votes have to reach every node before block N+1 does, from someone other than that proposer. No block brings them in time: with the two-slot inclusion delay they are first included in block N+2. The two options differ in who may publish them.
 
 ### Option 1, naive: builders publish
 
 - Builders sit on all 16 attestation subnets and prove the whole slot.
 - They publish the aggregate to every node, because they have a block to protect: the builder of block N wants slot N's votes seen before block N+1 arrives.
-- A good enough view is votes from over 40 % of the slot's stake. Nothing is gained by holding the rest back, since every proposer gets the full aggregate from the regular path anyway.
+- They have no reason to hold votes back, since every proposer gets the full aggregate from the regular path anyway.
 - Builders have their proof by about 6 s, so nodes have 6 s to fetch it. Even 3 s at 20 Mbit/s is room for 8–10 aggregates with duplicate copies.
 
 **For:** it is simple. Builders build 93 % of blocks and do not want theirs orphaned, so at least one should want to share a full aggregate.
@@ -226,7 +228,7 @@ So slot N's votes have to reach every node before block N+1 does, from someone o
 
 Of course there are still open questions:
 - **Committees.** The Lean result holds when every validator votes every slot. With 1/32 committees there is only arithmetic.
-- **Capacity.** How many recent proposers can aggregate a whole slot in time, and whether partial aggregates are enough in practice.
+- **Capacity.** How many recent proposers can aggregate a whole slot in time, and whether partial aggregates are enough in practice. Votes from over 40 % of a slot's stake outweigh the boost alone, but not an adversary that also has votes on the other branch.
 - **Flooding.** The relays of option 2 are a public list. How many of them can be knocked offline for a few seconds?
 - **Payment.** The published aggregate is free to every proposer, and with the two-slot delay so is the regular path's. Is protecting one's own block enough to pay for producing it?
 - **Stake off the subnets.** The next proposer only misleads validators that have not seen the votes. Whether block N is really orphaned, or those validators just vote for a losing block, depends on how much stake they hold.

@@ -4,6 +4,9 @@ Top: who gets slot N's votes to every node (regular path, option 1, option 2).
 Bottom: when the last home node has them, against the arrival of block N+1.
 
 Stdlib only, deterministic. Run: python3 builders_overview.py
+With --suggested it writes ../builders-overview-suggested.svg instead, the figure of the
+suggested short version: builders publish to protect their own blocks, and the box on the
+right no longer gives a 40 % threshold (that only holds against the boost alone).
 Times (seconds from the start of slot N), see ../builders.md:
 - regular path: the first subnet proofs go out at 7.2 s (pq spec @ 4c29678), reach a
   global aggregator 0.6 s later, are merged in 0.37-1.33 s, and the full aggregate needs
@@ -13,8 +16,10 @@ Times (seconds from the start of slot N), see ../builders.md:
 Network times are Anton Nashatyrev's simulation at 1M validators, proving times leanVM's
 benchmarks @ 29077b733.
 """
+import sys
 from pathlib import Path
 
+SUGGESTED = "--suggested" in sys.argv
 W, H = 1100, 500
 INK, MUTE, GRID = "#1d2430", "#596372", "#e3e6ea"
 GREY, GREY_BG = "#6b7480", "#eef0f3"
@@ -53,11 +58,15 @@ text(LX + LW / 2, LY + 54, "24,648 votes, cast by 3 s", 12, MUTE, None, "middle"
 text(LX + LW / 2, LY + 72, "on 16 attestation subnets", 12, MUTE, None, "middle")
 
 RX, RW, RH = 320, 350, 76
+if SUGGESTED:
+    BUILDERS_DO, BUILDERS_SEND = "publish it to protect their own blocks", "the full aggregate"
+else:
+    BUILDERS_DO, BUILDERS_SEND = "the full aggregate goes with their offer", "a good enough view"
 RELAYS = [
     (28, "Regular path", ["subnet aggregators prove, global aggregators merge",
                           "open to anyone, as far as its machine allows"], GREY, GREY_BG, "g", True, "may be late"),
     (122, "Option 1: builders", ["sit on all 16 subnets and prove the whole slot",
-                                 "the full aggregate goes with their offer"], BLUE, BLUE_BG, "b", False, "a good enough view"),
+                                 BUILDERS_DO], BLUE, BLUE_BG, "b", False, BUILDERS_SEND),
     (216, "Option 2: the last W proposers (say 8)", ["any of them that can aggregate may publish",
                                                      "one honest one is enough"], GREEN, GREEN_BG, "n", False, "full or partial"),
 ]
@@ -77,10 +86,17 @@ for y, title, subs, col, bg, mk, dash, lab in RELAYS:
 box(EX, EY, EW, EH, "#ffffff", INK)
 cx = EX + EW / 2
 text(cx, EY + 40, "Every node", 15, INK, 700, "middle")
-for i, s in enumerate(["needs over 40 % of slot N's votes", "(7 to 10 of the 16 subnets)",
-                       "before block N+1 arrives,", "from someone other than", "its proposer."]):
-    text(cx, EY + 68 + 18 * i, s, 12, INK if i != 1 else MUTE, None, "middle")
-for i, s in enumerate(["Otherwise the 40 % boost of block N+1", "is enough to orphan block N."]):
+if SUGGESTED:
+    NEEDS, MUTED, NEEDS_Y = ["needs slot N's votes", "before block N+1 arrives,",
+                             "from someone other than", "its proposer."], None, EY + 77
+    OTHERWISE = ["Otherwise the boost of block N+1", "is enough to orphan block N."]
+else:
+    NEEDS, MUTED, NEEDS_Y = ["needs over 40 % of slot N's votes", "(7 to 10 of the 16 subnets)",
+                             "before block N+1 arrives,", "from someone other than", "its proposer."], 1, EY + 68
+    OTHERWISE = ["Otherwise the 40 % boost of block N+1", "is enough to orphan block N."]
+for i, s in enumerate(NEEDS):
+    text(cx, NEEDS_Y + 18 * i, s, 12, MUTE if i == MUTED else INK, None, "middle")
+for i, s in enumerate(OTHERWISE):
     text(cx, EY + 190 + 17 * i, s, 12, RED, 600, "middle")
 
 # ---- bottom: when ------------------------------------------------------------
@@ -123,6 +139,6 @@ text(x(12) - 8, 338, "block N+1 arrives", 12, RED, 600, "end")
 text(24, H - 14, "Times from Anton Nashatyrev's simulation (1M validators) and leanVM's benchmarks.", 11, MUTE)
 a('</svg>')
 
-out = Path(__file__).resolve().parent.parent / "builders-overview.svg"
+out = Path(__file__).resolve().parent.parent / ("builders-overview-suggested.svg" if SUGGESTED else "builders-overview.svg")
 out.write_text("\n".join(o) + "\n")
 print(f"wrote {out.name}: {W} x {H}")
