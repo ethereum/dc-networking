@@ -124,6 +124,7 @@ Of course there are still open questions:
 > - **Delayed inclusion is not a given.** A new paragraph says so, and that the post only considers the version with it. A new question covers the version without, where the builder hands the aggregate over with its offer.
 > - **Lean.** The other assumptions of the model are named: an honest majority, view-merge, no proposer boost.
 > - **The 40 % threshold.** "Votes from over 40 % of the slot's stake are enough" is gone from the problem and from option 1. It only holds against the boost alone, not once adversarial votes are on the other branch. One caveated sentence is left under "Capacity".
+> - **Builders are not few.** Option 1's first drawback said "there are few". There are many, with different strategies; what is concentrated is who builds the blocks.
 > - **Figure.** `builders-overview-suggested.png`, from `sim/builders_overview.py --suggested`: builders publish to protect their own blocks, and the box on the right gives no threshold.
 > - **Not from Yann's text or comments.** "About 0.06 ETH" (0.051 plus the 0.0089 median bid), the open question "Stake off the subnets", and the second sentence of "Measurements". The reward split has four digits so that it sums to 0.051.
 > - **If adopted,** the suggested figure replaces `builders-overview.png`, and the long version needs the same pass, including its own 40 % sentence.
@@ -187,7 +188,7 @@ So slot N's votes have to reach every node before block N+1 does, from someone o
 **For:** it is simple. Builders build 93 % of blocks and do not want theirs orphaned, so at least one should want to share a full aggregate.
 
 **Against:**
-- It needs one honest, reachable builder, and there are few: three builders make 83 % of MEV-Boost blocks. Colluding builders can withhold votes, which lets the next proposer orphan honest blocks. They cannot finalize conflicting blocks.
+- It needs one honest, reachable builder. There are many builders, with different strategies, but building is concentrated: three of them make 83 % of MEV-Boost blocks. Colluding builders can withhold votes, which lets the next proposer orphan honest blocks. They cannot finalize conflicting blocks.
 - A self-built block has no builder to speak for it. Where the regular path is late, the next proposer can orphan it, and gives up no attestation reward in doing so.
 - A builder that regrets its bid wants its own block orphaned.
 
