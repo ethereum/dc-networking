@@ -7,8 +7,9 @@ Spec (consensus-specs `pq` branch @ ee867e9, built on Gloas; Altair reward weigh
 - base reward per increment = EFFECTIVE_BALANCE_INCREMENT * BASE_REWARD_FACTOR
   // isqrt(total active balance), BASE_REWARD_FACTOR = 64.
 - An included vote sets up to three flags: source (weight 14, inclusion delay <= 5),
-  target (26, any time while its epoch is current or previous), head (14, inclusion
-  delay == 1, i.e. only in the very next block). WEIGHT_DENOMINATOR = 64.
+  target (26, any time while its epoch is current or previous), head (14, only at the
+  minimum inclusion delay: the next block in Gloas, the block two slots later in the
+  pq spec since ec4e216). WEIGHT_DENOMINATOR = 64.
 - The proposer earns base_reward * weight / 448 for every newly set flag
   (448 = (64 - 8) * 64 / 8), which is exactly 1/7 of what the attester earns.
 - PQ removes sync committees, so attestation inclusion is the proposer's whole
@@ -64,7 +65,7 @@ print(f"votes per slot / per subnet     {V / SLOTS_PER_EPOCH:,.0f} / {V / SLOTS_
 print()
 print("Value to the proposer of including one slot's votes (all three flags):")
 print(f"  full slot aggregate           {eth(full):.4f} ETH")
-print(f"    of which head               {eth(head):.4f} ETH  (lost unless in the very next block)")
+print(f"    of which head               {eth(head):.4f} ETH  (only at the minimum inclusion delay)")
 print(f"    of which source             {eth(src):.4f} ETH  (lost after 5 slots)")
 print(f"    of which target             {eth(tgt):.4f} ETH  (kept while the epoch is current or previous)")
 print(f"  one subnet aggregate (1/16)   {eth(full / SUBNETS):.5f} ETH")

@@ -5,9 +5,9 @@ Bottom: when the last home node has them, against the arrival of block N+1.
 
 Stdlib only, deterministic. Run: python3 builders_overview.py
 Times (seconds from the start of slot N), see ../builders.md:
-- regular path: subnet proofs go out at 6.0 s, reach a global aggregator 0.6 s later,
-  are merged in 0.37-1.33 s, and the full aggregate needs up to 4.55 s to reach the last
-  home node: 11.5-12.5 s;
+- regular path: the first subnet proofs go out at 7.2 s (pq spec @ 4c29678), reach a
+  global aggregator 0.6 s later, are merged in 0.37-1.33 s, and the full aggregate needs
+  up to 4.55 s to reach the last home node: 12.7-13.7 s;
 - a relay (builder or recent proposer) has the votes by 3.84-4.38 s, proves the slot in
   0.6-1.4 s, and its aggregate needs the same 4.55 s: 9.0-10.4 s.
 Network times are Anton Nashatyrev's simulation at 1M validators, proving times leanVM's
@@ -80,12 +80,12 @@ text(cx, EY + 40, "Every node", 15, INK, 700, "middle")
 for i, s in enumerate(["needs over 40 % of slot N's votes", "(7 to 10 of the 16 subnets)",
                        "before block N+1 arrives,", "from someone other than", "its proposer."]):
     text(cx, EY + 68 + 18 * i, s, 12, INK if i != 1 else MUTE, None, "middle")
-for i, s in enumerate(["Otherwise that proposer can leave", "the votes out and orphan block N."]):
+for i, s in enumerate(["Otherwise the 40 % boost of block N+1", "is enough to orphan block N."]):
     text(cx, EY + 190 + 17 * i, s, 12, RED, 600, "middle")
 
 # ---- bottom: when ------------------------------------------------------------
 a(f'<line x1="12" y1="312" x2="{W - 12}" y2="312" stroke="{GRID}"/>')
-T0, PX = 320, 58
+T0, PX = 320, 50
 
 
 def x(t):
@@ -94,14 +94,14 @@ def x(t):
 
 text(24, 338, "When the last home node has the votes", 13, INK, 700)
 AX = 446
-for t in range(0, 13):
+for t in range(0, 15):
     a(f'<line x1="{x(t)}" y1="350" x2="{x(t)}" y2="{AX}" stroke="{GRID}"/>')
 for t in (0, 3, 6, 9, 12):
     text(x(t), AX + 16, f"{t} s", 12, MUTE, None, "middle")
 
 ROWS = [
-    (352, "Regular path", None, 6.0, 11.5, 12.5, GREY, GREY_BG,
-     "subnet proofs at 6 s, merge, then gossip", "11.5–12.5 s: too late for some", "end"),
+    (352, "Regular path", None, 7.2, 12.7, 13.7, GREY, GREY_BG,
+     "subnet proofs at 7.2 s, merge, gossip", "12.7–13.7 s: too late", "end"),
     (398, "Option 1 or 2", "same timing, different sender", 3.0, 9.0, 10.4, GREEN, GREEN_BG,
      "votes at 3 s, one proof, then gossip", "9.0–10.4 s: at least 1.6 s to spare", "middle"),
 ]
@@ -111,10 +111,9 @@ for y, name, sub, t_from, t_a, t_b, col, bg, inside, verdict, anchor in ROWS:
         text(24, y + 29, sub, 11, MUTE)
     a(f'<rect x="{x(t_from):.1f}" y="{y}" width="{(t_a - t_from) * PX:.1f}" height="18" rx="4" fill="{bg}"/>')
     text((x(t_from) + x(t_a)) / 2, y + 13, inside, 11, MUTE, None, "middle")
-    if t_b > 12:      # the part after block N+1 is too late
-        a(f'<rect x="{x(t_a):.1f}" y="{y}" width="{(12 - t_a) * PX:.1f}" height="18" fill="{col}"/>')
-        a(f'<rect x="{x(12):.1f}" y="{y}" width="{(t_b - 12) * PX:.1f}" height="18" fill="{RED}"/>')
-        text(x(12) - 8, y + 33, verdict, 12, RED, 600, "end")
+    if t_b > 12:      # arrives after block N+1: too late for fork choice
+        a(f'<rect x="{x(t_a):.1f}" y="{y}" width="{(t_b - t_a) * PX:.1f}" height="18" rx="4" fill="{RED}"/>')
+        text(x(12) + 8, y + 33, verdict, 12, RED, 600, "start")
     else:
         a(f'<rect x="{x(t_a):.1f}" y="{y}" width="{(t_b - t_a) * PX:.1f}" height="18" rx="4" fill="{col}"/>')
         text((x(t_a) + x(t_b)) / 2, y + 33, verdict, 12, col, 600, "middle")

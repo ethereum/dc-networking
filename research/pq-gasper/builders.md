@@ -7,7 +7,7 @@ provenance: agent
 
 > **Provenance: agent.** The short version is Yann's text of 23 Nov 2026, edited by an agent. The long version is an agent draft of 18–22 Nov. Yann has not reviewed the result line by line.
 > - Reward numbers come from [`sim/builder_rewards.py`](sim/builder_rewards.py), the relay arithmetic from [`sim/relay_window.py`](sim/relay_window.py), the figures from [`sim/builders_overview.py`](sim/builders_overview.py), [`sim/builders_timeline.py`](sim/builders_timeline.py) and [`sim/builders_flow.py`](sim/builders_flow.py).
-> - Spec references are to the consensus-specs `pq` branch @ `ee867e9` (2026-11-17), described in [design.md](design.md).
+> - Spec references in the short version are to the consensus-specs `pq` branch @ `4c29678` (2026-11-21). The long version and [design.md](design.md) were written against `ee867e9` (2026-11-17) and predate three changes of 18–19 Nov: a two-slot attestation inclusion delay, staggered aggregators that skip redundant aggregates, and the superset-only forwarding rule.
 > - Market numbers are mainnet, 7 days to 2026-11-18: 46,784 MEV-Boost blocks from the relay data APIs, stake from the beacon API.
 > - Network times are from Anton Nashatyrev's simulation at 1M validators, proving times from leanVM's benchmarks @ `29077b733`.
 
@@ -27,11 +27,11 @@ provenance: agent
 2. **No large networking change means emergency PQ consensus is ready sooner.** Shipping intermediate solutions is a core ethos of Ethereum, and it is still unclear how much the networking layer has to change.
 3. **It frees up capacity to design the stack from the ground up.**
 4. **We already rely on builders.**
-   - Last week 93.1 % of blocks came through MEV-Boost, and ePBS keeps that choice.
+   - In the week to 18 November, 93.1 % of blocks came through MEV-Boost, and ePBS keeps that choice.
    - A local block earned a median 0.004 ETH in priority fees, against a median builder payment of 0.0089 ETH. In 2024 the gap was 0.0076 against 0.038 ETH ([Toni's post](https://ethresear.ch/t/is-it-worth-using-mev-boost/19753)).
 5. **The aggregate is the most valuable thing in most blocks.** If the network becomes unstable, this structure might emerge on its own.
    - Including one slot's votes pays the proposer 0.051 ETH: 0.013 for head votes, 0.013 for source and 0.024 for target.
-   - **95 % of winning bids are below that.** Head credit alone, which needs the aggregate in the very next block, beats 71 % of them.
+   - **95 % of winning bids are below that.** Head credit alone beats 71 % of them.
 6. **The roles already exist.** Under ePBS builders are staked protocol participants, and the state transition already accepts an attestation proof from anyone.
 7. **Nobody has to use a builder.** A proposer includes whatever the regular path gives it.
 8. **Incentives line up.** A builder wants its payload to stay on chain, and every later vote adds weight to its block.
@@ -45,32 +45,32 @@ provenance: agent
 
 ### Regular path
 
-- **16 attestation subnets**, each with a committee of about 1,600 per slot. One costs roughly 10–35 Mbit/s of download averaged over a slot ([Anton's simulation](https://github.com/Nashatyrev/jvm-libp2p/blob/pq-gasper/pq-gasper-mesh-degree.md), 1M validators). Low-bandwidth nodes join none and only publish their own vote.
+- **16 attestation subnets**, each with a committee of about 1,500 per slot. One costs roughly 10–35 Mbit/s of download averaged over a slot ([Anton's simulation](https://github.com/Nashatyrev/jvm-libp2p/blob/pq-gasper/pq-gasper-mesh-degree.md), 1M validators). Low-bandwidth nodes join none and only publish their own vote.
 - **16 aggregation subnets.** Each subnet's aggregators prove their committee's votes (209 KiB).
 - **1 global aggregation topic.** Global aggregators merge the 16 proofs into one full-slot aggregate (303 KiB).
 - **A node follows what its machine allows.** The global topic alone is cheapest. The aggregation subnets add a merge of 0.4–1.3 s. The attestation subnets are the most expensive, on both bandwidth and CPU.
 - **A proposer includes the best aggregate it has.** A block carries a single proof, so two subnets' proofs have to be merged first.
 
-By my arithmetic from Anton's per-hop times, the full-slot aggregate of this path reaches the last home node at about 11.5–12.5 s. That is too late to be sure of the next block, and it is the gap the rest of the design fills.
+By my arithmetic from Anton's per-hop times and the spec's current schedule, where the first aggregators broadcast at 7.2 s, the full-slot aggregate of this path reaches the last home node at about 12.7–13.7 s. In the `pq` spec a block now includes the votes cast two slots before it, so that is in time for the reward. It is too late for fork choice, which needs the votes before the next block, and that is the gap the rest of the design fills.
 
 ### The problem: the next proposer
 
-The above alone is not safe. The proposer of slot N+1 could orphan block N by building on N−1 and leaving out the votes for N. Its block carries a 40 % boost, and a node that has not seen slot N's votes weighs block N at nothing.
+The above alone is not safe. The proposer of slot N+1 could orphan block N by building on N−1. Its block carries a boost worth 40 % of one slot's stake, and a node that has not seen slot N's votes weighs block N at nothing.
 
-So slot N's votes have to reach every node before block N+1 does, from someone other than that proposer. Votes from over 40 % of the slot's stake are enough, so 7 to 10 of the 16 subnets. The two options differ in who may publish them.
+So slot N's votes have to reach every node before block N+1 does, from someone other than that proposer. No block brings them in time: with the two-slot inclusion delay they are first included in block N+2. Votes from over 40 % of the slot's stake are enough, so 7 to 10 of the 16 subnets. The two options differ in who may publish them.
 
 ### Option 1, naive: builders publish
 
 - Builders sit on all 16 attestation subnets and prove the whole slot.
-- They hand the full aggregate to the next proposer with their offer. The proposer ranks offers by payment plus the aggregate's reward, so builders compete on completeness as well.
+- They hand the full aggregate to the proposer that will include it, with their offer. The proposer ranks offers by payment plus the aggregate's reward, so builders compete on completeness as well.
 - They give every other node an aggregate with a good enough view: votes from over 40 % of the slot's stake.
 - Builders have their proof by about 6 s, so nodes have 6 s to fetch it. Even 3 s at 20 Mbit/s is room for 8–10 aggregates with duplicate copies.
 
 **For:** it is simple. Builders build 93 % of blocks and do not want theirs orphaned, so at least one should want to share a full aggregate.
 
 **Against:**
-- It needs one honest, reachable builder, and there are few: three builders make 83 % of MEV-Boost blocks. Colluding builders can withhold votes, orphan honest blocks and stall justification. They cannot finalize conflicting blocks.
-- A self-built block has no builder to speak for it. Where the regular path is late, the next proposer can orphan it at a net cost of about 0.013 ETH.
+- It needs one honest, reachable builder, and there are few: three builders make 83 % of MEV-Boost blocks. Colluding builders can withhold votes, which lets the next proposer orphan honest blocks. They cannot finalize conflicting blocks.
+- A self-built block has no builder to speak for it. Where the regular path is late, the next proposer can orphan it, and gives up no attestation reward in doing so.
 - A builder that regrets its bid wants its own block orphaned.
 
 ### Option 2, principled: recent proposers publish
@@ -87,7 +87,7 @@ So slot N's votes have to reach every node before block N+1 does, from someone o
 **Against:**
 - A relay has to hold the raw votes and prove them: roughly a 32-core server for a whole slot, or a strong desktop for half the subnets. Partial aggregates add up.
 - The relays are a public list of at most W validators, which can be flooded.
-- It needs three rule changes: fork choice counts only relayed votes, gossip forwards every permitted aggregate that adds a vote, and attesters freeze their view before the slot. With the freeze, this is view-merge in which past proposers also speak.
+- It needs three rules: fork choice counts only relayed votes, attesters freeze their view before the slot, and gossip forwards every permitted aggregate that adds a vote, as the spec's superset rule already does for subnet aggregates. With the freeze, this is view-merge in which past proposers also speak.
 
 ### What changes
 
@@ -102,7 +102,7 @@ So slot N's votes have to reach every node before block N+1 does, from someone o
 
 **Does it have to be builders?** No. A relay needs the raw votes and a prover: roughly a 32-core server for a whole slot, or a strong desktop for half the subnets. Builders are the ones who have that today.
 
-**What if every builder is down?** The regular path remains. Some subnets miss the next block and lose head credit. Finality continues, because target votes have until the end of the next epoch.
+**What if every builder is down?** The regular path remains. With the spec's two-slot inclusion delay the rewards hold up, and finality continues. What is lost is the early view: the slowest nodes see a slot's votes only after the next block.
 
 **Why not EIP-8292's super-aggregators?** It is the same role. [EIP-8292](https://eips.ethereum.org/EIPS/eip-8292) asks nodes with 32 ETH per subnet to aggregate every subnet, unpaid, and leaves incentives open. Builders already exist, are staked, and have their own block to protect.
 
@@ -116,6 +116,8 @@ Of course there are still open questions:
 ---
 
 # Long version
+
+> Written against the `pq` branch @ `ee867e9`. Since then the spec gives proposers a second slot to include a slot's votes, staggers the four aggregators from 7.2 s and lets them skip redundant aggregates, and forwards aggregates by the superset rule only. The timelines, the fallback and the reorg cost of 0.013 ETH below predate that: with the two-slot delay, orphaning a block costs the next proposer no attestation reward.
 
 ## Regular path, notes
 

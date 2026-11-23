@@ -7,6 +7,7 @@ provenance: agent
 
 > **Provenance: agent.** Written 2026-11-18 by an agent from Justin Traglia's `pq` branch of ethereum/consensus-specs at [`ee867e9`](https://github.com/ethereum/consensus-specs/commit/ee867e912a7c4c47229e08332db7c5c9c4f4b129) (2026-11-17) and the branch's commit messages. Yann has not reviewed it line by line.
 > - The branch changes daily. Every line link is pinned to `ee867e9`. Unprefixed file names are under `specs/_features/pq/`.
+> - **Superseded on three points by `4c29678` (2026-11-21):** blocks now include attestations from at least two slots earlier (`MIN_ATTESTATION_INCLUSION_DELAY_PQ = 2`, head credit at a delay of exactly two); the four aggregators of a committee are staggered, with cutoffs at 4.8–6.6 s and broadcasts at 7.2–9.0 s, and broadcast only if no received aggregate covers their attesters; and gossip is back to the superset rule alone, so the in-slot balance rule and the displacement issue below are gone.
 > - Sizes are SSZ arithmetic, one copy per message, no gossip overhead. Proof sizes and proving times are leanVM benchmarks @ `29077b733` ([benchmarks.json](https://leanvm.org/benchmarks.json), read 2026-11-18, all threads, 32-core EPYC 9355P to 8-core Ryzen AX42). Sizes match `035eff47a` in [../pq/README.md](../pq/README.md); times have dropped since.
 
 # PQ Gasper: the current spec
