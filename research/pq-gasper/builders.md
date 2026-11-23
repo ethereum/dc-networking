@@ -6,7 +6,7 @@ provenance: agent
 ---
 
 > **Provenance: agent.** The short version is Yann's text of 23 Nov 2026, edited by an agent. The long version is an agent draft of 18–22 Nov. Yann has not reviewed the result line by line.
-> - Reward numbers come from [`sim/builder_rewards.py`](sim/builder_rewards.py), the relay arithmetic from [`sim/relay_window.py`](sim/relay_window.py), the figures from [`sim/builders_timeline.py`](sim/builders_timeline.py) and [`sim/builders_flow.py`](sim/builders_flow.py).
+> - Reward numbers come from [`sim/builder_rewards.py`](sim/builder_rewards.py), the relay arithmetic from [`sim/relay_window.py`](sim/relay_window.py), the figures from [`sim/builders_overview.py`](sim/builders_overview.py), [`sim/builders_timeline.py`](sim/builders_timeline.py) and [`sim/builders_flow.py`](sim/builders_flow.py).
 > - Spec references are to the consensus-specs `pq` branch @ `ee867e9` (2026-11-17), described in [design.md](design.md).
 > - Market numbers are mainnet, 7 days to 2026-11-18: 46,784 MEV-Boost blocks from the relay data APIs, stake from the beacon API.
 > - Network times are from Anton Nashatyrev's simulation at 1M validators, proving times from leanVM's benchmarks @ `29077b733`.
@@ -18,6 +18,8 @@ provenance: agent
 > **Disclaimer.** This write-up does not mean that I believe this is the right path forward. It is an exploration, since the idea has been brought up semi-seriously a couple of times.
 
 **Main idea.** We keep a very simple regular path for attestation aggregation, and accept that it may not let EIP-7870 nodes obtain a full aggregate in time by themselves. For the duration of a single fork, low-bandwidth nodes that want the full attestation reward can rely on builders. To keep fork choice safe, someone other than the next proposer also publishes each slot's votes: builders in the simple version, recent proposers in the principled one.
+
+![Who gets a slot of PQ Gasper votes to every node, and when: the regular path, builders, or the last W proposers](builders-overview.png)
 
 ## Why
 
@@ -59,8 +61,9 @@ So slot N's votes have to reach every node before block N+1 does, from someone o
 
 ### Option 1, naive: builders publish
 
-- Builders sit on all 16 attestation subnets, prove the whole slot and publish a full-slot aggregate. They also hand it to the next proposer next to their bid.
-- Nodes that are not on enough subnets themselves rely on these aggregates.
+- Builders sit on all 16 attestation subnets and prove the whole slot.
+- They hand the full aggregate to the next proposer with their offer. The proposer ranks offers by payment plus the aggregate's reward, so builders compete on completeness as well.
+- They give every other node an aggregate with a good enough view: votes from over 40 % of the slot's stake.
 - Builders have their proof by about 6 s, so nodes have 6 s to fetch it. Even 3 s at 20 Mbit/s is room for 8–10 aggregates with duplicate copies.
 
 **For:** it is simple. Builders build 93 % of blocks and do not want theirs orphaned, so at least one should want to share a full aggregate.
@@ -95,15 +98,20 @@ So slot N's votes have to reach every node before block N+1 does, from someone o
 
 ## Q&A
 
-**Does the aggregate ride in the bid?** No, next to it. Bids are re-gossiped each time they rise and have no room for a 303 KiB proof. It should not be bound to the bid either, or a staker with 18 % of the stake could feed its votes only to its own builder and start every auction a median bid ahead.
+**Is the aggregate priced into the bid?** In effect, yes. A proposer ranks offers by payment plus the reward of the aggregate that comes with them, 0.051 ETH for a full one. A builder with a thinner aggregate has to pay more. The limit is that whatever is published for fork choice is free to every proposer, so only what a builder holds back can be priced.
 
-**Can a builder censor votes?** Not in bulk: leaving out 10 % of a slot costs the proposer 0.005 ETH against any aggregate that has those votes. A single 32 ETH vote is worth only 1,173 gwei, so what protects it is that anyone's aggregate counts.
+**Does it have to be builders?** No. A relay needs the raw votes and a prover: roughly a 32-core server for a whole slot, or a strong desktop for half the subnets. Builders are the ones who have that today.
 
 **What if every builder is down?** The regular path remains. Some subnets miss the next block and lose head credit. Finality continues, because target votes have until the end of the next epoch.
 
 **Why not EIP-8292's super-aggregators?** It is the same role. [EIP-8292](https://eips.ethereum.org/EIPS/eip-8292) asks nodes with 32 ETH per subnet to aggregate every subnet, unpaid, and leaves incentives open. Builders already exist, are staked, and have their own block to protect.
 
-More questions, the timelines and the sources are in the long version below.
+Of course there are still open questions:
+- **Committees.** The Lean result holds when every validator votes every slot. With 1/32 committees there is only arithmetic.
+- **Capacity.** How many recent proposers can aggregate a whole slot in time, and whether partial aggregates are enough in practice.
+- **Flooding.** The relays of option 2 are a public list. How many of them can be knocked offline for a few seconds?
+- **Payment.** If the published aggregate is free to every proposer, what pays for producing it?
+- **Measurements.** The cost of an attestation subnet and the timing of the regular path come from one simulation and my arithmetic.
 
 ---
 
@@ -185,13 +193,13 @@ More questions, the timelines and the sources are in the long version below.
 
 ## Q&A, complete
 
-**Does the aggregate travel with the bid?**
-- Next to it, not inside it. Gloas gossips every higher bid, and the PQ bid bound of 199,240 B has no room for a 303 KiB proof.
-- Timing is not a problem. Builders have every vote by about 4.4 s, and bids keep rising until 12 s.
-- It should not be bound to the bid either.
-  - An aggregate missing 18 % of the slot's votes costs the proposer as much as the whole median bid.
-  - So a staker with 18 % of the stake that gives its votes only to its own builder would start every auction a median bid ahead ([Barnabé Monnot, 2022](https://ethresear.ch/t/burning-mev-through-block-proposer-auctions/14029/8)). Its price is 0.0165 ETH of lost head credit in each slot that builder still loses.
-- Unbound, the proposer takes the best aggregate from anyone, and nobody gains by hoarding votes.
+**Is the aggregate priced into the bid?**
+- In effect, yes. The proposer earns the bid's payment plus the protocol's reward for the aggregate it includes, 0.051 ETH for a full one. If the aggregate comes with the builder's offer, the proposer ranks offers by the sum, and a builder with a thinner aggregate has to pay more.
+- The payment field cannot hold it. A bid's value is paid from the builder's balance, while the attestation reward comes from the protocol. The comparison is the proposer's, over the direct builder channel, since gossiped bids are ranked by payment alone.
+- The aggregate itself travels next to the bid, not inside it. Gloas gossips every higher bid, and the PQ bid bound of 199,240 B has no room for a 303 KiB proof. Timing is not a problem: builders have every vote by about 4.4 s, and bids keep rising until 12 s.
+- Two limits.
+  - Whatever is published for fork choice is free to every proposer. Only what a builder holds back can be priced.
+  - Pricing completeness rewards hoarding. An aggregate missing 18 % of the slot's votes costs the proposer as much as the whole median bid. So a staker with 18 % of the stake that gives its votes only to its own builder would start every auction a median bid ahead ([Barnabé Monnot, 2022](https://ethresear.ch/t/burning-mev-through-block-proposer-auctions/14029/8)). Its price is 0.0165 ETH of lost head credit in each slot that builder still loses.
 
 **Could the proof be revealed with the payload instead?**
 - As a second channel, yes. The block carries the attestation bits and the payload envelope carries the proof. The next block applies them if the payload arrived, as Gloas does for execution requests.
@@ -214,7 +222,7 @@ More questions, the timelines and the sources are in the long version below.
 - What protects it is that anyone's aggregate counts.
   - Another builder's aggregate may have the vote. So may the proof from its subnet's aggregators, which spreads once it adds a vote.
   - A target vote can land until the end of the next epoch.
-- Gloas adds a motive. A withheld payload is still paid for only if votes for its block, from 60 % of the slot's stake, land on chain by the end of the next epoch. A builder that decided which votes land in all of those blocks, up to 63 of them, could keep its own block under that. This is one more reason not to bind the aggregate to the bid.
+- Gloas adds a motive. A withheld payload is still paid for only if votes for its block, from 60 % of the slot's stake, land on chain by the end of the next epoch. A builder that decided which votes land in all of those blocks, up to 63 of them, could keep its own block under that. This is one more reason to let a proposer include any aggregate, not only its builder's.
 
 **Does this hand fork choice to builders?**
 - It would if the aggregate went only to the next proposer.
