@@ -48,15 +48,21 @@ So slot N's votes have to reach every node before block N+1 does.
 
 ### Suggested solution: lightweight global topic with only recent proposers publishing
 
-- The proposers of the last W slots, say W = 8, may each publish one aggregate per slot.
-- Every later vote adds weight to their own block, so they want the votes known.
+- The proposers of the last W slots, say W = 8, may each publish one aggregate per slot, in a new lightweight global topic, specifically for EIP 7870 nodes.
+
+Why it could work:
+
+- We assume an honest proposer in such a window anyway, under synchrony they (or their builder) will see all votes, and propagate them. 
+- In the good case, the incentives align: every later vote adds weight to a proposer's block, so they want the votes known.
 - A proposer need not make the proof itself. Its builder has the servers and the same block to protect, and a proof is valid whoever made it.
 - The set is small and staked, so spam is bounded at W aggregates per slot: 2.4 MiB for W = 8, against the 13.1 MiB today's spec allows for the global topic.
-- We assume an honest proposer in such a window anyway.
 - With a builder's links and servers the proof is ready by about 6 s, so nodes have 6 s to fetch it. Even 3 s at 20 Mbit/s is room for 8–10 aggregates with duplicate copies.
 
 **What it guarantees:**
 - An honest block is never reorged if one proposer among the last W is honest and can aggregate.
+
+**Where it could go wrong:**
+- Under long periods of asynchrony above k the arguments don't really hold anymore, and it's unclear if this design could make recovering from asynchrony harder.
 
 ### What changes
 
@@ -74,11 +80,4 @@ Aggregations today would be more valuable on average than the payload itself.
 
 **Why not EIP-8292's super-aggregators?** It is the same role. [EIP-8292](https://eips.ethereum.org/EIPS/eip-8292) asks nodes with 32 ETH per subnet to aggregate every subnet, unpaid, and leaves incentives open. Recent proposers and their builders already exist, are staked, and have their own block to protect.
 
-Of course there are still open questions:
-- **Committees.** The guarantee holds when every validator votes every slot. With 1/32 committees there is only arithmetic.
-- **Capacity.** How many recent proposers can aggregate a whole slot in time, and whether partial aggregates are enough in practice. Votes from over 40 % of a slot's stake outweigh the boost alone, but not an adversary that also has votes on the other branch.
-- **Flooding.** The relays are a public list. How many of them can be knocked offline for a few seconds?
-- **Payment.** The published aggregate is free to every proposer, and with the two-slot delay so is the regular path's. Is protecting one's own block enough to pay for producing it?
-- **Handing over.** How a proposer passes the job to its builder: it could sign the builder's proof each slot, or the rule could also permit the builders of the last W blocks.
-- **Stake off the subnets.** The next proposer only misleads validators that have not seen the votes. Whether block N is really orphaned, or those validators just vote for a losing block, depends on how much stake they hold.
-- **Measurements.** The cost of an attestation subnet and the timing of the regular path come from one simulation and my arithmetic. The last hop to the slowest home node, 4.6 s, was measured with 16 subnet proofs sent at once, so a single aggregate may be faster.
+Of course there are still open questions, so feedback is welcome!
