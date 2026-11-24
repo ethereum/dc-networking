@@ -1,4 +1,4 @@
-"""Draw ../builders-overview.svg: the figure of ../builders.md.
+"""Draw ../builders-overview.svg: the figure of ../README.md.
 
 Two lanes that read left to right, and two finish lines.
 - Regular path: 16 attestation subnets, 16 aggregation subnets, one global aggregation

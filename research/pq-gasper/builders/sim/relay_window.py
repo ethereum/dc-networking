@@ -1,4 +1,4 @@
-"""Who may relay a slot's votes: arithmetic behind option 2 of ../builders.md.
+"""Who may relay a slot's votes: arithmetic behind option 2 of ../README.md.
 
 Stdlib only, deterministic. Nothing here is proved; it is back-of-envelope.
 

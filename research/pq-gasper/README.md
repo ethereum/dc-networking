@@ -27,7 +27,7 @@ This is a short list of possible changes that I think *might* make PQ Gasper wor
 4. **Drop vote privacy: send attestations directly to ~128 aggregators.** A validator sends
    its vote point-to-point to its committee's aggregators (up to 128), with no gossip in between. 
     *Cost:* aggregators learn which IP runs which validator, not permissionless, changes security assumptions
-5. **Rely on Builders to aggregate.** They already run well-provisioned infrastructure; validators send votes to them.
+5. **Rely on Builders to aggregate.** They already run well-provisioned infrastructure; validators send votes to them. See [builders/](builders/README.md).
     *Cost:* vote inclusion and liveness depend on a few builders (vote censorship, incentives, not CROPS).
 6. **Attester Cap:** lean harder on consolidation or validator capping to have fewer signatures.
     *Cost:* Could worsen decentralization.
