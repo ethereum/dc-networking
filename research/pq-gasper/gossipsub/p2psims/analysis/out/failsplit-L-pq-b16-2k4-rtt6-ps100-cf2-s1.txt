@@ -1,0 +1,62 @@
+== L-pq-b16-2k4-rtt6-ps100-cf2-s1: 1024 hosts, 50 slots, analysed slots 2-49
+ cloud hosts by client: {'lighthouse': 206, 'lodestar': 13, 'nimbus': 28, 'other': 27, 'prysm': 69, 'teku': 23}
+ chronic cloud hosts (incomplete in >= half of 48 slots): 0 {}
+ cloud hosts incomplete in >= 2 slots: 6 {'lighthouse': 3, 'prysm': 3}; incomplete at least once: {'lighthouse': 5, 'other': 1, 'prysm': 3}
+ failed sends that cost score, whole run, share by kind (%): {'fwd timeout': 55.9, 'fwd qfull': 41.1, 'ctrl qfull': 2.9, 'pub timeout': 0.0, 'pub qfull': 0.0} total 85795535
+   50x15  non-rust hosts=70: fwd timeout 97.0 %, fwd qfull 2.7 %, ctrl qfull 0.3 %, pub timeout 0.0 %, pub qfull 0.0 % (total 3119312)
+   50x15  rust     hosts=89: fwd timeout 100.0 %, fwd qfull 0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 3824063)
+   50x25  non-rust hosts=200: fwd timeout 99.2 %, fwd qfull 0.8 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 7786810)
+   50x25  rust     hosts=299: fwd timeout 100.0 %, fwd qfull 0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 10623938)
+   cloud  non-rust hosts=133: fwd timeout 29.5 %, fwd qfull 65.3 %, ctrl qfull 5.1 %, pub timeout 0.0 %, pub qfull 0.0 % (total 45436958)
+   cloud  rust     hosts=233: fwd timeout 62.4 %, fwd qfull 36.4 %, ctrl qfull 1.0 %, pub timeout 0.1 %, pub qfull 0.0 % (total 15004454)
+ per slot, summed over hosts (thousands): fwd timeout / fwd qfull / ctrl qfull / pub timeout / pub qfull; own-publish refusals per connection (mean over hosts); hosts with any
+   slot  0: 1916.6 / 1642.8 / 86.0 / 0.6 / 0.6; 0.003; 1
+   slot  1: 1467.6 / 1022.9 / 91.1 / 1.2 / 0.0; -0.000; 4
+   slot  2: 1297.5 / 1094.3 / 132.7 / 1.4 / -0.0; -0.000; 3
+   slot  3: 1362.4 / 1144.6 / 99.7 / 1.6 / 0.0; 0.000; 7
+   slot  4: 1077.2 / 942.8 / 89.4 / 0.7 / 0.0; 0.000; 10
+   slot  5: 1220.8 / 994.7 / 100.7 / 0.5 / 0.0; 0.000; 8
+   slot  6: 1354.9 / 1502.1 / 97.3 / 3.3 / 0.0; 0.000; 7
+   slot  7: 1142.0 / 1157.4 / 85.5 / 0.4 / 0.1; 0.001; 8
+   slot  8: 1334.8 / 961.6 / 58.4 / 1.2 / 0.6; 0.003; 3
+   slot  9: 1143.3 / 890.5 / 57.5 / 0.7 / 0.5; 0.003; 6
+   slot 10: 947.6 / 684.0 / 39.0 / 0.2 / 0.5; 0.003; 4
+   slot 11: 927.2 / 861.5 / 49.7 / 0.2 / 0.5; 0.003; 2
+   slot 12: 1164.5 / 1006.3 / 50.7 / 1.0 / 0.5; 0.003; 2
+   slot 13: 1235.3 / 1060.9 / 52.2 / 1.4 / 0.5; 0.003; 4
+   slot 14: 1039.3 / 962.6 / 49.2 / 1.3 / 0.5; 0.003; 7
+   slot 15: 982.8 / 870.4 / 45.1 / 0.5 / 0.5; 0.003; 6
+   slot 16: 932.4 / 687.3 / 49.6 / 0.4 / 0.5; 0.003; 5
+   slot 17: 853.0 / 561.2 / 28.3 / 0.2 / 0.5; 0.003; 3
+   slot 18: 1026.9 / 641.9 / 41.0 / 4.2 / 2.2; 0.011; 6
+   slot 19: 1014.0 / 637.3 / 30.9 / 0.2 / 0.5; 0.003; 3
+   slot 20: 907.0 / 591.6 / 36.9 / 0.1 / 0.5; 0.003; 2
+   slot 21: 872.4 / 519.6 / 31.5 / 1.1 / 1.0; 0.006; 4
+   slot 22: 855.7 / 575.3 / 25.8 / 0.6 / 0.6; 0.003; 3
+   slot 23: 1063.3 / 626.9 / 33.3 / 0.3 / 0.5; 0.003; 3
+   slot 24: 882.9 / 503.6 / 30.2 / 0.4 / 0.5; 0.003; 4
+   slot 25: 813.9 / 465.8 / 28.6 / 0.9 / 0.5; 0.003; 4
+   slot 26: 902.8 / 559.5 / 37.9 / 0.1 / 0.5; 0.003; 8
+   slot 27: 777.9 / 552.1 / 36.6 / 0.3 / 0.5; 0.003; 7
+   slot 28: 970.5 / 626.9 / 45.7 / 0.2 / 0.6; 0.003; 9
+   slot 29: 755.4 / 641.7 / 48.8 / 0.3 / 0.5; 0.003; 3
+   slot 30: 775.1 / 479.4 / 36.7 / 0.6 / 0.5; 0.003; 1
+   slot 31: 741.5 / 548.6 / 31.0 / 0.1 / 0.5; 0.003; 4
+   slot 32: 700.4 / 390.7 / 25.8 / 0.3 / 0.5; 0.003; 3
+   slot 33: 1033.3 / 618.3 / 36.2 / 0.1 / 0.5; 0.003; 5
+   slot 34: 893.5 / 586.4 / 44.6 / 0.9 / 0.6; 0.003; 6
+   slot 35: 736.7 / 522.0 / 31.3 / 0.2 / 0.5; 0.003; 1
+   slot 36: 707.3 / 468.4 / 29.5 / 1.2 / 0.5; 0.003; 4
+   slot 37: 764.2 / 531.8 / 42.7 / 0.6 / 0.5; 0.003; 3
+   slot 38: 870.5 / 545.5 / 42.6 / 0.1 / 0.5; 0.003; 6
+   slot 39: 764.2 / 520.6 / 52.8 / 0.3 / 0.5; 0.003; 4
+   slot 40: 851.2 / 626.1 / 48.4 / 1.0 / 0.6; 0.004; 6
+   slot 41: 786.9 / 579.6 / 39.3 / 1.1 / 0.5; 0.003; 3
+   slot 42: 726.6 / 486.6 / 35.2 / 0.2 / 0.5; 0.003; 6
+   slot 43: 868.9 / 560.6 / 43.8 / 0.1 / 0.5; 0.003; 4
+   slot 44: 732.6 / 480.8 / 43.2 / 0.2 / 0.6; 0.003; 2
+   slot 45: 684.5 / 411.3 / 45.6 / 0.1 / 0.5; 0.003; 2
+   slot 46: 728.5 / 570.4 / 38.2 / 0.9 / 0.5; 0.003; 3
+   slot 47: 723.1 / 439.5 / 38.8 / 0.5 / 0.6; 0.003; 8
+   slot 48: 860.6 / 486.2 / 39.5 / 0.2 / 0.5; 0.003; 3
+   slot 49: 763.5 / 456.7 / 47.4 / 0.1 / 0.5; 0.003; 5

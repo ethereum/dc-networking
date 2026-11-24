@@ -7,7 +7,7 @@ provenance: hand
 # PQ Gasper - Possible Avenues / Compromises
 
 
-**Problem.** Based on Shadow simulations we have been running, it doesn't seem to me that we can disseminate ~1'600 PQ attestations per subnet in ~4 seconds, if we keep everything else equal. This would be needed if we want 16 subnets with 800k validators. See also Anton's simulations: https://github.com/Nashatyrev/jvm-libp2p/blob/pq-gasper/pq-gasper.md
+**Problem.** Based on [Shadow simulations we have been running](gossipsub/README.md), it doesn't seem to me that we can disseminate ~1'600 PQ attestations per subnet in ~4 seconds, if we keep everything else equal. This would be needed if we want 16 subnets with 800k validators. See also Anton's simulations: https://github.com/Nashatyrev/jvm-libp2p/blob/pq-gasper/pq-gasper.md
 
 
 This is a short list of possible changes that I think *might* make PQ Gasper work (either on their own, or combined). 

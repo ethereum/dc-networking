@@ -1,0 +1,21 @@
+== R6-pq-v600-ps100-fx-s1: 2048 hosts, 6 slots, analysed slots 2-5
+ cloud hosts by client: {'lighthouse': 374, 'lodestar': 16, 'nimbus': 68, 'other': 49, 'prysm': 135, 'teku': 56}
+ chronic cloud hosts (incomplete in >= half of 4 slots): 3 {'prysm': 2, 'teku': 1}
+   host 939: 2/4 slots, prysm target 70, sel
+   host 1427: 2/4 slots, prysm target 70, tyo
+   host 1913: 2/4 slots, teku target 100, syd
+ cloud hosts incomplete in >= 2 slots: 3 {'prysm': 2, 'teku': 1}; incomplete at least once: {'lighthouse': 1, 'nimbus': 1, 'prysm': 3, 'teku': 2}
+ failed sends that cost score, whole run, share by kind (%): {'fwd timeout': 62.1, 'fwd qfull': 20.9, 'ctrl qfull': 17.0, 'pub timeout': 0.0, 'pub qfull': 0.0} total 25980608
+   50x15  non-rust hosts=141: fwd timeout 100.0 %, fwd qfull 0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 1217744)
+   50x15  rust     hosts=188: fwd timeout 100.0 %, fwd qfull 0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 1154999)
+   50x25  non-rust hosts=381: fwd timeout 100.0 %, fwd qfull -0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 2299310)
+   50x25  rust     hosts=640: fwd timeout 100.0 %, fwd qfull -0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 3505508)
+   cloud  non-rust hosts=275: fwd timeout 42.2 %, fwd qfull 27.5 %, ctrl qfull 30.3 %, pub timeout 0.0 %, pub qfull 0.0 % (total 7252725)
+   cloud  rust     hosts=423: fwd timeout 46.3 %, fwd qfull 32.6 %, ctrl qfull 21.1 %, pub timeout 0.0 %, pub qfull 0.0 % (total 10550322)
+ per slot, summed over hosts (thousands): fwd timeout / fwd qfull / ctrl qfull / pub timeout / pub qfull; own-publish refusals per connection (mean over hosts); hosts with any
+   slot  0: 4122.6 / 3072.0 / 1601.2 / 0.1 / -0.0; -0.000; 1
+   slot  1: 2835.6 / 619.1 / 725.2 / 0.4 / 0.0; 0.000; 4
+   slot  2: 2460.6 / 511.2 / 734.4 / 0.2 / 0.0; 0.000; 6
+   slot  3: 2503.2 / 636.5 / 688.7 / 0.2 / 0.0; 0.000; 6
+   slot  4: 1932.3 / 215.5 / 287.9 / 0.1 / 0.0; 0.000; 1
+   slot  5: 2270.7 / 373.6 / 389.0 / 0.3 / 0.0; 0.000; 6

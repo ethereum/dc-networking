@@ -1,0 +1,1 @@
+runs/L-pq-b16-2k4-rtt6-ps100-cf2-s1: stale_pq 0, stale_bg 2125 (summed over 1024 hosts)

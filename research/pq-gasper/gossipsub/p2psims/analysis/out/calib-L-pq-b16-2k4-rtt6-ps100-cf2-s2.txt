@@ -1,0 +1,16 @@
+== L-pq-b16-2k4-rtt6-ps100-cf2-s2: 1024 hosts, 50 slots
+ block from slot start p50/p90/p99: 1.99 / 3.14 / 5.88  missing 0 / 48773
+ block from publish p50/p95/p99: 0.30 / 0.68 / 0.90
+ att after 4 s p50/p95/p99: 1.05 / 2.09 / 3.66  missing 34017 / 6198015 (0.55 %)
+ agg after 8 s p50/p95: 0.58 / 1.81  missing 13
+ col from slot start p50/p95: 1.94 / 3.21  missing 102 / 787253
+ duplicates (copies-1): {'bg_agg': 4.72, 'bg_att': 2.59, 'bg_block': 3.79, 'bg_col': 3.62, 'bg_syncc': 4.67, 'pq': 3.65}
+  50x15: n=163 block+att+col 143 kB/s, rx 6.63 Mbit/s, tx p50 5.60 Mbit/s
+  50x25: n=497 block+att+col 149 kB/s, rx 6.52 Mbit/s, tx p50 5.89 Mbit/s
+  cloud: n=364 block+att+col 537 kB/s, rx 22.92 Mbit/s, tx p50 23.23 Mbit/s
+ conns: {'lighthouse': 199.5, 'link:50x15': 162.4, 'link:50x25': 159.8, 'link:cloud': 157.2, 'lodestar': 199.5, 'nimbus': 159.9, 'other': 199.7, 'prysm': 71.4, 'teku': 101.0}
+ mesh means: {'lighthouse': {'block': 6.1, 'agg': 6.0, 'syncc': 6.2, 'pq': 6.2, 'att': 5.1, 'col': 6.3}, 'link:50x15': {'pq': 6.7, 'block': 6.5, 'agg': 6.4, 'syncc': 6.6, 'att': 7.1, 'col': 7.0}, 'link:50x25': {'block': 6.8, 'agg': 6.6, 'syncc': 6.9, 'pq': 7.1, 'att': 7.3, 'col': 7.2}, 'link:cloud': {'pq': 7.0, 'block': 8.4, 'agg': 8.4, 'syncc': 8.4, 'att': 5.1, 'col': 6.6}}
+ mesh_links per slot: [214003, 200292, 204247, 214392, 203874, 206697, 214494, 211040, 218078, 215758, 210393, 209251, 217430, 222684, 215994, 211339, 214898, 209312, 220370, 219488, 213363, 211722, 209239, 221213, 214762, 214324, 218374, 213273, 221991, 214436, 218686, 214744, 212058, 223919, 217076, 214205, 213887, 218277, 223161, 217015, 220128, 216007, 213658, 219988, 220451, 215426, 211538, 216042, 220762, 214876]
+ neg-score peers per slot: [36, 2984, 5799, 7630, 9413, 9531, 8666, 8041, 7446, 7708, 7786, 7603, 7351, 7418, 7715, 7454, 7421, 7279, 6860, 6949, 6972, 6637, 6284, 5983, 6316, 6207, 6151, 6201, 6157, 6407, 6413, 6611, 6444, 6187, 6427, 6370, 6201, 6119, 5950, 6079, 5918, 5914, 5745, 5596, 5753, 5718, 5733, 5579, 5543, 5775] penalties {'GraftBackoff': 5869, 'MessageDeficit': 52247, 'BrokenPromise': 1491}
+ churn: {"scheduled_offline_intervals": 15, "leaves": 4, "joins": 11, "restarts": 0, "offline_events": 4, "online_events": 11, "conn_churned": 53164, "pm_dials": 202165, "pm_prunes": 45881, "refused_inbound": 17701, "score_disconnects": 0, "mesh_churn_by_reason": {"BadScore": 438887, "Dc": 423336, "Prune": 
+ verify: {"50x15 cpu x1 workers 4": {"nodes": 135, "msgs_verified_per_node": 96992, "mean_delay_ms": 6.87, "max_delay_ms": 172.7}, "50x15 cpu x3.0 workers 4": {"nodes": 28, "msgs_verified_per_node": 96943, "mean_delay_ms": 230.066, "max_delay_ms": 1009.1}, "50x25 cpu x1 workers 4": {"nodes": 396, "msgs_verif

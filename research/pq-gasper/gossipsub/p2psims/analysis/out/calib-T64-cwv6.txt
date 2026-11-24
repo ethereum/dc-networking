@@ -1,0 +1,16 @@
+== T64-rtt-cwv6: 64 hosts, 20 slots
+ block from slot start p50/p90/p99: 1.79 / 3.53 / 6.00  missing 0 / 1128
+ block from publish p50/p95/p99: 0.15 / 0.34 / 0.45
+ att after 4 s p50/p95/p99: 0.77 / 2.03 / 6.07  missing 1591 / 138202 (1.15 %)
+ agg after 8 s p50/p95: 0.59 / 1.74  missing 0
+ col from slot start p50/p95: 1.81 / 5.83  missing 8 / 19454
+ duplicates (copies-1): {'bg_agg': 5.07, 'bg_att': 1.84, 'bg_block': 3.67, 'bg_col': 2.37, 'bg_syncc': 4.96, 'pq': 3.27}
+  50x15: n=9 block+att+col 140 kB/s, rx 5.86 Mbit/s, tx p50 4.62 Mbit/s
+  50x25: n=33 block+att+col 138 kB/s, rx 5.35 Mbit/s, tx p50 5.12 Mbit/s
+  cloud: n=22 block+att+col 415 kB/s, rx 20.51 Mbit/s, tx p50 20.70 Mbit/s
+ conns: {'lighthouse': 59.1, 'link:50x15': 55.3, 'link:50x25': 56.1, 'link:cloud': 62.5, 'lodestar': 46.7, 'nimbus': 54.5, 'other': 57.9, 'prysm': 57.1, 'teku': 60.4}
+ mesh means: {'lighthouse': {'block': 6.4, 'agg': 6.2, 'syncc': 6.2, 'pq': 5.4, 'att': 2.7, 'col': 4.0}, 'link:50x15': {'block': 7.5, 'agg': 7.3, 'syncc': 7.5, 'att': 4.9, 'col': 6.3, 'pq': 7.8}, 'link:50x25': {'block': 7.0, 'agg': 6.9, 'syncc': 7.1, 'pq': 7.3, 'att': 4.5, 'col': 5.7}, 'link:cloud': {'pq': 6.3, 'block': 8.4, 'agg': 8.3, 'syncc': 8.2, 'att': 2.9, 'col': 4.1}}
+ mesh_links per slot: [13176, 11436, 10799, 10409, 10105, 9331, 10582, 9937, 9698, 10514, 10151, 10000, 10678, 11123, 11045, 10535, 10526, 10479, 10919, 10874]
+ neg-score peers per slot: [0, 137, 247, 330, 346, 351, 290, 286, 294, 293, 304, 296, 280, 242, 266, 299, 282, 301, 273, 257] penalties {'GraftBackoff': 261, 'MessageDeficit': 47, 'BrokenPromise': 31}
+ churn: {"scheduled_offline_intervals": 1, "leaves": 0, "joins": 1, "restarts": 0, "offline_events": 0, "online_events": 1, "conn_churned": 431, "pm_dials": 3444, "pm_prunes": 0, "refused_inbound": 0, "score_disconnects": 0, "mesh_churn_by_reason": {"BadScore": 14436, "Dc": 1240, "Excess": 2129, "Prune": 12
+ verify: {"50x15 cpu x1 workers 4": {"nodes": 5, "msgs_verified_per_node": 40479, "mean_delay_ms": 6.072, "max_delay_ms": 78.5}, "50x15 cpu x3.0 workers 4": {"nodes": 4, "msgs_verified_per_node": 40419, "mean_delay_ms": 286.905, "max_delay_ms": 996.9}, "50x25 cpu x1 workers 4": {"nodes": 29, "msgs_verified_p

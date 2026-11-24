@@ -1,0 +1,29 @@
+# PQ Gasper one-subnet study (Nov 17), runs/pq1600-queue.sh: NAME HOSTS SLOTS THREADS extra flags (after run_pq1600.sh's ONE flags; later win)
+# Headline: 1,600 signatures per subnet per slot, 2,404 B, bundles of 16, > 8 validators + 20 % of the rest on 1 Gbit, rtt6, full realism, no BLS attestations
+# Nov 17 03:26 stopped (mem), partial output in runs/stopped-Q2048x20-m1600-s1-mem: Q2048x20-m1600-s1   2048 20 46
+# Levers, each 2,048 x 20 unless noted, one change against the headline:
+# load: signatures per subnet per slot (every node needs all of them)
+# mechanism diagnostic (coordinator 02:2x: what holds back delivery to home nodes?): 30 % of all hosts are non-forwarding
+# leaves (--freeride-share 0.3); leaf vs forwarding home nodes in the same run, with tcpd logging (shadow-install-rtt6-log)
+Q512x8-m1600-leaf30-s1  512 8 46 --freeride-share 0.3
+Q2048x20-m400-s1    2048 20 46 --msgs 400
+Q2048x20-m200-s1    2048 20 46 --msgs 200
+Q2048x20-m800-s1    2048 20 46 --msgs 800
+# 1 Gbit share: > 8 validators + 75 % of the rest (1,640 of 2,048 on 1 Gbit, 80 %; headline 742, 36 %)
+Q2048x20-m1600-fs75-s1  2048 20 46 --fast-share 0.75
+# 08:2x: 50/25 passes 400, fails 800 (worst 90.8 %): bisect at 600
+Q2048x20-m600-s1    2048 20 46 --msgs 600
+# 06:2x: 50/15 fails at 400 by 1-2 nodes per slot (worst 98.5 %): bisect at 300 (if 200 fails for 50/15, use 100 instead)
+Q2048x20-m300-s1    2048 20 46 --msgs 300
+# 06:2x: the perturbation, TCP and node-count levers moved from 1,600 (fails by far, uplink-bound) to 400, the 50/15 boundary
+# perturbations off: no packet loss, churn, NAT or slow CPUs (latency, jitter, verification, scoring, client mix stay)
+Q2048x20-m400-clean-s1  2048 20 46 --msgs 400 --loss-scale 0 --churn-conn-life 0 --churn-restart-per-day 0 --churn-leave 0 --churn-join 0 --nat-share 0 --slow-cpu-share 0
+# TCP: no slow start after idle (Linux net.ipv4.tcp_slow_start_after_idle=0; shadowbin shadow-install-rtt6-ssr0)
+Q2048x20-m400-ssr0-s1   2048 20 46 --msgs 400
+# node count
+Q512x20-m400-s1     512 20 46 --msgs 400
+# replaced 06:2x: Q2048x20-m1600-clean-s1, Q2048x20-m1600-ssr0-s1, Q512x20-m1600-s1 (512 hosts at 1,600: Q512x8-m1600-leaf30-s1)
+# 12:2x: BLS attestations kept (today's traffic alongside PQ, as the earlier study did), at the highest load that passes
+# for every class: 300 (Q2048x20-m300-s1 passed for every class, decided 14:1x; starts ~16:45).
+# Memory estimate ~205-215 GiB (BLS-only R20-nopq-rtt6 186.5, one-subnet runs +8.7 GiB per 100 signatures); a watchdog stop keeps the slots done.
+Q2048x20-m300-att-s1    2048 20 46 --msgs 300 --with-att

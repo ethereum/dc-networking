@@ -1,0 +1,216 @@
+23:44 post P512-ps025 done
+23:48 post P512-ps100 done
+23:49 start R-nopq-ps100-s1 2048 x 20: --no-pq --peer-scale 1.0 --seed 1
+00:46 watchdog limit 385 -> 395 GiB used (80% cap = 402 GiB of 503)
+08:11 256 GB limit restored (Yann). Machine had rebooted 02:09:54-02:14 (orderly shutdown, not ours); queue scheduler was dead, nothing running. R-pq-ps050-s1 never started, removed. Queue now --peer-scale 0.25; watchdog256 limit 235 GiB project RSS
+08:11 start R-nopq-s1 2048 x 20: --no-pq --peer-scale 0.25 --seed 1
+08:14 post R-nopq-ps100-s1 done (manual, 99s, realism_check Maximum resident set size (kbytes): 17048496)
+10:02 post R-nopq-s1 done
+10:02 start R-pq-s1 2048 x 50: --peer-scale 0.25 --seed 1
+13:27 STOPPED R-pq-s1 at sim 86 s (4 of 50 PQ slots reported, RSS 199.7 GiB): projected ~243 GiB by sim 268 (no-PQ curve of R-nopq-s1 + measured 44-48 GiB PQ overhead) > 256 GB; also 43 min wall per slot. Partial output kept as runs/stopped-R-pq-s1-mem, excluded from results.
+13:28 start R6-pq-s1 2048 x 6: --peer-scale 0.25 --seed 1
+13:50 coordinator decision: L at x0.5 as L-pq-ps050-s1 (fallback L-pq-s1 x0.25 via runs/fallback.txt); watchdog256 now stops runs through runs/stop-run.sh (reason mem uses the fallback and resumes the queue, reason avail pauses)
+14:30 coordinator: fixes approved; built bin/wbsim-fixed (lazy gossipsub queue), applied realism-fix1.patch (sched.json; analysis byte-identical on P512-ps100). Queued P512-ps100-fx-s1 after R6-pq-s1; later lines HELD until the probe sets the peer scale
+14:36 post R6-pq-s1 done
+14:36 start P512-ps100-fx-s1 512 x 4: --peer-scale 1.0 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/wbsim-fixed
+14:38 post P512-ps100-fx-s1 done
+14:38 P512-ps100-fx-s1 launched 14:36 from the queue line read just before the fixed binary was renamed to bin/fixed/wbsim: its processes ran as wbsim-fixed (outputs wbsim-fixed.*.stdout, invisible to the analysis globs and to the watchdog's RSS sum). Stopped at sim ~35 s and deleted; relaunching with --binary bin/fixed/wbsim
+14:39 start P512-ps100-fx-s1 512 x 4: --peer-scale 1.0 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+14:53 post P512-ps100-fx-s1 done
+14:54 probe P512-ps100-fx-s1 peak 39.1 GiB (old binary 83.7); all PQ cells now at x1.0 with bin/fixed/wbsim: L-pq-ps100-fx-s1 first, then R6-*-ps100-fx-*; stop-run.sh scales a run that is stopped for memory down one step
+14:54 start L-pq-ps100-fx-s1 1024 x 50: --peer-scale 1.0 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+19:15 post L-pq-ps100-fx-s1 done
+19:15 start R6-pq-ps100-fx-s1 2048 x 6: --peer-scale 1.0 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+19:41 watchdog256.sh and memlog.sh now use summed PSS (runs/memsum.py; still 235 GiB). Check at sim 58 of R6-pq-ps100-fx-s1: RSS 139.3, PSS 125.5, MemAvailable drop 127.0 GiB (idle 495); RSS overstates by the wbsim binary's shared pages, 6.9 MiB per host. night.sh untouched
+20:12 post R6-pq-ps100-fx-s1 done
+20:12 start R6-pq-ps100-fx-s2 2048 x 6: --peer-scale 1.0 --seed 2 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+21:07 post R6-pq-ps100-fx-s2 done
+21:07 start R6-pq-b16-ps100-fx-s1 2048 x 6: --peer-scale 1.0 --batch 16 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+22:00 post R6-pq-b16-ps100-fx-s1 done
+22:00 start R6-pq-fs0-ps100-fx-s1 2048 x 6: --peer-scale 1.0 --fast-share 0 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+22:51 post R6-pq-fs0-ps100-fx-s1 done
+22:51 start R6-pq-v600-ps100-fx-s1 2048 x 6: --peer-scale 1.0 --consolidate 0.75 --msgs 1500 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+23:32 queued R20-pq-ps100-age60-s1 (2,048 x 20, x1.0, bin/stale/wbsim, --max-msg-age 60; projected 219-225 GiB PSS) after the variants; age check validated on T64-age60-stale / T64-age005-stale
+23:34 runs/stop-run.sh: runs/nofallback-NAME turns the memory scale-down off; set for R20-pq-ps100-age60-s1 (keep x1.0; completed slots kept if stopped). Tested in /tmp (marker / no marker)
+23:44 post R6-pq-v600-ps100-fx-s1 done
+23:44 start R6-pq-v400-ps100-fx-s1 2048 x 6: --peer-scale 1.0 --consolidate 0.5 --msgs 1000 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+23:48 client-faithful scoring validated (T64-cf vs T64-age60-stale); R20-pq-ps100-cf-s1, R6-nopq-ps100-cf-s1, R6-pq-fs0-ps100-cf-s1, R6-pq-b16-ps100-cf-s1 put at the head of the queue (bin/cf/wbsim); they run after R6-pq-v400-ps100-fx-s1 (running), before -s1k and the conservative R20
+00:31 post R6-pq-v400-ps100-fx-s1 done
+00:31 start R20-pq-ps100-cf-s1 2048 x 20: --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --binary /home/yann/p2p-ministry-gossip2000/bin/cf/wbsim
+03:50 post R20-pq-ps100-cf-s1 done
+03:50 start R6-nopq-ps100-cf-s1 2048 x 6: --no-pq --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --binary /home/yann/p2p-ministry-gossip2000/bin/cf/wbsim
+04:32 post R6-nopq-ps100-cf-s1 done
+04:32 start R6-pq-fs0-ps100-cf-s1 2048 x 6: --peer-scale 1.0 --fast-share 0 --seed 1 --max-msg-age 60 --client-slow-peer --binary /home/yann/p2p-ministry-gossip2000/bin/cf/wbsim
+05:25 post R6-pq-fs0-ps100-cf-s1 done
+05:25 start R6-pq-b16-ps100-cf-s1 2048 x 6: --peer-scale 1.0 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --binary /home/yann/p2p-ministry-gossip2000/bin/cf/wbsim
+06:19 post R6-pq-b16-ps100-cf-s1 done
+06:19 start R6-pq-s1k-ps100-fx-s1 2048 x 6: --peer-scale 1.0 --msg-bytes 1229 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+07:16 post R6-pq-s1k-ps100-fx-s1 done
+07:16 start R20-pq-ps100-age60-s1 2048 x 20: --peer-scale 1.0 --seed 1 --max-msg-age 60 --binary /home/yann/p2p-ministry-gossip2000/bin/stale/wbsim
+09:29 analysed R20-pq-ps100-cf-s1, R6-nopq/fs0/b16-cf, R6-pq-s1k-fx (results-notes.md); queued diagnostic R6-pq-noloss-ps100-cf-s1 after R20-pq-ps100-age60-s1
+10:25 post R20-pq-ps100-age60-s1 done
+10:25 start R6-pq-noloss-ps100-cf-s1 2048 x 6: --peer-scale 1.0 --seed 1 --loss-scale 0 --max-msg-age 60 --client-slow-peer --binary /home/yann/p2p-ministry-gossip2000/bin/cf/wbsim
+11:26 post R6-pq-noloss-ps100-cf-s1 done
+11:26 start R20-pq-b16-ps100-cf-s1 2048 x 20: --peer-scale 1.0 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --binary /home/yann/p2p-ministry-gossip2000/bin/cf/wbsim
+14:25 post R20-pq-b16-ps100-cf-s1 done
+14:25 start R20-pq-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+17:45 post R20-pq-ps100-cf2-s1 done
+17:45 start R20-pq-b16-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+19:21:40 STOPPED R20-pq-b16-ps100-cf2-s1 (dropped): coordinator 19:2x: 3 kB b16 on cf2 dropped for the 2.4 kB headline; stopped at sim ~157 s (slots 0-9 complete)
+19:22 post R20-pq-b16-ps100-cf2-s1 done
+19:22:55 R20-pq-b16-ps100-cf2-s1 stopped without fallback: queue paused (runs/STOP-night) until the check decides
+19:22:55 queue resumed after dropping R20-pq-b16-ps100-cf2-s1 (3 kB b16 on cf2)
+19:23 start R20-pq-2k4-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+22:45 post R20-pq-2k4-ps100-cf2-s1 done
+22:45 start R6-nopq-noloss-ps100-cf-s1 2048 x 6: --no-pq --peer-scale 1.0 --loss-scale 0 --seed 1 --max-msg-age 60 --client-slow-peer --binary /home/yann/p2p-ministry-gossip2000/bin/cf/wbsim
+23:27 post R6-nopq-noloss-ps100-cf-s1 done
+23:27 start R20-pq-b16-2k4-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+00:39:41 queue reordered (coordinator 00:4x): after R20-pq-b16-2k4-ps100-cf2-s1: R20-pq-2k4-ps100-cf2-s2 (seed 2), R20-nopq-ps100-cf2-s1, R20-pq-v600-2k4-ps100-cf2-s1, R20-pq-v400-2k4-ps100-cf2-s1; R20-pq-s1k-ps100-cf2-s1 dropped
+02:30 post R20-pq-b16-2k4-ps100-cf2-s1 done
+02:30 start R20-pq-2k4-ps100-cf2-s2 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+05:22:32 queue appended (coordinator 05:xx): after R20-pq-v400-2k4-ps100-cf2-s1: L-pq-2k4-ps100-cf2-s1 (1024 x 50), R20-pq-fs0-2k4-ps100-cf2-s1, L-pq-b16-2k4-ps100-cf2-s1 (1024 x 50); nofallback markers
+05:46 post R20-pq-2k4-ps100-cf2-s2 done
+05:46 start R20-nopq-ps100-cf2-s1 2048 x 20: --no-pq --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+08:10 post R20-nopq-ps100-cf2-s1 done
+08:10 start R20-pq-v600-2k4-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --consolidate 0.75 --msgs 1500 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+11:16 post R20-pq-v600-2k4-ps100-cf2-s1 done
+11:16 start R20-pq-v400-2k4-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --consolidate 0.5 --msgs 1000 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+13:59 post R20-pq-v400-2k4-ps100-cf2-s1 done
+13:59 start L-pq-2k4-ps100-cf2-s1 1024 x 50: --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+18:28 post L-pq-2k4-ps100-cf2-s1 done
+18:28 start R20-pq-fs0-2k4-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --fast-share 0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+21:31 post R20-pq-fs0-2k4-ps100-cf2-s1 done
+21:31 start L-pq-b16-2k4-ps100-cf2-s1 1024 x 50: --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+22:35 queue: rtt runs inserted after L-pq-b16-2k4-ps100-cf2-s1 (coordinator 21:5x): R20-pq-2k4-rtt-ps100-cf2-s1, R20-nopq-rtt-ps100-cf2-s1, L-pq-2k4-rtt-ps100-cf2-s1 (shadowbin-NAME = shadow-install-rtt/bin; nofallback markers)
+22:47 queue (coordinator 22:4x): after L-pq-b16-2k4-ps100-cf2-s1: R20-pq-2k4-rtt-ps100-cf2-s1; current-build gap fillers R20-pq-b16-2k4-ps100-cf2-s2, L-pq-b16-2k4-ps100-cf2-s2, L-pq-2k4-ps100-cf2-s2; fallback R20-nopq-rtt-ps100-cf2-s1, L-pq-2k4-rtt-ps100-cf2-s1; act17 dropped
+23:55 queue: rtt2 validated (T64-rtt-rtt2); R20-pq-2k4-rtt2-ps100-cf2-s1, R20-nopq-rtt2-ps100-cf2-s1, L-pq-2k4-rtt2-ps100-cf2-s1 inserted after L-pq-b16-2k4-ps100-cf2-s1 (shadowbin shadow-install-rtt2-log/bin); rtt fallback lines removed
+00:04 queue (coordinator 00:0x Nov 10): after L-pq-b16-2k4-ps100-cf2-s1: R20-pq-b16-2k4-ps100-cf2-s2 (current); rtt3 set R20-pq-2k4-rtt3-ps100-cf2-s1, R20-nopq-rtt3-ps100-cf2-s1, L-pq-2k4-rtt3-ps100-cf2-s1 (shadow-install-rtt3-log); L-pq-b16-2k4-ps100-cf2-s2, L-pq-2k4-ps100-cf2-s2; rtt2 set = fallback (commented); R20-pq-2k4-rtt dropped
+00:49 queue: rtt3 passed T64 validation (runs/T64-rtt-rtt3); rtt3 set moved ahead of R20-pq-b16-2k4-ps100-cf2-s2 (coordinator rule)
+01:21 queue (coordinator 01:2x Nov 10): R20-pq-b16-2k4-ps100-cf2-s2 (current) moved ahead of the TCP-fixed set (rtt3 now, rtt4 if it passes validation before R20-pq-b16-2k4-ps100-cf2-s2 finishes)
+01:41 post L-pq-b16-2k4-ps100-cf2-s1 done
+01:41 start R20-pq-b16-2k4-ps100-cf2-s2 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+02:17 queue: rtt4 passed T64 validation (runs/T64-rtt-rtt4); the TCP-fixed set runs on rtt4: R20-pq-2k4-rtt4-ps100-cf2-s1, R20-nopq-rtt4-ps100-cf2-s1, L-pq-2k4-rtt4-ps100-cf2-s1 (shadowbin shadow-install-rtt4-log/bin) replace the rtt3 lines
+02:42 queue (coordinator 02:4x Nov 10, rtt4 final build): R20-pq-fs0-2k4-rtt4-ps100-cf2-s1 inserted after R20-nopq-rtt4-ps100-cf2-s1 (shadow-install-rtt4-log/bin); R20-pq-fs0-b16-2k4-rtt4-ps100-cf2-s1 commented after L-pq-2k4-rtt4-ps100-cf2-s1, activated only if fs0-rtt4 fails the strict rule; L seed-2 runs stay last
+04:42 post R20-pq-b16-2k4-ps100-cf2-s2 done
+04:42 start R20-pq-2k4-rtt4-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+08:03 post R20-pq-2k4-rtt4-ps100-cf2-s1 done
+08:03 start R20-nopq-rtt4-ps100-cf2-s1 2048 x 20: --no-pq --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+08:49 queue (coordinator 08:5x Nov 10): seed-2 L runs on rtt4: L-pq-2k4-rtt4-ps100-cf2-s2 then L-pq-b16-2k4-rtt4-ps100-cf2-s2 (shadow-install-rtt4-log/bin) replace L-pq-b16-2k4-ps100-cf2-s2 and L-pq-2k4-ps100-cf2-s2; rtt5 pair to follow R20-pq-fs0-2k4-rtt4-ps100-cf2-s1 if its T64 check qualifies
+10:34 post R20-nopq-rtt4-ps100-cf2-s1 done
+10:34 start R20-pq-fs0-2k4-rtt4-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --fast-share 0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+10:50 rtt5 decision: T64 rtt5 vs rtt4 (rtt5off = rtt4 byte for byte): block from publish p99 0.46 -> 1.03 s (+124 %), PQ p99 50x15 0.62 -> 0.90 (+45 %), 50x25 0.69 -> 1.20 (+74 %), 1G 1.36 -> 1.97 (+45 %); >= 10 %, so queued R20-pq-2k4-rtt5-ps100-cf2-s1 and R20-nopq-rtt5-ps100-cf2-s1 (shadow-install-rtt5-log/bin) right after R20-pq-fs0-2k4-rtt4-ps100-cf2-s1
+11:17 queue (coordinator 11:3x): rtt5 pair moved after L-pq-2k4-rtt4-ps100-cf2-s1 until the fixed rtt5 is validated
+12:33 fixed rtt5 decision: T64 rtt5d (all three switches on) passed (RTT5_DUP=0 = rtt5 and all off = rtt4 byte for byte; no stalls; RTO formula holds); vs rtt4 block from publish p99 0.46 -> 1.05 s (+128 %), PQ p99 0.62/0.69/1.36 -> 0.94/1.16/2.08 s: qualifies; R20-pq-2k4-rtt5-ps100-cf2-s1 and R20-nopq-rtt5-ps100-cf2-s1 moved right after R20-pq-fs0-2k4-rtt4-ps100-cf2-s1 (rebuilt shadow-install-rtt5, all switches on)
+13:45 post R20-pq-fs0-2k4-rtt4-ps100-cf2-s1 done
+13:45 start R20-pq-2k4-rtt5-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+14:36 queue: R20-pq-fs0-2k4-rtt4-ps100-cf2-s1 fails the strict rule (cloud worst 97.82 % in slot 9; 2-15 98.39 %, 16-19 98.00 %): conditional R20-pq-fs0-b16-2k4-rtt4-ps100-cf2-s1 activated right after L-pq-2k4-rtt4-ps100-cf2-s1 (coordinator 02:4x Nov 10)
+17:08 post R20-pq-2k4-rtt5-ps100-cf2-s1 done
+17:08 start R20-nopq-rtt5-ps100-cf2-s1 2048 x 20: --no-pq --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+18:35 RTT5_BETA (coordinator 12:4x): R20-pq-2k4-rtt5-ps100-cf2-s1 fails the strict rule (cloud worst 97.97 % in slot 8), so shadow-src-rtt5b (fixed rtt5 + RTT5_BETA, default off) is building into shadow-install-rtt5b; T64 validation chain .amp-out/scratch/t64-run5b.sh (log t64-run5b.log); nothing queued on it
+18:58 queue (coordinator 19:0x Nov 10): R20-pq-b16-2k4-rtt5-ps100-cf2-s1 inserted after R20-nopq-rtt5-ps100-cf2-s1 (rtt5-log, all three switches on); commented CONDITIONAL lines after it: R20-pq-2k4-rtt5b-ps100-cf2-s1 (if the rtt5b T64 check passes and block or PQ p99 moves >= 10 %) and L-pq-b16-2k4-rtt5-ps100-cf2-s1 (if R20-pq-b16-2k4-rtt5 passes the strict rule; .amp-out/scratch/decide-lb16rtt5.sh pauses the queue at its end and decides)
+19:37 queue: rtt5b T64 check passed (0 of 64 wbsim files differ with RTT5_BETA unset; ssthresh = max(cwnd*717/1024, 2) at all 47,961 fast-recovery entries and 101,643 RTOs; stalls 0; RTO formula in 91,631 of 91,631) and block p99 from publish 1.05 -> 0.91 s (-13 %), 1 Gbit PQ p99 2.08 -> 1.79 s (-14 %): R20-pq-2k4-rtt5b-ps100-cf2-s1 activated after R20-pq-b16-2k4-rtt5-ps100-cf2-s1 (coordinator 19:0x Nov 10)
+19:44 post R20-nopq-rtt5-ps100-cf2-s1 done
+19:44 start R20-pq-b16-2k4-rtt5-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+21:05 queue (coordinator 21:1x Nov 10): R20-pq-2k4-cwv-ps100-cf2-s1 inserted after R20-pq-b16-2k4-rtt5-ps100-cf2-s1, ahead of R20-pq-2k4-rtt5b (R20-pq-2k4-rtt5's flags on the rtt5 binary with RTT5_CWV=1 RTT5_SSR=0 RTT5_DUP=1 = Linux with net.ipv4.tcp_slow_start_after_idle=0; tcpd logging via shadow-install-rtt5-cwv-log/bin; nofallback; chain .amp-out/scratch/chains-cwv.sh); decide-lb16rtt5.sh replaced by decide-lb16rtt5-v2.sh, which adopted its pause and also resumes at once when the cwv run is next
+22:52 post R20-pq-b16-2k4-rtt5-ps100-cf2-s1 done
+22:53 start R20-pq-2k4-cwv-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+22:55 queue: R20-pq-b16-2k4-rtt5-ps100-cf2-s1 fails the strict rule (pqdiag pass rule): L-pq-b16-2k4-rtt5-ps100-cf2-s1 not queued (coordinator 19:0x Nov 10)
+01:23 queue (coordinator 01:1x Nov 11): R20-pq-2k4-rtt5b-ps100-cf2-s1 replaced in place by R20-pq-b16-2k4-rtt5b-ps100-cf2-s1 (R20-pq-b16-2k4-rtt5's flags, P3 rate from its own mean, expected 66.928125; RTT5_BETA=1 via shadow-install-rtt5b-beta-log/bin; nofallback; chain .amp-out/scratch/chains-b16rtt5b.sh); still next after R20-pq-2k4-cwv
+02:14 post R20-pq-2k4-cwv-ps100-cf2-s1 done
+02:14 start R20-pq-b16-2k4-rtt5b-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+02:16 queue: R20-pq-2k4-cwv-ps100-cf2-s1 passes the strict rule (pqdiag pass rule): renamed to cwv (shadow-install-rtt5-cwv-log/bin, nofallback): L-pq-2k4-cwv-ps100-cf2-s1 R20-pq-fs0-b16-2k4-cwv-ps100-cf2-s1 L-pq-2k4-cwv-ps100-cf2-s2 L-pq-b16-2k4-cwv-ps100-cf2-s2 (coordinator 01:1x Nov 11)
+03:01 queue (coordinator 01:1x Nov 11, rtt6 rule): rtt6 T64 check moved block p99 from publish 1.05 -> 0.90 s and PQ p99 -16/-17/-37 % against rtt5 (rule >= 10 %), so R20-pq-b16-2k4-rtt6-ps100-cf2-s1 then R20-pq-2k4-rtt6-ps100-cf2-s1 inserted right after R20-pq-b16-2k4-rtt5b (shadow-install-rtt6-log/bin, nofallback; chains .amp-out/scratch/chains-rtt6b16.sh, chains-rtt6pq.sh); L-pq-b16-2k4-rtt6-ps100-cf2-s1 after them only if the bundled one passes the strict rule (decide-lb16rtt6.sh)
+03:51 queue (coordinator 03:5x Nov 11): build rule for the runs after the rtt6 cells: each runs on rtt6 if the rtt6 cell with the same bundling passes the strict rule, otherwise on cwv (fs0-b16 and L-pq-b16 seed 2 follow R20-pq-b16-2k4-rtt6, L-pq-2k4 seeds 1 and 2 follow R20-pq-2k4-rtt6); R20-pq-fs0-b16-2k4-cwv-ps100-cf2-s1 moved ahead of L-pq-2k4-cwv-ps100-cf2-s1; R20-nopq-rtt6-ps100-cf2-s1 appended if either cell passes; scripts .amp-out/scratch/decide-rtt6.sh b16 and pq (replace decide-lb16rtt6.sh), chains-fs0b16.sh, chains-L.sh x3
+05:29 post R20-pq-b16-2k4-rtt5b-ps100-cf2-s1 done
+05:29 start R20-pq-b16-2k4-rtt6-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+07:52 queue (coordinator 06:5x Nov 11): cwv6 (rtt6 binary with RTT5_SSR=0, shadow-install-rtt6-cwv6-log/bin, nofallback) passed its T64 check (no restarts; 0.7 rule at all 48,049 fast-recovery entries and 127,367 RTOs; CUBIC targets within 1 segment in all 5,910 recomputations; no CA round over acked/2 + 1; all 1,417 traced epoch shifts = min(epoch + idle, now); 0 stalls; RTO formula 90,416 of 90,416), so it replaces cwv as the fallback: renamed R20-pq-fs0-b16-2k4-cwv-ps100-cf2-s1 -> R20-pq-fs0-b16-2k4-cwv6-ps100-cf2-s1;renamed L-pq-2k4-cwv-ps100-cf2-s1 -> L-pq-2k4-cwv6-ps100-cf2-s1;renamed L-pq-2k4-cwv-ps100-cf2-s2 -> L-pq-2k4-cwv6-ps100-cf2-s2;renamed L-pq-b16-2k4-cwv-ps100-cf2-s2 -> L-pq-b16-2k4-cwv6-ps100-cf2-s2
+08:37 post R20-pq-b16-2k4-rtt6-ps100-cf2-s1 done
+08:37 start R20-pq-2k4-rtt6-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+08:40 queue: R20-pq-b16-2k4-rtt6-ps100-cf2-s1 passes the strict rule (pqdiag pass rule): inserted L-pq-b16-2k4-rtt6-ps100-cf2-s1 after R20-pq-2k4-rtt6-ps100-cf2-s1;renamed R20-pq-fs0-b16-2k4-cwv6-ps100-cf2-s1 -> R20-pq-fs0-b16-2k4-rtt6-ps100-cf2-s1;renamed L-pq-b16-2k4-cwv6-ps100-cf2-s2 -> L-pq-b16-2k4-rtt6-ps100-cf2-s2;appended R20-nopq-rtt6-ps100-cf2-s1 (rtt6 = shadow-install-rtt6-log/bin, nofallback; coordinator 03:5x Nov 11)
+12:00 post R20-pq-2k4-rtt6-ps100-cf2-s1 done
+12:00 start L-pq-b16-2k4-rtt6-ps100-cf2-s1 1024 x 50: --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+12:03 queue: R20-pq-2k4-rtt6-ps100-cf2-s1 passes the strict rule (pqdiag pass rule): renamed L-pq-2k4-cwv6-ps100-cf2-s1 -> L-pq-2k4-rtt6-ps100-cf2-s1;renamed L-pq-2k4-cwv6-ps100-cf2-s2 -> L-pq-2k4-rtt6-ps100-cf2-s2;R20-nopq-rtt6-ps100-cf2-s1 already queued or started (rtt6 = shadow-install-rtt6-log/bin, nofallback; coordinator 03:5x Nov 11)
+15:59 post L-pq-b16-2k4-rtt6-ps100-cf2-s1 done
+15:59 start R20-pq-fs0-b16-2k4-rtt6-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --fast-share 0 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+16:53:39 STOPPED R20-pq-fs0-b16-2k4-rtt6-ps100-cf2-s1 (otheruser): another user's Shadow sweep >4 cores and >16 GB since ~16:24; half budget
+16:54 post R20-pq-fs0-b16-2k4-rtt6-ps100-cf2-s1 done
+16:54:54 R20-pq-fs0-b16-2k4-rtt6-ps100-cf2-s1 stopped without fallback: queue paused (runs/STOP-night) until the check decides
+19:30 queue: the other user's sweep ended (no Shadow processes of theirs since ~19:13, load 0.02): put R20-pq-fs0-b16-2k4-rtt6-ps100-cf2-s1 back after its commented line and removed runs/STOP-night; it reruns from scratch
+19:30 start R20-pq-fs0-b16-2k4-rtt6-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --fast-share 0 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+22:22 post R20-pq-fs0-b16-2k4-rtt6-ps100-cf2-s1 done
+22:22 start L-pq-2k4-rtt6-ps100-cf2-s1 1024 x 50: --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+00:49:16 STOPPED L-pq-2k4-rtt6-ps100-cf2-s1 (dropped): coordinator 00:4x Nov 12: Yann adopts bundling, no more unbundled runs; stopped because it would not finish within the hour (ETA ~02:50); its seed 2 is dropped
+00:53 post L-pq-2k4-rtt6-ps100-cf2-s1 done
+00:53:46 L-pq-2k4-rtt6-ps100-cf2-s1 stopped without fallback: queue paused (runs/STOP-night) until the check decides
+00:58 queue: coordinator 00:4x Nov 12 (Yann adopts bundling): L-pq-2k4-rtt6-s1 stopped (dropped) and -s2 commented; two-subnet cells R20-pq-b16-2k4-2sub-rtt6-ps100-cf2-s1 and R20-pq-b16-2k4-bb2-rtt6-ps100-cf2-s1 inserted before L-pq-b16-2k4-rtt6-ps100-cf2-s2 (smoke tests T64-2sub, T64-bb2 passed; bb2 gated by .amp-out/scratch/gate-bb2.sh); removed runs/STOP-night
+00:58 start R20-pq-b16-2k4-2sub-rtt6-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim --staker-subnets 2
+03:59 gate: R20-pq-b16-2k4-bb2-rtt6-ps100-cf2-s1 projects 231.9 GiB PSS (<= 235; 2sub 224.4 vs b16-rtt6 218.3 GiB at sim <= 266 s): starts as queued
+04:07 post R20-pq-b16-2k4-2sub-rtt6-ps100-cf2-s1 done
+04:07 start R20-pq-b16-2k4-bb2-rtt6-ps100-cf2-s1 2048 x 20: --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim --backbone-subnets 2
+04:08 watchdog: restarted with cap 238 GiB (coordinator 03:5x Nov 12: from the start of R20-pq-b16-2k4-bb2-rtt6-ps100-cf2-s1 until its post line)
+07:23 post R20-pq-b16-2k4-bb2-rtt6-ps100-cf2-s1 done
+07:23 start L-pq-b16-2k4-rtt6-ps100-cf2-s2 1024 x 50: --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+07:23 watchdog: restarted with cap 235 GiB (post line of R20-pq-b16-2k4-bb2-rtt6-ps100-cf2-s1)
+11:20 post L-pq-b16-2k4-rtt6-ps100-cf2-s2 done
+11:20 start R20-nopq-rtt6-ps100-cf2-s1 2048 x 20: --no-pq --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+13:50 post R20-nopq-rtt6-ps100-cf2-s1 done
+01:42 start Q2048x20-m1600-s1 2048 x 20 (46 threads): 
+03:24:45 WATCHDOG project PSS=236.2GiB RSS=250.0GiB (limit 235 PSS) avail=258GiB: stopping Q2048x20-m1600-s1 (PSS 236.2 GiB), reason mem
+03:25:00 STOPPED Q2048x20-m1600-s1 (mem): watchdog: project PSS 236.2 GiB (limit 235), available 258 GiB (min 30), run PSS 236.2 GiB
+03:25 post Q2048x20-m1600-s1 done
+queue-edit: no active line for Q2048x20-m1600-s1 in runs/queue-night.txt
+03:26:00 Q2048x20-m1600-s1 stopped without fallback: queue paused (runs/STOP-night) until the check decides
+03:26:01 MEMRESUME Q2048x20-m1600-s1 stopped for memory: queue line commented out; queue resumed
+03:26 start Q512x8-m1600-leaf30-s1 512 x 8 (46 threads): --freeride-share 0.3
+03:42 post Q512x8-m1600-leaf30-s1 done
+03:42 start Q2048x20-m400-s1 2048 x 20 (46 threads): --msgs 400
+05:14 post Q2048x20-m400-s1 done
+05:14 start Q2048x20-m200-s1 2048 x 20 (46 threads): --msgs 200
+06:36 post Q2048x20-m200-s1 done
+06:36 start Q2048x20-m800-s1 2048 x 20 (46 threads): --msgs 800
+08:23 post Q2048x20-m800-s1 done
+08:23 start Q2048x20-m1600-fs75-s1 2048 x 20 (46 threads): --fast-share 0.75
+10:17 post Q2048x20-m1600-fs75-s1 done
+10:17 start Q2048x20-m600-s1 2048 x 20 (46 threads): --msgs 600
+11:57 post Q2048x20-m600-s1 done
+11:57 start Q2048x20-m300-s1 2048 x 20 (46 threads): --msgs 300
+13:23 post Q2048x20-m300-s1 done
+13:23 start Q2048x20-m400-clean-s1 2048 x 20 (46 threads): --msgs 400 --loss-scale 0 --churn-conn-life 0 --churn-restart-per-day 0 --churn-leave 0 --churn-join 0 --nat-share 0 --slow-cpu-share 0
+14:47 post Q2048x20-m400-clean-s1 done
+14:47 start Q2048x20-m400-ssr0-s1 2048 x 20 (46 threads): --msgs 400
+16:17 post Q2048x20-m400-ssr0-s1 done
+16:17 start Q512x20-m400-s1 512 x 20 (46 threads): --msgs 400
+16:49 post Q512x20-m400-s1 done
+16:49 start Q2048x20-m300-att-s1 2048 x 20 (46 threads): --msgs 300 --with-att
+19:29 post Q2048x20-m300-att-s1 done
+01:48 start S64x6-h1000x20-smoke 64 x 6 (8 threads): smoke for --links 1000/20 --links-novalidator 1000/20 --pcap 2 (specs study)
+01:54 post S64x6-h1000x20-smoke done (smoke only: home upload on the wire <= 20.3 Mbit/s at cap 20, pcap)
+01:54 start S2048x20-h1000x100-s1 2048 x 20 (46 threads): --links 1000/100 --links-novalidator 1000/100
+03:53:16 DECIDE S2048x20-h1000x100-s1: home FAIL (1000x100 FAIL (worst 78.83 %, 275 of 1299), slots 2-19) -> queued S2048x20-h1000x200-s1
+03:53 post S2048x20-h1000x100-s1 done
+03:53 start S2048x20-h1000x200-s1 2048 x 20 (46 threads): --links 1000/200 --links-novalidator 1000/200
+05:52:02 DECIDE S2048x20-h1000x200-s1: home FAIL (1000x200 FAIL (worst 77.88 %, 288 of 1302), slots 2-19) -> queued S2048x20-h1000x400-s1
+05:52 post S2048x20-h1000x200-s1 done
+05:52 start S2048x20-h1000x400-s1 2048 x 20 (46 threads): --links 1000/400 --links-novalidator 1000/400
+06:09:57 STOPPED S2048x20-h1000x400-s1 (dropped): coordinator 06:1x Nov 23: 1000/100 and 1000/200 give the same result with uplinks 26/13 % busy, so 400 cannot change the verdict; partial output kept
+06:10:03 DECIDE S2048x20-h1000x400-s1: home no verdict (no pass-rule line) -> needs a decision; nothing queued
+06:10 post S2048x20-h1000x400-s1 done
+queue-edit: no active line for S2048x20-h1000x400-s1 in runs/queue-night.txt
+06:10:12 S2048x20-h1000x400-s1 stopped without fallback: queue paused (runs/STOP-night) until the check decides
+06:18:31 RESUME queue-specs: 06:1x plan (access-loss-off runs, decider updated); no other user active
+06:18 start S2048x20-h1000x100-al0-s1 2048 x 20 (46 threads): --links 1000/100 --links-novalidator 1000/100 --access-loss-scale 0
+08:06:39 DECIDE S2048x20-h1000x100-al0-s1: home PASS (1000x100 PASS (worst 99.69 %, 4 of 1302), slots 2-19) -> queued S2048x20-h1000x50-al0-s1
+08:06 post S2048x20-h1000x100-al0-s1 done
+08:06 start S2048x20-h1000x50-al0-s1 2048 x 20 (46 threads): --links 1000/50 --links-novalidator 1000/50 --access-loss-scale 0
+09:56:32 DECIDE S2048x20-h1000x50-al0-s1: home FAIL (1000x50 FAIL (worst 96.16 %, 50 of 1302), slots 2-19) -> queued S2048x20-h100x100-al0-s1
+09:56 post S2048x20-h1000x50-al0-s1 done
+09:56 start S2048x20-h100x100-al0-s1 2048 x 20 (46 threads): --links 100/100 --links-novalidator 100/100 --access-loss-scale 0
+11:48:30 DECIDE S2048x20-h100x100-al0-s1: home PASS (100x100 PASS (worst 99.16 %, 11 of 1302), slots 2-19) -> queued S2048x20-h50x100-al0-s1
+11:48 post S2048x20-h100x100-al0-s1 done
+11:48 start S2048x20-h50x100-al0-s1 2048 x 20 (46 threads): --links 50/100 --links-novalidator 50/100 --access-loss-scale 0
+13:48:23 DECIDE S2048x20-h50x100-al0-s1: home FAIL (50x100 FAIL (worst 77.82 %, 289 of 1303), slots 2-19) -> queued S2048x20-h100x100-al0-s2
+13:48 post S2048x20-h50x100-al0-s1 done
+13:48 start S2048x20-h100x100-al0-s2 2048 x 20 (46 threads): --links 100/100 --links-novalidator 100/100 --seed 2 --access-loss-scale 0
+15:40:58 DECIDE S2048x20-h100x100-al0-s2: home PASS (100x100 PASS (worst 99.39 %, 8 of 1319), slots 2-19) -> queued S2048x20-h1000x200-al02-s1
+15:40 post S2048x20-h100x100-al0-s2 done
+15:40 start S2048x20-h1000x200-al02-s1 2048 x 20 (46 threads): --links 1000/200 --links-novalidator 1000/200 --access-loss-scale 0.2

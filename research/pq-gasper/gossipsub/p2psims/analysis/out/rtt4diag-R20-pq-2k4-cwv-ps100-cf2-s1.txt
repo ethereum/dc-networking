@@ -1,0 +1,18 @@
+== runs/R20-pq-2k4-cwv-ps100-cf2-s1 (shadow-tcpd.log.gz): 625794 TCP endpoints
+SRTT - configured RTT (ms), snapshots of established connections with samples, slots 2-18: p10 / p50 / p90 / p99 | snapshots
+  1G->1G         0 /     2 /     5 /     6 | 650339
+  1G->home       4 /    10 /    40 /   137 | 1251642
+  home->1G       2 /     5 /     9 /    12 | 1258983
+  home->home     6 /    12 /    44 /   150 | 1818077
+ACKs of new data at the data sender (each endpoint's last snapshot): total | TSecr equal to / newer than / older than the TSval of the latest transmission of the first segment they newly acknowledge | that segment's resend waiting to leave | TSecr 0
+  1G->1G     226968251 |  99.98 /   0.01 /   0.01 % |  0.00 % |  0.00 %
+  1G->home    99307497 |  99.63 /   0.04 /   0.33 % |  0.00 % |  0.00 %
+  home->1G   122888831 |  99.90 /   0.03 /   0.06 % |  0.01 % |  0.00 %
+  home->home  51932311 |  99.13 /   0.07 /   0.76 % |  0.04 % |  0.00 %
+  all        501096890 |  99.80 /   0.02 /   0.17 % |  0.01 % |  0.00 %
+echo updates by duplicate data segments, at the data receiver (count, per 1,000 ACKs of new data): at the last departed ACK number (Linux makes these too) | entirely below it (Linux's tcp_sequence discards these first)
+  1G->1G        6576 (0.029) |   34207 (0.151)
+  1G->home    232205 (2.338) |  391782 (3.945)
+  home->1G      3872 (0.032) |   85363 (0.695)
+  home->home  169673 (3.267) |  815171 (15.697)
+first timeouts (backoff 1) 5024918; started within 1 s after a spurious undo on the same connection: 67.4 % (1G->1G 64.2 % of 56335, 1G->home 68.4 % of 1909495, home->1G 68.2 % of 429190, home->home 66.6 % of 2628421)

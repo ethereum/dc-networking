@@ -1,0 +1,30 @@
+== R6-pq-ps100-fx-s1: 2048 hosts, 6 slots, analysed slots 2-5
+ cloud hosts by client: {'lighthouse': 401, 'lodestar': 25, 'nimbus': 63, 'other': 53, 'prysm': 141, 'teku': 59}
+ chronic cloud hosts (incomplete in >= half of 4 slots): 12 {'prysm': 9, 'teku': 3}
+   host 640: 4/4 slots, prysm target 70, syd
+   host 1873: 4/4 slots, prysm target 70, gru
+   host 988: 4/4 slots, prysm target 70, gru
+   host 1972: 3/4 slots, prysm target 70, sel
+   host 344: 3/4 slots, prysm target 70, sin
+   host 852: 3/4 slots, prysm target 70, gru
+   host 440: 3/4 slots, prysm target 70, sel
+   host 346: 3/4 slots, prysm target 70, sin
+   host 1520: 3/4 slots, prysm target 70, syd
+   host 1639: 3/4 slots, teku target 100, sin
+   host 493: 2/4 slots, teku target 100, syd
+   host 455: 2/4 slots, teku target 100, sin
+ cloud hosts incomplete in >= 2 slots: 12 {'prysm': 9, 'teku': 3}; incomplete at least once: {'lighthouse': 2, 'prysm': 10, 'teku': 3}
+ failed sends that cost score, whole run, share by kind (%): {'fwd timeout': 54.3, 'fwd qfull': 19.3, 'ctrl qfull': 26.3, 'pub timeout': 0.0, 'pub qfull': 0.0} total 34790783
+   50x15  non-rust hosts=116: fwd timeout 100.0 %, fwd qfull 0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 1098764)
+   50x15  rust     hosts=214: fwd timeout 100.0 %, fwd qfull 0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 1562217)
+   50x25  non-rust hosts=385: fwd timeout 100.0 %, fwd qfull 0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 2573974)
+   50x25  rust     hosts=591: fwd timeout 100.0 %, fwd qfull 0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 3336021)
+   cloud  non-rust hosts=288: fwd timeout 37.5 %, fwd qfull 24.3 %, ctrl qfull 38.2 %, pub timeout 0.0 %, pub qfull 0.0 % (total 11009580)
+   cloud  rust     hosts=454: fwd timeout 40.8 %, fwd qfull 26.6 %, ctrl qfull 32.6 %, pub timeout 0.0 %, pub qfull 0.0 % (total 15210227)
+ per slot, summed over hosts (thousands): fwd timeout / fwd qfull / ctrl qfull / pub timeout / pub qfull; own-publish refusals per connection (mean over hosts); hosts with any
+   slot  0: 4709.8 / 2966.7 / 2632.3 / 2.1 / -0.0; 0.000; 3
+   slot  1: 3413.8 / 991.8 / 1729.7 / 0.8 / 0.0; 0.000; 9
+   slot  2: 2941.6 / 788.8 / 1636.4 / 0.2 / 0.0; 0.000; 6
+   slot  3: 2945.2 / 869.5 / 1467.5 / 0.2 / 0.0; 0.000; 3
+   slot  4: 2208.2 / 465.1 / 740.3 / 0.1 / 0.0; 0.000; 2
+   slot  5: 2674.1 / 645.6 / 960.3 / 0.6 / 0.0; 0.000; 6

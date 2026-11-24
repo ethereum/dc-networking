@@ -1,0 +1,103 @@
+L-pq-2k4-ps100-cf2-s1: 50 slots; block means 2-15 | 16-29 | 30-39 | 40-49 ; slope over slots 30-49 per 10 slots (% of window mean)
+== .amp-out/pqdiag-L-pq-2k4-ps100-cf2-s1.txt
+ node-slot completeness per slot and class (%), all slots:
+   50x15                                100 |       100 |     99.94 |       100 ; +0.0237 (+0.0 %)
+   50x25                                100 |       100 |       100 |       100 ; +0 (+0.0 %)
+   cloud                              99.84 |     99.84 |     99.51 |     99.48 ; -0.0221 (-0.0 %)
+   all                                99.94 |     99.94 |     99.81 |     99.81 ; -0.00459 (-0.0 %)
+ per slot 2-49: PQ msg miss % at 8 s by class
+   50x15                                  0 |         0 |    0.0005 |         0 ; -0.000188 (-75.2 %)
+   50x25                                  0 |         0 |         0 |         0 ; +0 (+nan %)
+   cloud                            0.00385 |  0.001536 |   0.04539 |   0.03304 ; +0.000777 (+2.0 %)
+ per slot, missing at 8 s (% of deliveries) by class:
+   50x15                             0.1014 |   0.04714 |    0.0123 |     0.052 ; +0.0273 (+85.0 %)
+   50x25                            0.02686 |   0.02143 |    0.0207 |    0.0286 ; +0.00207 (+8.4 %)
+   cloud                              1.212 |     1.437 |     1.657 |     1.384 ; -0.377 (-24.8 %)
+ # Item 2: per slot (mesh snapshot at 3.95 s into the slot)
+   links/node                         214.4 |     214.6 |     216.5 |       218 ; +1.9 (+0.9 %)
+   PQ mesh 50x15                      6.713 |     7.024 |     6.974 |     7.149 ; +0.2 (+2.8 %)
+   PQ mesh<6 50x15 %                  22.15 |     19.63 |     20.57 |      17.8 ; -3.25 (-17.0 %)
+   PQ mesh=0 50x15 %                      0 |         0 |         0 |         0 ; +0 (+nan %)
+   PQ mesh 50x25                      6.966 |     7.149 |      7.14 |     7.224 ; +0.0617 (+0.9 %)
+   PQ mesh<6 50x25 %                  22.01 |     20.28 |     20.34 |      18.3 ; -1.92 (-9.9 %)
+   PQ mesh=0 50x25 %                      0 |         0 |         0 |         0 ; +0 (+nan %)
+   PQ mesh cloud                      6.968 |     6.901 |     6.864 |     6.857 ; -0.00684 (-0.1 %)
+   PQ mesh<6 cloud %                  22.57 |     22.13 |     22.65 |     22.68 ; -0.0201 (-0.1 %)
+   PQ mesh=0 cloud %                      0 |         0 |         0 |         0 ; +0 (+nan %)
+   neg peers                           7550 |      6734 |      6158 |      5810 ; -417 (-7.0 %)
+ negative-score peers per observer, by observer client:
+   lighthouse                         11.28 |     9.836 |      8.92 |      8.47 ; -0.533 (-6.1 %)
+   lodestar                        0.007143 |    0.7357 |      1.15 |      1.23 ; +0.0662 (+5.6 %)
+   nimbus                           0.02857 |       0.8 |      1.06 |      1.24 ; +0.153 (+13.3 %)
+   other                              19.12 |      16.1 |     14.06 |     12.32 ; -2.07 (-15.7 %)
+   prysm                                0.1 |    0.2571 |      0.38 |       0.4 ; +0.0271 (+6.9 %)
+   teku                              0.1143 |    0.7571 |      0.88 |      0.98 ; +0.0767 (+8.2 %)
+ per slot, summed over hosts (counter deltas over the slot):
+   penalty MessageDeficit             42.64 |     425.5 |     322.6 |     284.4 ; -53.7 (-17.7 %)
+== .amp-out/p3split-L-pq-2k4-ps100-cf2-s1.txt
+ MessageDeficit penalties per slot by observer client (sum over hosts; hosts):
+   lighthouse ( 550)                  10.86 |     288.7 |     212.2 |       173 ; -52.9 (-27.5 %)
+   lodestar   (  35)                  4.714 |     21.93 |       7.7 |      11.2 ; +1.27 (+13.4 %)
+   nimbus     (  89)                  19.57 |     35.79 |        45 |      15.5 ; -20.1 (-66.4 %)
+   other      (  71)                  2.214 |      51.5 |      51.3 |      48.6 ; +2.16 (+4.3 %)
+   prysm      ( 207)                      0 |         0 |         0 |         0 ; +0 (+nan %)
+   teku       (  72)                  4.643 |     27.64 |       6.9 |        36 ; +15.3 (+71.4 %)
+ MessageDeficit per topic group (cf2 binary only): PQ / att / block / agg
+   pq                                 10.71 |     266.4 |     250.5 |     201.1 ; -72.4 (-32.1 %)
+   att                                31.29 |     159.1 |      51.9 |        57 ; +5.83 (+10.7 %)
+   block                                  0 |         0 |      12.4 |      23.8 ; +12.9 (+71.4 %)
+   agg                                    0 |         0 |       8.3 |       2.4 ; -0.609 (-11.4 %)
+ MessageDeficit per slot by observer client and topic group (cf2 binary only): pq / att
+   lighthouse pq                      1.786 |     164.2 |     170.4 |     111.8 ; -78.8 (-55.8 %)
+   lighthouse att                     9.071 |     124.5 |      35.7 |      37.3 ; +5.97 (+16.4 %)
+   lodestar   pq                      1.714 |      12.5 |       3.3 |       5.2 ; +0.444 (+10.4 %)
+   lodestar   att                         3 |     9.429 |       0.7 |       5.9 ; +1.46 (+44.2 %)
+   nimbus     pq                      4.143 |        25 |      26.1 |      11.7 ; -14.5 (-76.7 %)
+   nimbus     att                     15.43 |     10.79 |      14.9 |       3.7 ; -3.53 (-38.0 %)
+   other      pq                      1.571 |     44.21 |      44.5 |      48.6 ; +9.81 (+21.1 %)
+   other      att                    0.6429 |     7.286 |       0.1 |         0 ; -0.143 (-285.7 %)
+   prysm      pq                          0 |         0 |         0 |         0 ; +0 (+nan %)
+   prysm      att                         0 |         0 |         0 |         0 ; +0 (+nan %)
+   teku       pq                        1.5 |      20.5 |       6.2 |      23.8 ; +10.6 (+70.9 %)
+   teku       att                     3.143 |     7.143 |       0.5 |      10.1 ; +2.08 (+39.2 %)
+ host 640 (prysm):
+   own MessageDeficit                     0 |         0 |         0 |         0 ; +0 (+nan %)
+   own PQ mesh links                  109.4 |     107.9 |     113.9 |     117.9 ; +4.86 (+4.2 %)
+   in others' PQ mesh                 102.3 |     110.8 |     111.1 |       106 ; -3.5 (-3.2 %)
+ host 557 (prysm):
+   own MessageDeficit                     0 |         0 |         0 |         0 ; +0 (+nan %)
+   own PQ mesh links                  124.9 |     115.8 |     110.4 |     121.5 ; +8.92 (+7.7 %)
+   in others' PQ mesh                 122.5 |     119.9 |     119.3 |       128 ; +9.29 (+7.5 %)
+ host 420 (lighthouse):
+   own MessageDeficit                     0 |         0 |         0 |         0 ; +0 (+nan %)
+   own PQ mesh links                  69.71 |     68.86 |      65.3 |      63.2 ; +0.263 (+0.4 %)
+   in others' PQ mesh                 72.36 |     78.36 |      77.1 |      72.1 ; -1.59 (-2.1 %)
+ host 308 (prysm):
+   own MessageDeficit                     0 |         0 |         0 |         0 ; +0 (+nan %)
+   own PQ mesh links                  99.86 |     93.43 |     104.8 |     116.5 ; +11.2 (+10.2 %)
+   in others' PQ mesh                 88.29 |        72 |      70.7 |        84 ; +12.1 (+15.7 %)
+ host 601 (lighthouse):
+   own MessageDeficit                     0 |   0.07143 |         0 |         0 ; +0 (+nan %)
+   own PQ mesh links                     82 |     75.71 |      74.2 |      71.3 ; -2.8 (-3.9 %)
+   in others' PQ mesh                 80.71 |     75.14 |      74.8 |      70.1 ; -3.77 (-5.2 %)
+ host 762 (lighthouse):
+   own MessageDeficit                     0 |         0 |       0.1 |         0 ; -0.143 (-285.7 %)
+   own PQ mesh links                  75.43 |     75.64 |        74 |      70.7 ; -0.338 (-0.5 %)
+   in others' PQ mesh                 74.64 |     76.57 |      79.6 |      73.5 ; -2.01 (-2.6 %)
+ host 418 (teku):
+   own MessageDeficit                0.1429 |    0.5714 |       0.3 |       0.1 ; -0.015 (-7.5 %)
+   own PQ mesh links                  116.4 |     120.1 |       114 |     119.2 ; +2.99 (+2.6 %)
+   in others' PQ mesh                   108 |     106.4 |      76.9 |      89.7 ; +7.79 (+9.4 %)
+ host 612 (lighthouse):
+   own MessageDeficit                     0 |         0 |         0 |         0 ; +0 (+nan %)
+   own PQ mesh links                  72.29 |     70.29 |      69.5 |      68.8 ; +0.278 (+0.4 %)
+   in others' PQ mesh                 75.07 |      80.5 |      73.9 |      75.5 ; +0.932 (+1.2 %)
+== .amp-out/pqsum-L-pq-2k4-ps100-cf2-s1.txt
+ mesh pq/att by link: {'link:50x15': (6.9, 7.0), 'link:50x25': (7.1, 7.3), 'link:cloud': (6
+   PQ mesh size per joined PQ top     6.713 |     7.024 |     6.974 |     7.149 ; +0.2 (+2.8 %)
+   PQ mesh size per joined PQ top     6.966 |     7.149 |      7.14 |     7.224 ; +0.0617 (+0.9 %)
+   PQ mesh size per joined PQ top     6.968 |     6.901 |     6.864 |     6.857 ; -0.00684 (-0.1 %)
+ PQ kB received after the deadline (8 s) until the next burst (16 s), per node, mean per sl
+   50x15:                             57.24 |     89.16 |     84.24 |     93.63 ; +9.4 (+10.6 %)
+   50x25:                             45.26 |     72.39 |     75.09 |     88.22 ; +12 (+14.6 %)
+   cloud:                             880.3 |      1339 |      1484 |      1562 ; +65.8 (+4.3 %)

@@ -1,0 +1,27 @@
+[package]
+name = "wbsim"
+version = "0.1.0"
+edition = "2021"
+description = "One-subnet simulator node: PQ votes over gossipsub vs. WB-PQ direct delivery (runs under Shadow)"
+
+[dependencies]
+libp2p = { version = "0.56", default-features = false, features = ["tokio", "tcp", "noise", "yamux", "gossipsub", "request-response", "macros", "ed25519", "metrics", "ping"] }
+prometheus-client = "0.23"
+tokio = { version = "1", features = ["rt", "macros", "time"] }
+futures = "0.3"
+async-trait = "0.1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rand = "0.8"
+sha2 = "0.10"
+# for gossipsub metrics (duplicates, IDONTWANT, dropped forwards)
+libp2p-gossipsub = { version = "0.49", features = ["metrics"] }
+
+[profile.release]
+opt-level = 2
+debug = false
+
+# libp2p-gossipsub 0.49.5 with a lazily allocated forward queue (same cap); see ../gossipsub-0.49.5-lazy-queue.patch
+# and sim/README.md for how sim/wbsim/gossipsub is made.
+[patch.crates-io]
+libp2p-gossipsub = { path = "gossipsub" }

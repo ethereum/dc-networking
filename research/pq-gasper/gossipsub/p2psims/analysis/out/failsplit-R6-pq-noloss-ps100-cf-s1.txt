@@ -1,0 +1,18 @@
+== R6-pq-noloss-ps100-cf-s1: 2048 hosts, 6 slots, analysed slots 2-5
+ cloud hosts by client: {'lighthouse': 401, 'lodestar': 25, 'nimbus': 63, 'other': 53, 'prysm': 141, 'teku': 59}
+ chronic cloud hosts (incomplete in >= half of 4 slots): 0 {}
+ cloud hosts incomplete in >= 2 slots: 0 {}; incomplete at least once: {}
+ failed sends that cost score, whole run, share by kind (%): {'fwd timeout': 26.2, 'fwd qfull': 18.6, 'ctrl qfull': 55.2, 'pub timeout': 0.0, 'pub qfull': 0.0} total 7490380
+   50x15  non-rust hosts=116: fwd timeout 100.0 %, fwd qfull 0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 336110)
+   50x15  rust     hosts=214: fwd timeout 100.0 %, fwd qfull 0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 325586)
+   50x25  non-rust hosts=385: fwd timeout 99.8 %, fwd qfull 0.2 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 300328)
+   50x25  rust     hosts=591: fwd timeout 100.0 %, fwd qfull 0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 301235)
+   cloud  non-rust hosts=288: fwd timeout 9.7 %, fwd qfull 21.8 %, ctrl qfull 68.5 %, pub timeout 0.0 %, pub qfull 0.0 % (total 3460632)
+   cloud  rust     hosts=454: fwd timeout 13.1 %, fwd qfull 23.0 %, ctrl qfull 63.9 %, pub timeout 0.0 %, pub qfull 0.0 % (total 2766489)
+ per slot, summed over hosts (thousands): fwd timeout / fwd qfull / ctrl qfull / pub timeout / pub qfull; own-publish refusals per connection (mean over hosts); hosts with any
+   slot  0: 625.8 / 958.2 / 3147.0 / 0.0 / 0.0; 0.000; 0
+   slot  1: 331.8 / 140.7 / 605.6 / 0.0 / 0.0; 0.000; 0
+   slot  2: 306.9 / 30.6 / 148.3 / 0.0 / 0.0; 0.000; 0
+   slot  3: 251.2 / 49.9 / 121.2 / 0.0 / 0.0; 0.000; 0
+   slot  4: 151.0 / 6.1 / 25.1 / 0.0 / 0.0; 0.000; 0
+   slot  5: 295.8 / 204.7 / 90.3 / 0.0 / 0.0; 0.000; 0

@@ -1,0 +1,40 @@
+== rtt3m build: 5528 connections with snapshots, 79926 timeouts
+share of connections with RTO >= 2 / 4 / 8 / 16 s per slot (active in the slot | all established, carried forward):
+  slot  0: active  4336:   0.0 /   0.0 /   0.0 /   0.0 % | established  4318:   0.0 /   0.0 /   0.0 /   0.0 %
+  slot  1: active  4327:   0.7 /   0.2 /   0.0 /   0.0 % | established  4360:   0.7 /   0.2 /   0.0 /   0.0 %
+  slot  2: active  4323:   0.9 /   0.4 /   0.0 /   0.0 % | established  4399:   0.9 /   0.4 /   0.0 /   0.0 %
+  slot  3: active  4317:   1.1 /   0.4 /   0.1 /   0.0 % | established  4431:   1.0 /   0.4 /   0.1 /   0.0 %
+  slot  4: active  4329:   1.4 /   0.7 /   0.2 /   0.0 % | established  4470:   1.4 /   0.7 /   0.2 /   0.0 %
+  slot  5: active  4365:   2.2 /   0.9 /   0.3 /   0.0 % | established  4514:   2.1 /   0.9 /   0.2 /   0.0 %
+  slot  6: active  4345:   1.3 /   0.6 /   0.1 /   0.0 % | established  4567:   1.2 /   0.6 /   0.1 /   0.0 %
+  slot  7: active  4552:   1.6 /   0.8 /   0.2 /   0.0 % | established  4714:   1.6 /   0.8 /   0.1 /   0.0 %
+  slot  8: active  4573:   1.6 /   0.8 /   0.2 /   0.0 % | established  4863:   1.5 /   0.8 /   0.2 /   0.0 %
+  slot  9: active  4547:   2.6 /   1.1 /   0.2 /   0.0 % | established  4905:   2.5 /   1.1 /   0.2 /   0.0 %
+  slot 10: active  4551:   1.9 /   0.8 /   0.2 /   0.0 % | established  4930:   1.8 /   0.9 /   0.2 /   0.0 %
+  slot 11: active  4573:   2.1 /   1.2 /   0.2 /   0.0 % | established  4973:   2.0 /   1.2 /   0.2 /   0.0 %
+  slot 12: active  4536:   1.9 /   1.2 /   0.3 /   0.0 % | established  5012:   1.9 /   1.2 /   0.3 /   0.0 %
+  slot 13: active  4595:   1.8 /   1.1 /   0.3 /   0.0 % | established  5058:   1.9 /   1.1 /   0.3 /   0.1 %
+  slot 14: active  4561:   2.6 /   1.3 /   0.2 /   0.0 % | established  5120:   2.6 /   1.3 /   0.2 /   0.1 %
+  slot 15: active  4559:   2.3 /   1.1 /   0.3 /   0.0 % | established  5171:   2.4 /   1.1 /   0.3 /   0.1 %
+  slot 16: active  4555:   2.0 /   0.9 /   0.3 /   0.0 % | established  5229:   2.1 /   1.0 /   0.3 /   0.1 %
+  slot 17: active  4514:   2.3 /   1.0 /   0.2 /   0.0 % | established  5265:   2.4 /   1.0 /   0.2 /   0.1 %
+  slot 18: active  4559:   2.7 /   1.4 /   0.4 /   0.1 % | established  5312:   2.8 /   1.3 /   0.4 /   0.1 %
+  slot 19: active  4529:   2.4 /   1.2 /   0.2 /   0.0 % | established  5365:   2.5 /   1.2 /   0.3 /   0.1 %
+RTO at each connection's last snapshot: max 95488 ms; <300:1780 <500:3203 <1000:238 <2000:90 <4000:45 <8000:101 <16000:63 >=16000:8
+timeouts per slot (all | first of an episode, backoff 1), warm-up first: 581|255 1439|1108 2055|1350 2648|1658 3045|1875 3158|1799 3235|1794 3760|2231 3756|2146 3790|2229 3810|2221 4229|2506 4227|2463 4450|2649 4650|2767 4427|2478 4572|2629 4802|2858 4925|2886 4893|2835 4953|2835 2521|757
+timeouts: RTO before <300:26565 <500:25208 <1000:15173 <2000:7668 <4000:3476 <8000:1467 <16000:154 >=16000:215; share with RTO before >= 2 s: 6.6 %; backoff after: {1: 46329, 2: 18775, 3: 9851, 4: 3626, 5: 1345}
+connections that sent data: 5506; with RTT samples: 5506 (100.0 %)
+sent resends (txretx): 104238 = 0.210 % of data packets; queued resends (retx) 145675; undo checks 44067, undone 41215, resends dropped before sending 41005, resends of an undone range sent after the undo 999
+undo lines: 44838 checks, 41971 spurious (of them 30660 with nothing resent yet); cwnd before -> after p50 9 -> 33 (saved 33); after >= saved in 41971; ssthresh before -> after p50 9 -> 20, never reduced after the undo (2^31-1) 2424; dropped 41353
+per data-carrying connection: data packets 9027, retransmissions 26.46 (0.293 % of data packets), timeouts 13.447, spurious timeouts 11615 of 74040; connections with >= 1 timeout 3084
+SRTT / configured RTT (5517 connections): p10 1.02, median 1.07, p90 1.42, max 6.67; within +-20 %: 75.1 %; largest SRTT 653 ms vs largest configured RTT 338 ms
+  configured RTT 0-10 ms: 273 connections, median 1.62, within +-20 % 5.1 %, below 0.8 0.0 %, above 1.2 94.9 %
+  configured RTT 10-100 ms: 2120 connections, median 1.17, within +-20 % 55.8 %, below 0.8 0.0 %, above 1.2 44.2 %
+  configured RTT 100-1000000 ms: 3124 connections, median 1.04, within +-20 % 94.4 %, below 0.8 0.0 %, above 1.2 5.6 %
+  SRTT - configured RTT (ms): p50 7, p90 17, p99 101, max 455; connections with SRTT above the largest configured RTT (338 ms): 34
+  largest SRTT in any snapshot: 1080 ms (configured 190 ms, host n0019, slot 9); snapshots with SRTT > 338 ms: 476 of 96541
+Linux estimator: RTO = SRTT + rttvar (us, rounded up to ms, <= 120 s) in snapshots without backoff: 93288 of 93288; rttvar >= 200 ms in 93288; mdev_max <= rttvar in 93288
+  RTO / SRTT p10/p50/p90 1.84/2.77/8.33; rttvar ms p50/p90/p99 200/227/558
+first ACK of new data after a timeout: 44838; RTO back at SRTT + max(4 RTTVAR, 200 ms): 44838; with a timestamp echo 44838; spurious 11806
+initial buffers (send, receive) at the first RTT sample: {(131072, 174760): 5528}
+largest buffers in snapshots: send 4194304, receive 1686510 B; first snapshot per connection: send <= 131,072 in 5528, receive <= 174,760 in 5528 of 5528

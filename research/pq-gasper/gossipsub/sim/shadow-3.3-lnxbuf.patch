@@ -1,0 +1,102 @@
+--- a/src/main/host/descriptor/tcp.c
++++ b/src/main/host/descriptor/tcp.c
+@@ -8,6 +8,7 @@
+ #include "main/host/descriptor/tcp.h"
+ 
+ #include <errno.h>
++#include <stdlib.h>
+ #include <math.h>
+ #include <netinet/tcp.h>
+ #include <stdarg.h>
+@@ -485,16 +486,24 @@
+     return mem;
+ }
+ 
++/* lnxbuf: Linux caps buffer autotuning at tcp_rmem[2] = 6 MiB and tcp_wmem[2] = 4 MiB (defaults), instead of
++ * Shadow's bandwidth x RTT clamped to [6, 60] MiB and [4, 40] MiB. */
+ static gsize _tcp_computeMaxRMEM(TCP* tcp, const Host* host) {
+-    gsize mem = _tcp_computeRTTMEM(tcp, host, TRUE);
+-    mem = CLAMP(mem, CONFIG_TCP_RMEM_MAX, CONFIG_TCP_RMEM_MAX*10);
+-    return mem;
++    (void)_tcp_computeRTTMEM;
++    return (gsize)CONFIG_TCP_RMEM_MAX;
+ }
+ 
+ static gsize _tcp_computeMaxWMEM(TCP* tcp, const Host* host) {
+-    gsize mem = _tcp_computeRTTMEM(tcp, host, FALSE);
+-    mem = CLAMP(mem, CONFIG_TCP_WMEM_MAX, CONFIG_TCP_WMEM_MAX*10);
+-    return mem;
++    return (gsize)CONFIG_TCP_WMEM_MAX;
++}
++
++/* lnxbuf validation: with LNXBUF_LOG set in Shadow's environment, log every socket buffer size change at info level */
++static int _tcp_lnxbufLog(void) {
++    static int on = -1;
++    if (on < 0) {
++        on = getenv("LNXBUF_LOG") != NULL;
++    }
++    return on;
+ }
+ 
+ static void _tcp_tuneInitialBufferSizes(TCP* tcp, const Host* host) {
+@@ -525,6 +534,9 @@
+         }
+     }
+ 
++    if (_tcp_lnxbufLog()) {
++        info("lnxbuf tune src %u dst %u", (unsigned)sourceIP, (unsigned)destinationIP);
++    }
+     if(sourceIP == destinationIP) {
+         /* 16 MiB as max */
+         gsize inSize = legacysocket_getInputBufferSize(&(tcp->super));
+@@ -544,6 +556,17 @@
+         return;
+     }
+ 
++    /* lnxbuf: like Linux, a non-loopback socket keeps its configured initial sizes (socket_send_buffer and
++     * socket_recv_buffer); the send buffer then grows with cwnd and the receive buffer with the bytes copied per
++     * RTT, up to the caps above. Shadow's bandwidth x delay sizing below is skipped. */
++    if (_tcp_lnxbufLog()) {
++        info("lnxbuf initial send %" G_GSIZE_FORMAT " receive %" G_GSIZE_FORMAT " autotune send %d receive %d",
++             legacysocket_getOutputBufferSize(&(tcp->super)), legacysocket_getInputBufferSize(&(tcp->super)),
++             (int)(!tcp->autotune.userDisabledSend && host_autotuneSendBuffer(host)),
++             (int)(!tcp->autotune.userDisabledReceive && host_autotuneReceiveBuffer(host)));
++    }
++    return;
++
+     guint32 rtt_milliseconds = (guint32)_tcp_calculateRTT(tcp, host);
+ 
+     /* i got delay, now i need values for my send and receive buffer
+@@ -600,6 +623,9 @@
+         gsize newSize = (gsize)MIN(space, _tcp_computeMaxRMEM(tcp, host));
+         if(newSize > currentSize) {
+             legacysocket_setInputBufferSize(&tcp->super, newSize);
++            if (_tcp_lnxbufLog() && newSize >= 1048576) {
++                info("lnxbuf receive %" G_GSIZE_FORMAT " -> %" G_GSIZE_FORMAT, currentSize, newSize);
++            }
+             trace("[autotune] input buffer size adjusted from %"G_GSIZE_FORMAT" to %"G_GSIZE_FORMAT,
+                     currentSize, newSize);
+         }
+@@ -640,6 +666,10 @@
+     gsize currentSize = legacysocket_getOutputBufferSize(&tcp->super);
+     if(newSize > currentSize) {
+         legacysocket_setOutputBufferSize(&tcp->super, newSize);
++        if (_tcp_lnxbufLog() && newSize >= 1048576) {
++            info("lnxbuf send %" G_GSIZE_FORMAT " -> %" G_GSIZE_FORMAT " cwnd %u", currentSize, newSize,
++                 (unsigned)tcp->cong.cwnd);
++        }
+         trace("[autotune] output buffer size adjusted from %"G_GSIZE_FORMAT" to %"G_GSIZE_FORMAT,
+                 currentSize, newSize);
+     }
+@@ -1159,6 +1189,11 @@
+         /* first RTT measurement */
+         tcp->timing.rttSmoothed = rtt;
+         tcp->timing.rttVariance = rtt / 2;
++        if (_tcp_lnxbufLog()) {
++            info("lnxbuf first rtt %d ms enabled %d didinit %d send %" G_GSIZE_FORMAT " receive %" G_GSIZE_FORMAT, rtt,
++                 (int)tcp->autotune.isEnabled, (int)tcp->autotune.didInitializeBufferSizes,
++                 legacysocket_getOutputBufferSize(&(tcp->super)), legacysocket_getInputBufferSize(&(tcp->super)));
++        }
+ 
+         if(tcp->autotune.isEnabled && !tcp->autotune.didInitializeBufferSizes) {
+             _tcp_tuneInitialBufferSizes(tcp, host);

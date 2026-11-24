@@ -1,0 +1,9 @@
+14:25 v2000-t8-eip7870 rc=0 wall=3064s 	Maximum resident set size (kbytes): 74706152
+15:31 v2000-t1-eip7870 rc=0 wall=3908s 	Maximum resident set size (kbytes): 62721804
+16:30 v2000-t0-eip7870 rc=0 wall=3559s 	Maximum resident set size (kbytes): 52181776
+17:32 v2000-all1g rc=0 wall=3752s 	Maximum resident set size (kbytes): 63459088
+18:00 v1000-t8-eip7870 rc=0 wall=1663s 	Maximum resident set size (kbytes): 26327528
+18:46 v2000-t8-100x50 rc=0 wall=2741s 	Maximum resident set size (kbytes): 44088592
+19:02 v500-t8-eip7870 rc=0 wall=979s 	Maximum resident set size (kbytes): 10345744
+19:12 v250-t8-eip7870 rc=0 wall=584s 	Maximum resident set size (kbytes): 7599432
+19:57 v2000-t8-200x100 rc=0 wall=2692s 	Maximum resident set size (kbytes): 42100708

@@ -1,0 +1,170 @@
+diff -ruN a/sim/README.md b/sim/README.md
+--- a/sim/README.md	2026-11-07 13:20:36.755540091 +0000
++++ b/sim/README.md	2026-11-07 13:20:36.755540091 +0000
+@@ -95,6 +95,19 @@
+    window or ACK problem; its syscall trace showed `sendto(…, 94692) = 65535`
+    and no further write on that socket.
+ 
++## wbsim patches libp2p-gossipsub's forward queue
++
++In libp2p-gossipsub 0.49.5 each peer's send queue for forwards and IHAVE/IWANT
++is `async_channel::bounded(queue_len / 2)`, which allocates and touches all
++2,500 slots (about 230 B each) when the peer connects: 0.55 MiB per peer,
++whether or not anything is queued. At Lighthouse's 200 peers that is 110 MB per
++node. [`gossipsub-0.49.5-lazy-queue.patch`](gossipsub-0.49.5-lazy-queue.patch)
++makes the channel unbounded and enforces the same 2,500 cap in `send_message`.
++Messages are queued and dropped exactly as before: with
++`model_unblocked_syscall_latency: false`, a 64-host run gives byte-identical
++event logs with either build. With it on (the default here), event times shift
++by microseconds and runs differ the way two seeds do.
++
+ ## Run
+ 
+ ```sh
+@@ -103,6 +116,10 @@
+ git clone --depth 1 --branch v3.3.0 https://github.com/shadow/shadow.git && cd shadow
+ git apply /path/to/p2p-ministry/sim/shadow-3.3-fixes.patch
+ ./setup build --clean && ./setup install          # installs ~/.local/bin/shadow
++# wbsim builds against a patched libp2p-gossipsub 0.49.5 in sim/wbsim/gossipsub (see below)
++curl -sL https://static.crates.io/crates/libp2p-gossipsub/libp2p-gossipsub-0.49.5.crate | tar xz -C sim/wbsim
++mv sim/wbsim/libp2p-gossipsub-0.49.5 sim/wbsim/gossipsub
++patch -d sim/wbsim/gossipsub -p1 < sim/gossipsub-0.49.5-lazy-queue.patch
+ cargo build --release --manifest-path sim/wbsim/Cargo.toml
+ 
+ python3 sim/gen_config.py --mode gossip --proofs pull --seed 1 --out runs/gp-s1
+diff -ruN a/sim/analyze.py b/sim/analyze.py
+--- a/sim/analyze.py	2026-11-07 13:20:36.735539876 +0000
++++ b/sim/analyze.py	2026-11-07 13:20:36.739539919 +0000
+@@ -34,6 +34,14 @@
+     return pairs[-1][0]
+ 
+ 
++def read_cfg(run):
++    """run.json, with the PQ schedule from sched.json when gen_config kept it out of run.json (pub_dir runs)."""
++    cfg = json.load(open(os.path.join(run, "run.json")))
++    if os.path.exists(os.path.join(run, "sched.json")):
++        cfg["sched"] = json.load(open(os.path.join(run, "sched.json")))
++    return cfg
++
++
+ def load(run):
+     cfg = json.load(open(os.path.join(run, "run.json")))
+     events = []
+@@ -174,7 +182,7 @@
+ def flood_load(run):
+     """Per-node receipt times (ms after slot start, -1 never) and counter ticks."""
+     import numpy as np
+-    cfg = json.load(open(os.path.join(run, "run.json")))
++    cfg = read_cfg(run)
+     n, slots, msgs = len(cfg["nodes"]), cfg["slots"], cfg["msgs"]
+     rx = np.full((slots, n, msgs), -1, dtype=np.int64)
+     reported = np.zeros((slots, n), dtype=bool)
+@@ -343,7 +351,7 @@
+     if os.path.exists(cache) and os.path.getmtime(cache) > max(os.path.getmtime(log), os.path.getmtime(__file__)) \
+             and "Finished simulation" in open(log).read()[-4096:]:
+         return json.load(open(cache))
+-    cfg = json.load(open(os.path.join(run, "run.json")))
++    cfg = read_cfg(run)
+     nodes = cfg["nodes"]
+     n, S = len(nodes), cfg["slots"]
+     sched = [np.array([(e + [0, cfg["msg_bytes"], 8000, 1])[:6] if len(e) < 6 else e for e in m], dtype=np.int64)
+diff -ruN a/sim/gen_config.py b/sim/gen_config.py
+--- a/sim/gen_config.py	2026-11-07 13:20:36.727539791 +0000
++++ b/sim/gen_config.py	2026-11-07 13:20:36.731539833 +0000
+@@ -439,6 +439,12 @@
+                links_novalidator=a.links_novalidator, peer_target=a.peer_target,
+                peer_max=a.peer_max or (a.peer_target and round(a.peer_target * 1.2)),
+                subnet_min_peers=a.subnet_min_peers, **extra)
++    if extra.get("pub_dir"):
++        # nodes read their publishes from pub_dir, and every node parses run.json (the PQ schedule costs ~5.6 MB
++        # per node at 2,048 hosts x 50 slots), so the schedule goes to sched.json for the analysis only
++        with open(f"{out}/sched.json", "w") as f:
++            json.dump(full, f)
++        run["sched"] = []
+     with open(f"{out}/run.json", "w") as f:
+         json.dump(run, f)
+     stop = int(first_slot + 12 * a.slots + a.drain + 2)
+diff -ruN a/sim/gossipsub-0.49.5-lazy-queue.patch b/sim/gossipsub-0.49.5-lazy-queue.patch
+--- a/sim/gossipsub-0.49.5-lazy-queue.patch	1970-01-01 00:00:00.000000000 +0000
++++ b/sim/gossipsub-0.49.5-lazy-queue.patch	2026-11-07 13:20:36.787540435 +0000
+@@ -0,0 +1,36 @@
++diff -ru a/src/rpc.rs b/src/rpc.rs
++--- a/src/rpc.rs	2026-11-07 12:56:11.511808947 +0000
+++++ b/src/rpc.rs	2026-11-07 12:56:11.515808990 +0000
++@@ -37,6 +37,9 @@
++ pub(crate) struct Sender {
++     /// Capacity of the priority channel for `Publish` messages.
++     priority_cap: usize,
+++    /// Capacity of the non-priority channel. It is unbounded and checked here, because a bounded
+++    /// channel allocates all its slots up front (cap / 2 = 2500 `RpcOut`s, about 0.55 MiB per peer).
+++    non_priority_cap: usize,
++     len: Arc<AtomicUsize>,
++     pub(crate) priority_sender: async_channel::Sender<RpcOut>,
++     pub(crate) non_priority_sender: async_channel::Sender<RpcOut>,
++@@ -52,10 +55,11 @@
++         // That's also why we define `cap` and divide it by two,
++         // to ensure there is capacity for both priority and non_priority messages.
++         let (priority_sender, priority_receiver) = async_channel::unbounded();
++-        let (non_priority_sender, non_priority_receiver) = async_channel::bounded(cap / 2);
+++        let (non_priority_sender, non_priority_receiver) = async_channel::unbounded();
++         let len = Arc::new(AtomicUsize::new(0));
++         Sender {
++             priority_cap: cap / 2,
+++            non_priority_cap: cap / 2,
++             len,
++             priority_sender,
++             non_priority_sender,
++@@ -90,6 +94,9 @@
++             | RpcOut::Subscribe(_)
++             | RpcOut::Unsubscribe(_) => &self.priority_sender,
++             RpcOut::Forward { .. } | RpcOut::IHave(_) | RpcOut::IWant(_) | RpcOut::IDontWant(_) => {
+++                if self.non_priority_sender.len() >= self.non_priority_cap {
+++                    return Err(rpc);
+++                }
++                 &self.non_priority_sender
++             }
++         };
+diff -ruN a/sim/realism_check.py b/sim/realism_check.py
+--- a/sim/realism_check.py	2026-11-07 13:20:36.747540005 +0000
++++ b/sim/realism_check.py	2026-11-07 13:20:36.747540005 +0000
+@@ -25,6 +25,7 @@
+ 
+ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+ import perturb  # noqa: E402
++from analyze import read_cfg  # noqa: E402
+ 
+ KINDS = perturb.KINDS
+ ACC = {name: (ow, jit, loss) for name, _, ow, jit, loss in perturb.ACCESS}
+@@ -36,7 +37,7 @@
+ 
+ 
+ def load(run):
+-    cfg = json.load(open(os.path.join(run, "run.json")))
++    cfg = read_cfg(run)
+     ev = defaultdict(list)
+     for f in glob.glob(os.path.join(run, "shadow.data/hosts/*/wbsim.*.stdout")):
+         for line in open(f):
+diff -ruN a/sim/wbsim/Cargo.lock b/sim/wbsim/Cargo.lock
+--- a/sim/wbsim/Cargo.lock	2026-11-07 13:20:36.783540392 +0000
++++ b/sim/wbsim/Cargo.lock	2026-11-07 13:20:36.783540392 +0000
+@@ -1433,8 +1433,6 @@
+ [[package]]
+ name = "libp2p-gossipsub"
+ version = "0.49.5"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3573f3d8e30bd62cda336df5c7c1041a1caa40a648376b8e1e274d585c0ed25c"
+ dependencies = [
+  "async-channel",
+  "asynchronous-codec",
+diff -ruN a/sim/wbsim/Cargo.toml b/sim/wbsim/Cargo.toml
+--- a/sim/wbsim/Cargo.toml	2026-11-07 13:20:36.767540220 +0000
++++ b/sim/wbsim/Cargo.toml	2026-11-07 13:20:36.775540306 +0000
+@@ -20,3 +20,8 @@
+ [profile.release]
+ opt-level = 2
+ debug = false
++
++# libp2p-gossipsub 0.49.5 with a lazily allocated forward queue (same cap); see ../gossipsub-0.49.5-lazy-queue.patch
++# and sim/README.md for how sim/wbsim/gossipsub is made.
++[patch.crates-io]
++libp2p-gossipsub = { path = "gossipsub" }

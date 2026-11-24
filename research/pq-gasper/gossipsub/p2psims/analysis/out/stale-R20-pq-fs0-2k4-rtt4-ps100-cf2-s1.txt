@@ -1,0 +1,1 @@
+runs/R20-pq-fs0-2k4-rtt4-ps100-cf2-s1: stale_pq 3809, stale_bg 41280 (summed over 2048 hosts)

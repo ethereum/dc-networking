@@ -1,0 +1,36 @@
+== R20-pq-b16-ps100-cf-s1: 2048 hosts, 20 slots, analysed slots 2-19
+ cloud hosts by client: {'lighthouse': 401, 'lodestar': 25, 'nimbus': 63, 'other': 53, 'prysm': 141, 'teku': 59}
+ chronic cloud hosts (incomplete in >= half of 18 slots): 4 {'prysm': 4}
+   host 1873: 18/18 slots, prysm target 70, gru
+   host 852: 12/18 slots, prysm target 70, gru
+   host 640: 10/18 slots, prysm target 70, syd
+   host 794: 9/18 slots, prysm target 70, sin
+ cloud hosts incomplete in >= 2 slots: 16 {'lighthouse': 2, 'prysm': 13, 'teku': 1}; incomplete at least once: {'lighthouse': 3, 'prysm': 16, 'teku': 2}
+ failed sends that cost score, whole run, share by kind (%): {'fwd timeout': 43.4, 'fwd qfull': 46.1, 'ctrl qfull': 10.4, 'pub timeout': 0.0, 'pub qfull': 0.0} total 121840735
+   50x15  non-rust hosts=116: fwd timeout 99.8 %, fwd qfull 0.2 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 2580814)
+   50x15  rust     hosts=214: fwd timeout 100.0 %, fwd qfull 0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 3556958)
+   50x25  non-rust hosts=385: fwd timeout 99.7 %, fwd qfull 0.2 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 7225197)
+   50x25  rust     hosts=591: fwd timeout 100.0 %, fwd qfull -0.0 %, ctrl qfull 0.0 %, pub timeout 0.0 %, pub qfull 0.0 % (total 7681081)
+   cloud  non-rust hosts=288: fwd timeout 24.7 %, fwd qfull 60.7 %, ctrl qfull 14.5 %, pub timeout 0.1 %, pub qfull 0.0 % (total 81248926)
+   cloud  rust     hosts=454: fwd timeout 60.6 %, fwd qfull 34.6 %, ctrl qfull 4.7 %, pub timeout 0.1 %, pub qfull 0.0 % (total 19547759)
+ per slot, summed over hosts (thousands): fwd timeout / fwd qfull / ctrl qfull / pub timeout / pub qfull; own-publish refusals per connection (mean over hosts); hosts with any
+   slot  0: 4406.7 / 4280.8 / 731.5 / 1.2 / -0.0; -0.000; 0
+   slot  1: 3246.4 / 2931.6 / 664.3 / 1.8 / -0.0; -0.000; 11
+   slot  2: 2878.7 / 2466.8 / 732.5 / 4.4 / -0.0; -0.000; 25
+   slot  3: 2994.5 / 3327.7 / 811.5 / 4.7 / 0.1; 0.000; 25
+   slot  4: 2322.2 / 2818.8 / 701.7 / 4.2 / 0.8; 0.005; 26
+   slot  5: 2538.9 / 2836.4 / 906.2 / 2.2 / 1.7; 0.012; 21
+   slot  6: 2824.2 / 3550.8 / 836.6 / 6.6 / 1.4; 0.009; 28
+   slot  7: 2596.9 / 3110.2 / 766.7 / 4.8 / 2.5; 0.016; 26
+   slot  8: 2952.3 / 2943.8 / 637.2 / 3.1 / 1.6; 0.011; 20
+   slot  9: 2570.3 / 3068.0 / 777.8 / 2.7 / 2.7; 0.017; 24
+   slot 10: 2283.8 / 2733.5 / 627.8 / 3.9 / 2.8; 0.019; 24
+   slot 11: 2281.7 / 2655.3 / 588.4 / 3.9 / 1.5; 0.010; 20
+   slot 12: 2640.9 / 2761.8 / 609.8 / 4.0 / 1.4; 0.010; 22
+   slot 13: 2719.1 / 2987.1 / 637.6 / 1.5 / 2.5; 0.017; 22
+   slot 14: 2485.7 / 2859.2 / 525.9 / 2.3 / 0.3; 0.002; 13
+   slot 15: 2264.7 / 2834.3 / 483.9 / 2.1 / 1.2; 0.008; 11
+   slot 16: 2244.0 / 1996.4 / 450.2 / 1.2 / 0.9; 0.006; 25
+   slot 17: 1982.2 / 1796.7 / 374.2 / 0.9 / 1.3; 0.009; 28
+   slot 18: 2442.6 / 2288.2 / 354.7 / 1.7 / 1.1; 0.008; 15
+   slot 19: 2263.4 / 1877.5 / 474.6 / 1.9 / 1.0; 0.007; 19

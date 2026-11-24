@@ -1,0 +1,114 @@
+diff --git a/src/main/core/worker.rs b/src/main/core/worker.rs
+index 8a45848..2f7d7a3 100644
+--- a/src/main/core/worker.rs
++++ b/src/main/core/worker.rs
+@@ -379,6 +379,14 @@ impl Worker {
+ 
+         // delay the packet until the next round
+         let mut deliver_time = current_time + delay;
++        // jitter: an extra exponential delay with the path's mean, kept FIFO per destination so
++        // packets of a flow are never reordered (it acts like a variable queue, not a shuffle)
++        let jitter = Worker::with(|w| w.shared.jitter_ns(src_ip, dst_ip).unwrap()).unwrap();
++        if jitter > 0 && !is_bootstrapping {
++            let u: f64 = src_host.random_mut().random();
++            let extra = (-(jitter as f64) * (1.0 - u).ln()) as u64;
++            deliver_time = src_host.jitter_fifo(dst_ip, deliver_time + SimulationTime::from_nanos(extra));
++        }
+         if deliver_time < round_end_time {
+             deliver_time = round_end_time;
+         }
+@@ -530,6 +538,13 @@ impl WorkerShared {
+         Some(1.0 - self.routing_info.path(src, dst)?.packet_loss)
+     }
+ 
++    pub fn jitter_ns(&self, src: std::net::IpAddr, dst: std::net::IpAddr) -> Option<u64> {
++        let src = self.ip_assignment.get_node(src)?;
++        let dst = self.ip_assignment.get_node(dst)?;
++
++        Some(self.routing_info.path(src, dst)?.jitter_ns)
++    }
++
+     pub fn bandwidth(&self, ip: std::net::IpAddr) -> Option<&Bandwidth> {
+         self.host_bandwidths.get(&ip)
+     }
+diff --git a/src/main/host/host.rs b/src/main/host/host.rs
+index 1cdd763..4842352 100644
+--- a/src/main/host/host.rs
++++ b/src/main/host/host.rs
+@@ -116,6 +116,9 @@ pub struct Host {
+ 
+     random: RefCell<Xoshiro256PlusPlus>,
+ 
++    // Jittered delivery: last delivery time per destination, so jitter never reorders a flow.
++    jitter_last: RefCell<std::collections::HashMap<std::net::IpAddr, EmulatedTime>>,
++
+     // The upstream router that will queue packets until we can receive them.
+     // This only applies to the internet interface; the localhost interface
+     // does not receive packets from a router.
+@@ -294,6 +297,7 @@ impl Host {
+             relay_loopback: Arc::new(relay_loopback),
+             futex_table: RefCell::new(FutexTable::new()),
+             random,
++            jitter_last: RefCell::new(std::collections::HashMap::new()),
+             shim_shmem,
+             shim_shmem_lock: RefCell::new(None),
+             cpu,
+@@ -641,6 +645,16 @@ impl Host {
+         self.net_ns.interface_borrow(addr)
+     }
+ 
++    /// Delivery time for a jittered packet to `dst`: no earlier than the previous one.
++    pub fn jitter_fifo(&self, dst: std::net::IpAddr, t: EmulatedTime) -> EmulatedTime {
++        let mut last = self.jitter_last.borrow_mut();
++        let e = last.entry(dst).or_insert(t);
++        if t > *e {
++            *e = t;
++        }
++        *e
++    }
++
+     #[track_caller]
+     pub fn random_mut(&self) -> impl DerefMut<Target = Xoshiro256PlusPlus> + '_ {
+         self.random.borrow_mut()
+diff --git a/src/main/network/graph/mod.rs b/src/main/network/graph/mod.rs
+index eb8760f..05e7b1c 100644
+--- a/src/main/network/graph/mod.rs
++++ b/src/main/network/graph/mod.rs
+@@ -294,6 +294,8 @@ pub struct PathProperties {
+     pub latency_ns: u64,
+     /// Packet loss as fraction.
+     pub packet_loss: f32,
++    /// Mean of the extra per-packet delay (exponential), summed over the path's edges.
++    pub jitter_ns: u64,
+ }
+ 
+ impl PartialOrd for PathProperties {
+@@ -320,6 +322,7 @@ impl core::ops::Add for PathProperties {
+         Self {
+             latency_ns: self.latency_ns + other.latency_ns,
+             packet_loss: 1f32 - (1f32 - self.packet_loss) * (1f32 - other.packet_loss),
++            jitter_ns: self.jitter_ns + other.jitter_ns,
+         }
+     }
+ }
+@@ -329,6 +332,7 @@ impl std::convert::From<&ShadowEdge> for PathProperties {
+         Self {
+             latency_ns: e.latency.convert(units::TimePrefix::Nano).unwrap().value(),
+             packet_loss: e.packet_loss,
++            jitter_ns: e.jitter.convert(units::TimePrefix::Nano).unwrap().value(),
+         }
+     }
+ }
+@@ -515,10 +519,12 @@ mod tests {
+         let p1 = PathProperties {
+             latency_ns: 23,
+             packet_loss: 0.35,
++            jitter_ns: 0,
+         };
+         let p2 = PathProperties {
+             latency_ns: 11,
+             packet_loss: 0.85,
++            jitter_ns: 0,
+         };
+ 
+         let p3 = p1 + p2;

@@ -1,0 +1,18 @@
+== runs/T64-rtt-rtt4 (shadow.log): 5454 TCP endpoints
+SRTT - configured RTT (ms), snapshots of established connections with samples, slots 2-18: p10 / p50 / p90 / p99 | snapshots
+  1G->1G         1 /     4 /     5 /     6 | 9928
+  1G->home       4 /     8 /    26 /   110 | 18788
+  home->1G       2 /     6 /    10 /    13 | 18855
+  home->home     6 /    12 /    38 /   162 | 27894
+ACKs of new data at the data sender (each endpoint's last snapshot): total | TSecr equal to / newer than / older than the TSval of the latest transmission of the first segment they newly acknowledge | that segment's resend waiting to leave | TSecr 0
+  1G->1G       5277797 |  99.97 /   0.01 /   0.02 % |  0.00 % |  0.00 %
+  1G->home     2488346 |  99.82 /   0.04 /   0.15 % |  0.00 % |  0.00 %
+  home->1G     2934816 |  99.89 /   0.03 /   0.07 % |  0.01 % |  0.00 %
+  home->home   1478212 |  99.53 /   0.06 /   0.39 % |  0.02 % |  0.00 %
+  all         12179171 |  99.87 /   0.03 /   0.10 % |  0.00 % |  0.00 %
+echo updates by duplicate data segments, at the data receiver (count, per 1,000 ACKs of new data): at the last departed ACK number (Linux makes these too) | entirely below it (Linux's tcp_sequence discards these first)
+  1G->1G         255 (0.048) |    1152 (0.218)
+  1G->home      2121 (0.852) |    5079 (2.041)
+  home->1G       113 (0.039) |    2406 (0.820)
+  home->home    1699 (1.149) |    7974 (5.394)
+first timeouts (backoff 1) 62531; started within 1 s after a spurious undo on the same connection: 63.9 % (1G->1G 67.1 % of 1891, 1G->home 63.0 % of 16290, home->1G 69.0 % of 10568, home->home 64.0 % of 33024)

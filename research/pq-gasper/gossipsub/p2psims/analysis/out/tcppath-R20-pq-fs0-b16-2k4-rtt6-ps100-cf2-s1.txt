@@ -1,0 +1,65 @@
+== runs/R20-pq-fs0-b16-2k4-rtt6-ps100-cf2-s1 (shadow-tcpd.log.gz): 640763 TCP endpoints with snapshots; resends counted as sent (txretx)
+resent data packets per 1,000 data packets, slots 2-18, by sender -> receiver class (data packets):
+  cloud->cloud 0.3 (347.22M), cloud->50x25 2.4 (182.97M), cloud->50x15 5.0 (61.27M), 50x25->cloud 1.7 (206.84M), 50x25->50x25 6.7 (123.66M), 50x25->50x15 16.6 (42.88M), 50x15->cloud 2.1 (61.29M), 50x15->50x25 7.5 (39.01M), 50x15->50x15 18.8 (14.31M)
+  1G->1G       0.27 per 1,000; per slot 2-18: 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3
+  1G->home     3.09 per 1,000; per slot 2-18: 3.1 3.1 3.0 3.0 3.0 3.2 3.1 3.0 3.0 3.0 3.1 3.2 3.1 3.2 3.1 3.1 3.1
+  home->1G     1.81 per 1,000; per slot 2-18: 1.8 1.8 1.7 1.8 1.7 1.7 1.8 1.8 1.8 1.8 1.8 1.9 1.9 1.9 1.9 1.9 1.9
+  home->home   9.54 per 1,000; per slot 2-18: 10.3 10.1 9.8 9.6 9.2 9.6 9.4 9.2 9.2 9.1 9.5 9.8 9.5 9.5 9.5 9.3 9.6
+timeouts per slot by path type (all | first of an episode), slots 0-19:
+  1G->1G     745|461 1413|974 2007|1248 2279|1559 2421|1616 2624|1723 2467|1662 2601|1564 2816|1841 2882|1826 3208|2104 3131|1883 3174|2053 3334|2105 3234|1997 3410|2204 3610|2293 3507|2186 3468|2191 3561|2325
+  1G->home   22919|19238 38948|29090 49263|34543 60916|42526 67982|46253 74891|50515 79208|53520 79952|51605 88349|59300 88163|56626 97082|63966 97186|63546 101967|66941 104434|68583 104237|67912 107146|69395 109030|70105 112282|72721 110719|71044 112388|72908
+  home->1G   6375|4784 12336|8718 17491|11123 23000|14885 25795|16539 30076|18994 31801|20075 31727|18517 36490|23165 36896|22201 41354|25809 42582|26088 44696|27476 47186|29048 47592|29269 49460|30151 51221|31086 53143|32556 52378|31957 54623|33553
+  home->home 47407|39351 111807|72221 165633|102337 212044|125746 261269|153235 285864|163569 310661|176919 332309|184894 362973|206288 371913|203927 384670|213181 393321|215275 396550|215899 406126|221798 421930|230088 422706|226919 425303|226542 439247|235213 461878|251890 456351|246035
+per slot 2-18 by path type: first timeouts per 1,000 data packets | endpoints sending data | data packets per sending endpoint:
+  1G->1G     all 0.09: 0.07 0.08 0.09 0.09 0.08 0.08 0.09 0.09 0.10 0.09 0.09 0.09 0.10 0.11 0.11 0.11 0.10
+             endpoints 11096 11080 11073 11136 11097 11048 11080 10959 11113 11104 11042 11174 11163 11157 11101 11089 11136
+             packets/endpoint 1567 1831 1637 1769 1843 1702 1949 1879 1807 1821 1963 2016 1877 1812 1935 1856 2026
+  1G->home   all 4.13: 2.50 2.91 3.46 3.69 3.86 3.58 3.94 3.95 4.42 4.50 4.64 4.57 4.68 4.94 4.76 5.03 4.63
+             endpoints 52774 52457 52676 52551 52781 52520 52493 52547 52249 52353 52271 52243 52202 51994 51968 51668 51841
+             packets/endpoint 262 278 254 260 263 275 287 273 277 270 276 287 278 270 283 280 296
+  home->1G   all 1.53: 0.70 0.92 1.09 1.26 1.32 1.20 1.42 1.41 1.64 1.69 1.74 1.79 1.84 1.94 1.92 2.04 1.93
+             endpoints 52752 52509 52670 52480 52884 52478 52495 52636 52143 52370 52287 52204 52225 51994 51934 51660 51813
+             packets/endpoint 300 307 288 287 287 293 310 300 301 294 303 310 305 300 312 309 319
+  home->home all 15.25: 8.31 9.62 12.28 12.77 14.02 14.45 15.24 15.74 16.59 16.77 16.57 16.54 17.68 17.62 17.74 18.35 18.41
+             endpoints 165467 163614 165525 164089 165455 164307 164486 166176 164072 164800 164952 164937 164769 164041 165213 164477 164716
+             packets/endpoint 74 80 75 78 76 78 82 78 78 78 79 81 79 79 77 78 83
+timeout episodes ended by an ACK of new data, spurious share (TSecr before the timeout), by path type: 1G->1G 35633 (28.7 %), 1G->home 1134781 (31.2 %), home->1G 455762 (21.0 %), home->home 3725596 (21.1 %)
+Eifel undo checks 5351896: judged spurious and undone 5136133, genuine (reduction kept) 215763; timer re-armed after an undo 13865
+  1G->1G     undone 35552: cwnd 2 -> 44 (saved 44; after < saved: 0); ssthresh before p50 15, after unset in 1 % (else p50 65); resends dropped 54566
+  1G->home   undone 1115635: cwnd 2 -> 12 (saved 12; after < saved: 0); ssthresh before p50 7, after unset in 4 % (else p50 14); resends dropped 1954717
+  home->1G   undone 444429: cwnd 2 -> 20 (saved 20; after < saved: 0); ssthresh before p50 7, after unset in 1 % (else p50 28); resends dropped 268997
+  home->home undone 3540393: cwnd 2 -> 10 (saved 10; after < saved: 0); ssthresh before p50 4, after unset in 5 % (else p50 8); resends dropped 2609440
+stall check: snapshots with retransmit-queue data and no retransmit timer: 0 of 6950160
+resend accounting at each endpoint's last snapshot: queued 8984214 = sent 4129956 + dropped by an undo 4847409 + residual 6849 (still queued or freed at close)
+cwnd and ssthresh of the same endpoints at slots 2 and 19 (established at both, > 100 data packets by slot 2), by path type: cwnd p25/p50/p75; ssthresh reduced share and p50 of the reduced:
+  1G->1G     n= 7170 | slot 2: cwnd 10/10/10, ssthresh reduced 64 % (p50 60) | slot 19: cwnd 10/10/20, ssthresh reduced 93 % (p50 63) | timeouts between: mean 5.0, p90 1
+  1G->home   n=29343 | slot 2: cwnd 10/10/10, ssthresh reduced 57 % (p50 26) | slot 19: cwnd 10/10/11, ssthresh reduced 92 % (p50 21) | timeouts between: mean 36.0, p90 153
+  home->1G   n=24873 | slot 2: cwnd 10/10/10, ssthresh reduced 57 % (p50 38) | slot 19: cwnd 10/10/11, ssthresh reduced 94 % (p50 24) | timeouts between: mean 19.2, p90 93
+  home->home n=40336 | slot 2: cwnd 10/10/14, ssthresh reduced 50 % (p50 14) | slot 19: cwnd 10/10/11, ssthresh reduced 95 % (p50 11) | timeouts between: mean 65.0, p90 186
+cwnd over the run (snapshots of established endpoints with > 100 data packets sent, slots 2-19), by path type: p50 / p90 (snapshots):
+  1G->1G     10 / 51 (193228)
+  1G->home   10 / 20 (854047)
+  home->1G   10 / 21 (797058)
+  home->home 10 / 18 (1995615)
+restart after idle (rtt5), by path type: events per slot 2-18 | cwnd before -> after, p50 (p90) | idle / RTO p50 ms:
+  1G->1G     total 1527776: 66249 81493 76406 79269 76968 64028 74761 66606 76993 73904 76053 80217 74968 74309 73956 74748 70648 | 17 (76) -> 10 (24) | 846 / 290
+  1G->home   total 6308263: 285263 324500 318982 330828 335509 275306 315616 291007 320705 312239 321148 319649 307695 309153 307071 310126 292022 | 10 (31) -> 10 (10) | 978 / 319
+  home->1G   total 6340608: 288292 328544 321577 328638 330238 279599 324819 295458 323646 316132 320843 323802 317385 313559 310957 314245 302192 | 10 (30) -> 10 (10) | 999 / 304
+  home->home total 13973904: 732030 697309 731394 695380 699668 699235 723554 701361 684156 693776 670951 665672 690144 666819 655360 669449 711685 | 10 (22) -> 10 (10) | 1000 / 362
+ACKs whose cwnd increase window validation skipped (rtt5), each endpoint's last snapshot, by path type: 1G->1G 66660718, 1G->home 41486118, home->1G 41287369, home->home 25272149
+restarts that leave cwnd < ssthresh, the share of those in slow start right after, and ssthresh p50 after the restart at slots 2 and 18 (unset = never reduced), by path type:
+  1G->1G     1527776 restarts, cwnd < ssthresh in 99.1 %, of those in slow start 100.0 % (phase after: s 1513226, c 0, f 435) | ssthresh slot 2 125 (unset 35 %), slot 18 72 (unset 15 %)
+  1G->home   6308263 restarts, cwnd < ssthresh in 92.7 %, of those in slow start 100.0 % (phase after: s 5846508, c 0, f 1532) | ssthresh slot 2 136 (unset 48 %), slot 18 24 (unset 19 %)
+  home->1G   6340608 restarts, cwnd < ssthresh in 93.2 %, of those in slow start 100.0 % (phase after: s 5906736, c 0, f 2049) | ssthresh slot 2 unset (unset 55 %), slot 18 33 (unset 24 %)
+  home->home 13973904 restarts, cwnd < ssthresh in 83.6 %, of those in slow start 100.0 % (phase after: s 11674088, c 0, f 2977) | ssthresh slot 2 unset (unset 69 %), slot 18 14 (unset 29 %)
+  all        28150551 restarts, cwnd < ssthresh in 88.6 %, of those in slow start 100.0 % (phase after: s 24940558, c 0, f 6993) | ssthresh slot 2 unset (unset 60 %), slot 18 22 (unset 25 %)
+ssthresh p50 after a restart per slot 2-18 by path type ('u' = unset, never reduced):
+  1G->1G     125 99 85 81 80 76 75 73 73 74 72 70 73 72 72 72 72
+  1G->home   136 65 44 36 33 31 30 28 27 26 25 25 25 24 24 24 24
+  home->1G   u 160 88 65 55 51 46 43 40 37 36 35 34 33 33 32 33
+  home->home u u u 105 39 25 21 18 17 16 16 16 15 15 15 15 14
+fast-recovery entries per 1,000 data packets, slots 2-18, by path type: all | consecutive (no ACK advancing snd_una between the 3 duplicate ACKs) | accumulated; entries from slow start; entries:
+  1G->1G     0.243 | 0.243 | 0.000; from slow start 10660; entries 84471
+  1G->home   1.481 | 1.481 | 0.000; from slow start 53758; entries 361849
+  home->1G   1.430 | 1.430 | 0.000; from slow start 61770; entries 383401
+  home->home 2.350 | 2.350 | 0.000; from slow start 93495; entries 516747

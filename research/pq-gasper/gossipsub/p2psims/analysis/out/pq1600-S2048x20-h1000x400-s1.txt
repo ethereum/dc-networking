@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/home/yann/projects/p2p-ministry-gossip2000/.amp-out/pq1600.py", line 163, in <module>
+    f"analysed slots {slots[0]}-{slots[-1]}" + (f" (receive reports end at slot {done_slots[-1]})" if done_slots[-1] < S - 1 else ""))
+                      ~~~~~^^^
+IndexError: list index out of range

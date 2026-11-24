@@ -1,0 +1,13 @@
+== stopped-Q2048x20-m1600-s1-mem vs stopped-Q2048x20-m1600-s1-mem (slots 2+; % of upload cap; busiest = largest per-node mean)
+  50x15 (330 hosts, up 15 Mbit/s, valid node-slots PQ 0.778 no-PQ 0.778)
+    4-8 s: PQ 115.67 / 172.73, no-PQ 115.67 / 172.73, PQ share 0 %; busiest PQ node 1861 172.73 vs 172.73 without PQ; max node-slot PQ 239 / no-PQ 239
+    4-5 s: PQ 147.14 / 332.28, no-PQ 147.14 / 332.28, PQ share 0 %; busiest PQ node 1861 332.28 vs 332.28 without PQ; max node-slot PQ 598 / no-PQ 598
+    slot: PQ 69.83 / 92.21, no-PQ 69.83 / 92.21, PQ share 0 %; busiest PQ node 166 92.21 vs 92.21 without PQ; max node-slot PQ 117 / no-PQ 117
+  50x25 (976 hosts, up 25 Mbit/s, valid node-slots PQ 0.778 no-PQ 0.778)
+    4-8 s: PQ 85.24 / 138.37, no-PQ 85.24 / 138.37, PQ share 0 %; busiest PQ node 1927 138.37 vs 138.37 without PQ; max node-slot PQ 178 / no-PQ 178
+    4-5 s: PQ 110.93 / 234.09, no-PQ 110.93 / 234.09, PQ share 0 %; busiest PQ node 1824 234.09 vs 234.09 without PQ; max node-slot PQ 358 / no-PQ 358
+    slot: PQ 45.88 / 70.75, no-PQ 45.88 / 70.75, PQ share 0 %; busiest PQ node 1890 70.75 vs 70.75 without PQ; max node-slot PQ 83 / no-PQ 83
+  cloud (742 hosts, up 1000 Mbit/s, valid node-slots PQ 0.778 no-PQ 0.778)
+    4-8 s: PQ 5.36 / 12.96, no-PQ 5.36 / 12.96, PQ share 0 %; busiest PQ node 3 12.96 vs 12.96 without PQ; max node-slot PQ 15 / no-PQ 15
+    4-5 s: PQ 13.23 / 34.56, no-PQ 13.23 / 34.56, PQ share 0 %; busiest PQ node 3 34.56 vs 34.56 without PQ; max node-slot PQ 43 / no-PQ 43
+    slot: PQ 2.43 / 5.91, no-PQ 2.43 / 5.91, PQ share 0 %; busiest PQ node 3 5.91 vs 5.91 without PQ; max node-slot PQ 7 / no-PQ 7

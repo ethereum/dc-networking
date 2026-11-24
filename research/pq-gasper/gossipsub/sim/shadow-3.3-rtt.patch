@@ -1,0 +1,227 @@
+Shadow 3.3.0 rtt build: lnxbuf (Linux-default socket buffer sizing and caps) + working TCP timestamp echo (RTT samples on
+ACKs of new data, backoff 0) + RTO = SRTT + max(4 RTTVAR, 200 ms), plus 'tcpd' diagnostics logged with LNXBUF_LOG set.
+Apply after shadow-3.3-fixes.patch (patch -p1 in the Shadow tree).
+
+--- a/src/main/host/descriptor/tcp.c
++++ b/src/main/host/descriptor/tcp.c
+@@ -8,6 +8,7 @@
+ #include "main/host/descriptor/tcp.h"
+ 
+ #include <errno.h>
++#include <stdlib.h>
+ #include <math.h>
+ #include <netinet/tcp.h>
+ #include <stdarg.h>
+@@ -191,6 +192,17 @@
+         void *tally;
+     } retransmit;
+ 
++    /* diagnostics (LNXBUF_LOG) */
++    struct {
++        guint64 samples;
++        guint64 timeouts;
++        guint64 spurious;
++        guint64 txData;
++        gint lastBin;
++        gboolean toPending;
++        CSimulationTime toTime;
++    } diag;
++
+     /* tcp autotuning for the send and recv buffers */
+     struct {
+         gboolean isEnabled;
+@@ -274,6 +286,15 @@
+ 
+ static void _tcp_flush(TCP* tcp, const Host* host);
+ 
++/* diagnostics: with LNXBUF_LOG set in Shadow's environment, log per-connection TCP state ("tcpd" lines) at info level */
++static int _tcp_diagLog(void) {
++    static int on = -1;
++    if (on < 0) {
++        on = getenv("LNXBUF_LOG") != NULL;
++    }
++    return on;
++}
++
+ static TCP* _tcp_fromLegacyFile(LegacyFile* descriptor) {
+     utility_debugAssert(legacyfile_getType(descriptor) == DT_TCPSOCKET);
+     return (TCP*)descriptor;
+@@ -485,16 +506,24 @@
+     return mem;
+ }
+ 
++/* lnxbuf: Linux caps buffer autotuning at tcp_rmem[2] = 6 MiB and tcp_wmem[2] = 4 MiB (defaults), instead of
++ * Shadow's bandwidth x RTT clamped to [6, 60] MiB and [4, 40] MiB. */
+ static gsize _tcp_computeMaxRMEM(TCP* tcp, const Host* host) {
+-    gsize mem = _tcp_computeRTTMEM(tcp, host, TRUE);
+-    mem = CLAMP(mem, CONFIG_TCP_RMEM_MAX, CONFIG_TCP_RMEM_MAX*10);
+-    return mem;
++    (void)_tcp_computeRTTMEM;
++    return (gsize)CONFIG_TCP_RMEM_MAX;
+ }
+ 
+ static gsize _tcp_computeMaxWMEM(TCP* tcp, const Host* host) {
+-    gsize mem = _tcp_computeRTTMEM(tcp, host, FALSE);
+-    mem = CLAMP(mem, CONFIG_TCP_WMEM_MAX, CONFIG_TCP_WMEM_MAX*10);
+-    return mem;
++    return (gsize)CONFIG_TCP_WMEM_MAX;
++}
++
++/* lnxbuf validation: with LNXBUF_LOG set in Shadow's environment, log every socket buffer size change at info level */
++static int _tcp_lnxbufLog(void) {
++    static int on = -1;
++    if (on < 0) {
++        on = getenv("LNXBUF_LOG") != NULL;
++    }
++    return on;
+ }
+ 
+ static void _tcp_tuneInitialBufferSizes(TCP* tcp, const Host* host) {
+@@ -525,6 +554,9 @@
+         }
+     }
+ 
++    if (_tcp_lnxbufLog()) {
++        info("lnxbuf tune src %u dst %u", (unsigned)sourceIP, (unsigned)destinationIP);
++    }
+     if(sourceIP == destinationIP) {
+         /* 16 MiB as max */
+         gsize inSize = legacysocket_getInputBufferSize(&(tcp->super));
+@@ -544,6 +576,17 @@
+         return;
+     }
+ 
++    /* lnxbuf: like Linux, a non-loopback socket keeps its configured initial sizes (socket_send_buffer and
++     * socket_recv_buffer); the send buffer then grows with cwnd and the receive buffer with the bytes copied per
++     * RTT, up to the caps above. Shadow's bandwidth x delay sizing below is skipped. */
++    if (_tcp_lnxbufLog()) {
++        info("lnxbuf initial send %" G_GSIZE_FORMAT " receive %" G_GSIZE_FORMAT " autotune send %d receive %d",
++             legacysocket_getOutputBufferSize(&(tcp->super)), legacysocket_getInputBufferSize(&(tcp->super)),
++             (int)(!tcp->autotune.userDisabledSend && host_autotuneSendBuffer(host)),
++             (int)(!tcp->autotune.userDisabledReceive && host_autotuneReceiveBuffer(host)));
++    }
++    return;
++
+     guint32 rtt_milliseconds = (guint32)_tcp_calculateRTT(tcp, host);
+ 
+     /* i got delay, now i need values for my send and receive buffer
+@@ -1146,6 +1189,7 @@
+ 
+ static void _tcp_updateRTTEstimate(TCP* tcp, const Host* host, CSimulationTime timestamp) {
+     MAGIC_ASSERT(tcp);
++    tcp->diag.samples++;
+ 
+     CSimulationTime now = worker_getCurrentSimulationTime();
+     gint rtt = (gint)((now - timestamp) / SIMTIME_ONE_MILLISECOND);
+@@ -1159,6 +1203,11 @@
+         /* first RTT measurement */
+         tcp->timing.rttSmoothed = rtt;
+         tcp->timing.rttVariance = rtt / 2;
++        if (_tcp_lnxbufLog()) {
++            info("lnxbuf first rtt %d ms enabled %d didinit %d send %" G_GSIZE_FORMAT " receive %" G_GSIZE_FORMAT, rtt,
++                 (int)tcp->autotune.isEnabled, (int)tcp->autotune.didInitializeBufferSizes,
++                 legacysocket_getOutputBufferSize(&(tcp->super)), legacysocket_getInputBufferSize(&(tcp->super)));
++        }
+ 
+         if(tcp->autotune.isEnabled && !tcp->autotune.didInitializeBufferSizes) {
+             _tcp_tuneInitialBufferSizes(tcp, host);
+@@ -1172,7 +1221,8 @@
+     }
+ 
+     /* RTO = SRTT + 4 * RTTVAR  (min=1s, max=60s) */
+-    gint newRTO = tcp->timing.rttSmoothed + (4 * tcp->timing.rttVariance);
++    /* rtt: like Linux, floor the variance term at 200 ms: RTO = SRTT + max(4 RTTVAR, 200 ms) */
++    gint newRTO = tcp->timing.rttSmoothed + MAX(4 * tcp->timing.rttVariance, CONFIG_TCP_RTO_MIN);
+     // fprintf(stderr, "newRTO - %d\n", newRTO);
+     _tcp_setRetransmitTimeout(tcp, newRTO);
+ 
+@@ -1288,6 +1338,9 @@
+ 
+ void tcp_networkInterfaceIsAboutToSendPacket(TCP* tcp, const Host* host, Packet* packet) {
+     MAGIC_ASSERT(tcp);
++    if (packet_getPayloadSize(packet) > 0) {
++        tcp->diag.txData++;
++    }
+ 
+     CSimulationTime now = worker_getCurrentSimulationTime();
+ 
+@@ -1537,9 +1590,18 @@
+     /* rfc 6298, section 5.4-5.7 (http://tools.ietf.org/html/rfc6298)
+      * if we get here, this is a valid timer expiration and we need to do a retransmission
+      * do exponential backoff */
++    gint diagOldRTO = tcp->retransmit.timeout;
+     tcp->retransmit.backoffCount++;
+     _tcp_setRetransmitTimeout(tcp, tcp->retransmit.timeout * 2);
+     _tcp_setRetransmitTimer(tcp, host, now);
++    tcp->diag.timeouts++;
++    tcp->diag.toPending = TRUE;
++    tcp->diag.toTime = now;
++    if (_tcp_diagLog()) {
++        info("tcpd timeout %p rto %d -> %d backoff %u srtt %d rttvar %d", (void*)tcp, diagOldRTO,
++             tcp->retransmit.timeout, tcp->retransmit.backoffCount, tcp->timing.rttSmoothed,
++             tcp->timing.rttVariance);
++    }
+ 
+     tcp->cong.hooks->tcp_cong_timeout_ev(tcp);
+     debug("[CONG] a congestion timeout has occurred on %s", tcp->super.boundString);
+@@ -2361,9 +2423,39 @@
+ 
+     /* update the last time stamp value (RFC 1323) */
+     tcp->receive.lastTimestamp = header->timestampValue;
+-    if(header->timestampEcho && tcp->retransmit.backoffCount == 0) {
++    /* rtt: sample only on packets that acknowledge new data, so a packet sent long after the last one received
++     * (echoing an old TSval) cannot inflate SRTT */
++    if(header->timestampEcho && tcp->retransmit.backoffCount == 0 && (flags & TCP_PF_DATA_ACKED)) {
+         _tcp_updateRTTEstimate(tcp, host, header->timestampEcho);
+     }
++    if (tcp->diag.toPending && (flags & TCP_PF_DATA_ACKED)) {
++        tcp->diag.toPending = FALSE;
++        gboolean diagSpurious = header->timestampEcho != 0 && header->timestampEcho < tcp->diag.toTime;
++        if (diagSpurious) {
++            tcp->diag.spurious++;
++        }
++        if (_tcp_diagLog()) {
++            info("tcpd acked-after-timeout %p echo %d spurious %d srtt %d rttvar %d rto %d expect %d", (void*)tcp,
++                 (int)(header->timestampEcho != 0), (int)diagSpurious, tcp->timing.rttSmoothed,
++                 tcp->timing.rttVariance, tcp->retransmit.timeout,
++                 tcp->timing.rttSmoothed + MAX(4 * tcp->timing.rttVariance, CONFIG_TCP_RTO_MIN));
++        }
++    }
++    if (_tcp_diagLog()) {
++        gint64 diagMs = (gint64)(worker_getCurrentSimulationTime() / SIMTIME_ONE_MILLISECOND);
++        gint diagBin = (gint)((diagMs + 90000) / 12000) - 10; /* 12 s bins, boundaries at 30 s + k x 12 s */
++        if (diagBin != tcp->diag.lastBin) {
++            tcp->diag.lastBin = diagBin;
++            info("tcpd snap %p bin %d peer %u state %d srtt %d rttvar %d rto %d backoff %u samples %" G_GUINT64_FORMAT
++                 " timeouts %" G_GUINT64_FORMAT " spurious %" G_GUINT64_FORMAT " retx %" G_GSIZE_FORMAT
++                 " txdata %" G_GUINT64_FORMAT " cfgrtt %u sndbuf %" G_GSIZE_FORMAT " rcvbuf %" G_GSIZE_FORMAT " cwnd %u",
++                 (void*)tcp, diagBin, (unsigned)tcp_getPeerIP(tcp), (int)tcp->state, tcp->timing.rttSmoothed,
++                 tcp->timing.rttVariance, tcp->retransmit.timeout, tcp->retransmit.backoffCount, tcp->diag.samples,
++                 tcp->diag.timeouts, tcp->diag.spurious, tcp->info.retransmitCount, tcp->diag.txData,
++                 _tcp_calculateRTT(tcp, host), legacysocket_getOutputBufferSize(&(tcp->super)),
++                 legacysocket_getInputBufferSize(&(tcp->super)), (unsigned)tcp->cong.cwnd);
++        }
++    }
+ 
+     gboolean isAckDubious = ((packetLength == 0) && !(flags & TCP_PF_DATA_ACKED) && !(flags & TCP_PF_RWND_UPDATED)) || (flags & TCP_PF_DATA_SACKED);
+ 
+@@ -2437,8 +2529,9 @@
+     /* now flush as many packets as we can to socket */
+     _tcp_flush(tcp, host);
+ 
+-    /* clear it so we dont send outdated timestamp echos */
+-    tcp->receive.lastTimestamp = 0;
++    /* rtt: keep the most recent TSval received (RFC 7323 TS.Recent), so every later packet, including delayed ACKs
++     * sent by the ACK timer, echoes it; Shadow cleared it here, before the interface sent anything, so every echo
++     * was 0 and no RTT sample was ever taken */
+ 
+     trace("done processing in state %s", _tcp_stateToAscii(tcp->state));
+ }
+@@ -2931,6 +3024,7 @@
+     tcp->receive.lastAcknowledgment = initialSequenceNumber;
+ 
+     tcp->autotune.isEnabled = TRUE;
++    tcp->diag.lastBin = G_MININT;
+ 
+     tcp->throttledOutput = priorityqueue_new((GCompareDataFunc)packet_compareTCPSequence, NULL,
+                                              (GDestroyNotify)packet_unref, NULL, NULL);

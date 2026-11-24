@@ -1,0 +1,165 @@
+# Nov 08 00:0x coordinator: CLIENT-FAITHFUL SCORING FIRST. bin/cf/wbsim = bin/stale + a per-node slow_peer_weight;
+# --client-slow-peer sets it to 0 on Prysm, Teku, Nimbus and Lodestar hosts; Lighthouse and 'other' (Hermes, Erigon,
+# Grandine, unknown: not split by client) keep rust-libp2p's -10. Checked on T64-cf vs T64-age60-stale (same seed):
+# negatives only in Lighthouse/other views. Order: R20-cf (headline), R6-nopq-cf (matched BLS baseline, calibration
+# recheck), R6-pq-fs0-cf, R6-pq-b16-cf; then the conservative cells still pending (every client -10), incl. the
+# conservative R20. runs/nofallback-R20-pq-ps100-cf-s1 keeps R20-cf at x1.0 if the watchdog stops it.
+R20-pq-ps100-cf-s1      2048 20 --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --binary /home/yann/p2p-ministry-gossip2000/bin/cf/wbsim
+R6-nopq-ps100-cf-s1     2048 6  --no-pq --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --binary /home/yann/p2p-ministry-gossip2000/bin/cf/wbsim
+R6-pq-fs0-ps100-cf-s1   2048 6  --peer-scale 1.0 --fast-share 0 --seed 1 --max-msg-age 60 --client-slow-peer --binary /home/yann/p2p-ministry-gossip2000/bin/cf/wbsim
+R6-pq-b16-ps100-cf-s1   2048 6  --peer-scale 1.0 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --binary /home/yann/p2p-ministry-gossip2000/bin/cf/wbsim
+# NAME HOSTS SLOTS extra flags (after REAL; later flags win)
+# Since 08:10 Nov 7 (256 GB limit): scaled peer targets --peer-scale 0.25 = Lighthouse/Lodestar/other 50, Nimbus 40,
+# Teku 25, Prysm 18 (inbound cap +10 %). Done earlier under the 80 % RAM exception with REAL peer targets (scale 1.0):
+#   R-nopq-ps100-s1 2048 20 --no-pq --peer-scale 1.0 --seed 1      (peak 381.8 GiB)
+R-nopq-s1      2048 20  --no-pq --peer-scale 0.25 --seed 1
+# 13:26 Nov 7: R-pq-s1 (2048 x 50) stopped at sim 87 s, peak 200.8 GiB: projected ~243 GiB by sim 268 (> 256 GB) and
+# 43 min wall per slot. Partial output in runs/stopped-R-pq-s1-mem, excluded from results. The rest of the old plan
+# (R-pq-s2 2048 x 100 and five 2048 x 50 cells, ~400 slots = ~12 days at 43 min/slot) does not fit either. New plan:
+#   R6-*: 2048 hosts x 6 slots (stop 112 s, projected ~211 GiB, ~5 h) for the at-scale per-slot verdict;
+#   L-pq-s1: 1024 hosts x 50 slots (projected ~140 GiB, ~14 h) for the sustained-load trend.
+R6-pq-s1       2048 6   --peer-scale 0.25 --seed 1
+# Nov 07 14:30 coordinator: build with both fixes (bin/fixed/wbsim = lazy gossipsub queue; gen_config writes
+# sched.json), measure 512 x 4 at x1.0 after R6-pq-s1 (not alongside it), then run the PQ cells at the highest peer scale
+# whose projected peak is <= 225 GiB, ideally x1.0. Run names: -psNNN = peer scale, -fx = fixed binary (no -fx = old binary).
+P512-ps100-fx-s1  512 4  --peer-scale 1.0 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+# HELD until the probe set the peer scale; superseded at the end of this file:
+# Nov 07 13:52 coordinator: L runs at x0.5 (Lighthouse/Lodestar/other 100, Nimbus 80, Teku 50, Prysm 35; inbound cap +10 %) instead of x0.25, whose meshes thin 27 % over 20 slots; if it is stopped for memory, runs/stop-run.sh + runs/fallback.txt restart it as: L-pq-s1        1024 50  --peer-scale 0.25 --seed 1
+#HELD L-pq-ps050-s1  1024 50  --peer-scale 0.5 --seed 1
+#HELD R6-pq-s2       2048 6   --peer-scale 0.25 --seed 2
+#HELD R6-pq-b16-s1   2048 6   --peer-scale 0.25 --batch 16 --seed 1
+#HELD R6-pq-fs0-s1   2048 6   --peer-scale 0.25 --fast-share 0 --seed 1
+#HELD R6-pq-v600-s1  2048 6   --peer-scale 0.25 --consolidate 0.75 --msgs 1500 --seed 1
+#HELD R6-pq-v400-s1  2048 6   --peer-scale 0.25 --consolidate 0.5 --msgs 1000 --seed 1
+#HELD R6-pq-s1k-s1   2048 6   --peer-scale 0.25 --msg-bytes 1229 --seed 1
+# Nov 07 14:54 probe P512-ps100-fx-s1 (512 x 4, x1.0, fixed binary): peak 39.1 GiB vs 83.7 GiB with the old binary.
+# Projection (.amp-out/scale-plan.py): L 1,024 x 50 at x1.0 ~142 GiB, 2,048 x 6 at x1.0 ~192 GiB, both <= 225 GiB, so every
+# PQ cell runs at x1.0 (Lighthouse/Lodestar/other 200, Nimbus 160, Teku 100, Prysm 70) with bin/fixed/wbsim. If a run is
+# stopped for memory, runs/stop-run.sh moves it and the later lines with the same host count down one peer-scale step
+# (1.0 > 0.75 > 0.5 > 0.25) and resumes the queue. The HELD lines above are superseded.
+L-pq-ps100-fx-s1        1024 50 --peer-scale 1.0 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+R6-pq-ps100-fx-s1       2048 6  --peer-scale 1.0 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+R6-pq-ps100-fx-s2       2048 6  --peer-scale 1.0 --seed 2 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+R6-pq-b16-ps100-fx-s1   2048 6  --peer-scale 1.0 --batch 16 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+R6-pq-fs0-ps100-fx-s1   2048 6  --peer-scale 1.0 --fast-share 0 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+R6-pq-v600-ps100-fx-s1  2048 6  --peer-scale 1.0 --consolidate 0.75 --msgs 1500 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+R6-pq-v400-ps100-fx-s1  2048 6  --peer-scale 1.0 --consolidate 0.5 --msgs 1000 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+R6-pq-s1k-ps100-fx-s1   2048 6  --peer-scale 1.0 --msg-bytes 1229 --seed 1 --binary /home/yann/p2p-ministry-gossip2000/bin/fixed/wbsim
+# Nov 07 23:4x coordinator item 4: key cell 800k x 3 kB, seed 1, 2,048 hosts at x1.0 for as many slots as fit under
+# 225 GiB projected from L's curve: PSS(2,048) = 2.04-2.13 x (L RSS - 6.9 GiB) at the same sim time (R6-pq-ps100-fx-s1)
+# -> 20 slots (stop 280 s) 219-225 GiB; 22 -> 222-228. Binary bin/stale/wbsim = bin/fixed + --max-msg-age 60 (ignore
+# flood messages received > 60 s after publish; stops the recirculation seen in L from slot 28). Checked on 64 hosts:
+# T64-age60-stale 0 stale, normal delivery; T64-age005-stale (0.05 s) ignores as intended.
+R20-pq-ps100-age60-s1   2048 20 --peer-scale 1.0 --seed 1 --max-msg-age 60 --binary /home/yann/p2p-ministry-gossip2000/bin/stale/wbsim
+# Nov 08 09:3x diagnostic so the machine does not idle after the conservative R20 (coordinator may drop it): the cf key
+# cell with packet loss off (--loss-scale 0; jitter, latency, bandwidth unchanged). Tests whether loss on long paths with
+# Shadow's Reno drives the chronic far-region cloud misses and the growing late duplicates seen in every cf cell.
+R6-pq-noloss-ps100-cf-s1  2048 6  --peer-scale 1.0 --seed 1 --loss-scale 0 --max-msg-age 60 --client-slow-peer --binary /home/yann/p2p-ministry-gossip2000/bin/cf/wbsim
+# Nov 08 coordinator: after the conservative R20 and the loss-off diagnostic, the batch-16 key cell over 20 slots (cf).
+R20-pq-b16-ps100-cf-s1  2048 20 --peer-scale 1.0 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --binary /home/yann/p2p-ministry-gossip2000/bin/cf/wbsim
+# Nov 08 coordinator: cf2 = cf + per-client P3/P3b weight (Prysm 0; Teku, Lodestar, Nimbus -max_positive/(topic_weight*threshold^2); Lighthouse, other -topic_weight) and per-client IWANT promises (every id: Lighthouse, other; one random id: Prysm, Teku, Lodestar; none: Nimbus). Validated on T64-cf2 (10:20). Key cell first, then b16 (whatever R20-b16-cf shows), s1k, v600, v400, and the matched 20-slot BLS baseline.
+R20-pq-ps100-cf2-s1       2048 20 --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 08 19:22 stopped (dropped), partial output in runs/stopped-R20-pq-b16-ps100-cf2-s1-dropped: R20-pq-b16-ps100-cf2-s1   2048 20 --peer-scale 1.0 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 08 14:2x: R6-pq-noloss-ps100-cf-s1 had 0 incomplete node-slots in slots 2-5 (R20-cf: 23) -> coordinator rule: R20-cf2 with loss off, to test whether loss on long paths (Shadow Reno, no SACK) drives the misses.
+# replaced Nov 08 14:4x (coordinator): R20-pq-noloss-ps100-cf2-s1 2048 20 --peer-scale 1.0 --loss-scale 0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# matched no-PQ pair with R6-nopq-ps100-cf-s1 (bin/cf), loss off: does the lossy or the lossless model match mainnet attestation/column timing?
+# dropped Nov 08 19:2x (coordinator: 2.4 kB is the headline; 3 kB only as R20-pq-ps100-cf2-s1): R20-pq-v600-ps100-cf2-s1  2048 20 --peer-scale 1.0 --consolidate 0.75 --msgs 1500 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# dropped Nov 08 19:2x (coordinator: 2.4 kB is the headline; 3 kB only as R20-pq-ps100-cf2-s1): R20-pq-v400-ps100-cf2-s1  2048 20 --peer-scale 1.0 --consolidate 0.5 --msgs 1000 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 08 19:2x coordinator: 2.4 kB signatures (--msg-bytes 2458 = 2.4 x 1,024) are the headline; 3 kB stays as the
+# R20-pq-ps100-cf2-s1 reference. Message counts and P3 rates unchanged (b16: rate from the run's 20-slot mean).
+R20-pq-2k4-ps100-cf2-s1       2048 20 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+R6-nopq-noloss-ps100-cf-s1 2048 6 --no-pq --peer-scale 1.0 --loss-scale 0 --seed 1 --max-msg-age 60 --client-slow-peer --binary /home/yann/p2p-ministry-gossip2000/bin/cf/wbsim
+R20-pq-b16-2k4-ps100-cf2-s1   2048 20 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 09 00:4x coordinator: the 2.4 kB headline passes with zero margin in its worst slot (cloud 99.05 % in slot 13), so
+# the headline cell runs again with seed 2 before the variants. Order after R20-pq-b16-2k4-ps100-cf2-s1 (running): seed 2,
+# the matched 20-slot BLS baseline, v600, v400. R20-pq-s1k-ps100-cf2-s1 dropped: 2.4 kB passes, so 1.2 kB adds nothing.
+R20-pq-2k4-ps100-cf2-s2       2048 20 --peer-scale 1.0 --msg-bytes 2458 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+R20-nopq-ps100-cf2-s1     2048 20 --no-pq --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+R20-pq-v600-2k4-ps100-cf2-s1  2048 20 --peer-scale 1.0 --msg-bytes 2458 --consolidate 0.75 --msgs 1500 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+R20-pq-v400-2k4-ps100-cf2-s1  2048 20 --peer-scale 1.0 --msg-bytes 2458 --consolidate 0.5 --msgs 1000 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# dropped Nov 09 00:4x (coordinator): R20-pq-s1k-ps100-cf2-s1   2048 20 --peer-scale 1.0 --msg-bytes 1229 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 09 05:xx coordinator: so the machine does not idle after R20-pq-v400-2k4-ps100-cf2-s1. Long-horizon check on the final
+# model at 1,024 x 50 (2,048 x 50 does not fit in memory), the headline cell without the extra 1 Gbit hosts, then the
+# batch-16 long-horizon run (P3 rate = its own 50-slot mean, as perturb.py computes for --batch). L runs: report per slot
+# through slot 49 (completeness per class, PQ and BLS misses, P3 by observer client and topic, negative-score peers by
+# observer client, links per node, after-deadline PQ bytes) and whether each levels off.
+L-pq-2k4-ps100-cf2-s1         1024 50 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+R20-pq-fs0-2k4-ps100-cf2-s1   2048 20 --peer-scale 1.0 --msg-bytes 2458 --fast-share 0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+L-pq-b16-2k4-ps100-cf2-s1     1024 50 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# coordinator 22:4x Nov 9 + rtt2 validated 23:5x: rtt2 Shadow build (shadow-install-rtt2, repo/sim/shadow-3.3-rtt2.patch: rtt
+# + Eifel undo + Linux's RTT estimator; runs/T64-rtt-rtt2), with tcpd logging (shadowbin shadow-install-rtt2-log/bin); flags as the base runs
+# fallback, runs only if rtt3 fails validation (coordinator 00:0x Nov 10): R20-pq-2k4-rtt2-ps100-cf2-s1  2048 20 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# fallback, runs only if rtt3 fails validation (coordinator 00:0x Nov 10): R20-nopq-rtt2-ps100-cf2-s1  2048 20 --no-pq --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# fallback, runs only if rtt3 fails validation (coordinator 00:0x Nov 10): L-pq-2k4-rtt2-ps100-cf2-s1  1024 50 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# coordinator 22:4x Nov 9: queue order from now. rtt Shadow build (shadow-install-rtt, repo/sim/shadow-3.3-rtt.patch: lnxbuf + working TCP
+# timestamp echo + RTO = SRTT + max(4 RTTVAR, 200 ms); validated on runs/T64-rtt-*), via runs/shadowbin-NAME; flags as the base runs.
+# dropped 00:0x Nov 10 (coordinator: rtt3 replaces rtt): R20-pq-2k4-rtt-ps100-cf2-s1        2048 20 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# gap fillers on the current build (until rtt2 passes validation; then its three runs go in after the run in progress)
+# dropped 22:4x Nov 9 (coordinator: block and aggregate P3 rarely penalised anyone in L; the RTO ratchet is the leading time effect): R20-pq-2k4-act17-ps100-cf2-s1 2048 20 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim --score-mesh-activation 204
+
+# removed 23:5x Nov 9 (rtt2 passed; coordinator 22:4x): L-pq-2k4-rtt-ps100-cf2-s1          1024 50 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# removed 23:5x Nov 9 (rtt2 passed; coordinator 22:4x): R20-nopq-rtt-ps100-cf2-s1      2048 20 --no-pq --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 10 00:0x coordinator: rtt3 = rtt2 + Linux post-RTO window (cwnd = in_flight + 1 after the outstanding data is marked
+# lost, tcp_enter_loss); shadow-install-rtt3-log/bin via runs/shadowbin-NAME. Default: R20-pq-b16-2k4-ps100-cf2-s2 (current build)
+# runs next; the rtt3 set moves ahead of it if rtt3 passes T64 validation before L-pq-b16-2k4-ps100-cf2-s1 finishes. The L seed-2
+# runs stay on the current build until the coordinator decides after R20-pq-2k4-rtt3. rtt2 set only if rtt3 fails.
+# 01:2x Nov 10 coordinator: R20-pq-b16-2k4-ps100-cf2-s2 (current build) runs next so the machine does not wait for rtt4 (rtt3 + Linux echo rule); the TCP-fixed set after it uses rtt4 if rtt4 has passed T64 validation by the time R20-pq-b16-2k4-ps100-cf2-s2 finishes (lines renamed -rtt4-), otherwise rtt3; no mixing within the set
+R20-pq-b16-2k4-ps100-cf2-s2   2048 20 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# 00:5x Nov 10: rtt3 passed T64 validation before L-pq-b16-2k4-ps100-cf2-s1 finished, so the rtt3 set runs ahead of R20-pq-b16-2k4-ps100-cf2-s2 (coordinator rule)
+R20-pq-2k4-rtt4-ps100-cf2-s1  2048 20 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# replaced by the rtt4 line above (rtt4 passed T64 validation 02:2x Nov 10): R20-pq-2k4-rtt3-ps100-cf2-s1  2048 20 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+R20-nopq-rtt4-ps100-cf2-s1    2048 20 --no-pq --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# replaced by the rtt4 line above (rtt4 passed T64 validation 02:2x Nov 10): R20-nopq-rtt3-ps100-cf2-s1    2048 20 --no-pq --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# 02:4x Nov 10 coordinator: rtt4 is the final build. fs0 on rtt4 (flags of R20-pq-fs0-2k4-ps100-cf2-s1, tcpd logging via runs/shadowbin-NAME): does the pass depend on the 20 % 1 Gbit share? The current build's RTO ratchet inflates exactly its failure mode. Report next to R20-pq-fs0-2k4-ps100-cf2-s1.
+R20-pq-fs0-2k4-rtt4-ps100-cf2-s1  2048 20 --peer-scale 1.0 --msg-bytes 2458 --fast-share 0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 10 12:4x fixed rtt5 decision (coordinator 11:1x): the rebuilt rtt5 (restart phase checked, + RTT5_DUP) passed T64 before fs0-rtt4 ended and moves block p99 from publish 0.46 -> 1.05 s and PQ p99 by +52 to +68 % against rtt4, so the pair runs here with all three switches on (rebuilt binary, defaults).
+R20-pq-2k4-rtt5-ps100-cf2-s1  2048 20 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+R20-nopq-rtt5-ps100-cf2-s1    2048 20 --no-pq --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 10 19:0x coordinator: next after R20-nopq-rtt5: R20-pq-b16-2k4-rtt5 (flags of R20-pq-b16-2k4-ps100-cf2-s1, P3 rate from its own 20-slot mean = 66.93 for seed 1; fixed rtt5 with all three switches on, rtt5-log).
+R20-pq-b16-2k4-rtt5-ps100-cf2-s1  2048 20 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 10 21:1x coordinator: next after R20-pq-b16-2k4-rtt5, ahead of R20-pq-2k4-rtt5b: R20-pq-2k4-rtt5's flags on the rtt5 binary with window validation only (RTT5_CWV=1 RTT5_SSR=0 RTT5_DUP=1 = Linux with net.ipv4.tcp_slow_start_after_idle=0) and tcpd logging (shadowbin shadow-install-rtt5-cwv-log/bin; nofallback). If the verdict recommends that setting, it rests on this run. Report next to R20-pq-2k4-rtt4 and R20-pq-2k4-rtt5.
+R20-pq-2k4-cwv-ps100-cf2-s1   2048 20 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# activated 19:37 Nov 10: the rtt5b T64 check passed (rtt5boff = rtt5d byte for byte; RTT5_BETA rule at 100 % of 47,961 fast-recovery entries and 101,643 RTOs; no stalls; RTO formula holds) and block p99 from publish moved -13 %, 1 Gbit PQ p99 -14 % from rtt5d (coordinator 19:0x Nov 10)
+# Nov 11 01:2x coordinator: replaced by the bundled cell on the next line (R20-pq-b16-2k4-rtt5's flags, P3 rate 66.93, with RTT5_BETA=1: shadowbin shadow-install-rtt5b-beta-log/bin, nofallback); unbundled fails on rtt5 by far more than the CUBIC cut recovered at T64, so the bundled cell is where it could change the outcome: R20-pq-2k4-rtt5b-ps100-cf2-s1  2048 20 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+R20-pq-b16-2k4-rtt5b-ps100-cf2-s1  2048 20 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 11 03:0x (coordinator 01:1x Nov 11, rtt6 rule): rtt6 (rtt5 with its three switches on + Linux v6.12 CUBIC with HyStart; shadowbin shadow-install-rtt6-log/bin, tcpd logging, nofallback) moved T64 block p99 from publish 1.05 -> 0.90 s (-14 %) and PQ p99 -16/-17/-37 % (50/15, 50/25, 1 Gbit) against rtt5, so the bundled and the unbundled cells run right after R20-pq-b16-2k4-rtt5b; L-pq-b16-2k4-rtt6 follows them only if the bundled one passes the strict rule (.amp-out/scratch/decide-lb16rtt6.sh)
+R20-pq-b16-2k4-rtt6-ps100-cf2-s1  2048 20 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+R20-pq-2k4-rtt6-ps100-cf2-s1      2048 20 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# activated by .amp-out/scratch/decide-rtt6.sh b16: R20-pq-b16-2k4-rtt6-ps100-cf2-s1 passed the strict rule (pqdiag; coordinator 01:1x Nov 11): L-pq-b16-2k4-ps100-cf2-s1 flags, P3 rate from its own 50-slot mean, rtt6 with tcpd logging
+L-pq-b16-2k4-rtt6-ps100-cf2-s1   1024 50 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# CONDITIONAL (coordinator 19:0x Nov 10): activated by .amp-out/scratch/decide-lb16rtt5.sh only if R20-pq-b16-2k4-rtt5-ps100-cf2-s1 passes the strict rule (P3 rate from its own 50-slot mean; rtt5-log): L-pq-b16-2k4-rtt5-ps100-cf2-s1  1024 50 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 10 10:4x rtt5 decision (coordinator 08:5x): on T64, rtt5 moves block p99 from publish 0.46 -> 1.03 s and PQ p99 by +45 to +74 % (rule: >= 10 % on either), so the rtt5 pair runs right after fs0-rtt4 (tcpd logging, shadowbin shadow-install-rtt5-log/bin; both switches on by default). Sensitivity only; the main line stays on rtt4.
+# replaced by the cwv line below: R20-pq-2k4-cwv-ps100-cf2-s1 passed the strict rule (coordinator 01:1x Nov 11): L-pq-2k4-rtt4-ps100-cf2-s1    1024 50 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 11 04:0x coordinator 03:5x: order after the rtt6 cells (and L-pq-b16-2k4-rtt6 if it qualifies): fs0-b16, L-pq-2k4 seed 1, L-pq-2k4 seed 2, L-pq-b16 seed 2; each runs on rtt6 if the rtt6 cell with the same bundling passes the strict rule, otherwise on cwv (.amp-out/scratch/decide-rtt6.sh b16 / pq renames the lines); R20-nopq-rtt6 is appended last if either rtt6 cell passes
+# replaced by the cwv6 line below (coordinator 06:5x Nov 11: cwv6, the rtt6 binary with RTT5_SSR=0, replaces cwv as the fallback after its T64 check): R20-pq-fs0-b16-2k4-cwv-ps100-cf2-s1   2048 20 --peer-scale 1.0 --msg-bytes 2458 --fast-share 0 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# replaced by the rtt6 line below (coordinator 03:5x Nov 11: the rtt6 cell with the same bundling passed the strict rule): R20-pq-fs0-b16-2k4-cwv6-ps100-cf2-s1   2048 20 --peer-scale 1.0 --msg-bytes 2458 --fast-share 0 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 11 16:54 stopped (otheruser), partial output in runs/stopped-R20-pq-fs0-b16-2k4-rtt6-ps100-cf2-s1-otheruser: R20-pq-fs0-b16-2k4-rtt6-ps100-cf2-s1   2048 20 --peer-scale 1.0 --msg-bytes 2458 --fast-share 0 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+R20-pq-fs0-b16-2k4-rtt6-ps100-cf2-s1   2048 20 --peer-scale 1.0 --msg-bytes 2458 --fast-share 0 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# replaced by the cwv6 line below (coordinator 06:5x Nov 11: cwv6, the rtt6 binary with RTT5_SSR=0, replaces cwv as the fallback after its T64 check): L-pq-2k4-cwv-ps100-cf2-s1   1024 50 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# replaced by the rtt6 line below (coordinator 03:5x Nov 11: the rtt6 cell with the same bundling passed the strict rule): L-pq-2k4-cwv6-ps100-cf2-s1   1024 50 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 12 00:53 stopped (dropped), partial output in runs/stopped-L-pq-2k4-rtt6-ps100-cf2-s1-dropped: L-pq-2k4-rtt6-ps100-cf2-s1   1024 50 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# replaced by the rtt4 line above (rtt4 passed T64 validation 02:2x Nov 10): L-pq-2k4-rtt3-ps100-cf2-s1    1024 50 --peer-scale 1.0 --msg-bytes 2458 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# activated 14:36 Nov 10: R20-pq-fs0-2k4-rtt4-ps100-cf2-s1 failed the strict rule (cloud 97.82 % in slot 9; coordinator 02:4x Nov 10)
+# replaced by the cwv line below: R20-pq-2k4-cwv-ps100-cf2-s1 passed the strict rule (coordinator 01:1x Nov 11): R20-pq-fs0-b16-2k4-rtt4-ps100-cf2-s1  2048 20 --peer-scale 1.0 --msg-bytes 2458 --fast-share 0 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# moved ahead of L-pq-2k4-cwv-ps100-cf2-s1 (coordinator 03:5x Nov 11: fs0-b16 first, because its build is known first): R20-pq-fs0-b16-2k4-cwv-ps100-cf2-s1   2048 20 --peer-scale 1.0 --msg-bytes 2458 --fast-share 0 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# replaced by the rtt4 seed-2 lines below (coordinator 08:5x Nov 10): L-pq-b16-2k4-ps100-cf2-s2     1024 50 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# replaced by the rtt4 seed-2 lines below (coordinator 08:5x Nov 10): L-pq-2k4-ps100-cf2-s2         1024 50 --peer-scale 1.0 --msg-bytes 2458 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 10 08:5x coordinator: seed-2 L runs on rtt4 (tcpd logging, shadowbin shadow-install-rtt4-log/bin), L-pq-2k4 first, then L-pq-b16 (P3 rate from its own mean).
+# replaced by the cwv line below: R20-pq-2k4-cwv-ps100-cf2-s1 passed the strict rule (coordinator 01:1x Nov 11): L-pq-2k4-rtt4-ps100-cf2-s2     1024 50 --peer-scale 1.0 --msg-bytes 2458 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# replaced by the cwv6 line below (coordinator 06:5x Nov 11: cwv6, the rtt6 binary with RTT5_SSR=0, replaces cwv as the fallback after its T64 check): L-pq-2k4-cwv-ps100-cf2-s2   1024 50 --peer-scale 1.0 --msg-bytes 2458 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# replaced by the rtt6 line below (coordinator 03:5x Nov 11: the rtt6 cell with the same bundling passed the strict rule): L-pq-2k4-cwv6-ps100-cf2-s2   1024 50 --peer-scale 1.0 --msg-bytes 2458 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 12 00:5x dropped (coordinator 00:4x Nov 12: Yann adopts bundling, no more unbundled runs): L-pq-2k4-rtt6-ps100-cf2-s2   1024 50 --peer-scale 1.0 --msg-bytes 2458 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# replaced by the cwv line below: R20-pq-2k4-cwv-ps100-cf2-s1 passed the strict rule (coordinator 01:1x Nov 11): L-pq-b16-2k4-rtt4-ps100-cf2-s2 1024 50 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# replaced by the cwv6 line below (coordinator 06:5x Nov 11: cwv6, the rtt6 binary with RTT5_SSR=0, replaces cwv as the fallback after its T64 check): L-pq-b16-2k4-cwv-ps100-cf2-s2   1024 50 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# replaced by the rtt6 line below (coordinator 03:5x Nov 11: the rtt6 cell with the same bundling passed the strict rule): L-pq-b16-2k4-cwv6-ps100-cf2-s2   1024 50 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# Nov 12 01:0x coordinator 00:4x Nov 12 (Yann adopts bundling; post on PQ Gasper and subnets by 10:00, results by 09:30): two bundled rtt6 cells
+# ahead of L-pq-b16-2k4-rtt6-s2 and R20-nopq-rtt6, both R20-pq-b16-2k4-rtt6-ps100-cf2-s1 (P3 rate 66.93) with only the PQ subscriptions changed
+# (gen_config draws them from their own rng; checked at 2,048 hosts: nodes, sched, bg and pubs otherwise identical). 2sub = every home staker
+# (50/25 host with validators) also joins one other random PQ subnet, complete = both. bb2 = every home node (50/25 and 50/15) joins 2 random
+# backbone subnets and each staker also its duty subnet; stakers need their duty subnet (node field need), non-stakers their 2. Smoke tests
+# runs/T64-2sub and runs/T64-bb2 (64 x 6) passed 01:0x. bb2 starts only if .amp-out/scratch/gate-bb2.sh projects <= 235 GiB PSS.
+R20-pq-b16-2k4-2sub-rtt6-ps100-cf2-s1   2048 20 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim --staker-subnets 2
+R20-pq-b16-2k4-bb2-rtt6-ps100-cf2-s1    2048 20 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim --backbone-subnets 2
+L-pq-b16-2k4-rtt6-ps100-cf2-s2   1024 50 --peer-scale 1.0 --msg-bytes 2458 --batch 16 --seed 2 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim
+# added by .amp-out/scratch/decide-rtt6.sh (coordinator 03:5x Nov 11: an rtt6 cell passed the strict rule): no-PQ calibration and matched BLS baseline on rtt6, R20-nopq-rtt5-ps100-cf2-s1 flags, tcpd logging
+R20-nopq-rtt6-ps100-cf2-s1    2048 20 --no-pq --peer-scale 1.0 --seed 1 --max-msg-age 60 --client-slow-peer --client-p3-promises --binary /home/yann/p2p-ministry-gossip2000/bin/cf2/wbsim

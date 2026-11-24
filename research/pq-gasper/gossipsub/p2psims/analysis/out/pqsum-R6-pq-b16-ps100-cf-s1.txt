@@ -1,0 +1,42 @@
+== R6-pq-b16-ps100-cf-s1: 2048 hosts, 6 slots, peer-scale 1.0
+ PQ complete per slot (% of online node-slots): [99.8, 99.9, 100.0, 99.9, 99.9, 99.9]
+  50x15: 100.0 % of 1977 node-slots; latency from publish p50/p99 [0.09, 0.55] s
+  50x25: 100.0 % of 5836 node-slots; latency from publish p50/p99 [0.08, 0.41] s
+  cloud: 99.68 % of 4435 node-slots; latency from publish p50/p99 [0.09, 0.52] s
+  offline node-slots excluded 40, PQ signatures lost to churn 11
+ analyze.py: slots covered 6, latency p50/p90/p99/max [91, 274, 660, None] ms
+  kappa        [7.82, 7.96, 8.16, 8.22, 7.97, 8.38]
+  copies       [3.95, 3.98, 4.27, 4.36, 4.09, 4.26]
+  idontwant    [10106.33, 10694.55, 12229.74, 13043.0, 11067.79, 12291.36]
+  fwd_dropped  [8703143, 6581932, 6242719, 7065114, 5742675, 6148594]
+  queue_full   [5021791, 3784897, 3910146, 4662887, 3954234, 4320747]
+  never        [3430, 3450, 2285, 2352, 2403, 1531]
+  rx_MiB       [18.43, 18.73, 19.21, 19.35, 18.76, 19.72]
+  tail_MiB     [5.12, 5.32, 5.22, 5.37, 5.29, 5.45]
+  50x15: up 43 % of cap in the 4 s window (max node 75 %), down 15 % (max 26 %), up over slot 38 %
+  50x25: up 29 % of cap in the 4 s window (max node 46 %), down 15 % (max 26 %), up over slot 25 %
+  cloud: up 6 % of cap in the 4 s window (max node 12 %), down 6 % (max 16 %), up over slot 3 %
+ block: from slot start p10/50/90/95/99 [1.057, 1.41, 2.698, 2.747, 2.822], missing 0/8158
+ col: from slot start p10/50/90/95/99 [1.044, 1.429, 2.671, 2.71, 2.767], missing 105/148740
+ att: from slot start p10/50/90/95/99 [4.273, 5.065, 5.925, 6.047, 7.153], missing 9498/1163495
+ agg: from slot start p10/50/90/95/99 [8.23, 8.548, 9.373, 9.693, 10.299], missing 0/1554112
+ copies per unique message (incl. pq): {'bg_agg': 5.21, 'bg_att': 3.16, 'bg_block': 4.68, 'bg_col': 4.45, 'bg_syncc': 5.31, 'pq': 4.25}
+  50x15: rx p50/p90 6.6/7.9 Mbit/s, tx p50/p90 5.7/6.4 Mbit/s (slot average), pq 2285.2 kB/slot
+  50x25: rx p50/p90 6.7/8.2 Mbit/s, tx p50/p90 6.1/7.4 Mbit/s (slot average), pq 2462.3 kB/slot
+  cloud: rx p50/p90 22.3/38.6 Mbit/s, tx p50/p90 26.2/35.2 Mbit/s (slot average), pq 22817.9 kB/slot
+ mesh links per slot: [465356, 438981, 456266, 485545, 453429, 461024]
+ peers with negative score per slot: [56, 6402, 11813, 15127, 18365, 18080] {'BrokenPromise': 332, 'GraftBackoff': 1303}
+ conns: {'lighthouse': 200.0, 'link:50x15': 165.6, 'link:50x25': 162.8, 'link:cloud': 164.9, 'lodestar': 200.0, 'nimbus': 160.4, 'other': 200.1, 'prysm': 71.3, 'teku': 100.8}
+ mesh pq/att by link: {'link:50x15': (6.4, 6.8), 'link:50x25': (7.2, 7.3), 'link:cloud': (7.2, 5.0)}
+ mesh links per node (all topics) by slot: [228.0, 214.9, 223.2, 237.7, 221.9, 225.9]
+  PQ mesh size per joined PQ topic, 50x15: [6.78, 6.74, 6.71, 6.8, 6.02, 6.22]
+  PQ mesh size per joined PQ topic, 50x25: [6.72, 7.13, 7.37, 7.44, 6.95, 7.1]
+  PQ mesh size per joined PQ topic, cloud: [6.74, 6.62, 7.2, 7.47, 6.96, 7.21]
+ PQ kB received after the deadline (8 s) until the next burst (16 s), per node, mean per slot (backlog signal):
+  50x15: [14.4, 14.5, 23.6, 21.3, 27.5, 34.0]
+  50x25: [13.4, 12.9, 22.1, 25.9, 24.5, 28.9]
+  cloud: [184.9, 374.5, 577.2, 707.8, 753.8, 934.0]
+ failed sends per node per slot, mean (forward msgs failed / any msg timed out / any msg refused, queue full):
+  50x15: [(990.2, 990.2, 0.0), (1211.7, 1211.7, 0.0), (1156.9, 1156.9, 0.0), (1264.1, 1264.1, 0.0), (1024.7, 1024.7, 0.0), (1117.5, 1117.5, 0.0)]
+  50x25: [(841.2, 841.2, 0.0), (905.2, 905.2, 0.0), (895.8, 895.2, 0.8), (950.6, 950.6, 0.0), (819.4, 819.4, 0.1), (844.1, 844.1, 0.0)]
+  cloud: [(10182.4, 4422.6, 6767.9), (7141.0, 2895.9, 5100.9), (6720.5, 2474.7, 5268.7), (7709.1, 2565.2, 6284.2), (6205.9, 1883.8, 5329.1), (6679.2, 2036.1, 5823.1)]

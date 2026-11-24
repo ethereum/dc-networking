@@ -1,0 +1,20 @@
+f2000-25x10-p10-s1 --msgs 2000 --links 25/10 --fast-share 0.1 --seed 1 --pcap 3
+f2000-1g-s1 --msgs 2000 --links 1000/1000 --fast-share 0 --seed 1
+f2000-50x25-p20-s1 --msgs 2000 --links 50/25 --fast-share 0.2 --seed 1
+f2000-15x5-p5-s1 --msgs 2000 --links 15/5 --fast-share 0.05 --seed 1
+f2000-50x15-p10-s1 --msgs 2000 --links 50/15 --fast-share 0.1 --seed 1
+f500-25x10-p10-s1 --msgs 500 --links 25/10 --fast-share 0.1 --seed 1
+f1000-25x10-p10-s1 --msgs 1000 --links 25/10 --fast-share 0.1 --seed 1
+f250-25x10-p10-s1 --msgs 250 --links 25/10 --fast-share 0.1 --seed 1
+f2000-25x10-p10-s2 --msgs 2000 --links 25/10 --fast-share 0.1 --seed 2
+f2000-25x10-p10-s3 --msgs 2000 --links 25/10 --fast-share 0.1 --seed 3
+f2000-100x50-p20-s1 --msgs 2000 --links 100/50 --fast-share 0.2 --seed 1
+f2000-25x10-p10-d25-s1 --msgs 2000 --links 25/10 --fast-share 0.1 --seed 1 --gossip-dial 25
+f2000-15x5-p5-s2 --msgs 2000 --links 15/5 --fast-share 0.05 --seed 2
+f2000-50x25-p20-s2 --msgs 2000 --links 50/25 --fast-share 0.2 --seed 2
+f1000-25x10-p10-s2 --msgs 1000 --links 25/10 --fast-share 0.1 --seed 2
+f500-25x10-p10-s2 --msgs 500 --links 25/10 --fast-share 0.1 --seed 2
+f2000-25x10-p10-w2-s1 --msgs 2000 --links 25/10 --fast-share 0.1 --seed 1 --publish-window 2
+f2000-50x25-p20-s3 --msgs 2000 --links 50/25 --fast-share 0.2 --seed 3
+f250-25x10-p10-s2 --msgs 250 --links 25/10 --fast-share 0.1 --seed 2
+f2000-1g-s2 --msgs 2000 --links 1000/1000 --fast-share 0 --seed 2

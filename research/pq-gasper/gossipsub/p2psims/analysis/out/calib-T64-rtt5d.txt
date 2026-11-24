@@ -1,0 +1,48 @@
+== T64-rtt-rtt4: 64 hosts, 20 slots
+ block from slot start p50/p90/p99: 1.82 / 3.53 / 6.01  missing 0 / 1128
+ block from publish p50/p95/p99: 0.16 / 0.37 / 0.46
+ att after 4 s p50/p95/p99: 0.76 / 1.87 / 3.15  missing 4619 / 138202 (3.34 %)
+ agg after 8 s p50/p95: 0.58 / 1.74  missing 0
+ col from slot start p50/p95: 1.80 / 5.83  missing 5 / 19454
+ duplicates (copies-1): {'bg_agg': 5.12, 'bg_att': 1.74, 'bg_block': 3.71, 'bg_col': 2.31, 'bg_syncc': 4.89, 'pq': 3.08}
+  50x15: n=9 block+att+col 140 kB/s, rx 6.01 Mbit/s, tx p50 4.74 Mbit/s
+  50x25: n=33 block+att+col 137 kB/s, rx 5.35 Mbit/s, tx p50 4.90 Mbit/s
+  cloud: n=22 block+att+col 390 kB/s, rx 19.62 Mbit/s, tx p50 20.24 Mbit/s
+ conns: {'lighthouse': 59.2, 'link:50x15': 55.4, 'link:50x25': 56.1, 'link:cloud': 62.5, 'lodestar': 46.6, 'nimbus': 54.5, 'other': 57.9, 'prysm': 57.1, 'teku': 60.5}
+ mesh means: {'lighthouse': {'block': 6.2, 'agg': 6.3, 'syncc': 6.3, 'pq': 5.5, 'att': 2.7, 'col': 4.1}, 'link:50x15': {'block': 7.8, 'agg': 7.6, 'syncc': 7.4, 'att': 5.0, 'col': 6.4, 'pq': 8.0}, 'link:50x25': {'block': 7.0, 'agg': 7.0, 'syncc': 7.1, 'pq': 7.2, 'att': 4.4, 'col': 5.7}, 'link:cloud': {'pq': 6.3, 'block': 8.2, 'agg': 8.3, 'syncc': 8.2, 'att': 3.0, 'col': 4.3}}
+ mesh_links per slot: [13166, 11299, 10335, 9986, 9776, 9545, 10991, 10617, 10702, 10909, 10498, 10542, 10841, 11248, 10989, 10520, 10419, 10698, 10729, 11113]
+ neg-score peers per slot: [1, 141, 264, 352, 393, 351, 274, 280, 278, 287, 330, 324, 293, 278, 300, 307, 310, 306, 307, 291] penalties {'BrokenPromise': 45, 'GraftBackoff': 308, 'MessageDeficit': 57}
+ churn: {"scheduled_offline_intervals": 1, "leaves": 0, "joins": 1, "restarts": 0, "offline_events": 0, "online_events": 1, "conn_churned": 408, "pm_dials": 3420, "pm_prunes": 0, "refused_inbound": 0, "score_disconnects": 0, "mesh_churn_by_reason": {"BadScore": 15392, "Dc": 1193, "Excess": 2363, "Prune": 12
+ verify: {"50x15 cpu x1 workers 4": {"nodes": 5, "msgs_verified_per_node": 40479, "mean_delay_ms": 5.908, "max_delay_ms": 78.0}, "50x15 cpu x3.0 workers 4": {"nodes": 4, "msgs_verified_per_node": 40419, "mean_delay_ms": 266.419, "max_delay_ms": 988.3}, "50x25 cpu x1 workers 4": {"nodes": 29, "msgs_verified_p
+== T64-rtt-rtt5: 64 hosts, 20 slots
+ block from slot start p50/p90/p99: 2.04 / 3.72 / 6.34  missing 0 / 1128
+ block from publish p50/p95/p99: 0.38 / 0.84 / 1.03
+ att after 4 s p50/p95/p99: 0.82 / 2.26 / 3.67  missing 6984 / 138202 (5.05 %)
+ agg after 8 s p50/p95: 0.70 / 1.85  missing 0
+ col from slot start p50/p95: 1.87 / 5.83  missing 13 / 19454
+ duplicates (copies-1): {'bg_agg': 5.17, 'bg_att': 1.54, 'bg_block': 4.0, 'bg_col': 1.94, 'bg_syncc': 4.86, 'pq': 3.22}
+  50x15: n=9 block+att+col 122 kB/s, rx 5.84 Mbit/s, tx p50 4.87 Mbit/s
+  50x25: n=33 block+att+col 128 kB/s, rx 5.28 Mbit/s, tx p50 4.75 Mbit/s
+  cloud: n=22 block+att+col 364 kB/s, rx 20.0 Mbit/s, tx p50 19.69 Mbit/s
+ conns: {'lighthouse': 59.1, 'link:50x15': 55.4, 'link:50x25': 56.1, 'link:cloud': 62.5, 'lodestar': 46.6, 'nimbus': 54.6, 'other': 57.9, 'prysm': 57.1, 'teku': 60.4}
+ mesh means: {'lighthouse': {'block': 6.3, 'agg': 6.0, 'syncc': 6.0, 'pq': 5.2, 'att': 2.4, 'col': 3.5}, 'link:50x15': {'block': 7.5, 'agg': 7.7, 'syncc': 7.8, 'att': 4.4, 'col': 5.8, 'pq': 8.1}, 'link:50x25': {'block': 7.0, 'agg': 6.8, 'syncc': 6.9, 'pq': 7.1, 'att': 3.9, 'col': 5.2}, 'link:cloud': {'pq': 6.1, 'block': 8.4, 'agg': 8.1, 'syncc': 8.1, 'att': 2.7, 'col': 3.7}}
+ mesh_links per slot: [13040, 11219, 10264, 9740, 9315, 8739, 10020, 9453, 9256, 9086, 9088, 9255, 10025, 10282, 10065, 9989, 9832, 9868, 10207, 10342]
+ neg-score peers per slot: [1, 175, 325, 425, 479, 444, 420, 406, 424, 476, 498, 441, 375, 337, 360, 375, 412, 398, 368, 387] penalties {'BrokenPromise': 68, 'GraftBackoff': 598, 'MessageDeficit': 142}
+ churn: {"scheduled_offline_intervals": 1, "leaves": 0, "joins": 1, "restarts": 0, "offline_events": 0, "online_events": 1, "conn_churned": 425, "pm_dials": 3432, "pm_prunes": 0, "refused_inbound": 0, "score_disconnects": 0, "mesh_churn_by_reason": {"BadScore": 16413, "Dc": 1189, "Excess": 2045, "Prune": 14
+ verify: {"50x15 cpu x1 workers 4": {"nodes": 5, "msgs_verified_per_node": 40479, "mean_delay_ms": 3.937, "max_delay_ms": 71.5}, "50x15 cpu x3.0 workers 4": {"nodes": 4, "msgs_verified_per_node": 40419, "mean_delay_ms": 239.516, "max_delay_ms": 966.0}, "50x25 cpu x1 workers 4": {"nodes": 29, "msgs_verified_p
+== T64-rtt-rtt5d: 64 hosts, 20 slots
+ block from slot start p50/p90/p99: 2.06 / 3.77 / 6.23  missing 0 / 1128
+ block from publish p50/p95/p99: 0.37 / 0.86 / 1.05
+ att after 4 s p50/p95/p99: 0.85 / 2.69 / 6.41  missing 1855 / 138202 (1.34 %)
+ agg after 8 s p50/p95: 0.72 / 1.84  missing 0
+ col from slot start p50/p95: 1.87 / 5.83  missing 8 / 19454
+ duplicates (copies-1): {'bg_agg': 5.14, 'bg_att': 1.62, 'bg_block': 3.94, 'bg_col': 1.92, 'bg_syncc': 4.87, 'pq': 3.17}
+  50x15: n=9 block+att+col 129 kB/s, rx 5.96 Mbit/s, tx p50 5.06 Mbit/s
+  50x25: n=33 block+att+col 129 kB/s, rx 5.29 Mbit/s, tx p50 4.89 Mbit/s
+  cloud: n=22 block+att+col 383 kB/s, rx 19.85 Mbit/s, tx p50 20.17 Mbit/s
+ conns: {'lighthouse': 59.1, 'link:50x15': 55.4, 'link:50x25': 56.1, 'link:cloud': 62.5, 'lodestar': 46.6, 'nimbus': 54.5, 'other': 57.9, 'prysm': 57.1, 'teku': 60.4}
+ mesh means: {'lighthouse': {'block': 6.3, 'agg': 5.9, 'syncc': 6.3, 'pq': 5.1, 'att': 2.3, 'col': 3.4}, 'link:50x15': {'block': 7.7, 'agg': 7.8, 'syncc': 7.7, 'att': 4.7, 'col': 6.1, 'pq': 8.1}, 'link:50x25': {'block': 7.0, 'agg': 6.8, 'syncc': 7.0, 'pq': 7.3, 'att': 3.9, 'col': 5.2}, 'link:cloud': {'pq': 6.0, 'block': 8.0, 'agg': 8.0, 'syncc': 8.0, 'att': 2.6, 'col': 3.7}}
+ mesh_links per slot: [13196, 11330, 10149, 9475, 9271, 8849, 10433, 9852, 9572, 9818, 9228, 9021, 9393, 9703, 9845, 9672, 9568, 9868, 9811, 10046]
+ neg-score peers per slot: [0, 168, 321, 447, 495, 479, 421, 436, 447, 458, 483, 455, 402, 372, 359, 380, 387, 413, 394, 394] penalties {'BrokenPromise': 57, 'GraftBackoff': 595, 'MessageDeficit': 28}
+ churn: {"scheduled_offline_intervals": 1, "leaves": 0, "joins": 1, "restarts": 0, "offline_events": 0, "online_events": 1, "conn_churned": 439, "pm_dials": 3451, "pm_prunes": 0, "refused_inbound": 0, "score_disconnects": 0, "mesh_churn_by_reason": {"BadScore": 16006, "Dc": 1381, "Excess": 2021, "Prune": 14
+ verify: {"50x15 cpu x1 workers 4": {"nodes": 5, "msgs_verified_per_node": 40479, "mean_delay_ms": 3.761, "max_delay_ms": 70.0}, "50x15 cpu x3.0 workers 4": {"nodes": 4, "msgs_verified_per_node": 40419, "mean_delay_ms": 233.507, "max_delay_ms": 972.8}, "50x25 cpu x1 workers 4": {"nodes": 29, "msgs_verified_p

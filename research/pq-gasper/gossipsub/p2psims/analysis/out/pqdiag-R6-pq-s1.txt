@@ -1,0 +1,84 @@
+== R6-pq-s1: 2048 hosts, 6 slots, peer-scale 0.25, binary old; analysed slots 2-5
+
+# Item 1: PQ misses at the 8 s deadline (online node-slots)
+ node-slot completeness per slot and class (%), all slots:
+  50x15  [100.0, 100.0, 99.7, 99.7, 99.39, 99.7]
+  50x25  [100.0, 99.9, 99.59, 99.69, 99.9, 99.59]
+  cloud  [94.18, 97.83, 97.29, 96.35, 96.22, 96.08]
+  all    [97.89, 99.17, 98.78, 98.48, 98.48, 98.33]
+  pass rule (every class >= 99 % in every slot from slot 2): FAIL
+  worst slot per class (%, slot): {'50x15': (99.39, 4), '50x25': (99.59, 2), 'cloud': (96.08, 5)}
+
+ slots 2-5: per class  node-slots | complete % | PQ msg miss % at 8 s | at 9 s | needed pairs
+  50x15     1318 | 99.62 | 0.0941 | 0.0838 | 164651
+  50x25     3891 | 99.69 | 0.0929 | 0.0694 | 485393
+  cloud     2957 | 96.48 | 0.3931 | 0.3425 | 5901028
+  all       8166 | 98.52 | 0.3633 | 0.3157 | 6551072
+  offline node-slots left out: 26
+
+ incomplete node-slots, slots 2-5, by first matching reason: count (missing msgs)
+  50x15       5: never 5 (155)
+  50x25      12: never 6 (326), near_miss(<=1s) 3 (28), late(>1s) 3 (97)
+  cloud     104: whole_subnet 11 (8038), never 74 (14465), near_miss(<=1s) 11 (143), late(>1s) 8 (549)
+  50x15  repeat hosts: 4 of 330 hosts incomplete at least once; node-slots on hosts incomplete >= 2 times 40.0 %; top 10 % of these hosts hold 40.0 %; max per host 2 of 4 slots
+  50x25  repeat hosts: 8 of 976 hosts incomplete at least once; node-slots on hosts incomplete >= 2 times 50.0 %; top 10 % of these hosts hold 33.33 %; max per host 4 of 4 slots
+  cloud  repeat hosts: 49 of 742 hosts incomplete at least once; node-slots on hosts incomplete >= 2 times 81.73 %; top 10 % of these hosts hold 15.38 %; max per host 4 of 4 slots
+  share of a slot's incomplete hosts also incomplete in the previous slot (%): [38.71, 67.74, 55.88]
+  whole-subnet misses: 37 (node-slot, topic); mesh size on that topic at 3.95 s: 0 in 36, 1-5 in 1, >=6 in 0
+  messages missed by > 50 % of their online subscribers: 0 of 7993 (0 reached none); they account for 0.0 % of missed (node, message) pairs
+
+# BLS attestation miss rate (tracked attestations, slots 2-5): missing at 8 s / never, % of deliveries
+  50x15  0.395 / 0.325 % of 51641;  2sub 0.395 / 0.325 (n=51641)
+  50x25  0.414 / 0.314 % of 152334;  2sub 0.414 / 0.314 (n=152334)
+  cloud  5.700 / 4.211 % of 959520;  2sub 0.424 / 0.304 (n=88297); all64 6.234 / 4.607 (n=871223)
+
+# Item 2: per slot (mesh snapshot at 3.95 s into the slot)
+  mesh links         [450141, 342138, 283837, 308870, 257249, 270086]
+  links/node         [220.5, 167.5, 138.9, 151.2, 125.9, 132.3]
+  conns/node         [41.9, 42.1, 42.3, 41.9, 42.2, 41.6]
+  PQ mesh 50x15      [6.08, 5.64, 4.7, 4.65, 3.97, 3.82]
+  PQ mesh<6 50x15 %  [31.21, 47.27, 68.18, 65.76, 82.73, 81.76]
+  PQ mesh=0 50x15 %  [0.0, 0.0, 1.21, 1.52, 2.42, 2.74]
+  PQ mesh 50x25      [6.2, 6.28, 5.7, 5.71, 5.06, 4.96]
+  PQ mesh<6 50x25 %  [31.48, 29.36, 44.05, 42.65, 56.53, 58.44]
+  PQ mesh=0 50x25 %  [0.0, 0.0, 0.92, 1.13, 2.06, 2.47]
+  PQ mesh cloud      [6.75, 5.9, 5.05, 5.5, 4.48, 4.67]
+  PQ mesh<6 cloud %  [21.36, 41.67, 59.65, 50.51, 67.94, 64.3]
+  PQ mesh=0 cloud %  [0.0, 0.36, 1.79, 0.99, 3.4, 2.58]
+  neg peers          [146, 12319, 21543, 24754, 28353, 25442]
+  negative-score peers per observer, by observer class:
+   50x15  [0.0, 4.7, 9.1, 11.2, 13.1, 12.8]
+   50x25  [0.0, 4.0, 7.7, 9.6, 11.4, 11.2]
+   cloud  [0.2, 9.3, 14.9, 15.9, 17.5, 14.0]
+  % of connections to peers of a class that are negative, by scored-peer class:
+   50x15  [0.0, 13.77, 25.28, 31.09, 34.53, 33.46]
+   50x25  [0.0, 9.62, 18.63, 23.3, 27.69, 27.35]
+   cloud  [0.46, 20.39, 32.57, 34.87, 38.71, 31.69]
+  negative scores by band per slot [(-1,0), [-10,-1), [-100,-10), [-1000,-100), < -1000]:
+   [[0, 9, 27, 108, 2], [45, 450, 1945, 3010, 6869], [549, 2274, 4691, 8678, 5351], [2139, 4400, 8805, 5950, 3460], [4232, 8495, 6746, 4662, 4218], [7061, 6015, 4855, 4437, 3074]]
+  negatives per observer vs the observer's own failed sends (timeouts + queue full) in the 12 s before the snapshot:
+   0-0 failed: 2799 observer-slots, mean negatives 2.0
+   1-99 failed: 639 observer-slots, mean negatives 8.1
+   100-999 failed: 3932 observer-slots, mean negatives 9.0
+   1000-4999 failed: 3642 observer-slots, mean negatives 13.3
+   5000-inf failed: 1243 observer-slots, mean negatives 14.5
+  per slot, summed over hosts (counter deltas over the slot):
+   penalty GraftBackoff    [250, 43, 20, 12, 71, 3295]
+   penalty BrokenPromise   [111, 181, 312, 191, 155, 224]
+   penalty MessageDeficit  [0, 0, 0, 0, 0, 0]
+   penalty IPColocation    [0, 0, 0, 0, 0, 0]
+   pq        BadScore churn [44744, 23367, 12502, 15938, 8064, 14878]
+   bg_block  BadScore churn [4654, 3794, 2524, 2650, 1947, 2245]
+   bg_agg    BadScore churn [5890, 4975, 3474, 3808, 2972, 3502]
+   bg_att    BadScore churn [50345, 14017, 5678, 11807, 3359, 16245]
+   bg_col    BadScore churn [99032, 36848, 17250, 26450, 9939, 34546]
+   bg_syncc  BadScore churn [4719, 3813, 2486, 2625, 1913, 2236]
+   messages dropped after the queue timeout, thousands, summed over hosts (forwards / publishes):
+   pq        [(1658.0, 0.0), (879.0, 0.1), (416.2, 0.0), (542.0, 0.0), (254.8, 0.0), (524.8, 0.0)]
+   bg_agg    [(1266.1, 0.0), (1218.0, 0.0), (906.4, 0.0), (999.0, 0.0), (864.5, 0.0), (997.9, 0.0)]
+   bg_att    [(1729.2, 3.6), (655.6, 1.0), (335.5, 0.0), (597.9, 0.0), (188.6, 0.1), (691.9, 0.3)]
+   bg_col    [(7.2, 0.0), (0.3, 0.0), (0.0, 0.0), (0.2, 0.0), (0.0, 0.0), (0.1, 0.0)]
+   bg_syncc  [(49.4, 0.0), (43.3, 0.0), (28.3, 0.0), (37.2, 0.0), (25.5, 0.0), (32.1, 0.0)]
+   failed sends per host (50x15): timed out / queue full [(1121, 0), (1136, 0), (884, 0), (889, 0), (681, 0), (702, 0)]
+   failed sends per host (50x25): timed out / queue full [(1007, 0), (998, 0), (735, 0), (835, 0), (616, 0), (662, 0)]
+   failed sends per host (cloud): timed out / queue full [(4465, 9226), (1958, 3592), (925, 1488), (1441, 3245), (694, 822), (1763, 2585)]

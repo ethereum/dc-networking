@@ -1,0 +1,10 @@
+att misses by receiver type, link: missed / deliveries (%)
+  2sub   50x15       96 /   237075  0.04 %  nodes=330
+  2sub   50x25      303 /   700562  0.04 %  nodes=976
+  2sub   cloud      169 /   405693  0.04 %  nodes=566
+  all64  cloud    54604 /  4010773  1.36 %  nodes=176
+  2sub: 0.04 % of 1343330
+  all64: 1.36 % of 4010773
+  failed forwards per node per slot, 50x15: mean 1075 (p50 927, p90 1924, max 3089); timed out 1075, queue full 0 (n=330)
+  failed forwards per node per slot, 50x25: mean 849 (p50 653, p90 1668, max 3228); timed out 849, queue full 0 (n=976)
+  failed forwards per node per slot, cloud: mean 1252 (p50 315, p90 4417, max 11911); timed out 700, queue full 555 (n=742)

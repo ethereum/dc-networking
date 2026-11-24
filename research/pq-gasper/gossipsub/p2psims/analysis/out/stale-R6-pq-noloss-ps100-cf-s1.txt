@@ -1,0 +1,1 @@
+runs/R6-pq-noloss-ps100-cf-s1: stale_pq 0, stale_bg 0 (summed over 2048 hosts)
