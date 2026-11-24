@@ -1,0 +1,57 @@
+== S1024x20-h100x100-al0-v2000-s1: 1024 hosts (1 Gbit 366, 100x100-access=cable 224, 100x100-access=dsl 139, 100x100-access=fiber 295), 20 slots, analysed slots 2-19
+   1,600 signatures per subnet per slot (2404 B each, bundles of up to 16: 210.6 messages per slot); published per slot min 1599 max 1600 (the rest lost to churn); every node needs every signature of the slot by 8.0 s
+
+# Node-slots complete at 8.0 s (% of online node-slots), per slot:
+  1 Gbit   99.7 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0  99.7  99.7  99.7 100.0 100.0 100.0 100.0 100.0  99.7
+  100x100-access=cable  99.6 100.0  99.6 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0  99.6  99.6  99.6 100.0 100.0 100.0 100.0 100.0 100.0
+  100x100-access=dsl  99.3 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0
+  100x100-access=fiber 100.0 100.0 100.0 100.0  99.7 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0  99.7  99.7 100.0 100.0
+  pass rule (>= 99 % in every slot from 2, slots 2-19): 1 Gbit PASS (worst 99.73 %, 1 of 366); 100x100-access=cable PASS (worst 99.55 %, 1 of 223); 100x100-access=dsl PASS (worst 100.00 %, 0 of 137); 100x100-access=fiber PASS (worst 99.66 %, 1 of 293)
+
+# Per class, slots 2-19 (means over online node-slots unless noted)
+  1 Gbit (366 hosts): complete 99.94 % of 6588 node-slots; signatures missing at 8 s 0.002 % (0.0 per node-slot of 1596), at 9 s 0.001 %; messages missing 0.002 % / 0.001 %
+    signatures missing at 8 s by publisher link: from 1 Gbit publishers 0.002 % (0.0 per node-slot of 1566), from home publishers 0.001 % (0.0 of 29)
+    signatures held (% of needed, mean over node-slots) at 5, 6, 7, 8, 9, 10, 12 s: 86.9, 99.9, 100.0, 100.0, 100.0, 100.0, 100.0
+    incomplete node-slots hold p10/p50/p90 95.4, 96.1, 97.5 % of the signatures at 8 s; never delivered (by slot end + drain) in 1
+    slot time when the last needed signature arrived p50/p90/p99 5.17, 5.54, 6.09 s (node-slots that got all by 20 s: 6587 of 6588); first-delivery latency from publish p50/p99 0.18 / 1.03 s
+    late first deliveries (needed messages first received 8-16 s) per node-slot: mean 0.00, max slot 0.02; first half 0.00 vs second half 0.01
+    upload handed to TCP, % of the uplink (> 100 = socket buffers filling): 4-8 s mean 5.2, busiest node 9.6 (n178), node-slots >= 90 % 0.0 %; 4-5 s mean 14.7, node-slots >= 90 % 0.0 %
+    download % of cap: 4-8 s mean 3.0, 4-5 s mean 6.0, node-slots >= 90 % in 4-5 s 0.0 %
+    received in 4-8 s besides PQ messages (control, background, framing): 802 kB per node-slot; PQ bytes per received copy 16840
+    PQ sends queued per node-slot (4-16 s) 1586, of which dropped after 1 s in the queue 197 (12 %); PQ copies received 869 per node-slot (4.14 per needed message), IWANT-requested 120.3
+    PQ mesh at 3.95 s: degree 7.72, 1 Gbit share 42.5 %
+    1 Gbit share of the PQ mesh, complete vs incomplete node-slots: 42.5 vs 21.3 %
+  100x100-access=cable (224 hosts): complete 99.90 % of 4014 node-slots; signatures missing at 8 s 0.003 % (0.0 per node-slot of 1600), at 9 s 0.000 %; messages missing 0.002 % / 0.000 %
+    signatures missing at 8 s by publisher link: from 1 Gbit publishers 0.003 % (0.0 per node-slot of 1570), from home publishers 0.000 % (0.0 of 29)
+    signatures held (% of needed, mean over node-slots) at 5, 6, 7, 8, 9, 10, 12 s: 60.0, 92.4, 100.0, 100.0, 100.0, 100.0, 100.0
+    incomplete node-slots hold p10/p50/p90 94.6, 97.8, 98.7 % of the signatures at 8 s; never delivered (by slot end + drain) in 0
+    slot time when the last needed signature arrived p50/p90/p99 5.55, 6.68, 6.89 s (node-slots that got all by 20 s: 4014 of 4014); first-delivery latency from publish p50/p99 0.34 / 2.07 s
+    late first deliveries (needed messages first received 8-16 s) per node-slot: mean 0.00, max slot 0.04; first half 0.00 vs second half 0.01
+    upload handed to TCP, % of the uplink (> 100 = socket buffers filling): 4-8 s mean 27.8, busiest node 49.4 (n139), node-slots >= 90 % 0.0 %; 4-5 s mean 57.8, node-slots >= 90 % 18.6 %
+    download % of cap: 4-8 s mean 37.4, 4-5 s mean 56.4, node-slots >= 90 % in 4-5 s 0.0 %
+    received in 4-8 s besides PQ messages (control, background, framing): 687 kB per node-slot; PQ bytes per received copy 17154
+    PQ sends queued per node-slot (4-16 s) 1014, of which dropped after 1 s in the queue 235 (23 %); PQ copies received 1098 per node-slot (5.22 per needed message), IWANT-requested 262.2
+    PQ mesh at 3.95 s: degree 6.35, 1 Gbit share 42.2 %
+    1 Gbit share of the PQ mesh, complete vs incomplete node-slots: 42.2 vs 15.0 %
+  100x100-access=dsl (139 hosts): complete 100.00 % of 2479 node-slots; signatures missing at 8 s 0.000 % (0.0 per node-slot of 1600), at 9 s 0.000 %; messages missing 0.000 % / 0.000 %
+    signatures missing at 8 s by publisher link: from 1 Gbit publishers 0.000 % (0.0 per node-slot of 1571), from home publishers 0.000 % (0.0 of 29)
+    signatures held (% of needed, mean over node-slots) at 5, 6, 7, 8, 9, 10, 12 s: 55.0, 92.9, 100.0, 100.0, 100.0, 100.0, 100.0
+    slot time when the last needed signature arrived p50/p90/p99 5.64, 6.71, 6.89 s (node-slots that got all by 20 s: 2479 of 2479); first-delivery latency from publish p50/p99 0.39 / 2.09 s
+    late first deliveries (needed messages first received 8-16 s) per node-slot: mean 0.00, max slot 0.00; first half 0.00 vs second half 0.00
+    upload handed to TCP, % of the uplink (> 100 = socket buffers filling): 4-8 s mean 26.4, busiest node 59.3 (n492), node-slots >= 90 % 0.0 %; 4-5 s mean 49.7, node-slots >= 90 % 11.5 %
+    download % of cap: 4-8 s mean 39.3, 4-5 s mean 50.5, node-slots >= 90 % in 4-5 s 0.0 %
+    received in 4-8 s besides PQ messages (control, background, framing): 696 kB per node-slot; PQ bytes per received copy 17287
+    PQ sends queued per node-slot (4-16 s) 1040, of which dropped after 1 s in the queue 282 (27 %); PQ copies received 1155 per node-slot (5.49 per needed message), IWANT-requested 352.1
+    PQ mesh at 3.95 s: degree 6.22, 1 Gbit share 41.4 %
+  100x100-access=fiber (295 hosts): complete 99.94 % of 5284 node-slots; signatures missing at 8 s 0.002 % (0.0 per node-slot of 1600), at 9 s 0.001 %; messages missing 0.002 % / 0.001 %
+    signatures missing at 8 s by publisher link: from 1 Gbit publishers 0.002 % (0.0 per node-slot of 1571), from home publishers 0.001 % (0.0 of 29)
+    signatures held (% of needed, mean over node-slots) at 5, 6, 7, 8, 9, 10, 12 s: 60.5, 93.5, 100.0, 100.0, 100.0, 100.0, 100.0
+    incomplete node-slots hold p10/p50/p90 91.1, 99.6, 99.9 % of the signatures at 8 s; never delivered (by slot end + drain) in 1
+    slot time when the last needed signature arrived p50/p90/p99 5.57, 6.66, 6.84 s (node-slots that got all by 20 s: 5283 of 5284); first-delivery latency from publish p50/p99 0.34 / 2.03 s
+    late first deliveries (needed messages first received 8-16 s) per node-slot: mean 0.00, max slot 0.05; first half 0.00 vs second half 0.01
+    upload handed to TCP, % of the uplink (> 100 = socket buffers filling): 4-8 s mean 29.5, busiest node 53.9 (n394), node-slots >= 90 % 0.0 %; 4-5 s mean 64.3, node-slots >= 90 % 24.4 %
+    download % of cap: 4-8 s mean 36.0, 4-5 s mean 53.3, node-slots >= 90 % in 4-5 s 0.0 %
+    received in 4-8 s besides PQ messages (control, background, framing): 689 kB per node-slot; PQ bytes per received copy 17326
+    PQ sends queued per node-slot (4-16 s) 1048, of which dropped after 1 s in the queue 216 (21 %); PQ copies received 1040 per node-slot (4.95 per needed message), IWANT-requested 236.5
+    PQ mesh at 3.95 s: degree 6.63, 1 Gbit share 40.2 %
+    1 Gbit share of the PQ mesh, complete vs incomplete node-slots: 40.2 vs 15.0 %
