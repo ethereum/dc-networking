@@ -13,7 +13,7 @@ PQ Gasper keeps today's Gasper consensus and replaces BLS attestations with post
 
 ## Layout
 
-- [post/pq-gasper-on-gossipsub.md](post/pq-gasper-on-gossipsub.md): the post, with its two charts in `post/charts/`.
+- [post/pq-gasper-on-gossipsub.md](post/pq-gasper-on-gossipsub.md): the post. `post/charts/generate_charts.py` draws its two charts.
 - [results/pq-gasper-one-subnet.md](results/pq-gasper-one-subnet.md): the study behind the post, with every run.
 - [results/realism-calibration.md](results/realism-calibration.md): the network perturbations, each validated on its own, and their calibration against today's mainnet. Calibration on the later builds is in the Calibration section of [superseded/gossip-one-subnet-realistic.md](superseded/gossip-one-subnet-realistic.md).
 - [results/gossipsub-scoring-by-client.md](results/gossipsub-scoring-by-client.md): how each client scores and drops slow peers, read from their source code.
