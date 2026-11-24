@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
-"""Charts for ../pq-gasper-on-gossipsub.md.
+"""Charts for the posts in the parent folder.
 
-Run from anywhere: python3 generate_charts.py  ->  single-subnet.svg and uplink.svg next to this script.
+Run from anywhere: python3 generate_charts.py  ->  the SVGs next to this script: single-subnet.svg and uplink.svg for
+../pq-gasper-on-gossipsub.md, and subnet-link-limits.svg for ../pq-gasper-subnet-specs.md.
 
 Each SVG holds a light and a dark palette and switches with prefers-color-scheme, so a plain Markdown image works on
 GitHub and on HackMD; without CSS it falls back to the light palette. Palette from
-research/clients/silver/generate_figures.py. Data: the "Load" table of
+research/clients/silver/generate_figures.py. Data of the first two charts: the "Load" table of
 research/pq-gasper/gossipsub/results/pq-gasper-one-subnet.md (2,048 nodes, one seed per load; the 1,600 run covers
-slots 2-14).
+slots 2-14). The third chart's data is described at LINK_LIMITS.
 """
 
+import math
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -36,6 +38,32 @@ CLASSES = [
 UPLINK = [
     ("Home, no validators", "50/15 Mbit/s", [33.9, 45.9, 55.9, 71.6, 84.3, 114.9], [1, 1, 0, 0, 0, 0], "s1"),
     ("Home stakers", "50/25 Mbit/s", [22.6, 31.1, 38.5, 50.1, 59.1, 85.1], [1, 1, 1, 0, 0, 0], "s2"),
+]
+
+# One subnet at 1,600 signatures per subnet per slot on 2,048 nodes: a run per home link, grouped by the packet loss
+# kept on the home access lines (per direction). A run is its home link (down/up, Mbit/s), a note for the label, and
+# for each seed the home nodes incomplete at 8.0 s in the worst slot and the home nodes online in that slot. Source:
+# the "pass rule" line of research/pq-gasper/gossipsub/p2psims/analysis/out/pq1600-<RUN>.txt, slots 2-19. The 50/15
+# and 50/25 rows are the two home classes of Q2048x20-m1600-s1, the run of the gossipsub post (slots 2-14). Rows are
+# listed worst first.
+PASS_BAR = 1.0  # % of a class's online nodes that may be incomplete in a slot
+LINK_LIMITS = [
+    ("Usual packet loss, 0.05–0.25 %", [
+        ("50/15", "earlier post", [(253, 330)]),
+        ("50/25", "earlier post", [(455, 974)]),
+        ("1,000/200", "", [(288, 1302)]),
+        ("1,000/100", "", [(275, 1299)]),
+    ]),
+    ("A fifth of it, 0.01–0.05 %", [
+        ("1,000/200", "", [(63, 1301)]),
+    ]),
+    ("Loss-free home lines", [
+        ("50/100", "", [(289, 1303)]),
+        ("1,000/50", "", [(50, 1302)]),
+        ("100/100", "two seeds", [(11, 1302), (8, 1319)]),
+        ("1,000/75", "", [(8, 1302)]),
+        ("1,000/100", "", [(4, 1302)]),
+    ]),
 ]
 
 
@@ -152,8 +180,71 @@ def uplink():
     return svg(y0 + 58, "Home nodes fail once their mean upload reaches about half the uplink", desc, body)
 
 
+def subnet_link_limits():
+    x0, x1 = 240, 640           # plot, 0.1 % to 100 % of the home nodes on a log scale
+    col = 736                   # right edge of the number column
+    head, row, gap = 36, 26, 10  # header baseline, row height, space between groups
+
+    def x(v):
+        return x0 + (x1 - x0) * math.log10(v / 0.1) / 3
+
+    def share(seed):
+        bad, online = seed
+        return 100 * bad / online
+
+    def pct(v):
+        return f"{v:.2g} %"
+
+    rule = x(PASS_BAR)
+    body = [
+        text(24, head, "Home link, down/up in Mbit/s", 12, "ink2"),
+        text(rule - 24, head, "passed", 12.5, "ink2", anchor="end"),
+        f'<circle cx="{rule - 12:g}" cy="{head - 4}" r="5" {paint("s1")}/>',
+        f'<circle cx="{rule + 12:g}" cy="{head - 4}" r="4.25" stroke-width="1.75" {paint("surface", "ink2")}/>',
+        text(rule + 24, head, "failed", 12.5, "ink2"),
+        text(col, head, "incomplete", 12, "ink2", anchor="end"),
+    ]
+    rows, y = [], head + 12
+    for label, runs in LINK_LIMITS:
+        body.append(text(24, y + 18, label, 12.5, "ink2"))
+        y += row
+        for run in runs:
+            rows.append((y + row / 2, *run))
+            y += row
+        y += gap
+    axis_y = y - gap + 4
+    body += [line(x(v), head + 12, x(v), axis_y, "grid") for v in (0.1, 10, 100)]
+    body += [line(x0, cy, x1, cy, "grid") for cy, *_ in rows]
+    body.append(line(rule, head - 16, rule, axis_y, "ink2", 1.5, "4 3"))
+    for cy, link, note, seeds in rows:
+        ok = max(map(share, seeds)) <= PASS_BAR
+        bold = ' font-weight="600"' if ok else ""
+        sub = f'<tspan dx="8" font-size="12" font-weight="400" {paint("ink2")}>{escape(note)}</tspan>' if note else ""
+        body.append(f'<text x="24" y="{cy + 5:g}" font-size="14"{bold} {paint("ink" if ok else "ink2")}>'
+                    f'{escape(link)}{sub}</text>')
+        for seed in seeds:
+            body.append(f'<circle cx="{x(share(seed)):.1f}" cy="{cy:g}" r="5.5" {paint("s1")}/>'
+                        if share(seed) <= PASS_BAR else
+                        f'<circle cx="{x(share(seed)):.1f}" cy="{cy:g}" r="4.75" stroke-width="2" '
+                        f'{paint("surface", "ink2")}/>')
+        body.append(text(col, cy + 5, pct(max(map(share, seeds))), 14, "ink" if ok else "ink2", 600 if ok else 400,
+                         "end"))
+    body.append(line(x0, axis_y, x1, axis_y, "axis"))
+    body += [text(x(v), axis_y + 18, f"{v:g} %", 12, "muted", anchor="middle") for v in (0.1, 1, 10, 100)]
+    body.append(text(x0, axis_y + 40, "Home nodes incomplete at 8.0 s in the run's worst slot, log scale", 12.5,
+                     "ink2"))
+    desc = ("Dots on a log scale from 0.1 to 100 %: the home nodes that miss at least one of a slot's 1,600 "
+            "signatures at 8.0 s, in each run's worst slot, by home link (down/up, Mbit/s) and by packet loss on the "
+            f"home access line. A run passes with at most {PASS_BAR:g} %. "
+            + " ".join(f"{label}: " + ", ".join(f"{link} " + " and ".join(pct(share(s)) for s in seeds)
+                                                 for link, _, seeds in runs) + "." for label, runs in LINK_LIMITS))
+    return svg(axis_y + 58, "Home nodes incomplete in each run's worst slot, by home link and access-line loss", desc,
+               body)
+
+
 def main():
-    for name, build in (("single-subnet", single_subnet), ("uplink", uplink)):
+    for name, build in (("single-subnet", single_subnet), ("uplink", uplink),
+                        ("subnet-link-limits", subnet_link_limits)):
         (OUT / f"{name}.svg").write_text(build())
         print("wrote", OUT / f"{name}.svg")
 

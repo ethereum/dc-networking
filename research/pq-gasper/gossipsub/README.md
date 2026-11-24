@@ -14,6 +14,7 @@ PQ Gasper keeps today's Gasper consensus and replaces BLS attestations with post
 ## Layout
 
 - [posts/pq-gasper-on-gossipsub.md](../../../posts/pq-gasper-on-gossipsub.md): the post, in the repository's [posts/](../../../posts/README.md). `posts/charts/generate_charts.py` draws its two charts.
+- [posts/pq-gasper-subnet-specs.md](../../../posts/pq-gasper-subnet-specs.md): the follow-up post, on the link a node needs to carry the subnet.
 - [results/pq-gasper-one-subnet.md](results/pq-gasper-one-subnet.md): the study behind the post, with every run.
 - [results/pq-gasper-subnet-specs.md](results/pq-gasper-subnet-specs.md) and [results/pq-gasper-subnet-specs-1024.md](results/pq-gasper-subnet-specs-1024.md): the follow-up study, on 2,048 and on 1,024 nodes, with every run. It varies the home links of the 1,600-signature subnet to find the link a node needs.
 - [results/realism-calibration.md](results/realism-calibration.md): the network perturbations, each validated on its own, and their calibration against today's mainnet. Calibration on the later builds is in the Calibration section of [superseded/gossip-one-subnet-realistic.md](superseded/gossip-one-subnet-realistic.md).
