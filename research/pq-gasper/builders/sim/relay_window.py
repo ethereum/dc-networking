@@ -1,4 +1,4 @@
-"""Who may relay a slot's votes: arithmetic behind option 2 of ../README.md.
+"""Who may relay a slot's votes: arithmetic behind option 2 of the builders post (posts/pq-gasper-builders.md).
 
 Stdlib only, deterministic. Nothing here is proved; it is back-of-envelope.
 

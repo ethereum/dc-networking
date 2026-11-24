@@ -5,8 +5,9 @@ Run from anywhere: python3 generate_charts.py  ->  single-subnet.svg and uplink.
 
 Each SVG holds a light and a dark palette and switches with prefers-color-scheme, so a plain Markdown image works on
 GitHub and on HackMD; without CSS it falls back to the light palette. Palette from
-research/clients/silver/generate_figures.py. Data: the "Load" table of ../../results/pq-gasper-one-subnet.md (2,048
-nodes, one seed per load; the 1,600 run covers slots 2-14).
+research/clients/silver/generate_figures.py. Data: the "Load" table of
+research/pq-gasper/gossipsub/results/pq-gasper-one-subnet.md (2,048 nodes, one seed per load; the 1,600 run covers
+slots 2-14).
 """
 
 from pathlib import Path

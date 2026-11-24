@@ -1,6 +1,6 @@
 """What a pqGasper attestation aggregate is worth to the proposer that includes it.
 
-Stdlib only, deterministic. Prints every reward number quoted in ../README.md.
+Stdlib only, deterministic. Prints every reward number quoted in the builders post (posts/pq-gasper-builders.md).
 The bid statistics are constants, measured once from the relay data APIs.
 
 Spec (consensus-specs `pq` branch @ ee867e9, built on Gloas; Altair reward weights):

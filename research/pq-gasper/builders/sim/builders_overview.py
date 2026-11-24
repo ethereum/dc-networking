@@ -1,4 +1,4 @@
-"""Draw ../builders-overview.svg: the figure of ../README.md.
+"""Draw posts/charts/builders-overview.svg: the figure of the builders post (posts/pq-gasper-builders.md).
 
 Two lanes that read left to right, and two finish lines.
 - Regular path: 16 attestation subnets, 16 aggregation subnets, one global aggregation
@@ -95,6 +95,6 @@ text(C1 + W1 / 2 - 9, MID_B - 9, "raw votes", 12, GREEN, None, "end")
 arrow(C2 + W1 + 5, C3 - 6, MID_B, GREEN, "n")
 a('</svg>')
 
-out = Path(__file__).resolve().parent.parent / "builders-overview.svg"
+out = Path(__file__).resolve().parents[4] / "posts" / "charts" / "builders-overview.svg"
 out.write_text("\n".join(o) + "\n")
 print(f"wrote {out.name}: {W} x {H}")

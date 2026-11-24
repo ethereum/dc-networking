@@ -6,7 +6,7 @@
 
 **Main idea.** We keep a very simple regular path for attestation aggregation, and accept that it may not get a slot's votes to EIP-7870 nodes before the next block. Rewards do not suffer, because a block includes the votes cast two slots before it, so the bottleneck is vote dissemination for fork-choice safety. For the duration of a single fork (until PQ-DC ships), proposers of the previous slots act as aggregators, and get the right to disseminate a global aggregate. Proposers on EIP-7870 nodes rely on builders, who are incentivized to share aggregates too, as they have their MEV rewards at stake.
 
-![The regular path of PQ Gasper votes with its topics, the lightweight global topic we add, and their deadlines](builders-overview.png)
+![The regular path of PQ Gasper votes with its topics, the lightweight global topic we add, and their deadlines](charts/builders-overview.png)
 
 ## Why
 

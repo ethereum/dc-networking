@@ -3,7 +3,7 @@
 Stdlib only, deterministic. Run: python3 builders_timeline.py
 
 Each bar is (start, end in the fast case, end in the slow case, kind, label, label position).
-Times are seconds from the start of slot N. Sources (see ../README.md):
+Times are seconds from the start of slot N. Sources (see posts/pq-gasper-builders.md):
 - deadlines: Gloas, votes due at 25 % and aggregates at 50 % of a 12 s slot;
 - network: Anton Nashatyrev's simulation (1M validators, 16 subnets, mesh degree 8, home
   50/25 nodes off the vote subnets). Votes sent at 3.0 s reach 10 Gbit/s pools by 3.84 s
@@ -101,7 +101,7 @@ for kind, lab in (("net", "network"), ("cpu", "proving (leanVM)"), ("slack", "sp
     lx += 50 + 7 * len(lab)
 a(f'<rect x="{lx}" y="{ly - 12}" width="22" height="14" rx="3" fill="{C["net_bg"]}" stroke="{C["net"]}" stroke-dasharray="3 2"/>')
 a(f'<text x="{lx + 28}" y="{ly}" font-size="12" fill="{C["mute"]}">solid: fast case, pale: slow case</text>')
-a(f'<text x="{W - 16}" y="{ly}" text-anchor="end" font-size="11" fill="{C["mute"]}">12 s Gloas slot, network times at 1M validators. Sources: builders/README.md</text>')
+a(f'<text x="{W - 16}" y="{ly}" text-anchor="end" font-size="11" fill="{C["mute"]}">12 s Gloas slot, network times at 1M validators. Sources: posts/pq-gasper-builders.md</text>')
 a('</svg>')
 
 out = Path(__file__).resolve().parent.parent / "builders-timeline.svg"

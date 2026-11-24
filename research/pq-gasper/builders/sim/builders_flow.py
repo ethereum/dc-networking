@@ -1,7 +1,7 @@
 """Draw ../builders-flow.svg: who carries a slot's votes, with and without builders.
 
 Stdlib only, deterministic. Run: python3 builders_flow.py
-Numbers are those of ../README.md: 788,728 validators (24,648 votes per slot, ~1,540
+Numbers are those of the builders post (posts/pq-gasper-builders.md): 788,728 validators (24,648 votes per slot, ~1,540
 per subnet), leanVM proofs of 209 KiB per subnet and 303 KiB per slot, leanVM merge
 times, and Anton Nashatyrev's 12.6 ms verification time.
 """

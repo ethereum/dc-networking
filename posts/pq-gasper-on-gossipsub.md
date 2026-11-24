@@ -49,17 +49,17 @@ Ethlabs calls PQ Gasper versus PQ decoupled consensus "the biggest open question
 - **Signatures:** each slot draws 1,600 signers (200 to 800 in the load runs), weighted by validators, so 98 % of signatures come from 1 Gbit nodes. A signature is 2,404 B (leanXMSS). Each node bundles its own into messages of up to 16 and publishes them 4.0–4.5 s into the slot: at 1,600, that is 302 messages and 3.84 MB per slot.
 - **Deadline:** every node needs every signature 8.0 s into the slot, when aggregation starts. A class passes when at least 99 % of its nodes have them all, in every slot from slot 2.
 - **Gossipsub:** rust-libp2p 0.49.5 with IDONTWANT. Each node runs one client's peer target, mesh degree and peer scoring, in mainnet's client mix: Lighthouse (53 %, 200 peers, D = 5), Prysm (21 %, 70 peers), and Nimbus, Teku, Lodestar and others (D = 8). The signature topic is scored as one of 16 subnets.
-- **Network:** latencies between 12 cities from measured pings; fiber, cable and DSL access with jitter and 0.05–0.25 % packet loss; 30 % of home nodes behind NAT; connections that last 30 minutes on average, and nodes that restart, leave and join. Verifying a signature takes 400 µs, three times as long on a fifth of home nodes. The perturbations are [calibrated](../results/realism-calibration.md) against mainnet's block and attestation arrival times.
+- **Network:** latencies between 12 cities from measured pings; fiber, cable and DSL access with jitter and 0.05–0.25 % packet loss; 30 % of home nodes behind NAT; connections that last 30 minutes on average, and nodes that restart, leave and join. Verifying a signature takes 400 µs, three times as long on a fifth of home nodes. The perturbations are [calibrated](../research/pq-gasper/gossipsub/results/realism-calibration.md) against mainnet's block and attestation arrival times.
 - **TCP:** Linux 6.12's CUBIC with HyStart, its RTT estimate and timeouts, and slow start after idle.
 - **Other traffic:** blocks, data columns, aggregates and sync-committee messages at mainnet rates; no BLS attestations, which PQ Gasper replaces.
 
 ## How the simulations were run
 
-- **Simulator:** [Shadow](https://shadow.github.io/) 3.3.0 runs each node's real binary as a Linux process, and emulates the network and TCP under it in simulated time. [Three patches](../sim/README.md): two Shadow bugs (upload limits were ignored, and writes over 64 KiB could stall a connection), per-packet jitter, and TCP that follows Linux 6.12.
+- **Simulator:** [Shadow](https://shadow.github.io/) 3.3.0 runs each node's real binary as a Linux process, and emulates the network and TCP under it in simulated time. [Three patches](../research/pq-gasper/gossipsub/sim/README.md): two Shadow bugs (upload limits were ignored, and writes over 64 KiB could stall a connection), per-packet jitter, and TCP that follows Linux 6.12.
 - **Node:** `wbsim`, a rust-libp2p node (TCP, noise, yamux) on gossipsub 0.49.5 that scores peers as each client does. Two gossipsub patches allocate send queues on demand (same limits, less memory) and add the clients' IWANT-promise rules.
-- **Runs:** `sim/gen_config.py` and `sim/perturb.py` write each run's Shadow configuration from flags: nodes, links, clients, perturbations and the publishing schedule. A run is 30 s of warm-up and 20 slots of 12 s. There were twelve runs, all with seed 1: six loads, five single-change levers and one diagnostic.
+- **Runs:** [`sim/gen_config.py`](../research/pq-gasper/gossipsub/sim/gen_config.py) and [`sim/perturb.py`](../research/pq-gasper/gossipsub/sim/perturb.py) write each run's Shadow configuration from flags: nodes, links, clients, perturbations and the publishing schedule. A run is 30 s of warm-up and 20 slots of 12 s. There were twelve runs, all with seed 1: six loads, five single-change levers and one diagnostic.
 - **Machine:** one server with 96 CPUs and 503 GiB. A 2,048-node run used 48 CPUs, 1.3–2.6 hours and up to 235 GiB.
-- **Analysis:** every node logs each message it receives and, every 0.5 s, its traffic counters; [`pq1600.py`](../p2psims/analysis/pq1600.py) turns the logs into completeness, latency, upload and dropped sends per class and slot.
+- **Analysis:** every node logs each message it receives and, every 0.5 s, its traffic counters; [`pq1600.py`](../research/pq-gasper/gossipsub/p2psims/analysis/pq1600.py) turns the logs into completeness, latency, upload and dropped sends per class and slot.
 
 ```sh
 # as run on the machine, whose paths the scripts keep: NAME HOSTS SLOTS THREADS [flags]
@@ -68,4 +68,4 @@ bash p2psims/runs/run_pq1600.sh Q2048x20-m400-s1 2048 20 46 --msgs 400
 python3 -I p2psims/analysis/pq1600.py Q2048x20-m1600-s1 --per-slot
 ```
 
-Every run and number is in the [full report](../results/pq-gasper-one-subnet.md). [`charts/generate_charts.py`](charts/generate_charts.py) draws the charts.
+Every run and number is in the [full report](../research/pq-gasper/gossipsub/results/pq-gasper-one-subnet.md). [`charts/generate_charts.py`](charts/generate_charts.py) draws the charts.

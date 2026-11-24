@@ -1,6 +1,6 @@
 # Superseded
 
-Work that later studies replaced, kept for the record. The current results are the [post](../post/pq-gasper-on-gossipsub.md) and [results/pq-gasper-one-subnet.md](../results/pq-gasper-one-subnet.md).
+Work that later studies replaced, kept for the record. The current results are the [post](../../../../posts/pq-gasper-on-gossipsub.md) and [results/pq-gasper-one-subnet.md](../results/pq-gasper-one-subnet.md).
 
 - **125 signatures per subnet instead of 1,600.** [gossip-one-subnet-realistic.md](gossip-one-subnet-realistic.md) and its summary [pq-signatures-over-gossipsub-realistic-results.md](pq-signatures-over-gossipsub-realistic-results.md) split 2,000 signatures per slot over 16 subnets, so each subnet carried 125, while PQ Gasper needs about 1,600. Their network model, calibration, client scoring and TCP builds still stand; the current study reuses them.
 - **Clean network.** [gossip-2000.md](gossip-2000.md), [gossip-2000-improvements.md](gossip-2000-improvements.md) and [gossip-consolidation.md](gossip-consolidation.md) test one topic of 2,000 signatures, and [gossip-one-subnet.md](gossip-one-subnet.md) 16 subnets, without packet loss, churn, client scoring or background traffic, on Shadow's original TCP.
