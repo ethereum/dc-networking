@@ -1,0 +1,111 @@
+run runs/R20-pq-b16-2k4-rtt5-ps100-cf2-s1, mesh events from slot 2
+
+== lighthouse: 1115 hosts
+  view: slow_peer_w=-10.0 iwant_mode=0  P3 [weight, threshold, full-deficit cost]: pq=(-0.062, 36.54, -5.215) att=(-0.016, 219.493, -11.762) block=(-0.5, 0.685, -0.117)
+  bg_agg:topic_iwant_msgs = 7511618
+  bg_att:message_deficit_per_topic = 1107
+  bg_att:topic_iwant_msgs = 9746447
+  bg_block:topic_iwant_msgs = 13106
+  bg_col:topic_iwant_msgs = 25131
+  bg_syncc:topic_iwant_msgs = 166121
+  broken_promises = 50670
+  iwant_promises = 18724754
+  iwant_rerequests = 0
+  iwant_rpcs = 1494139
+  message_deficit_per_topic = 6640
+  scoring_penalties:BrokenPromise = 757
+  scoring_penalties:MessageDeficit = 7747
+  topic_iwant_msgs = 1262331
+  promises/IWANT = 12.532, broken/IWANT = 0.0339
+  most negative peer score per mesh event: min -87843029.4, p10 -7240.0, median -4900.0 (19999 events)
+
+== lodestar: 58 hosts
+  view: slow_peer_w=0.0 iwant_mode=1  P3 [weight, threshold, full-deficit cost]: pq=(-1.887, 36.54, -157.5) att=(-0.209, 219.493, -157.5) block=(-671.478, 0.685, -157.5)
+  bg_agg:topic_iwant_msgs = 1483798
+  bg_att:message_deficit_per_topic = 474
+  bg_att:topic_iwant_msgs = 244107
+  bg_block:topic_iwant_msgs = 2340
+  bg_col:topic_iwant_msgs = 706
+  bg_syncc:topic_iwant_msgs = 11417
+  broken_promises = 15
+  iwant_promises = 76674
+  iwant_rerequests = 1251055
+  iwant_rpcs = 76674
+  message_deficit_per_topic = 380
+  scoring_penalties:BrokenPromise = 13
+  scoring_penalties:MessageDeficit = 854
+  topic_iwant_msgs = 172312
+  promises/IWANT = 1.000, broken/IWANT = 0.0002
+  most negative peer score per mesh event: min -11415.2, p10 -57.7, median 0.0 (1044 events)
+
+== nimbus: 178 hosts
+  view: slow_peer_w=0.0 iwant_mode=2  P3 [weight, threshold, full-deficit cost]: pq=(-1.887, 36.54, -157.5) att=(-0.209, 219.493, -157.5) block=(-671.478, 0.685, -157.5)
+  bg_agg:topic_iwant_msgs = 2525563
+  bg_att:message_deficit_per_topic = 1109
+  bg_att:topic_iwant_msgs = 1500046
+  bg_block:topic_iwant_msgs = 5305
+  bg_col:topic_iwant_msgs = 2327
+  bg_syncc:topic_iwant_msgs = 17153
+  broken_promises = 0
+  iwant_promises = 0
+  iwant_rerequests = 2059346
+  iwant_rpcs = 163999
+  message_deficit_per_topic = 813
+  scoring_penalties:MessageDeficit = 1922
+  topic_iwant_msgs = 269933
+  promises/IWANT = 0.000, broken/IWANT = 0.0000
+  most negative peer score per mesh event: min -16260.3, p10 -56.4, median 0.0 (3204 events)
+
+== other: 144 hosts
+  view: slow_peer_w=-10.0 iwant_mode=0  P3 [weight, threshold, full-deficit cost]: pq=(-0.062, 36.54, -5.215) att=(-0.016, 219.493, -11.762) block=(-0.5, 0.685, -0.117)
+  bg_agg:topic_iwant_msgs = 893905
+  bg_att:message_deficit_per_topic = 470
+  bg_att:topic_iwant_msgs = 897285
+  bg_block:topic_iwant_msgs = 1535
+  bg_col:topic_iwant_msgs = 2703
+  bg_syncc:topic_iwant_msgs = 14635
+  broken_promises = 15680
+  iwant_promises = 1949340
+  iwant_rerequests = 0
+  iwant_rpcs = 148785
+  message_deficit_per_topic = 3854
+  scoring_penalties:BrokenPromise = 220
+  scoring_penalties:MessageDeficit = 4324
+  topic_iwant_msgs = 139277
+  promises/IWANT = 13.102, broken/IWANT = 0.1054
+  most negative peer score per mesh event: min -12019265.5, p10 -7232.0, median -5339.4 (2592 events)
+
+== prysm: 397 hosts
+  view: slow_peer_w=0.0 iwant_mode=1  P3 [weight, threshold, full-deficit cost]: pq=(0.0, 36.54, 0.0) att=(0.0, 219.493, 0.0) block=(0.0, 0.685, 0.0)
+  bg_agg:topic_iwant_msgs = 5054101
+  bg_att:topic_iwant_msgs = 4065607
+  bg_block:topic_iwant_msgs = 6599
+  bg_col:topic_iwant_msgs = 6279
+  bg_syncc:topic_iwant_msgs = 39606
+  broken_promises = 2094
+  iwant_promises = 221172
+  iwant_rerequests = 4103683
+  iwant_rpcs = 221172
+  scoring_penalties:BrokenPromise = 1335
+  topic_iwant_msgs = 548453
+  promises/IWANT = 1.000, broken/IWANT = 0.0095
+  most negative peer score per mesh event: min -23606.6, p10 -1.1, median 0.0 (7125 events)
+
+== teku: 156 hosts
+  view: slow_peer_w=0.0 iwant_mode=1  P3 [weight, threshold, full-deficit cost]: pq=(-1.887, 36.54, -157.5) att=(-0.209, 219.493, -157.5) block=(-671.478, 0.685, -157.5)
+  bg_agg:topic_iwant_msgs = 2105184
+  bg_att:message_deficit_per_topic = 517
+  bg_att:topic_iwant_msgs = 825734
+  bg_block:topic_iwant_msgs = 3249
+  bg_col:topic_iwant_msgs = 1352
+  bg_syncc:topic_iwant_msgs = 15349
+  broken_promises = 268
+  iwant_promises = 96670
+  iwant_rerequests = 1607082
+  iwant_rpcs = 96670
+  message_deficit_per_topic = 560
+  scoring_penalties:BrokenPromise = 176
+  scoring_penalties:MessageDeficit = 1077
+  topic_iwant_msgs = 201795
+  promises/IWANT = 1.000, broken/IWANT = 0.0028
+  most negative peer score per mesh event: min -35419.3, p10 -109.0, median 0.0 (2799 events)

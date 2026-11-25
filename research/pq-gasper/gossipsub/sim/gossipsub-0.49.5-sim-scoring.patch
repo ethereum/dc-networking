@@ -1,0 +1,304 @@
+diff -ruN .amp-out/scratch/gsbase/src/behaviour.rs repo/sim/wbsim/gossipsub/src/behaviour.rs
+--- x/src/behaviour.rs	2026-11-08 09:55:41.807911030 +0100
++++ x/src/behaviour.rs	2026-11-08 10:20:18.610882094 +0100
+@@ -48,7 +48,7 @@
+ #[cfg(feature = "metrics")]
+ use prometheus_client::registry::Registry;
+ use quick_protobuf::{MessageWrite, Writer};
+-use rand::{seq::SliceRandom, thread_rng};
++use rand::{seq::SliceRandom, thread_rng, Rng};
+ use web_time::{Instant, SystemTime};
+ 
+ #[cfg(feature = "metrics")]
+@@ -1261,7 +1261,10 @@
+                     return false;
+                 }
+ 
+-                !self.gossip_promises.contains(id)
++                // Sim: go-libp2p-pubsub, jvm-libp2p, @libp2p/gossipsub and nim-libp2p (promise modes 1 and 2) ask
++                // for every unseen id, even one already requested from another peer; rust-libp2p (mode 0) skips it
++                // until that promise is fulfilled or expires (3 s).
++                self.config.iwant_promise_mode() != 0 || !self.gossip_promises.contains(id)
+             }) {
+                 // have not seen this message and are not currently requesting it
+                 if iwant_ids.insert(id) {
+@@ -1303,8 +1306,27 @@
+                     tracing::error!("Invalid iwant_followup_time using Instant::now()");
+                     Instant::now()
+                 });
++            // Sim: rust-libp2p scores a promise for every requested id (mode 0); go-libp2p-pubsub, jvm-libp2p and
++            // @libp2p/gossipsub one random id per IWANT (1); nim-libp2p none (2).
++            let mode = self.config.iwant_promise_mode();
++            let pick = if mode == 1 { rng.gen_range(0..iwant_ids_vec.len().max(1)) } else { 0 };
++            // Sim: ids still awaited from another peer's earlier IWANT (re-requests; never in mode 0)
++            #[cfg(feature = "metrics")]
++            let rerequests = iwant_ids_vec
++                .iter()
++                .filter(|id| self.gossip_promises.peers_for_message(id).iter().any(|p| p != peer_id))
++                .count();
+             self.gossip_promises
+-                .add_promise(*peer_id, &iwant_ids_vec, followup_time);
++                .add_promise(*peer_id, &iwant_ids_vec, followup_time, |i| match mode {
++                    0 => true,
++                    1 => i == pick,
++                    _ => false,
++                });
++            #[cfg(feature = "metrics")]
++            if let Some(metrics) = self.metrics.as_mut() {
++                let scored = iwant_ids_vec.len().min(match mode { 0 => usize::MAX, 1 => 1, _ => 0 });
++                metrics.register_iwant_rpc(scored, rerequests);
++            }
+             tracing::trace!(
+                 peer=%peer_id,
+                 "IHAVE: Asking for the following messages from peer: {:?}",
+@@ -2099,6 +2121,7 @@
+                 #[cfg(feature = "metrics")]
+                 if let Some(metrics) = self.metrics.as_mut() {
+                     metrics.register_score_penalty(Penalty::BrokenPromise);
++                    metrics.register_broken_promises(count);
+                 }
+             }
+         }
+@@ -2157,6 +2180,9 @@
+                     for penalty in &report.penalties {
+                         metrics.register_score_penalty(*penalty);
+                     }
++                    for topic in &report.deficit_topics {
++                        metrics.register_message_deficit(topic);
++                    }
+                 }
+             }
+         }
+diff -ruN .amp-out/scratch/gsbase/src/config.rs repo/sim/wbsim/gossipsub/src/config.rs
+--- x/src/config.rs	2026-11-08 09:55:41.807911030 +0100
++++ x/src/config.rs	2026-11-08 10:20:18.611882090 +0100
+@@ -133,6 +133,8 @@
+     connection_handler_forward_duration: Duration,
+     idontwant_message_size_threshold: usize,
+     idontwant_on_publish: bool,
++    /// Sim: which requested ids of an IWANT get a scored promise (0 all, 1 one random id, 2 none).
++    iwant_promise_mode: u8,
+     topic_configuration: TopicConfigs,
+ }
+ 
+@@ -482,6 +484,14 @@
+     pub fn idontwant_on_publish(&self) -> bool {
+         self.idontwant_on_publish
+     }
++
++    /// Sim: which requested ids of an IWANT get a scored promise: 0 every id (rust-libp2p, the default),
++    /// 1 one random id per IWANT (go-libp2p-pubsub, jvm-libp2p, @libp2p/gossipsub), 2 none (nim-libp2p).
++    /// Modes 1 and 2 also ask for every unseen id of an IHAVE, even one already requested from another peer;
++    /// mode 0 skips such ids until their promise is fulfilled or expires.
++    pub fn iwant_promise_mode(&self) -> u8 {
++        self.iwant_promise_mode
++    }
+ }
+ 
+ impl Default for Config {
+@@ -552,6 +562,7 @@
+                 connection_handler_forward_duration: Duration::from_secs(1),
+                 idontwant_message_size_threshold: 1000,
+                 idontwant_on_publish: false,
++                iwant_promise_mode: 0,
+                 topic_configuration: TopicConfigs::default(),
+             },
+             invalid_protocol: false,
+@@ -1056,6 +1067,12 @@
+         self
+     }
+ 
++    /// Sim: see [`Config::iwant_promise_mode`].
++    pub fn iwant_promise_mode(&mut self, mode: u8) -> &mut Self {
++        self.config.iwant_promise_mode = mode;
++        self
++    }
++
+     /// The topic configuration sets mesh parameter sizes for a given topic. Notes on default
+     /// below.
+     ///
+@@ -1186,6 +1203,7 @@
+             &self.idontwant_message_size_threshold,
+         );
+         let _ = builder.field("idontwant_on_publish", &self.idontwant_on_publish);
++        let _ = builder.field("iwant_promise_mode", &self.iwant_promise_mode);
+         builder.finish()
+     }
+ }
+diff -ruN .amp-out/scratch/gsbase/src/gossip_promises.rs repo/sim/wbsim/gossipsub/src/gossip_promises.rs
+--- x/src/gossip_promises.rs	2026-11-08 09:55:41.808911026 +0100
++++ x/src/gossip_promises.rs	2026-11-08 09:56:08.395821998 +0100
+@@ -31,8 +31,8 @@
+     /// Stores for each tracked message id and peer the instant when this promise expires.
+     ///
+     /// If the peer didn't respond until then we consider the promise as broken and penalize the
+-    /// peer.
+-    promises: HashMap<MessageId, HashMap<PeerId, Instant>>,
++    /// peer. Sim: the flag says whether a broken promise costs the peer a P7 penalty (see `add_promise`).
++    promises: HashMap<MessageId, HashMap<PeerId, (Instant, bool)>>,
+ }
+ 
+ impl GossipPromises {
+@@ -50,14 +50,22 @@
+     }
+ 
+     /// Track a promise to deliver a message from a list of [`MessageId`]s we are requesting.
+-    pub(crate) fn add_promise(&mut self, peer: PeerId, messages: &[MessageId], expires: Instant) {
+-        for message_id in messages {
++    /// Sim: `scored(i)` says whether a broken promise for `messages[i]` costs the peer a P7 penalty. Unscored
++    /// promises still keep the id out of further IWANTs until they expire, as before.
++    pub(crate) fn add_promise(
++        &mut self,
++        peer: PeerId,
++        messages: &[MessageId],
++        expires: Instant,
++        scored: impl Fn(usize) -> bool,
++    ) {
++        for (i, message_id) in messages.iter().enumerate() {
+             // If a promise for this message id and peer already exists we don't update the expiry!
+             self.promises
+                 .entry(message_id.clone())
+                 .or_default()
+                 .entry(peer)
+-                .or_insert(expires);
++                .or_insert((expires, scored(i)));
+         }
+     }
+ 
+@@ -88,15 +96,17 @@
+         let now = Instant::now();
+         let mut result = HashMap::new();
+         self.promises.retain(|msg, peers| {
+-            peers.retain(|peer_id, expires| {
++            peers.retain(|peer_id, (expires, scored)| {
+                 if *expires < now {
+-                    let count = result.entry(*peer_id).or_insert(0);
+-                    *count += 1;
+-                    tracing::debug!(
+-                        peer=%peer_id,
+-                        message=%msg,
+-                        "[Penalty] The peer broke the promise to deliver message in time!"
+-                    );
++                    if *scored {
++                        let count = result.entry(*peer_id).or_insert(0);
++                        *count += 1;
++                        tracing::debug!(
++                            peer=%peer_id,
++                            message=%msg,
++                            "[Penalty] The peer broke the promise to deliver message in time!"
++                        );
++                    }
+                     false
+                 } else {
+                     true
+diff -ruN .amp-out/scratch/gsbase/src/metrics.rs repo/sim/wbsim/gossipsub/src/metrics.rs
+--- x/src/metrics.rs	2026-11-08 09:55:41.808911026 +0100
++++ x/src/metrics.rs	2026-11-08 10:20:18.610882094 +0100
+@@ -186,6 +186,8 @@
+     /// The number of times we have decided that an IWANT control message is required for this
+     /// topic. A very high metric might indicate an underperforming network.
+     topic_iwant_msgs: Family<TopicHash, Counter>,
++    /// Sim: MessageDeficit (P3) penalties per topic, counted like `scoring_penalties` (per peer and heartbeat).
++    message_deficit_per_topic: Family<TopicHash, Counter>,
+ 
+     /// The number of times we have received an IDONTWANT control message.
+     idontwant_msgs: Counter,
+@@ -193,6 +195,13 @@
+     /// The number of msg_id's we have received in every IDONTWANT control message.
+     idontwant_msgs_ids: Counter,
+ 
++    /// Sim: IWANT control messages sent, requested ids whose broken promise is scored, and broken scored
++    /// promises applied as P7 penalties (summed counts).
++    iwant_rpcs: Counter,
++    iwant_promises: Counter,
++    broken_promises: Counter,
++    iwant_rerequests: Counter,
++
+     /// The size of the priority queue.
+     priority_queue_size: Histogram,
+     /// The size of the non-priority queue.
+@@ -330,6 +339,22 @@
+             "topic_iwant_msgs",
+             "Number of times we have decided an IWANT is required for this topic"
+         );
++        let message_deficit_per_topic = register_family!(
++            "message_deficit_per_topic",
++            "MessageDeficit penalties per topic (per peer and heartbeat)"
++        );
++
++        let [iwant_rpcs, iwant_promises, broken_promises, iwant_rerequests] = [
++            ("iwant_rpcs", "IWANT control messages sent"),
++            ("iwant_promises", "Requested message ids whose broken promise costs a P7 penalty"),
++            ("broken_promises", "Broken IWANT promises applied as P7 penalties"),
++            ("iwant_rerequests", "Requested ids still awaited from another peer's earlier IWANT"),
++        ]
++        .map(|(name, help)| {
++            let metric = Counter::default();
++            registry.register(name, help, metric.clone());
++            metric
++        });
+ 
+         let idontwant_msgs = {
+             let metric = Counter::default();
+@@ -403,8 +428,13 @@
+             heartbeat_duration,
+             memcache_misses,
+             topic_iwant_msgs,
++            message_deficit_per_topic,
+             idontwant_msgs,
+             idontwant_msgs_ids,
++            iwant_rpcs,
++            iwant_promises,
++            broken_promises,
++            iwant_rerequests,
+             priority_queue_size,
+             non_priority_queue_size,
+         }
+@@ -603,6 +633,25 @@
+         }
+     }
+ 
++    /// Sim: register a MessageDeficit penalty on this topic.
++    pub(crate) fn register_message_deficit(&mut self, topic: &TopicHash) {
++        if self.register_topic(topic).is_ok() {
++            self.message_deficit_per_topic.get_or_create(topic).inc();
++        }
++    }
++
++    /// Sim: register an IWANT sent and how many of its ids carry a scored promise.
++    pub(crate) fn register_iwant_rpc(&mut self, scored_ids: usize, rerequests: usize) {
++        self.iwant_rpcs.inc();
++        self.iwant_promises.inc_by(scored_ids as u64);
++        self.iwant_rerequests.inc_by(rerequests as u64);
++    }
++
++    /// Sim: register broken scored promises applied to one peer as a P7 penalty.
++    pub(crate) fn register_broken_promises(&mut self, count: usize) {
++        self.broken_promises.inc_by(count as u64);
++    }
++
+     /// Register receiving an IDONTWANT msg for this topic.
+     pub(crate) fn register_idontwant(&mut self, msgs: usize) {
+         self.idontwant_msgs.inc();
+diff -ruN .amp-out/scratch/gsbase/src/peer_score.rs repo/sim/wbsim/gossipsub/src/peer_score.rs
+--- x/src/peer_score.rs	2026-11-08 09:55:41.808911026 +0100
++++ x/src/peer_score.rs	2026-11-08 10:05:36.207921816 +0100
+@@ -78,6 +78,9 @@
+     pub(crate) score: f64,
+     #[cfg(feature = "metrics")]
+     pub(crate) penalties: Vec<crate::metrics::Penalty>,
++    /// Sim: the topic of each MessageDeficit penalty.
++    #[cfg(feature = "metrics")]
++    pub(crate) deficit_topics: Vec<TopicHash>,
+ }
+ 
+ pub(crate) struct PeerScore {
+@@ -323,6 +326,8 @@
+                     report
+                         .penalties
+                         .push(crate::metrics::Penalty::MessageDeficit);
++                    #[cfg(feature = "metrics")]
++                    report.deficit_topics.push(topic.clone());
+                     tracing::debug!(
+                         peer=%peer_id,
+                         %topic,

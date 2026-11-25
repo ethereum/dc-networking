@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 468" width="760" height="468" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title id="t">Home nodes incomplete in each run's worst slot, by home link and access-line loss</title>
+<desc id="d">Dots on a log scale from 0.1 to 100 %: the home nodes that miss at least one of a slot's 1,600 signatures at 8.0 s, in each run's worst slot, by home link (down/up, Mbit/s) and by packet loss on the home access line. A run passes with at most 1 %. Usual packet loss, 0.05–0.25 %: 50/15 77 %, 50/25 47 %, 1,000/200 22 %, 1,000/100 21 %. A fifth of it, 0.01–0.05 %: 1,000/200 4.8 %. Loss-free home lines: 50/100 22 %, 1,000/50 3.8 %, 100/100 0.84 % and 0.61 %, 1,000/75 0.61 %, 1,000/100 0.31 %.</desc>
+<style>text{font-variant-numeric:tabular-nums}.f-surface{fill:#fcfcfb}.k-surface{stroke:#fcfcfb}.f-ink{fill:#0b0b0b}.k-ink{stroke:#0b0b0b}.f-ink2{fill:#52514e}.k-ink2{stroke:#52514e}.f-muted{fill:#898781}.k-muted{stroke:#898781}.f-grid{fill:#e1e0d9}.k-grid{stroke:#e1e0d9}.f-axis{fill:#c3c2b7}.k-axis{stroke:#c3c2b7}.f-border{fill:rgba(11,11,11,0.10)}.k-border{stroke:rgba(11,11,11,0.10)}.f-s1{fill:#2a78d6}.k-s1{stroke:#2a78d6}.f-s2{fill:#eb6834}.k-s2{stroke:#eb6834}.f-s3{fill:#9e9d95}.k-s3{stroke:#9e9d95}@media (prefers-color-scheme: dark){.f-surface{fill:#1a1a19}.k-surface{stroke:#1a1a19}.f-ink{fill:#f0efec}.k-ink{stroke:#f0efec}.f-ink2{fill:#c3c2b7}.k-ink2{stroke:#c3c2b7}.f-muted{fill:#898781}.k-muted{stroke:#898781}.f-grid{fill:#2c2c2a}.k-grid{stroke:#2c2c2a}.f-axis{fill:#383835}.k-axis{stroke:#383835}.f-border{fill:rgba(255,255,255,0.10)}.k-border{stroke:rgba(255,255,255,0.10)}.f-s1{fill:#3987e5}.k-s1{stroke:#3987e5}.f-s2{fill:#d95926}.k-s2{stroke:#d95926}.f-s3{fill:#77766f}.k-s3{stroke:#77766f}}</style>
+<rect x="0.5" y="0.5" width="759" height="467" rx="12" fill="#fcfcfb" stroke="rgba(11,11,11,0.10)" class="f-surface k-border"/>
+<text x="24" y="36" font-size="12" fill="#52514e" class="f-ink2">Home link, down/up in Mbit/s</text>
+<text x="349.333" y="36" font-size="12.5" text-anchor="end" fill="#52514e" class="f-ink2">passed</text>
+<circle cx="361.333" cy="32" r="5" fill="#2a78d6" class="f-s1"/>
+<circle cx="385.333" cy="32" r="4.25" stroke-width="1.75" fill="#fcfcfb" stroke="#52514e" class="f-surface k-ink2"/>
+<text x="397.333" y="36" font-size="12.5" fill="#52514e" class="f-ink2">failed</text>
+<text x="736" y="36" font-size="12" text-anchor="end" fill="#52514e" class="f-ink2">incomplete</text>
+<text x="24" y="66" font-size="12.5" fill="#52514e" class="f-ink2">Usual packet loss, 0.05–0.25 %</text>
+<text x="24" y="206" font-size="12.5" fill="#52514e" class="f-ink2">A fifth of it, 0.01–0.05 %</text>
+<text x="24" y="268" font-size="12.5" fill="#52514e" class="f-ink2">Loss-free home lines</text>
+<line x1="240" y1="48" x2="240" y2="410" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="506.667" y1="48" x2="506.667" y2="410" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="640" y1="48" x2="640" y2="410" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="240" y1="87" x2="640" y2="87" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="240" y1="113" x2="640" y2="113" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="240" y1="139" x2="640" y2="139" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="240" y1="165" x2="640" y2="165" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="240" y1="227" x2="640" y2="227" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="240" y1="289" x2="640" y2="289" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="240" y1="315" x2="640" y2="315" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="240" y1="341" x2="640" y2="341" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="240" y1="367" x2="640" y2="367" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="240" y1="393" x2="640" y2="393" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="373.333" y1="20" x2="373.333" y2="410" stroke-width="1.5" stroke-dasharray="4 3" stroke="#52514e" class="k-ink2"/>
+<text x="24" y="92" font-size="14" fill="#52514e" class="f-ink2">50/15<tspan dx="8" font-size="12" font-weight="400" fill="#52514e" class="f-ink2">earlier post</tspan></text>
+<circle cx="624.6" cy="87" r="4.75" stroke-width="2" fill="#fcfcfb" stroke="#52514e" class="f-surface k-ink2"/>
+<text x="736" y="92" font-size="14" text-anchor="end" fill="#52514e" class="f-ink2">77 %</text>
+<text x="24" y="118" font-size="14" fill="#52514e" class="f-ink2">50/25<tspan dx="8" font-size="12" font-weight="400" fill="#52514e" class="f-ink2">earlier post</tspan></text>
+<circle cx="595.9" cy="113" r="4.75" stroke-width="2" fill="#fcfcfb" stroke="#52514e" class="f-surface k-ink2"/>
+<text x="736" y="118" font-size="14" text-anchor="end" fill="#52514e" class="f-ink2">47 %</text>
+<text x="24" y="144" font-size="14" fill="#52514e" class="f-ink2">1,000/200</text>
+<circle cx="552.6" cy="139" r="4.75" stroke-width="2" fill="#fcfcfb" stroke="#52514e" class="f-surface k-ink2"/>
+<text x="736" y="144" font-size="14" text-anchor="end" fill="#52514e" class="f-ink2">22 %</text>
+<text x="24" y="170" font-size="14" fill="#52514e" class="f-ink2">1,000/100</text>
+<circle cx="550.1" cy="165" r="4.75" stroke-width="2" fill="#fcfcfb" stroke="#52514e" class="f-surface k-ink2"/>
+<text x="736" y="170" font-size="14" text-anchor="end" fill="#52514e" class="f-ink2">21 %</text>
+<text x="24" y="232" font-size="14" fill="#52514e" class="f-ink2">1,000/200</text>
+<circle cx="464.7" cy="227" r="4.75" stroke-width="2" fill="#fcfcfb" stroke="#52514e" class="f-surface k-ink2"/>
+<text x="736" y="232" font-size="14" text-anchor="end" fill="#52514e" class="f-ink2">4.8 %</text>
+<text x="24" y="294" font-size="14" fill="#52514e" class="f-ink2">50/100</text>
+<circle cx="552.8" cy="289" r="4.75" stroke-width="2" fill="#fcfcfb" stroke="#52514e" class="f-surface k-ink2"/>
+<text x="736" y="294" font-size="14" text-anchor="end" fill="#52514e" class="f-ink2">22 %</text>
+<text x="24" y="320" font-size="14" fill="#52514e" class="f-ink2">1,000/50</text>
+<circle cx="451.2" cy="315" r="4.75" stroke-width="2" fill="#fcfcfb" stroke="#52514e" class="f-surface k-ink2"/>
+<text x="736" y="320" font-size="14" text-anchor="end" fill="#52514e" class="f-ink2">3.8 %</text>
+<text x="24" y="346" font-size="14" font-weight="600" fill="#0b0b0b" class="f-ink">100/100<tspan dx="8" font-size="12" font-weight="400" fill="#52514e" class="f-ink2">two seeds</tspan></text>
+<circle cx="363.6" cy="341" r="5.5" fill="#2a78d6" class="f-s1"/>
+<circle cx="344.4" cy="341" r="5.5" fill="#2a78d6" class="f-s1"/>
+<text x="736" y="346" font-size="14" font-weight="600" text-anchor="end" fill="#0b0b0b" class="f-ink">0.84 %</text>
+<text x="24" y="372" font-size="14" font-weight="600" fill="#0b0b0b" class="f-ink">1,000/75</text>
+<circle cx="345.1" cy="367" r="5.5" fill="#2a78d6" class="f-s1"/>
+<text x="736" y="372" font-size="14" font-weight="600" text-anchor="end" fill="#0b0b0b" class="f-ink">0.61 %</text>
+<text x="24" y="398" font-size="14" font-weight="600" fill="#0b0b0b" class="f-ink">1,000/100</text>
+<circle cx="305.0" cy="393" r="5.5" fill="#2a78d6" class="f-s1"/>
+<text x="736" y="398" font-size="14" font-weight="600" text-anchor="end" fill="#0b0b0b" class="f-ink">0.31 %</text>
+<line x1="240" y1="410" x2="640" y2="410" stroke-width="1" stroke="#c3c2b7" class="k-axis"/>
+<text x="240" y="428" font-size="12" text-anchor="middle" fill="#898781" class="f-muted">0.1 %</text>
+<text x="373.333" y="428" font-size="12" text-anchor="middle" fill="#898781" class="f-muted">1 %</text>
+<text x="506.667" y="428" font-size="12" text-anchor="middle" fill="#898781" class="f-muted">10 %</text>
+<text x="640" y="428" font-size="12" text-anchor="middle" fill="#898781" class="f-muted">100 %</text>
+<text x="240" y="450" font-size="12.5" fill="#52514e" class="f-ink2">Home nodes incomplete at 8.0 s in the run's worst slot, log scale</text>
+</svg>

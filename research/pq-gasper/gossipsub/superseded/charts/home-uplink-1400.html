@@ -1,0 +1,64 @@
+<style>
+  .rows { display: grid; gap: 14px; }
+  .group { font-size: 12px; line-height: 16px; color: var(--muted-foreground); margin-top: 6px; }
+  .row { display: grid; gap: 4px; min-width: 0; }
+  .lab { font-size: 12px; line-height: 16px; text-wrap: pretty; }
+  .lab .ui-muted { margin-left: 6px; }
+  .track { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .wrap { position: relative; flex: 1 1 auto; min-width: 0; height: 16px; }
+  .bar { position: absolute; left: 0; top: 2px; height: 12px; background: var(--chart-1); box-sizing: border-box; }
+  .bar.ctx { background: var(--chart-context); }
+  .bar.est { background: none; border: 1px dashed var(--chart-1); }
+  .tick { position: absolute; top: 0; width: 2px; height: 16px; margin-left: -1px; background: var(--foreground); }
+  .cap { position: absolute; top: -3px; bottom: -3px; border-left: 1px dashed var(--muted-foreground); }
+  .note { position: absolute; left: 0; top: 0; font-size: 12px; line-height: 16px; color: var(--muted-foreground); white-space: nowrap; }
+  .val { flex: 0 0 112px; font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .val .ui-muted { margin-left: 4px; }
+</style>
+<div class="ui-header">
+  <p class="ui-title" id="title">One PQ Gasper subnet of 1,400 signatures would fill a staker’s uplink to 140 %</p>
+  <p class="ui-sub">Home staker upload from 4 to 8 s into the slot, all traffic, as a share of its 25 Mbit/s uplink. Bar: the average staker. Tick: the busiest staker, averaged over slots.</p>
+</div>
+<div class="rows" id="rows"></div>
+<p class="ui-caption" style="margin-top: 12px; text-wrap: pretty">
+  Dashed line: uplink capacity. Measured on 2,048 nodes over 20 slots, bundles of up to 16, Linux-like TCP; the run without signatures used an earlier TCP build. Outlined bars are arithmetic, not simulated: every 125 signatures beyond the first subnet add what the second subnet added. That rule predicts the measured today's layout row within about a point.
+</p>
+<script>
+  {
+    const max = 270
+    const measured = [
+      { label: 'Without PQ signatures', mean: 13.4, top: 21.5, ctx: true },
+      { label: 'One subnet', sigs: 125, mean: 26.7, top: 42.4 },
+      { label: 'Two subnets', sigs: 250, mean: 37.8, top: 57.8 },
+      { label: 'Today\u2019s layout: two backbone subnets plus the duty subnet', sigs: 375, note: '375 signatures per slot for most stakers', mean: 46.4, top: 74.2 },
+    ]
+    const [, one, two] = measured
+    const dMean = two.mean - one.mean
+    const dTop = two.top - one.top
+    const est = (label, sigs) => {
+      const k = sigs / one.sigs - 1
+      return { label, sigs, mean: one.mean + k * dMean, top: one.top + k * dTop, est: true }
+    }
+    const arithmetic = [est('leanVM design, 716,800 validators', 1400), est('Today\u2019s validator set, about 30K per slot', 1875)]
+    const r0 = (v) => Math.round(v)
+    document.getElementById('title').textContent =
+      'One PQ Gasper subnet of ' + arithmetic[0].sigs.toLocaleString('en-US') + ' signatures would fill a staker’s uplink to ' + r0(arithmetic[0].mean) + ' %'
+    const x = (v) => (Math.min(v, max) / max) * 100 + '%'
+    const cap = '<i class="cap" style="left:' + x(100) + '"></i>'
+    const row = (r) => {
+      const sub = r.note || (r.sigs ? r0(r.sigs).toLocaleString('en-US') + ' signatures per staker per slot' : '')
+      const lab = '<div class="lab">' + r.label + (sub ? '<span class="ui-muted">' + sub + '</span>' : '') + '</div>'
+      if (r.pending) {
+        return '<div class="row">' + lab + '<div class="track"><div class="wrap"><span class="note">' + r.pending + '</span></div><span class="val"></span></div></div>'
+      }
+      const cls = 'bar' + (r.ctx ? ' ctx' : '') + (r.est ? ' est' : '')
+      return (
+        '<div class="row">' + lab + '<div class="track"><div class="wrap"><i class="' + cls + '" style="width:' + x(r.mean) + '"></i><i class="tick" style="left:' + x(r.top) + '"></i>' + cap +
+        '</div><span class="val">' + r0(r.mean) + ' %<span class="ui-muted">busiest ' + r0(r.top) + ' %</span></span></div></div>'
+      )
+    }
+    document.getElementById('rows').innerHTML =
+      '<div class="group">Measured: 16 subnets, 125 signatures per subnet per slot</div>' + measured.map(row).join('') +
+      '<div class="group">Arithmetic: one PQ Gasper subnet of 16</div>' + arithmetic.map(row).join('')
+  }
+</script>

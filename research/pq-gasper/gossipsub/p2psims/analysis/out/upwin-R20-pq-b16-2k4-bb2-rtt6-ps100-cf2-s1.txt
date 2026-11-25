@@ -1,0 +1,13 @@
+== R20-pq-b16-2k4-bb2-rtt6-ps100-cf2-s1 vs R20-nopq-rtt5-ps100-cf2-s1 (slots 2+; % of upload cap; busiest = largest per-node mean)
+  50x15 (330 hosts, up 15 Mbit/s, valid node-slots PQ 1.000 no-PQ 1.000)
+    4-8 s: PQ 58.48 / 90.04, no-PQ 21.58 / 32.93, PQ share 63 %; busiest PQ node 1985 90.04 vs 24.60 without PQ; max node-slot PQ 127 / no-PQ 44
+    4-5 s: PQ 163.98 / 270.65, no-PQ 48.93 / 81.45, PQ share 70 %; busiest PQ node 1523 270.65 vs 81.45 without PQ; max node-slot PQ 394 / no-PQ 123
+    slot: PQ 43.28 / 64.30, no-PQ 31.19 / 44.98, PQ share 28 %; busiest PQ node 1985 64.30 vs 43.11 without PQ; max node-slot PQ 75 / no-PQ 53
+  50x25 (976 hosts, up 25 Mbit/s, valid node-slots PQ 1.000 no-PQ 1.000)
+    4-8 s: PQ 46.35 / 74.17, no-PQ 13.38 / 21.50, PQ share 71 %; busiest PQ node 506 74.17 vs 18.48 without PQ; max node-slot PQ 101 / no-PQ 34
+    4-5 s: PQ 131.62 / 224.54, no-PQ 30.65 / 54.20, PQ share 77 %; busiest PQ node 185 224.54 vs 47.85 without PQ; max node-slot PQ 327 / no-PQ 118
+    slot: PQ 30.60 / 47.23, no-PQ 19.87 / 29.42, PQ share 35 %; busiest PQ node 824 47.23 vs 29.42 without PQ; max node-slot PQ 59 / no-PQ 39
+  cloud (742 hosts, up 1000 Mbit/s, valid node-slots PQ 1.000 no-PQ 1.000)
+    4-8 s: PQ 6.25 / 16.25, no-PQ 1.29 / 9.11, PQ share 79 %; busiest PQ node 3 16.25 vs 9.11 without PQ; max node-slot PQ 22 / no-PQ 17
+    4-5 s: PQ 19.22 / 40.34, no-PQ 2.36 / 17.98, PQ share 88 %; busiest PQ node 3 40.34 vs 17.98 without PQ; max node-slot PQ 46 / no-PQ 24
+    slot: PQ 2.67 / 6.92, no-PQ 1.04 / 4.48, PQ share 61 %; busiest PQ node 3 6.92 vs 4.48 without PQ; max node-slot PQ 9 / no-PQ 8

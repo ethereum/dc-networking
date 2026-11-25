@@ -1,0 +1,16 @@
+== R20-pq-b16-2k4-rtt5-ps100-cf2-s1: 2048 hosts, 20 slots
+ block from slot start p50/p90/p99: 1.98 / 3.00 / 4.80  missing 0 / 36737
+ block from publish p50/p95/p99: 0.34 / 0.74 / 0.93
+ att after 4 s p50/p95/p99: 1.09 / 2.40 / 4.63  missing 47471 / 5354103 (0.89 %)
+ agg after 8 s p50/p95: 0.61 / 1.83  missing 1
+ col from slot start p50/p95: 1.93 / 4.39  missing 442 / 669410
+ duplicates (copies-1): {'bg_agg': 4.6, 'bg_att': 2.25, 'bg_block': 3.78, 'bg_col': 3.17, 'bg_syncc': 4.58, 'pq': 3.33}
+  50x15: n=330 block+att+col 144 kB/s, rx 6.6 Mbit/s, tx p50 5.69 Mbit/s
+  50x25: n=976 block+att+col 150 kB/s, rx 6.64 Mbit/s, tx p50 6.06 Mbit/s
+  cloud: n=742 block+att+col 551 kB/s, rx 22.82 Mbit/s, tx p50 23.30 Mbit/s
+ conns: {'lighthouse': 199.8, 'link:50x15': 165.5, 'link:50x25': 162.7, 'link:cloud': 164.8, 'lodestar': 199.9, 'nimbus': 160.2, 'other': 200.0, 'prysm': 71.2, 'teku': 100.9}
+ mesh means: {'lighthouse': {'block': 6.2, 'agg': 6.2, 'syncc': 6.3, 'pq': 6.0, 'att': 4.9, 'col': 5.9}, 'link:50x15': {'block': 6.4, 'agg': 6.4, 'syncc': 6.5, 'att': 7.0, 'col': 7.2, 'pq': 6.9}, 'link:50x25': {'block': 6.8, 'agg': 6.7, 'syncc': 6.9, 'pq': 7.2, 'att': 7.2, 'col': 7.3}, 'link:cloud': {'pq': 7.0, 'block': 8.4, 'agg': 8.3, 'syncc': 8.4, 'att': 5.0, 'col': 6.1}}
+ mesh_links per slot: [461245, 427614, 433223, 471432, 432279, 440347, 459476, 444040, 465239, 464185, 446335, 449029, 464374, 475554, 455319, 450699, 460812, 444313, 472003, 467927]
+ neg-score peers per slot: [147, 7482, 14609, 19491, 24528, 24869, 22400, 20764, 19467, 20132, 20309, 19572, 18612, 18005, 18306, 18131, 18068, 17986, 17288, 17869] penalties {'GraftBackoff': 9213, 'MessageDeficit': 15924, 'BrokenPromise': 2501}
+ churn: {"scheduled_offline_intervals": 15, "leaves": 7, "joins": 8, "restarts": 0, "offline_events": 7, "online_events": 8, "conn_churned": 43307, "pm_dials": 313426, "pm_prunes": 68857, "refused_inbound": 30854, "score_disconnects": 0, "mesh_churn_by_reason": {"BadScore": 663375, "Dc": 719224, "Excess": 3
+ verify: {"50x15 cpu x1 workers 4": {"nodes": 275, "msgs_verified_per_node": 39203, "mean_delay_ms": 5.572, "max_delay_ms": 347.8}, "50x15 cpu x3.0 workers 4": {"nodes": 55, "msgs_verified_per_node": 39263, "mean_delay_ms": 225.994, "max_delay_ms": 997.8}, "50x25 cpu x1 workers 4": {"nodes": 799, "msgs_verif

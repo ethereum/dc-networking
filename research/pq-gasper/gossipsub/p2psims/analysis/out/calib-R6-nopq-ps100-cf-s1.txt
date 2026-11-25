@@ -1,0 +1,16 @@
+== R6-nopq-ps100-cf-s1: 2048 hosts, 6 slots
+ block from slot start p50/p90/p99: 1.45 / 2.73 / 2.85  missing 0 / 8158
+ block from publish p50/p95: 0.25 / 0.39
+ att after 4 s p50/p95/p99: 0.94 / 1.93 / 2.76  missing 3861 / 1163495 (0.33 %)
+ agg after 8 s p50/p95: 0.55 / 1.69  missing 0
+ col from slot start p50/p95: 1.43 / 2.71  missing 30 / 148740
+ duplicates (copies-1): {'bg_agg': 4.38, 'bg_att': 2.21, 'bg_block': 3.84, 'bg_col': 3.72, 'bg_syncc': 4.64}
+  50x15: n=330 block+att+col 120 kB/s, rx 4.87 Mbit/s, tx p50 4.67 Mbit/s
+  50x25: n=976 block+att+col 137 kB/s, rx 5.03 Mbit/s, tx p50 4.92 Mbit/s
+  cloud: n=742 block+att+col 582 kB/s, rx 9.42 Mbit/s, tx p50 6.66 Mbit/s
+ conns: {'lighthouse': 199.9, 'link:50x15': 165.6, 'link:50x25': 162.9, 'link:cloud': 164.8, 'lodestar': 199.8, 'nimbus': 160.3, 'other': 200.2, 'prysm': 71.3, 'teku': 101.0}
+ mesh means: {'lighthouse': {'block': 6.3, 'agg': 6.2, 'syncc': 6.4, 'att': 5.1, 'col': 6.2}, 'link:50x15': {'block': 6.4, 'agg': 6.3, 'syncc': 6.6, 'att': 7.4, 'col': 7.3}, 'link:50x25': {'block': 6.8, 'agg': 6.7, 'syncc': 7.0, 'att': 7.5, 'col': 7.5}, 'link:cloud': {'block': 8.4, 'agg': 8.4, 'syncc': 8.5, 'att': 5.1, 'col': 6.6}}
+ mesh_links per slot: [375867, 355616, 368147, 393309, 380212, 383640]
+ neg-score peers per slot: [58, 2992, 5755, 7737, 9976, 10843] penalties {'BrokenPromise': 122, 'GraftBackoff': 860}
+ churn: {"scheduled_offline_intervals": 15, "leaves": 7, "joins": 8, "restarts": 0, "offline_events": 7, "online_events": 8, "conn_churned": 12686, "pm_dials": 272282, "pm_prunes": 58438, "refused_inbound": 29849, "score_disconnects": 0, "mesh_churn_by_reason": {"BadScore": 119162, "Dc": 496636, "Prune": 25
+ verify: {"50x15 cpu x1 workers 4": {"nodes": 275, "msgs_verified_per_node": 11362, "mean_delay_ms": 8.575, "max_delay_ms": 242.4}, "50x15 cpu x3.0 workers 4": {"nodes": 55, "msgs_verified_per_node": 11378, "mean_delay_ms": 281.625, "max_delay_ms": 987.0}, "50x25 cpu x1 workers 4": {"nodes": 799, "msgs_verif

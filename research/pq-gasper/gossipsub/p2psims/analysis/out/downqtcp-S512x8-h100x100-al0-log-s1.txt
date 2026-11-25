@@ -1,0 +1,6 @@
+== S512x8-h100x100-al0-log-s1: per path type (data sender -> receiver), slots 2-7; per 1,000 data packets
+path                       data pkts    RTOs spurious    (%)    retx | SRTT-RTT ms p50/p90/p99
+1G -> 100/100               27739212    0.54     0.10   18.6    1.47 | 6 / 12 / 30
+100/100 -> 100/100          32894229    1.11     0.15   13.8    1.62 | 10 / 24 / 76
+1G -> 1G                    15496696    0.13     0.04   27.3    0.46 | 1 / 3 / 5
+100/100 -> 1G               17338183    0.47     0.09   19.3    0.65 | 5 / 13 / 67

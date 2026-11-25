@@ -1,0 +1,19 @@
+RTOs 13364906: cwnd == in-flight + 1 in 13364906 (100.00 %); in-flight at the RTO (3 = 3+): [(0, 13364906)]; cwnd after (11 = 11+): [(1, 13364906)]
+
+recoveries: count | resends of the RTO's data per recovery mean / p50 / p90 / max | RTOs per recovery mean | share with 1 episode | duration ms p50 / p90 / p99 | recoveries started but not finished
+1G->1G     spurious         75178 |  0.40 / 0 / 1 / 424 | 1.44 | 100.0 % |     367 /    1693 /    8385
+1G->1G     genuine            217 |  1.46 / 1 / 1 / 45 | 1.10 | 100.0 % |     159 /     323 /    1078
+1G->1G     unfinished 4400
+1G->home   spurious        3175485 |  0.27 / 0 / 1 / 172 | 1.55 | 100.0 % |     466 /    2198 /    9598
+1G->home   genuine          61056 |  1.45 / 1 / 2 / 157 | 1.41 | 100.0 % |     430 /    1095 /    2196
+1G->home   unfinished 45614
+home->1G   spurious        829940 |  0.29 / 0 / 1 / 148 | 1.59 |  99.4 % |     429 /    2151 /    8002
+home->1G   genuine          19598 |  2.35 / 1 / 4 / 146 | 1.13 |  99.4 % |     164 /     532 /    1872
+home->1G   unfinished 18438
+home->home spurious        3402230 |  0.22 / 0 / 1 / 121 | 1.77 |  99.7 % |     554 /    4357 /   11615
+home->home genuine         171012 |  1.44 / 1 / 2 / 127 | 1.39 |  99.9 % |     308 /    1477 /    6637
+home->home unfinished 71290
+all        spurious        7483293 |  0.25 / 0 / 1 / 424 | 1.65 |  99.8 % |     497 /    3110 /   10905
+all        genuine         251883 |  1.51 / 1 / 2 / 157 | 1.37 |  99.9 % |     313 /    1246 /    5425
+genuine, 1 RTO     179968 recoveries, duration ms p50 / p90 / p99 221 / 484 / 811; ssthresh at the end p10 / p50 3 / 7
+genuine, 2+ RTOs    71915 recoveries, duration ms p50 / p90 / p99 955 / 3077 / 9590; ssthresh at the end p10 / p50 2 / 2

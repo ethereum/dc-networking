@@ -1,0 +1,68 @@
+== runs/T64-rtt-rtt6nohs (shadow.log.gz): 5504 TCP endpoints with snapshots
+snapshot lines cut by the log buffer: 99,124 of 99,124; endpoints whose counter comes from an earlier snapshot or is missing: txfl 98, txca 98, hstrain 2533, hsdelay 5257, epochs 5484, txstart 5486, txshift 5504, rounds 5504
+CUBIC on: True
+data packets released with cwnd >= ssthresh (snapshot counters, to each endpoint's last snapshot):
+  1G->1G      11,996,244 of  25,929,001 =  46.3 %   (666 endpoints)
+  1G->home     7,002,390 of   9,217,096 =  76.0 %   (1344 endpoints)
+  home->1G     7,711,470 of   9,952,821 =  77.5 %   (1344 endpoints)
+  home->home   3,619,061 of   4,769,081 =  75.9 %   (2150 endpoints)
+  all         30,329,165 of  49,867,999 =  60.8 %
+HyStart exits (tcpd hys lines; both tests can fire on one ACK): train / delay, endpoints with an exit, cwnd at exit p50/p90
+  1G->1G     train      0  delay      0  (snapshot counters 0 / 0), cwnd at exit p50/p90 nan/nan
+  1G->home   train      0  delay      0  (snapshot counters 0 / 0), cwnd at exit p50/p90 nan/nan
+  home->1G   train      0  delay      0  (snapshot counters 0 / 0), cwnd at exit p50/p90 nan/nan
+  home->home train      0  delay      0  (snapshot counters 0 / 0), cwnd at exit p50/p90 nan/nan
+CUBIC epochs (tcpd cubep lines): count, with W_max > cwnd (concave start), K p50/p90 s, W_max p50 by path type
+  1G->1G       6,648 epochs (2 counted),   6,259 below W_max, K p50/p90 3.42/4.83 s, W_max p50 69
+  1G->home    17,678 epochs (6 counted),  13,028 below W_max, K p50/p90 2.59/3.62 s, W_max p50 28
+  home->1G    16,442 epochs (11 counted),  13,370 below W_max, K p50/p90 2.71/3.91 s, W_max p50 33
+  home->home  19,078 epochs (13 counted),  11,432 below W_max, K p50/p90 2.46/3.42 s, W_max p50 24
+  K against cbrt((W_max - cwnd) / 0.4): relative error p50 0.06 %, p99 0.14 %, max 0.14 % over 44,089 epochs
+TX_START (new data with nothing in flight) and epoch shifts: events / shifts of an active epoch
+  1G->1G             0 /         0
+  1G->home           0 /         0
+  home->1G           0 /         0
+  home->home         0 /         0
+  traced shifts: 1,830, epoch after = min(epoch + idle, now) in 1,830 (42 capped at now); idle p50/p90 120/1465 ms
+congestion-avoidance growth per round trip (rounds counted, over 1.5 x starting cwnd + 1, over half the ACKed packets + 1, max ratio)
+  1G->1G             0 rounds,      0 over 1.5x+1,      0 over acked/2+1, max 0.000x
+  1G->home           0 rounds,      0 over 1.5x+1,      0 over acked/2+1, max 0.000x
+  home->1G           0 rounds,      0 over 1.5x+1,      0 over acked/2+1, max 0.000x
+  home->home         0 rounds,      0 over 1.5x+1,      0 over acked/2+1, max 0.000x
+logged targets against W_max + 0.4 (t - K)^3: |target - formula| / |0.4 (t - K)^3| p50 8.88 %, p99 93.50 % over 7,578 recomputations in 595 traced epochs
+  trace n0035 0x7e92e46102d0 (home->1G), epoch at 103486 ms, origin 22, K 2.59 s, W_max 22, 113 recomputations; t - K (s), cwnd, target (code), origin + 0.4 (t - K)^3, cnt, Reno-friendly cwnd:
+      0.195  cwnd     22  target     22  formula      22.0  cnt      2  friendly 31
+      0.520  cwnd     32  target     22  formula      22.1  cnt     32  friendly 33
+      0.874  cwnd     35  target     22  formula      22.3  cnt   3500  friendly 35
+      1.248  cwnd     37  target     22  formula      22.8  cnt   3700  friendly 37
+      1.604  cwnd     40  target     23  formula      23.7  cnt   4000  friendly 40
+      2.021  cwnd     42  target     25  formula      25.3  cnt   4200  friendly 42
+      2.395  cwnd     44  target     27  formula      27.5  cnt     44  friendly 45
+      2.728  cwnd     47  target     30  formula      30.1  cnt   4700  friendly 47
+      3.096  cwnd     49  target     33  formula      33.9  cnt   4900  friendly 49
+      3.487  cwnd     51  target     38  formula      39.0  cnt     51  friendly 52
+      3.866  cwnd     54  target     45  formula      45.1  cnt   5400  friendly 54
+  trace n0007 0x7e9300570a30 (home->home), epoch at 254269 ms, origin 30, K 0.00 s, W_max 0, 108 recomputations; t - K (s), cwnd, target (code), origin + 0.4 (t - K)^3, cnt, Reno-friendly cwnd:
+      0.064  cwnd     30  target     30  formula      30.0  cnt     20  friendly 30
+      0.497  cwnd     36  target     30  formula      30.0  cnt     20  friendly 32
+      0.904  cwnd     40  target     30  formula      30.3  cnt     20  friendly 32
+      1.271  cwnd     45  target     30  formula      30.8  cnt     20  friendly 34
+      1.574  cwnd     48  target     31  formula      31.6  cnt     20  friendly 35
+      1.963  cwnd     53  target     33  formula      33.0  cnt     20  friendly 36
+      2.483  cwnd     56  target     36  formula      36.1  cnt     20  friendly 36
+      2.799  cwnd     61  target     38  formula      38.8  cnt     20  friendly 37
+      3.157  cwnd     68  target     42  formula      42.6  cnt     20  friendly 38
+      3.537  cwnd     74  target     47  formula      47.7  cnt     20  friendly 39
+      4.179  cwnd     79  target     59  formula      59.2  cnt     20  friendly 39
+  trace n0035 0x7e92e46102d0 (home->1G), epoch at 154454 ms, origin 39, K 2.59 s, W_max 39, 92 recomputations; t - K (s), cwnd, target (code), origin + 0.4 (t - K)^3, cnt, Reno-friendly cwnd:
+     -2.517  cwnd     32  target     33  formula      32.6  cnt     32  friendly 32
+     -2.092  cwnd     36  target     36  formula      35.3  cnt   3600  friendly 35
+     -1.748  cwnd     37  target     37  formula      36.9  cnt   3700  friendly 37
+     -1.465  cwnd     39  target     38  formula      37.7  cnt   3900  friendly 39
+     -1.147  cwnd     40  target     39  formula      38.4  cnt     40  friendly 41
+     -0.861  cwnd     42  target     39  formula      38.7  cnt   4200  friendly 42
+     -0.587  cwnd     44  target     39  formula      38.9  cnt   4400  friendly 44
+     -0.306  cwnd     46  target     39  formula      39.0  cnt   4600  friendly 46
+     -0.033  cwnd     48  target     39  formula      39.0  cnt   4800  friendly 48
+      0.291  cwnd     49  target     39  formula      39.0  cnt     49  friendly 50
+      0.570  cwnd     52  target     39  formula      39.1  cnt   5200  friendly 52

@@ -1,0 +1,23 @@
+A = R6-pq-ps100-fx-s1 (loss_scale 1.0), B = R6-pq-noloss-ps100-cf-s1 (loss_scale 0.0); same blocks: yes
+slot 2 block: publisher 1337 (prysm, fra), published 1.22 s, 83 kB
+  A: from slot start p50/p90/p99 1.37 / 1.47 / 1.57 s; from publish p50/p95/p99 0.15 / 0.29 / 0.35 s; missing 0
+  B: from slot start p50/p90/p99 1.37 / 1.46 / 1.55 s; from publish p50/p95/p99 0.16 / 0.28 / 0.33 s; missing 0
+  B - A per host: p10/p50/p90/p99 -0.07 / 0.00 / 0.07 / 0.15 s (n=2040)
+slot 3 block: publisher 1213 (lighthouse, par), published 2.52 s, 81 kB
+  A: from slot start p50/p90/p99 2.67 / 2.76 / 2.87 s; from publish p50/p95/p99 0.15 / 0.28 / 0.35 s; missing 0
+  B: from slot start p50/p90/p99 2.67 / 2.75 / 2.82 s; from publish p50/p95/p99 0.15 / 0.26 / 0.30 s; missing 0
+  B - A per host: p10/p50/p90/p99 -0.06 / 0.01 / 0.06 / 0.14 s (n=2040)
+slot 4 block: publisher 1610 (lighthouse, us-east), published 0.90 s, 114 kB
+  A: from slot start p50/p90/p99 1.08 / 1.20 / 1.32 s; from publish p50/p95/p99 0.17 / 0.34 / 0.42 s; missing 0
+  B: from slot start p50/p90/p99 1.06 / 1.14 / 1.21 s; from publish p50/p95/p99 0.16 / 0.26 / 0.31 s; missing 0
+  B - A per host: p10/p50/p90/p99 -0.11 / -0.02 / 0.04 / 0.13 s (n=2040)
+slot 5 block: publisher 470 (lighthouse, tyo), published 1.16 s, 71 kB
+  A: from slot start p50/p90/p99 1.40 / 1.48 / 1.59 s; from publish p50/p95/p99 0.24 / 0.36 / 0.43 s; missing 0
+  B: from slot start p50/p90/p99 1.38 / 1.43 / 1.51 s; from publish p50/p95/p99 0.21 / 0.29 / 0.35 s; missing 0
+  B - A per host: p10/p50/p90/p99 -0.10 / -0.03 / 0.04 / 0.14 s (n=2038)
+pooled over these blocks:
+  A: from slot start p50/p90/p99 1.39 / 2.69 / 2.81 s; from publish p50/p95/p99 0.18 / 0.33 / 0.40 s
+  B: from slot start p50/p90/p99 1.38 / 2.69 / 2.79 s; from publish p50/p95/p99 0.17 / 0.28 / 0.33 s
+  B - A per host: p10/p50/p90/p99 -0.09 / -0.01 / 0.06 / 0.14 s
+  A: attestations after the 4 s mark p50/p95/p99 1.07 / 2.07 / 3.36 s; missing 12396 of 1163495
+  B: attestations after the 4 s mark p50/p95/p99 1.05 / 2.00 / 2.30 s; missing 2 of 1163495

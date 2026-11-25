@@ -1,0 +1,1551 @@
+--- a/src/main/host/descriptor/tcp.c
++++ b/src/main/host/descriptor/tcp.c
+@@ -8,6 +8,7 @@
+ #include "main/host/descriptor/tcp.h"
+ 
+ #include <errno.h>
++#include <stdlib.h>
+ #include <math.h>
+ #include <netinet/tcp.h>
+ #include <stdarg.h>
+@@ -191,6 +192,112 @@
+         void *tally;
+     } retransmit;
+ 
++    /* diagnostics (LNXBUF_LOG) */
++    struct {
++        guint64 samples;
++        guint64 timeouts;
++        guint64 spurious;
++        guint64 txData;
++        gint lastBin;
++        gboolean toPending;
++        CSimulationTime toTime;
++        guint64 undoChecks;
++        guint64 undone;
++        guint64 dropped;
++        guint64 txRetx;
++        guint64 retxAfterUndo;
++        guint32 maxDeparted;
++        gboolean departedAny;
++        guint64 echoEq;
++        guint64 echoNew;
++        guint64 echoOld;
++        guint64 echoNA;
++        guint64 echoZero;
++        guint64 tsDupPending;
++        guint64 tsDupOld;
++        guint64 txFlushed; /* rtt6: data packets released by _tcp_flush, and those released with cwnd >= ssthresh */
++        guint64 txCa;
++    } diag;
++
++    /* rtt5: Linux window validation (tcp_cwnd_validate) and restart after idle (tcp_cwnd_restart) */
++    struct {
++        gboolean isCwndLimited;
++        guint32 maxPacketsOut;
++        guint32 cwndUsageSeq;
++        guint64 cwvSkipped;
++        guint64 restarts;
++    } rtt5;
++
++    /* rtt6: Linux CUBIC's state (struct bictcp in net/ipv4/tcp_cubic.c; times in jiffies = ms, HyStart's in us), kept
++     * apart from Reno's so that the Eifel undo leaves it as the RTO's Loss reset left it, and diagnostics */
++    struct {
++        guint32 cnt;
++        guint32 lastMaxCwnd;
++        guint32 lastCwnd;
++        guint32 lastTime;
++        guint32 originPoint;
++        guint32 K;
++        guint32 delayMin;
++        guint32 epochStart;
++        guint32 ackCnt;
++        guint32 tcpCwnd;
++        guint8 sampleCnt;
++        guint8 found;
++        guint32 roundStart;
++        guint32 endSeq;
++        guint32 lastAck;
++        guint32 currRtt;
++        gboolean trace;
++        guint32 rndEnd;
++        guint32 rndCwnd;
++        guint32 rndInc;
++        guint32 rndAcked;
++        guint32 rndMax;
++        guint64 rounds;
++        guint64 roundsOver;
++        guint64 roundsOverAcked;
++        guint64 hsTrain;
++        guint64 hsDelay;
++        guint64 epochs;
++        guint64 txStart;
++        guint64 txShift;
++    } cubic;
++
++    /* rtt2: Linux's RTT estimator state in microseconds (srtt8 = 8 x SRTT, mdev = 4 x mean deviation) */
++    struct {
++        gint64 srtt8;
++        gint64 mdev;
++        gint64 mdevMax;
++        gint64 rttvar;
++        guint32 rttSeq;
++    } est;
++
++    /* rtt2: Eifel undo state of the current timeout episode */
++    struct {
++        gboolean armed;
++        gboolean haveRetxSeq;
++        gboolean haveRetxTime;
++        guint32 retxSeq;
++        CSimulationTime retxTime;
++        guint32 seqHigh;
++        TCPCongRenoSaved saved;
++        gboolean watch;
++        guint32 watchHigh;
++    } undo;
++
++    /* rtt3 diagnostics: a recovery runs from an RTO until every packet outstanding at any of its RTOs is acked
++     * (Linux leaves the Loss state once snd_una reaches high_seq) */
++    struct {
++        gboolean active;
++        CSimulationTime start;
++        guint32 high;
++        guint32 outstanding;
++        guint32 timeouts;
++        guint32 episodes;
++        guint32 retx;
++        gint spurious;
++    } rec;
++
+     /* tcp autotuning for the send and recv buffers */
+     struct {
+         gboolean isEnabled;
+@@ -274,6 +381,439 @@
+ 
+ static void _tcp_flush(TCP* tcp, const Host* host);
+ 
++/* diagnostics: with LNXBUF_LOG set in Shadow's environment, log per-connection TCP state ("tcpd" lines) at info level */
++/* rtt2 switches: RTT2_UNDO=0 turns the Eifel undo off; RTT2_EST=rfc restores rtt's RFC 6298 estimator */
++static int _tcp_rtt2Undo(void) {
++    static int on = -1;
++    if (on < 0) {
++        const char* v = getenv("RTT2_UNDO");
++        on = !(v && strcmp(v, "0") == 0);
++    }
++    return on;
++}
++static int _tcp_rtt2LinuxEst(void) {
++    static int on = -1;
++    if (on < 0) {
++        const char* v = getenv("RTT2_EST");
++        on = !(v && strcmp(v, "rfc") == 0);
++    }
++    return on;
++}
++
++/* rtt3 switch: RTT3_CWND=10 restores rtt2's post-RTO window (Reno's fixed 10 segments) */
++static int _tcp_rtt3Cwnd(void) {
++    static int on = -1;
++    if (on < 0) {
++        const char* v = getenv("RTT3_CWND");
++        on = !(v && strcmp(v, "10") == 0);
++    }
++    return on;
++}
++
++/* rtt4 switch: RTT4_ECHO=0 restores rtt3's echo rule (every processed packet sets the value to echo) */
++static int _tcp_rtt4Echo(void) {
++    static int on = -1;
++    if (on < 0) {
++        const char* v = getenv("RTT4_ECHO");
++        on = !(v && strcmp(v, "0") == 0);
++    }
++    return on;
++}
++
++/* rtt5 switches: RTT5_CWV=0 turns off Linux's window validation, RTT5_SSR=0 its restart after idle, RTT5_DUP=0 the
++ * duplicate ACK reset in congestion avoidance; all off = rtt4 */
++static int _tcp_rtt5Switch(const char* name, int* on) {
++    if (*on < 0) {
++        const char* v = getenv(name);
++        *on = !(v && strcmp(v, "0") == 0);
++    }
++    return *on;
++}
++static int _tcp_rtt5Cwv(void) {
++    static int on = -1;
++    return _tcp_rtt5Switch("RTT5_CWV", &on);
++}
++static int _tcp_rtt5Ssr(void) {
++    static int on = -1;
++    return _tcp_rtt5Switch("RTT5_SSR", &on);
++}
++static int _tcp_rtt5DupOn(void) {
++    static int on = -1;
++    return _tcp_rtt5Switch("RTT5_DUP", &on);
++}
++
++static int _tcp_diagLog(void) {
++    static int on = -1;
++    if (on < 0) {
++        on = getenv("LNXBUF_LOG") != NULL;
++    }
++    return on;
++}
++
++/* rtt6: Linux CUBIC (net/ipv4/tcp_cubic.c, v6.12) with HyStart, for Reno's congestion avoidance and multiplicative
++ * decrease (Reno's slow start, fast recovery and RTO handling stay). Switches RTT6_CUBIC and RTT6_HYSTART, both on unless
++ * set to 0; RTT6_CUBIC=0 is rtt5b. Jiffies are milliseconds (HZ = 1000). Module defaults: beta 717, bic_scale 41,
++ * fast convergence, TCP friendliness, HyStart ack train and delay, low window 16, ack delta 2 ms */
++static int _tcp_rtt6CubicOn(void) {
++    static int on = -1;
++    return _tcp_rtt5Switch("RTT6_CUBIC", &on);
++}
++static int _tcp_rtt6HystartOn(void) {
++    static int on = -1;
++    return _tcp_rtt5Switch("RTT6_HYSTART", &on);
++}
++gboolean tcp_rtt6Cubic(void) {
++    return _tcp_rtt6CubicOn() ? TRUE : FALSE;
++}
++
++#define RTT6_HZ 1000U
++#define RTT6_BICTCP_HZ 10
++#define RTT6_BETA 717U
++#define RTT6_BETA_SCALE 1024U
++#define RTT6_CUBE_RTT_SCALE (41U * 10U)
++#define RTT6_CUBE_FACTOR ((1ULL << (10 + 3 * RTT6_BICTCP_HZ)) / (41U * 10U))
++#define RTT6_TCP_BETA_SCALE (8U * (RTT6_BETA_SCALE + RTT6_BETA) / 3U / (RTT6_BETA_SCALE - RTT6_BETA))
++#define RTT6_HYSTART_LOW_WINDOW 16U
++#define RTT6_HYSTART_ACK_DELTA_US 2000
++#define RTT6_HYSTART_MIN_SAMPLES 8U
++#define RTT6_HYSTART_DELAY_MIN 4000U
++#define RTT6_HYSTART_DELAY_MAX 16000U
++
++/* tcp_jiffies32 (offset by 1 so that 0 still means "no epoch") and bictcp_clock_us */
++static guint32 _tcp_rtt6Jiffies(void) {
++    return (guint32)(worker_getCurrentSimulationTime() / SIMTIME_ONE_MILLISECOND) + 1;
++}
++static guint32 _tcp_rtt6ClockUs(void) {
++    return (guint32)(worker_getCurrentSimulationTime() / SIMTIME_ONE_MICROSECOND);
++}
++
++/* bictcp_reset: every field before 'unused' in struct bictcp, and found */
++static void _tcp_rtt6Reset(TCP* tcp) {
++    tcp->cubic.cnt = 0;
++    tcp->cubic.lastMaxCwnd = 0;
++    tcp->cubic.lastCwnd = 0;
++    tcp->cubic.lastTime = 0;
++    tcp->cubic.originPoint = 0;
++    tcp->cubic.K = 0;
++    tcp->cubic.delayMin = 0;
++    tcp->cubic.epochStart = 0;
++    tcp->cubic.ackCnt = 0;
++    tcp->cubic.tcpCwnd = 0;
++    tcp->cubic.found = 0;
++}
++
++/* bictcp_hystart_reset: a round starts at snd_nxt */
++static void _tcp_rtt6HystartReset(TCP* tcp) {
++    tcp->cubic.roundStart = tcp->cubic.lastAck = _tcp_rtt6ClockUs();
++    tcp->cubic.endSeq = tcp->send.highestSequence + 1;
++    tcp->cubic.currRtt = ~0U;
++    tcp->cubic.sampleCnt = 0;
++}
++
++/* cubic_root: table lookup followed by one Newton-Raphson iteration */
++static guint32 _tcp_rtt6CubicRoot(guint64 a) {
++    static const guint8 v[] = {
++        /* 0x00 */ 0,   54,  54,  54,  118, 118, 118, 118,
++        /* 0x08 */ 123, 129, 134, 138, 143, 147, 151, 156,
++        /* 0x10 */ 157, 161, 164, 168, 170, 173, 176, 179,
++        /* 0x18 */ 181, 185, 187, 190, 192, 194, 197, 199,
++        /* 0x20 */ 200, 202, 204, 206, 209, 211, 213, 215,
++        /* 0x28 */ 217, 219, 221, 222, 224, 225, 227, 229,
++        /* 0x30 */ 231, 232, 234, 236, 237, 239, 240, 242,
++        /* 0x38 */ 244, 245, 246, 248, 250, 251, 252, 254,
++    };
++    guint32 x, b, shift;
++    b = a ? (guint32)(64 - __builtin_clzll(a)) : 0; /* fls64 */
++    if (b < 7) {
++        /* a in [0..63] */
++        return ((guint32)v[(guint32)a] + 35) >> 6;
++    }
++    b = ((b * 84) >> 8) - 1;
++    shift = (guint32)(a >> (b * 3));
++    x = ((guint32)(((guint32)v[shift] + 10) << b)) >> 6;
++    x = (2 * x + (guint32)(a / ((guint64)x * (guint64)(x - 1))));
++    x = ((x * 341) >> 10);
++    return x;
++}
++
++/* cubictcp_recalc_ssthresh */
++guint32 tcp_rtt6CubicSsthresh(TCP* tcp, guint32 cwnd) {
++    MAGIC_ASSERT(tcp);
++    tcp->cubic.epochStart = 0; /* end of epoch */
++    /* Wmax and fast convergence */
++    if (cwnd < tcp->cubic.lastMaxCwnd) {
++        tcp->cubic.lastMaxCwnd = (cwnd * (RTT6_BETA_SCALE + RTT6_BETA)) / (2 * RTT6_BETA_SCALE);
++    } else {
++        tcp->cubic.lastMaxCwnd = cwnd;
++    }
++    tcp->cubic.rndEnd = 0; /* diagnostics: no growth round across a loss */
++    return MAX((cwnd * RTT6_BETA) / RTT6_BETA_SCALE, 2U);
++}
++
++/* bictcp_update: returns ca->cnt, the packets to ACK per one-segment increase */
++static guint32 _tcp_rtt6Update(TCP* tcp, guint32 cwnd, guint32 acked) {
++    guint32 now = _tcp_rtt6Jiffies();
++    guint32 delta, bic_target = 0, max_cnt;
++    guint64 offs, t = 0;
++    gboolean full = FALSE;
++
++    tcp->cubic.ackCnt += acked; /* count the number of ACKed packets */
++
++    if (tcp->cubic.lastCwnd == cwnd && (gint32)(now - tcp->cubic.lastTime) <= (gint32)(RTT6_HZ / 32)) {
++        return tcp->cubic.cnt;
++    }
++
++    /* The CUBIC function can update ca->cnt at most once per jiffy. On all cwnd reduction events, ca->epoch_start is
++     * set to 0, which will force a recalculation of ca->cnt. */
++    if (tcp->cubic.epochStart && now == tcp->cubic.lastTime) {
++        goto tcp_friendliness;
++    }
++
++    tcp->cubic.lastCwnd = cwnd;
++    tcp->cubic.lastTime = now;
++
++    if (tcp->cubic.epochStart == 0) {
++        tcp->cubic.epochStart = now; /* record beginning */
++        tcp->cubic.ackCnt = acked;   /* start counting */
++        tcp->cubic.tcpCwnd = cwnd;   /* syn with cubic */
++
++        if (tcp->cubic.lastMaxCwnd <= cwnd) {
++            tcp->cubic.K = 0;
++            tcp->cubic.originPoint = cwnd;
++        } else {
++            /* Compute new K based on (wmax-cwnd) * (srtt>>3 / HZ) / c * 2^(3*bictcp_HZ) */
++            tcp->cubic.K = _tcp_rtt6CubicRoot(RTT6_CUBE_FACTOR * (tcp->cubic.lastMaxCwnd - cwnd));
++            tcp->cubic.originPoint = tcp->cubic.lastMaxCwnd;
++        }
++        tcp->cubic.epochs++;
++        if (_tcp_diagLog()) {
++            info("tcpd cubep %p cwnd %u lastmax %u K %u origin %u dmin %u", (void*)tcp, cwnd, tcp->cubic.lastMaxCwnd,
++                 tcp->cubic.K, tcp->cubic.originPoint, tcp->cubic.delayMin);
++        }
++    }
++
++    /* cubic function - calc */
++    t = (guint64)(gint64)(gint32)(now - tcp->cubic.epochStart);
++    t += (tcp->cubic.delayMin + 999U) / 1000U; /* usecs_to_jiffies(ca->delay_min) */
++    /* change the unit from HZ to bictcp_HZ */
++    t <<= RTT6_BICTCP_HZ;
++    t /= RTT6_HZ;
++
++    if (t < tcp->cubic.K) { /* t - K */
++        offs = tcp->cubic.K - t;
++    } else {
++        offs = t - tcp->cubic.K;
++    }
++
++    /* c/rtt * (t-K)^3 */
++    delta = (guint32)((RTT6_CUBE_RTT_SCALE * offs * offs * offs) >> (10 + 3 * RTT6_BICTCP_HZ));
++    if (t < tcp->cubic.K) { /* below origin*/
++        bic_target = tcp->cubic.originPoint - delta;
++    } else { /* above origin*/
++        bic_target = tcp->cubic.originPoint + delta;
++    }
++
++    /* cubic function - calc bictcp_cnt*/
++    if (bic_target > cwnd) {
++        tcp->cubic.cnt = cwnd / (bic_target - cwnd);
++    } else {
++        tcp->cubic.cnt = 100 * cwnd; /* very small increment*/
++    }
++
++    /* The initial growth of cubic function may be too conservative when the available bandwidth is still unknown. */
++    if (tcp->cubic.lastMaxCwnd == 0 && tcp->cubic.cnt > 20) {
++        tcp->cubic.cnt = 20; /* increase cwnd 5% per RTT */
++    }
++    full = TRUE;
++
++tcp_friendliness:
++    /* TCP Friendly */
++    {
++        guint32 scale = RTT6_TCP_BETA_SCALE;
++        delta = (cwnd * scale) >> 3;
++        while (tcp->cubic.ackCnt > delta) { /* update tcp cwnd */
++            tcp->cubic.ackCnt -= delta;
++            tcp->cubic.tcpCwnd++;
++        }
++        if (tcp->cubic.tcpCwnd > cwnd) { /* if bic is slower than tcp */
++            delta = tcp->cubic.tcpCwnd - cwnd;
++            max_cnt = cwnd / delta;
++            if (tcp->cubic.cnt > max_cnt) {
++                tcp->cubic.cnt = max_cnt;
++            }
++        }
++    }
++
++    /* The maximum rate of cwnd increase CUBIC allows is 1 packet per 2 packets ACKed, meaning cwnd grows at 1.5x per
++     * RTT. */
++    tcp->cubic.cnt = MAX(tcp->cubic.cnt, 2U);
++    if (full && tcp->cubic.trace && _tcp_diagLog()) {
++        info("tcpd cubtr %p now %u epoch %u t %" G_GUINT64_FORMAT " K %u origin %u target %u cwnd %u cnt %u tcpcwnd %u"
++             " lastmax %u dmin %u", (void*)tcp, now, tcp->cubic.epochStart, t, tcp->cubic.K, tcp->cubic.originPoint,
++             bic_target, cwnd, tcp->cubic.cnt, tcp->cubic.tcpCwnd, tcp->cubic.lastMaxCwnd, tcp->cubic.delayMin);
++    }
++    return tcp->cubic.cnt;
++}
++
++/* cubictcp_cong_avoid after Reno's slow start (Reno has already applied RTT5_CWV's tcp_is_cwnd_limited gate):
++ * bictcp_update, then tcp_cong_avoid_ai(tp, ca->cnt, acked) (net/ipv4/tcp_cong.c) on Reno's ACK counter */
++void tcp_rtt6CubicCongAvoid(TCP* tcp, guint32 acked, guint32* cwndCnt) {
++    MAGIC_ASSERT(tcp);
++    if (acked == 0) {
++        return;
++    }
++    guint32 cwnd0 = tcp->cong.cwnd;
++    /* diagnostics: congestion-avoidance growth per round trip (a round ends when snd_una passes the snd_nxt at its
++     * start, as HyStart's rounds; losses, RTOs and restarts end a round uncounted) */
++    if (tcp->cubic.rndEnd != 0 && (gint32)(tcp->send.unacked - tcp->cubic.rndEnd) > 0) {
++        guint32 c0 = tcp->cubic.rndCwnd, inc = tcp->cubic.rndInc;
++        tcp->cubic.rounds++;
++        if (2 * inc > c0 + 2) {
++            tcp->cubic.roundsOver++; /* more than 1.5 x the round's starting cwnd, plus one segment */
++        }
++        if (2 * inc > tcp->cubic.rndAcked + 2) {
++            tcp->cubic.roundsOverAcked++; /* more than one segment per two packets ACKed, plus one */
++        }
++        tcp->cubic.rndMax = MAX(tcp->cubic.rndMax, (guint32)((1000ULL * (c0 + inc)) / MAX(c0, 1U)));
++        if (tcp->cubic.trace && _tcp_diagLog()) {
++            info("tcpd cubrnd %p cwnd %u inc %u acked %u", (void*)tcp, c0, inc, tcp->cubic.rndAcked);
++        }
++        tcp->cubic.rndEnd = 0;
++    }
++    if (tcp->cubic.rndEnd == 0) {
++        tcp->cubic.rndEnd = tcp->send.highestSequence + 1;
++        tcp->cubic.rndCwnd = cwnd0;
++        tcp->cubic.rndInc = 0;
++        tcp->cubic.rndAcked = 0;
++    }
++
++    guint32 w = _tcp_rtt6Update(tcp, cwnd0, acked);
++
++    /* tcp_cong_avoid_ai: if credits accumulated at a higher w, apply them gently now */
++    if (*cwndCnt >= w) {
++        *cwndCnt = 0;
++        tcp->cong.cwnd++;
++    }
++    *cwndCnt += acked;
++    if (*cwndCnt >= w) {
++        guint32 delta = *cwndCnt / w;
++        *cwndCnt -= delta * w;
++        tcp->cong.cwnd += delta;
++    }
++    tcp->cubic.rndInc += tcp->cong.cwnd - cwnd0;
++    tcp->cubic.rndAcked += acked;
++}
++
++/* hystart_ack_delay with Linux's sk_pacing_rate, which tcp_update_pacing_rate sets after every ACK even without pacing:
++ * 200 % (cwnd < ssthresh / 2) or 120 % of mss x max(cwnd, packets_out) / srtt; sk_gso_max_size 65,536 */
++static guint32 _tcp_rtt6AckDelay(TCP* tcp) {
++    guint32 cwnd = tcp->cong.cwnd, ssthresh = tcp->cong.hooks->tcp_cong_ssthresh(tcp);
++    guint32 next = tcp->send.highestSequence + 1;
++    guint32 out = (gint32)(next - tcp->send.unacked) > 0 ? next - tcp->send.unacked : 0;
++    guint64 rate = (guint64)CONFIG_TCP_MAX_SEGMENT_SIZE * ((1000000ULL / 100) << 3);
++    rate *= (cwnd < ssthresh / 2) ? 200 : 120;
++    rate *= MAX(cwnd, out);
++    if (tcp->est.srtt8 > 0) {
++        rate /= (guint64)tcp->est.srtt8;
++    }
++    if (rate == 0) {
++        return 0;
++    }
++    return (guint32)MIN((guint64)1000, (65536ULL * 4 * 1000000ULL) / rate);
++}
++
++static void _tcp_rtt6LogHystart(TCP* tcp, const char* test, guint32 threshold, guint32 ackDelay) {
++    if (_tcp_diagLog()) {
++        info("tcpd hys %p test %s cwnd %u ssthresh %u dmin %u curr %u thr %u rnd %u ackdelay %u samples %u", (void*)tcp,
++             test, (unsigned)tcp->cong.cwnd, (unsigned)tcp->cong.hooks->tcp_cong_ssthresh(tcp), tcp->cubic.delayMin,
++             tcp->cubic.currRtt, threshold, _tcp_rtt6ClockUs() - tcp->cubic.roundStart, ackDelay,
++             (unsigned)tcp->cubic.sampleCnt);
++    }
++}
++
++/* hystart_update */
++static void _tcp_rtt6HystartUpdate(TCP* tcp, guint32 delay) {
++    guint32 threshold;
++
++    if ((gint32)(tcp->cubic.endSeq - tcp->send.unacked) < 0) { /* after(tp->snd_una, ca->end_seq) */
++        _tcp_rtt6HystartReset(tcp);
++    }
++
++    /* first detection parameter - ack-train detection */
++    guint32 now = _tcp_rtt6ClockUs();
++    if ((gint32)(now - tcp->cubic.lastAck) <= RTT6_HYSTART_ACK_DELTA_US) {
++        tcp->cubic.lastAck = now;
++        guint32 ackDelay = _tcp_rtt6AckDelay(tcp);
++        threshold = tcp->cubic.delayMin + ackDelay;
++        /* Hystart ack train triggers if we get ack past ca->delay_min/2. Without pacing (SK_PACING_NONE) */
++        threshold >>= 1;
++        if ((guint32)(gint32)(now - tcp->cubic.roundStart) > threshold) {
++            tcp->cubic.found = 1;
++            tcp->cubic.hsTrain++;
++            _tcp_rtt6LogHystart(tcp, "train", threshold, ackDelay);
++            tcp_cong_reno_hystart_exit(tcp);
++        }
++    }
++
++    /* obtain the minimum delay of more than sampling packets */
++    if (tcp->cubic.currRtt > delay) {
++        tcp->cubic.currRtt = delay;
++    }
++    if (tcp->cubic.sampleCnt < RTT6_HYSTART_MIN_SAMPLES) {
++        tcp->cubic.sampleCnt++;
++    } else {
++        guint32 thr = tcp->cubic.delayMin +
++                      CLAMP(tcp->cubic.delayMin >> 3, RTT6_HYSTART_DELAY_MIN, RTT6_HYSTART_DELAY_MAX);
++        if (tcp->cubic.currRtt > thr) {
++            tcp->cubic.found = 1;
++            tcp->cubic.hsDelay++;
++            _tcp_rtt6LogHystart(tcp, "delay", thr, 0);
++            tcp_cong_reno_hystart_exit(tcp);
++        }
++    }
++}
++
++/* cubictcp_acked (pkts_acked), with the RTT estimator's sample (now - TSecr) in us */
++static void _tcp_rtt6Acked(TCP* tcp, gint64 rttUs) {
++    /* Discard delay samples right after fast recovery */
++    if (tcp->cubic.epochStart && (gint32)(_tcp_rtt6Jiffies() - tcp->cubic.epochStart) < (gint32)RTT6_HZ) {
++        return;
++    }
++    guint32 delay = (guint32)rttUs;
++    if (delay == 0) {
++        delay = 1;
++    }
++    /* first time call or link delay decreases */
++    if (tcp->cubic.delayMin == 0 || tcp->cubic.delayMin > delay) {
++        tcp->cubic.delayMin = delay;
++    }
++    /* hystart triggers when cwnd is larger than some threshold */
++    guint32 cwnd = tcp->cong.cwnd;
++    if (!tcp->cubic.found && cwnd < tcp->cong.hooks->tcp_cong_ssthresh(tcp) && _tcp_rtt6HystartOn() &&
++        cwnd >= RTT6_HYSTART_LOW_WINDOW) {
++        _tcp_rtt6HystartUpdate(tcp, delay);
++    }
++}
++
++/* cubictcp_cwnd_event(CA_EVENT_TX_START): idle for a while, so shift epoch_start to keep cwnd growth on the cubic
++ * curve; delta = now - lsndtime (the last data segment sent, new or resent) */
++static void _tcp_rtt6TxStart(TCP* tcp, CSimulationTime now) {
++    guint32 nowJ = (guint32)(now / SIMTIME_ONE_MILLISECOND) + 1;
++    gint32 delta = (gint32)(nowJ - ((guint32)(tcp->info.lastDataSent / SIMTIME_ONE_MILLISECOND) + 1));
++    tcp->cubic.txStart++;
++    if (tcp->cubic.epochStart && delta > 0) {
++        guint32 before = tcp->cubic.epochStart;
++        tcp->cubic.epochStart += delta;
++        if ((gint32)(nowJ - tcp->cubic.epochStart) < 0) { /* after(ca->epoch_start, now) */
++            tcp->cubic.epochStart = nowJ;
++        }
++        tcp->cubic.txShift++;
++        if (tcp->cubic.trace && _tcp_diagLog()) {
++            info("tcpd txs %p delta %d epoch %u %u now %u", (void*)tcp, delta, before, tcp->cubic.epochStart, nowJ);
++        }
++    }
++}
++
+ static TCP* _tcp_fromLegacyFile(LegacyFile* descriptor) {
+     utility_debugAssert(legacyfile_getType(descriptor) == DT_TCPSOCKET);
+     return (TCP*)descriptor;
+@@ -485,16 +1025,24 @@
+     return mem;
+ }
+ 
++/* lnxbuf: Linux caps buffer autotuning at tcp_rmem[2] = 6 MiB and tcp_wmem[2] = 4 MiB (defaults), instead of
++ * Shadow's bandwidth x RTT clamped to [6, 60] MiB and [4, 40] MiB. */
+ static gsize _tcp_computeMaxRMEM(TCP* tcp, const Host* host) {
+-    gsize mem = _tcp_computeRTTMEM(tcp, host, TRUE);
+-    mem = CLAMP(mem, CONFIG_TCP_RMEM_MAX, CONFIG_TCP_RMEM_MAX*10);
+-    return mem;
++    (void)_tcp_computeRTTMEM;
++    return (gsize)CONFIG_TCP_RMEM_MAX;
+ }
+ 
+ static gsize _tcp_computeMaxWMEM(TCP* tcp, const Host* host) {
+-    gsize mem = _tcp_computeRTTMEM(tcp, host, FALSE);
+-    mem = CLAMP(mem, CONFIG_TCP_WMEM_MAX, CONFIG_TCP_WMEM_MAX*10);
+-    return mem;
++    return (gsize)CONFIG_TCP_WMEM_MAX;
++}
++
++/* lnxbuf validation: with LNXBUF_LOG set in Shadow's environment, log every socket buffer size change at info level */
++static int _tcp_lnxbufLog(void) {
++    static int on = -1;
++    if (on < 0) {
++        on = getenv("LNXBUF_LOG") != NULL;
++    }
++    return on;
+ }
+ 
+ static void _tcp_tuneInitialBufferSizes(TCP* tcp, const Host* host) {
+@@ -525,6 +1073,9 @@
+         }
+     }
+ 
++    if (_tcp_lnxbufLog()) {
++        info("lnxbuf tune src %u dst %u", (unsigned)sourceIP, (unsigned)destinationIP);
++    }
+     if(sourceIP == destinationIP) {
+         /* 16 MiB as max */
+         gsize inSize = legacysocket_getInputBufferSize(&(tcp->super));
+@@ -544,6 +1095,17 @@
+         return;
+     }
+ 
++    /* lnxbuf: like Linux, a non-loopback socket keeps its configured initial sizes (socket_send_buffer and
++     * socket_recv_buffer); the send buffer then grows with cwnd and the receive buffer with the bytes copied per
++     * RTT, up to the caps above. Shadow's bandwidth x delay sizing below is skipped. */
++    if (_tcp_lnxbufLog()) {
++        info("lnxbuf initial send %" G_GSIZE_FORMAT " receive %" G_GSIZE_FORMAT " autotune send %d receive %d",
++             legacysocket_getOutputBufferSize(&(tcp->super)), legacysocket_getInputBufferSize(&(tcp->super)),
++             (int)(!tcp->autotune.userDisabledSend && host_autotuneSendBuffer(host)),
++             (int)(!tcp->autotune.userDisabledReceive && host_autotuneReceiveBuffer(host)));
++    }
++    return;
++
+     guint32 rtt_milliseconds = (guint32)_tcp_calculateRTT(tcp, host);
+ 
+     /* i got delay, now i need values for my send and receive buffer
+@@ -659,6 +1221,23 @@
+ static void _tcp_runCloseTimerExpiredTask(const Host* host, gpointer tcp, gpointer userData);
+ static void _tcp_clearRetransmit(TCP* tcp, guint sequence);
+ 
++/* rtt6: cubictcp_init when the connection is established (Linux calls it from tcp_init_transfer, after the handshake's
++ * RTT sample, so the ACK of the SYN gives CUBIC no delay sample); 'tcpd cubtr' traces for about 1 in 128 connections,
++ * chosen by address */
++static void _tcp_rtt6Init(TCP* tcp, const Host* host) {
++    _tcp_rtt6Reset(tcp);
++    if (_tcp_rtt6HystartOn()) {
++        _tcp_rtt6HystartReset(tcp);
++    }
++    guint32 h = (guint32)host_getDefaultIP(host) ^ ((guint32)tcp_getPeerIP(tcp) * 2654435761U);
++    h ^= h >> 16;
++    h *= 2246822507U;
++    h ^= h >> 13;
++    h *= 3266489909U;
++    h ^= h >> 16;
++    tcp->cubic.trace = (h % 128U) == 0;
++}
++
+ static void _tcp_setState(TCP* tcp, const Host* host, enum TCPState state) {
+     MAGIC_ASSERT(tcp);
+ 
+@@ -682,6 +1261,9 @@
+         }
+         case TCPS_ESTABLISHED: {
+             tcp->flags |= TCPF_WAS_ESTABLISHED;
++            if (_tcp_rtt6CubicOn()) {
++                _tcp_rtt6Init(tcp, host);
++            }
+             legacyfile_adjustStatus(
+                 (LegacyFile*)tcp, FileState_ACTIVE | FileState_WRITABLE, TRUE, 0);
+             break;
+@@ -1144,10 +1726,80 @@
+     tcp->retransmit.timeout = MAX(tcp->retransmit.timeout, CONFIG_TCP_RTO_MIN);
+ }
+ 
++/* rtt2: RTO from Linux's estimator (__tcp_set_rto, tcp_bound_rto): SRTT + rttvar, in ms rounded up, at most 120 s */
++static gint _tcp_rtt2RTO(TCP* tcp) {
++    gint64 rtoUs = (tcp->est.srtt8 >> 3) + tcp->est.rttvar;
++    return (gint)MAX((gint64)CONFIG_TCP_RTO_MIN, MIN((rtoUs + 999) / 1000, (gint64)CONFIG_TCP_RTO_MAX));
++}
++
+ static void _tcp_updateRTTEstimate(TCP* tcp, const Host* host, CSimulationTime timestamp) {
+     MAGIC_ASSERT(tcp);
++    tcp->diag.samples++;
+ 
+     CSimulationTime now = worker_getCurrentSimulationTime();
++
++    if (_tcp_rtt2LinuxEst()) {
++        /* rtt2: Linux's tcp_rtt_estimator (net/ipv4/tcp_input.c, v6.12), in microseconds */
++        gint64 m = (gint64)((now - timestamp) / SIMTIME_ONE_MICROSECOND);
++        if (m <= 0) {
++            m = 1;
++        }
++        const gint64 rtoMinUs = (gint64)CONFIG_TCP_RTO_MIN * 1000;
++        gint64 srtt = tcp->est.srtt8;
++        gboolean first = (srtt == 0);
++        if (!first) {
++            m -= (srtt >> 3); /* m is now the error in the RTT estimate */
++            srtt += m;        /* SRTT = 7/8 SRTT + 1/8 sample */
++            if (m < 0) {
++                m = -m;
++                m -= (tcp->est.mdev >> 2);
++                if (m > 0) {
++                    m >>= 3; /* finer gain when the RTT decreases */
++                }
++            } else {
++                m -= (tcp->est.mdev >> 2);
++            }
++            tcp->est.mdev += m; /* mdev = 3/4 mdev + 1/4 |error| */
++            if (tcp->est.mdev > tcp->est.mdevMax) {
++                tcp->est.mdevMax = tcp->est.mdev;
++                if (tcp->est.mdevMax > tcp->est.rttvar) {
++                    tcp->est.rttvar = tcp->est.mdevMax;
++                }
++            }
++            /* once per RTT: snd_una passed rtt_seq */
++            if (tcp->send.unacked > tcp->est.rttSeq) {
++                if (tcp->est.mdevMax < tcp->est.rttvar) {
++                    tcp->est.rttvar -= (tcp->est.rttvar - tcp->est.mdevMax) >> 2;
++                }
++                tcp->est.rttSeq = tcp->send.highestSequence + 1; /* snd_nxt */
++                tcp->est.mdevMax = rtoMinUs;
++            }
++        } else {
++            srtt = m << 3;
++            tcp->est.mdev = m << 1;
++            tcp->est.rttvar = MAX(tcp->est.mdev, rtoMinUs);
++            tcp->est.mdevMax = tcp->est.rttvar;
++            tcp->est.rttSeq = tcp->send.highestSequence + 1;
++        }
++        tcp->est.srtt8 = MAX((gint64)1, srtt);
++
++        /* Shadow's millisecond fields: SRTT drives receive-buffer autotuning; both are logged */
++        tcp->timing.rttSmoothed = (gint)MAX((gint64)1, (tcp->est.srtt8 >> 3) / 1000);
++        tcp->timing.rttVariance = (gint)(tcp->est.rttvar / 1000);
++        if (first) {
++            if (_tcp_lnxbufLog()) {
++                info("lnxbuf first rtt %d ms enabled %d didinit %d send %" G_GSIZE_FORMAT " receive %" G_GSIZE_FORMAT,
++                     tcp->timing.rttSmoothed, (int)tcp->autotune.isEnabled,
++                     (int)tcp->autotune.didInitializeBufferSizes, legacysocket_getOutputBufferSize(&(tcp->super)),
++                     legacysocket_getInputBufferSize(&(tcp->super)));
++            }
++            if (tcp->autotune.isEnabled && !tcp->autotune.didInitializeBufferSizes) {
++                _tcp_tuneInitialBufferSizes(tcp, host);
++            }
++        }
++        _tcp_setRetransmitTimeout(tcp, _tcp_rtt2RTO(tcp));
++        return;
++    }
+     gint rtt = (gint)((now - timestamp) / SIMTIME_ONE_MILLISECOND);
+ 
+     if(rtt <= 0) {
+@@ -1159,6 +1811,11 @@
+         /* first RTT measurement */
+         tcp->timing.rttSmoothed = rtt;
+         tcp->timing.rttVariance = rtt / 2;
++        if (_tcp_lnxbufLog()) {
++            info("lnxbuf first rtt %d ms enabled %d didinit %d send %" G_GSIZE_FORMAT " receive %" G_GSIZE_FORMAT, rtt,
++                 (int)tcp->autotune.isEnabled, (int)tcp->autotune.didInitializeBufferSizes,
++                 legacysocket_getOutputBufferSize(&(tcp->super)), legacysocket_getInputBufferSize(&(tcp->super)));
++        }
+ 
+         if(tcp->autotune.isEnabled && !tcp->autotune.didInitializeBufferSizes) {
+             _tcp_tuneInitialBufferSizes(tcp, host);
+@@ -1172,7 +1829,8 @@
+     }
+ 
+     /* RTO = SRTT + 4 * RTTVAR  (min=1s, max=60s) */
+-    gint newRTO = tcp->timing.rttSmoothed + (4 * tcp->timing.rttVariance);
++    /* rtt: like Linux, floor the variance term at 200 ms: RTO = SRTT + max(4 RTTVAR, 200 ms) */
++    gint newRTO = tcp->timing.rttSmoothed + MAX(4 * tcp->timing.rttVariance, CONFIG_TCP_RTO_MIN);
+     // fprintf(stderr, "newRTO - %d\n", newRTO);
+     _tcp_setRetransmitTimeout(tcp, newRTO);
+ 
+@@ -1193,6 +1851,12 @@
+ 
+     trace("retransmitting packet %d", sequence);
+ 
++    /* rtt2: remember the first retransmission of a timeout episode; its departure time is the Eifel reference */
++    if (tcp->undo.armed && !tcp->undo.haveRetxSeq) {
++        tcp->undo.retxSeq = (guint32)sequence;
++        tcp->undo.haveRetxSeq = TRUE;
++    }
++
+     /* remove from queue and update length and status.
+      * calling steal means that the packet ref count is not decremented */
+     g_hash_table_steal(tcp->retransmit.queue, GINT_TO_POINTER(sequence));
+@@ -1288,6 +1952,9 @@
+ 
+ void tcp_networkInterfaceIsAboutToSendPacket(TCP* tcp, const Host* host, Packet* packet) {
+     MAGIC_ASSERT(tcp);
++    if (packet_getPayloadSize(packet) > 0) {
++        tcp->diag.txData++;
++    }
+ 
+     CSimulationTime now = worker_getCurrentSimulationTime();
+ 
+@@ -1304,6 +1971,31 @@
+ 
+     PacketTCPHeader header = packet_getTCPHeader(packet);
+ 
++    /* rtt2 diagnostics: data packets depart in sequence order, so a data packet at or below the highest departed
++     * sequence is a resend; and the Eifel reference time (the TSval of the first retransmission) */
++    if (packet_getPayloadSize(packet) > 0 && header.sequence > 0) {
++        if (tcp->undo.watch && tcp->send.unacked > tcp->undo.watchHigh) {
++            tcp->undo.watch = FALSE; /* the undone range is fully acknowledged */
++        }
++        if (tcp->diag.departedAny && (guint32)header.sequence <= tcp->diag.maxDeparted) {
++            tcp->diag.txRetx++;
++            if (tcp->rec.active && (guint32)header.sequence <= tcp->rec.high) {
++                tcp->rec.retx++;
++            }
++            if (tcp->undo.watch && (guint32)header.sequence <= tcp->undo.watchHigh) {
++                tcp->diag.retxAfterUndo++;
++            }
++        } else {
++            tcp->diag.maxDeparted = (guint32)header.sequence;
++            tcp->diag.departedAny = TRUE;
++        }
++        if (tcp->undo.armed && tcp->undo.haveRetxSeq && !tcp->undo.haveRetxTime &&
++            (guint32)header.sequence == tcp->undo.retxSeq) {
++            tcp->undo.haveRetxTime = TRUE;
++            tcp->undo.retxTime = now;
++        }
++    }
++
+     if (header.flags & PTCP_ACK) {
+         /* we are sending an ACK already, so we may not need any delayed ACK */
+         tcp->send.delayedACKCounter = 0;
+@@ -1320,6 +2012,61 @@
+     }
+ }
+ 
++/* rtt5: Linux's tcp_is_cwnd_limited, asked by Reno before it raises cwnd on an ACK (tcp_reno_cong_avoid) */
++gboolean tcp_rtt5MayRaiseCwnd(TCP* tcp, gboolean slowStart) {
++    MAGIC_ASSERT(tcp);
++    if (!_tcp_rtt5Cwv() || tcp->rtt5.isCwndLimited ||
++        (slowStart && tcp->cong.cwnd < 2 * tcp->rtt5.maxPacketsOut)) {
++        return TRUE;
++    }
++    tcp->rtt5.cwvSkipped++;
++    return FALSE;
++}
++
++gboolean tcp_rtt5Dup(void) {
++    return _tcp_rtt5DupOn() ? TRUE : FALSE;
++}
++
++/* rtt5b switch RTT5_BETA, off unless RTT5_BETA=1 (unlike the other rtt5 switches, which are on unless set to 0) */
++gboolean tcp_rtt5Beta(void) {
++    static int on = -1;
++    if (on < 0) {
++        const char* v = getenv("RTT5_BETA");
++        on = v && strcmp(v, "1") == 0;
++    }
++    return on ? TRUE : FALSE;
++}
++
++void tcp_rtt5LogFastRecovery(TCP* tcp, gboolean fromSlowStart, guint32 adv, guint32 cwndBefore, guint32 ssthreshBefore) {
++    if (_tcp_diagLog()) {
++        info("tcpd fr %p from %s adv %u cwnd %u %u ssthresh %u %u", (void*)tcp, fromSlowStart ? "ss" : "ca", adv,
++             cwndBefore, (unsigned)tcp->cong.cwnd, ssthreshBefore, (unsigned)tcp->cong.hooks->tcp_cong_ssthresh(tcp));
++    }
++}
++
++/* rtt5: Linux's tcp_cwnd_restart after an idle period of more than one RTO */
++static void _tcp_rtt5Restart(TCP* tcp, gint64 idle, gint64 rto) {
++    guint32 before = tcp->cong.cwnd;
++    guint32 ssBefore = tcp->cong.hooks->tcp_cong_ssthresh(tcp);
++    char phaseBefore = tcp_cong_reno_phase(tcp);
++    guint32 cwnd = before;
++    guint32 restart = MIN((guint32)10, before);
++    gint64 delta = idle;
++    while ((delta -= rto) > 0 && cwnd > restart) {
++        cwnd >>= 1;
++    }
++    cwnd = MAX(cwnd, restart);
++    tcp_cong_reno_restart(tcp, cwnd);
++    tcp->rtt5.restarts++;
++    tcp->cubic.rndEnd = 0; /* rtt6 diagnostics: no growth round across a restart */
++    if (_tcp_diagLog()) {
++        info("tcpd ssr %p idle %" G_GINT64_FORMAT " rto %" G_GINT64_FORMAT " cwnd %u %u ssthresh %u %u phase %c %c",
++             (void*)tcp, idle / SIMTIME_ONE_MILLISECOND, rto / SIMTIME_ONE_MILLISECOND, before,
++             (unsigned)tcp->cong.cwnd, ssBefore, (unsigned)tcp->cong.hooks->tcp_cong_ssthresh(tcp), phaseBefore,
++             tcp_cong_reno_phase(tcp));
++    }
++}
++
+ static void _tcp_flush(TCP* tcp, const Host* host) {
+     MAGIC_ASSERT(tcp);
+ 
+@@ -1361,6 +2108,10 @@
+ 
+     // bool print = true;
+ 
++    /* rtt5: new data segments sent in this flush (Linux sent_pkts in tcp_write_xmit) */
++    guint32 rtt5High = tcp->send.highestSequence;
++    guint rtt5Sent = 0;
++
+     /* flush packets that can now be sent to socket */
+     while(!priorityqueue_isEmpty(tcp->throttledOutput)) {
+         /* get the next throttled packet, in sequence order */
+@@ -1375,6 +2126,18 @@
+         PacketTCPHeader header = packet_getTCPHeader(packet);
+ 
+         if(length > 0) {
++            /* rtt5: restart after idle: a new data segment with nothing in flight, more than one RTO after the
++             * last data segment (tcp_slow_start_after_idle_check, tcp_cwnd_restart) */
++            if (_tcp_rtt5Ssr() && header.sequence > tcp->send.highestSequence && tcp->info.lastDataSent > 0 &&
++                (guint32)(tcp->send.highestSequence + 1) == tcp->send.unacked) {
++                gint64 rtt5Idle = (gint64)(now - tcp->info.lastDataSent);
++                gint64 rtt5Rto = (gint64)tcp->retransmit.timeout * SIMTIME_ONE_MILLISECOND;
++                if (rtt5Idle > rtt5Rto) {
++                    _tcp_rtt5Restart(tcp, rtt5Idle, rtt5Rto);
++                    _tcp_updateSendWindow(tcp);
++                }
++            }
++
+             /* we cant send it if our window is too small */
+             gboolean fitsInWindow =
+                 (header.sequence < (guint)(tcp->send.unacked + tcp->send.window)) ? TRUE : FALSE;
+@@ -1390,7 +2153,19 @@
+                 break;
+             } else {
+                 /* we will send the data packet */
++                tcp->diag.txFlushed++;
++                if (tcp->cong.cwnd >= tcp->cong.hooks->tcp_cong_ssthresh(tcp)) {
++                    tcp->diag.txCa++;
++                }
++                /* rtt6: CA_EVENT_TX_START (tcp_event_data_sent): new data goes out with nothing in flight */
++                if (_tcp_rtt6CubicOn() && header.sequence > tcp->send.highestSequence &&
++                    (guint32)(tcp->send.highestSequence + 1) == tcp->send.unacked) {
++                    _tcp_rtt6TxStart(tcp, now);
++                }
+                 tcp->info.lastDataSent = now;
++                if (header.sequence > rtt5High) {
++                    rtt5Sent++;
++                }
+             }
+         }
+ 
+@@ -1419,6 +2194,21 @@
+         utility_debugAssert(success);
+     }
+ 
++    /* rtt5: Linux tcp_cwnd_validate after tcp_write_xmit: remember whether this window was cwnd-limited, or else
++     * the most packets out in it (sent and not cumulatively acknowledged, in sequence space) */
++    if (_tcp_rtt5Cwv()) {
++        guint32 rtt5Next = (guint32)(tcp->send.highestSequence + 1);
++        guint32 rtt5Out = (gint32)(rtt5Next - tcp->send.unacked) > 0 ? rtt5Next - tcp->send.unacked : 0;
++        gboolean rtt5Limited = rtt5Out >= tcp->cong.cwnd;
++        if ((rtt5Sent > 0 || rtt5Limited) &&
++            ((gint32)(tcp->send.unacked - tcp->rtt5.cwndUsageSeq) >= 0 || rtt5Limited ||
++             (!tcp->rtt5.isCwndLimited && rtt5Out > tcp->rtt5.maxPacketsOut))) {
++            tcp->rtt5.isCwndLimited = rtt5Limited;
++            tcp->rtt5.maxPacketsOut = rtt5Out;
++            tcp->rtt5.cwndUsageSeq = rtt5Next;
++        }
++    }
++
+     /* any packets now in order can be pushed to our user input buffer */
+     while(!priorityqueue_isEmpty(tcp->unorderedInput)) {
+         Packet* packet = priorityqueue_peek(tcp->unorderedInput);
+@@ -1537,11 +2327,36 @@
+     /* rfc 6298, section 5.4-5.7 (http://tools.ietf.org/html/rfc6298)
+      * if we get here, this is a valid timer expiration and we need to do a retransmission
+      * do exponential backoff */
++    gint diagOldRTO = tcp->retransmit.timeout;
++    guint32 diagOldCwnd = tcp->cong.cwnd, diagOldSsthresh = tcp->cong.hooks->tcp_cong_ssthresh(tcp);
++    /* rtt2: at the first timeout of an episode (backoff 0 -> 1) save cwnd and the Reno state for an Eifel undo */
++    if (_tcp_rtt2Undo() && tcp->retransmit.backoffCount == 0) {
++        tcp_cong_reno_save(tcp, &tcp->undo.saved);
++        tcp->undo.armed = TRUE;
++        tcp->undo.haveRetxSeq = FALSE;
++        tcp->undo.haveRetxTime = FALSE;
++        tcp->undo.seqHigh = tcp->send.highestSequence;
++        tcp->undo.watch = FALSE;
++    }
+     tcp->retransmit.backoffCount++;
+     _tcp_setRetransmitTimeout(tcp, tcp->retransmit.timeout * 2);
+     _tcp_setRetransmitTimer(tcp, host, now);
++    tcp->diag.timeouts++;
++    tcp->diag.toPending = TRUE;
++    tcp->diag.toTime = now;
++    if (_tcp_diagLog()) {
++        info("tcpd timeout %p rto %d -> %d backoff %u srtt %d rttvar %d cwnd %u ssthresh %u", (void*)tcp, diagOldRTO,
++             tcp->retransmit.timeout, tcp->retransmit.backoffCount, tcp->timing.rttSmoothed,
++             tcp->timing.rttVariance, diagOldCwnd, diagOldSsthresh);
++    }
+ 
+     tcp->cong.hooks->tcp_cong_timeout_ev(tcp);
++    /* rtt6: Linux enters the Loss state at every RTO, and CUBIC then resets all its state (cubictcp_state) */
++    if (_tcp_rtt6CubicOn()) {
++        _tcp_rtt6Reset(tcp);
++        _tcp_rtt6HystartReset(tcp);
++        tcp->cubic.rndEnd = 0;
++    }
+     debug("[CONG] a congestion timeout has occurred on %s", tcp->super.boundString);
+     _tcp_logCongestionInfo(tcp);
+ 
+@@ -1551,6 +2366,38 @@
+                                tcp->receive.lastAcknowledgment,
+                                tcp->send.highestSequence + 1);
+ 
++    /* rtt3: Linux's post-RTO window (tcp_enter_loss in net/ipv4/tcp_input.c): cwnd = packets in flight + 1, counted
++     * after the outstanding data is marked lost, instead of the fixed 10 segments of tcp_cong_reno_timeout_ev_ */
++    guint32 rtt3InFlight = retransmit_tally_count_in_flight(tcp->retransmit.tally, tcp->receive.lastAcknowledgment,
++                                                            tcp->send.highestSequence + 1);
++    guint32 rtt3RenoCwnd = tcp->cong.cwnd;
++    if (_tcp_rtt3Cwnd()) {
++        tcp->cong.cwnd = rtt3InFlight + 1;
++    }
++    gboolean rtt3NewWatch = !tcp->rec.active;
++    if (rtt3NewWatch) {
++        tcp->rec.active = TRUE;
++        tcp->rec.start = now;
++        tcp->rec.high = tcp->send.highestSequence;
++        tcp->rec.outstanding = tcp->send.highestSequence + 1 - tcp->receive.lastAcknowledgment;
++        tcp->rec.timeouts = 0;
++        tcp->rec.episodes = 0;
++        tcp->rec.retx = 0;
++        tcp->rec.spurious = -1;
++    } else {
++        tcp->rec.high = MAX(tcp->rec.high, tcp->send.highestSequence);
++    }
++    tcp->rec.timeouts++;
++    if (tcp->retransmit.backoffCount == 1) {
++        tcp->rec.episodes++;
++    }
++    if (_tcp_diagLog()) {
++        info("tcpd rto3 %p inflight %u cwnd %u reno %u ssthresh %u outstanding %u backoff %u newwatch %d", (void*)tcp,
++             rtt3InFlight, tcp->cong.cwnd, rtt3RenoCwnd, tcp->cong.hooks->tcp_cong_ssthresh(tcp),
++             tcp->send.highestSequence + 1 - tcp->receive.lastAcknowledgment, tcp->retransmit.backoffCount,
++             (int)rtt3NewWatch);
++    }
++
+     _rswlog(tcp, "Timeout, marking %d as lost.\n", tcp->receive.lastAcknowledgment);
+ 
+     _tcp_flush(tcp, host);
+@@ -1981,6 +2828,26 @@
+ 
+     gint nPacketsAcked = 0;
+     if(isValidAck) {
++        /* rtt4 diagnostics: compare the echo with the TSval of the first segment this ACK newly acknowledges (the
++         * lowest unacknowledged one; in the retransmit queue with its latest departure TSval, unless a resend of it is
++         * waiting to leave) */
++        if (_tcp_diagLog()) {
++            Packet* firstAcked = g_hash_table_lookup(tcp->retransmit.queue, GINT_TO_POINTER(tcp->send.unacked));
++            if (header->timestampEcho == 0) {
++                tcp->diag.echoZero++;
++            } else if (firstAcked == NULL) {
++                tcp->diag.echoNA++;
++            } else {
++                CSimulationTime firstTsval = packet_getTCPHeader(firstAcked).timestampValue;
++                if (header->timestampEcho == firstTsval) {
++                    tcp->diag.echoEq++;
++                } else if (header->timestampEcho > firstTsval) {
++                    tcp->diag.echoNew++;
++                } else {
++                    tcp->diag.echoOld++;
++                }
++            }
++        }
+         /* the packets just acked are 'released' from retransmit queue */
+         _tcp_clearRetransmitRange(tcp, tcp->receive.lastAcknowledgment,
+                                   header->acknowledgment);
+@@ -1998,6 +2865,13 @@
+             flags |= TCP_PF_DATA_ACKED;
+ 
+             debug("[CONG] %i packets were acked", nPacketsAcked);
++            /* rtt6: CUBIC's pkts_acked (delay_min and HyStart) before cong_avoid, as in tcp_ack, with the RTT
++             * estimator's sample (now - TSecr); not for the ACK of the SYN (Linux initialises CUBIC after it) */
++            if (_tcp_rtt6CubicOn() && header->timestampEcho != 0 &&
++                (guint32)header->acknowledgment - (guint32)nPacketsAcked > 1) {
++                gint64 rtt6Us = (gint64)((now - header->timestampEcho) / SIMTIME_ONE_MICROSECOND);
++                _tcp_rtt6Acked(tcp, rtt6Us <= 0 ? 1 : rtt6Us);
++            }
+             tcp->cong.hooks->tcp_cong_new_ack_ev(tcp, nPacketsAcked);
+ 
+             /* increase send buffer size with autotuning */
+@@ -2008,7 +2882,7 @@
+         }
+ 
+         /* if we had congestion, reset our state (rfc 6298, section 5) */
+-        if(tcp->retransmit.backoffCount > 2) {
++        if(tcp->retransmit.backoffCount > 2 && !_tcp_rtt2LinuxEst()) {
+             tcp->timing.rttSmoothed = 0;
+             tcp->timing.rttVariance = 0;
+             _tcp_setRetransmitTimeout(tcp, CONFIG_TCP_RTO_INIT);
+@@ -2360,10 +3234,163 @@
+     }
+ 
+     /* update the last time stamp value (RFC 1323) */
+-    tcp->receive.lastTimestamp = header->timestampValue;
+-    if(header->timestampEcho && tcp->retransmit.backoffCount == 0) {
++    if (!_tcp_rtt4Echo()) {
++        tcp->receive.lastTimestamp = header->timestampValue;
++    } else {
++        /* rtt4: RFC 7323 section 4.3 (Linux tcp_replace_ts_recent): only a segment at or below the ACK number of the
++         * last departed packet (rcv_wup), with a TSval not older than the current value (PAWS); pure ACKs (sequence 0
++         * here) only when nothing received is unacknowledged (Linux's fast path: rcv_nxt == rcv_wup) */
++        gboolean tsInSeq = header->sequence > 0
++                               ? ((guint32)header->sequence <= tcp->send.lastAcknowledgment)
++                               : (tcp->receive.next <= tcp->send.lastAcknowledgment);
++        if (tsInSeq && header->timestampValue >= tcp->receive.lastTimestamp) {
++            if (packetLength > 0 && header->sequence > 0 && !(flags & TCP_PF_DATA_RECEIVED) &&
++                (guint32)header->sequence < tcp->receive.next) {
++                /* diagnostics: an update by a duplicate segment; Linux makes it at the last departed ACK number
++                 * (tsDupPending) but discards a segment entirely below it in tcp_sequence first (tsDupOld) */
++                if ((guint32)header->sequence >= tcp->send.lastAcknowledgment) {
++                    tcp->diag.tsDupPending++;
++                } else if ((guint32)header->sequence + 1 < tcp->send.lastAcknowledgment) {
++                    tcp->diag.tsDupOld++;
++                }
++            }
++            tcp->receive.lastTimestamp = header->timestampValue;
++        }
++    }
++    /* rtt: sample only on packets that acknowledge new data, so a packet sent long after the last one received
++     * (echoing an old TSval) cannot inflate SRTT */
++    if(header->timestampEcho && (flags & TCP_PF_DATA_ACKED) &&
++       (_tcp_rtt2LinuxEst() || tcp->retransmit.backoffCount == 0)) {
+         _tcp_updateRTTEstimate(tcp, host, header->timestampEcho);
+     }
++    /* rtt2: Eifel undo (RFC 3522; Linux tcp_try_undo_loss) at the first ACK of new data after a timeout */
++    if (tcp->undo.armed && (flags & TCP_PF_DATA_ACKED)) {
++        tcp->undo.armed = FALSE;
++        tcp->diag.undoChecks++;
++        gboolean spurious = !tcp->undo.haveRetxTime ||
++                            (header->timestampEcho != 0 && header->timestampEcho < tcp->undo.retxTime);
++        if (tcp->rec.active && tcp->rec.spurious < 0) {
++            tcp->rec.spurious = spurious ? 1 : 0;
++        }
++        guint32 cw0 = tcp->cong.cwnd, ss0 = tcp->cong.hooks->tcp_cong_ssthresh(tcp);
++        guint dropped = 0, requeued = 0, freed = 0;
++        int rearmed = 0;
++        if (spurious) {
++            tcp_cong_reno_undo(tcp, &tcp->undo.saved);
++            /* the timeout queued every outstanding packet for resending at once; drop the resends not yet sent:
++             * back into the retransmit queue if still unacknowledged, freed if already acknowledged */
++            GArray* unsent = g_array_new(FALSE, FALSE, sizeof(guint32));
++            GQueue keep = G_QUEUE_INIT;
++            while (!priorityqueue_isEmpty(tcp->throttledOutput)) {
++                Packet* p = priorityqueue_peek(tcp->throttledOutput);
++                PacketTCPHeader h = packet_getTCPHeader(p);
++                if ((guint32)h.sequence > tcp->undo.seqHigh) {
++                    break; /* new data from here on: the queue is in sequence order */
++                }
++                priorityqueue_pop(tcp->throttledOutput);
++                gsize len = packet_getPayloadSize(p);
++                if (len == 0 || h.sequence == 0) {
++                    g_queue_push_tail(&keep, p);
++                    continue;
++                }
++                tcp->throttledOutputLength -= len;
++                guint32 s = (guint32)h.sequence;
++                g_array_append_val(unsent, s);
++                dropped++;
++                if (h.sequence >= tcp->send.unacked) {
++                    _tcp_addRetransmit(tcp, p);
++                    requeued++;
++                } else {
++                    freed++;
++                }
++                packet_unref(p);
++            }
++            while (!g_queue_is_empty(&keep)) {
++                priorityqueue_push(tcp->throttledOutput, g_queue_pop_head(&keep));
++            }
++            retransmit_tally_undo(tcp->retransmit.tally, (const uint32_t*)unsent->data, unsent->len);
++            g_array_free(unsent, TRUE);
++            tcp->diag.undone++;
++            tcp->diag.dropped += dropped;
++            tcp->undo.watch = TRUE;
++            tcp->undo.watchHigh = tcp->undo.seqHigh;
++            /* the ACK processing above stopped the retransmit timer if the retransmit queue was empty at that point;
++             * the requeued packets are outstanding again, so they need a running timer */
++            if (tcp->retransmit.queueLength > 0 && tcp->retransmit.desiredTimerExpiration == 0) {
++                _tcp_setRetransmitTimer(tcp, host, worker_getCurrentSimulationTime());
++                rearmed = 1;
++            }
++        }
++        if (_tcp_diagLog()) {
++            info("tcpd undo %p spurious %d retxtime %d cwnd %u -> %u ssthresh %u -> %u saved %u dropped %u requeued %u "
++                 "freed %u rearm %d", (void*)tcp, (int)spurious, (int)tcp->undo.haveRetxTime, cw0, tcp->cong.cwnd, ss0,
++                 tcp->cong.hooks->tcp_cong_ssthresh(tcp), tcp->undo.saved.cwnd, dropped, requeued, freed, rearmed);
++        }
++    }
++    if (tcp->diag.toPending && (flags & TCP_PF_DATA_ACKED)) {
++        tcp->diag.toPending = FALSE;
++        gboolean diagSpurious = header->timestampEcho != 0 && header->timestampEcho < tcp->diag.toTime;
++        if (diagSpurious) {
++            tcp->diag.spurious++;
++        }
++        if (_tcp_diagLog()) {
++            info("tcpd acked-after-timeout %p echo %d spurious %d srtt %d rttvar %d rto %d expect %d", (void*)tcp,
++                 (int)(header->timestampEcho != 0), (int)diagSpurious, tcp->timing.rttSmoothed,
++                 tcp->timing.rttVariance, tcp->retransmit.timeout,
++                 _tcp_rtt2LinuxEst() ? _tcp_rtt2RTO(tcp)
++                                     : tcp->timing.rttSmoothed + MAX(4 * tcp->timing.rttVariance, CONFIG_TCP_RTO_MIN));
++        }
++    }
++    if (tcp->rec.active && (flags & TCP_PF_DATA_ACKED) && tcp->send.unacked > tcp->rec.high) {
++        tcp->rec.active = FALSE;
++        if (_tcp_diagLog()) {
++            info("tcpd recovered %p spurious %d dur %" G_GUINT64_FORMAT " timeouts %u episodes %u resends %u outstanding %u"
++                 " cwnd %u ssthresh %u", (void*)tcp, tcp->rec.spurious,
++                 (guint64)((worker_getCurrentSimulationTime() - tcp->rec.start) / SIMTIME_ONE_MICROSECOND),
++                 tcp->rec.timeouts, tcp->rec.episodes, tcp->rec.retx, tcp->rec.outstanding, (unsigned)tcp->cong.cwnd,
++                 (unsigned)tcp->cong.hooks->tcp_cong_ssthresh(tcp));
++        }
++    }
++    if (_tcp_diagLog()) {
++        gint64 diagMs = (gint64)(worker_getCurrentSimulationTime() / SIMTIME_ONE_MILLISECOND);
++        gint diagBin = (gint)((diagMs + 90000) / 12000) - 10; /* 12 s bins, boundaries at 30 s + k x 12 s */
++        if (diagBin != tcp->diag.lastBin) {
++            tcp->diag.lastBin = diagBin;
++            info("tcpd snap %p bin %d peer %u state %d srtt %d rttvar %d rto %d backoff %u samples %" G_GUINT64_FORMAT
++                 " timeouts %" G_GUINT64_FORMAT " spurious %" G_GUINT64_FORMAT " retx %" G_GSIZE_FORMAT
++                 " txdata %" G_GUINT64_FORMAT " cfgrtt %u sndbuf %" G_GSIZE_FORMAT " rcvbuf %" G_GSIZE_FORMAT " cwnd %u"
++                 " ssthresh %u est %d srtt8us %" G_GINT64_FORMAT " mdevus %" G_GINT64_FORMAT " mdevmaxus %" G_GINT64_FORMAT
++                 " rttvarus %" G_GINT64_FORMAT " txretx %" G_GUINT64_FORMAT " undochecks %" G_GUINT64_FORMAT
++                 " undone %" G_GUINT64_FORMAT " dropped %" G_GUINT64_FORMAT " retxafterundo %" G_GUINT64_FORMAT
++                 " rtxq %" G_GSIZE_FORMAT " thr %" G_GSIZE_FORMAT " tmr %d echoeq %" G_GUINT64_FORMAT " echonew %" G_GUINT64_FORMAT " echoold %" G_GUINT64_FORMAT
++                 " echona %" G_GUINT64_FORMAT " echozero %" G_GUINT64_FORMAT " tsduppend %" G_GUINT64_FORMAT
++                 " tsdupold %" G_GUINT64_FORMAT " cwvskip %" G_GUINT64_FORMAT " ssr %" G_GUINT64_FORMAT
++                 " cwndlim %d maxout %u",
++                 (void*)tcp, diagBin, (unsigned)tcp_getPeerIP(tcp), (int)tcp->state, tcp->timing.rttSmoothed,
++                 tcp->timing.rttVariance, tcp->retransmit.timeout, tcp->retransmit.backoffCount, tcp->diag.samples,
++                 tcp->diag.timeouts, tcp->diag.spurious, tcp->info.retransmitCount, tcp->diag.txData,
++                 _tcp_calculateRTT(tcp, host), legacysocket_getOutputBufferSize(&(tcp->super)),
++                 legacysocket_getInputBufferSize(&(tcp->super)), (unsigned)tcp->cong.cwnd,
++                 (unsigned)tcp->cong.hooks->tcp_cong_ssthresh(tcp), _tcp_rtt2LinuxEst(), tcp->est.srtt8, tcp->est.mdev,
++                 tcp->est.mdevMax, tcp->est.rttvar, tcp->diag.txRetx, tcp->diag.undoChecks, tcp->diag.undone,
++                 tcp->diag.dropped, tcp->diag.retxAfterUndo, tcp->retransmit.queueLength, tcp->throttledOutputLength,
++                 (int)(tcp->retransmit.desiredTimerExpiration != 0), tcp->diag.echoEq, tcp->diag.echoNew,
++                 tcp->diag.echoOld, tcp->diag.echoNA, tcp->diag.echoZero, tcp->diag.tsDupPending,
++                 tcp->diag.tsDupOld, tcp->rtt5.cwvSkipped, tcp->rtt5.restarts,
++                 (int)tcp->rtt5.isCwndLimited, (unsigned)tcp->rtt5.maxPacketsOut);
++            /* rtt6: CUBIC and HyStart counters on a line of their own: appended to the snapshot line they passed
++             * the 500-byte log message buffer (log-c2rust), which cut its end */
++            info("tcpd cubsnap %p bin %d peer %u txfl %" G_GUINT64_FORMAT " txca %" G_GUINT64_FORMAT " cub %d"
++                 " hstrain %" G_GUINT64_FORMAT " hsdelay %" G_GUINT64_FORMAT " epochs %" G_GUINT64_FORMAT
++                 " txstart %" G_GUINT64_FORMAT " txshift %" G_GUINT64_FORMAT " rounds %" G_GUINT64_FORMAT
++                 " rndover %" G_GUINT64_FORMAT " rndoveracked %" G_GUINT64_FORMAT " rndmax %u dmin %u lastmax %u"
++                 " found %d",
++                 (void*)tcp, diagBin, (unsigned)tcp_getPeerIP(tcp), tcp->diag.txFlushed, tcp->diag.txCa,
++                 _tcp_rtt6CubicOn(), tcp->cubic.hsTrain, tcp->cubic.hsDelay, tcp->cubic.epochs, tcp->cubic.txStart,
++                 tcp->cubic.txShift, tcp->cubic.rounds, tcp->cubic.roundsOver, tcp->cubic.roundsOverAcked,
++                 tcp->cubic.rndMax, tcp->cubic.delayMin, tcp->cubic.lastMaxCwnd, (int)tcp->cubic.found);
++        }
++    }
+ 
+     gboolean isAckDubious = ((packetLength == 0) && !(flags & TCP_PF_DATA_ACKED) && !(flags & TCP_PF_RWND_UPDATED)) || (flags & TCP_PF_DATA_SACKED);
+ 
+@@ -2437,8 +3464,9 @@
+     /* now flush as many packets as we can to socket */
+     _tcp_flush(tcp, host);
+ 
+-    /* clear it so we dont send outdated timestamp echos */
+-    tcp->receive.lastTimestamp = 0;
++    /* rtt: keep the most recent TSval received (RFC 7323 TS.Recent), so every later packet, including delayed ACKs
++     * sent by the ACK timer, echoes it; Shadow cleared it here, before the interface sent anything, so every echo
++     * was 0 and no RTT sample was ever taken */
+ 
+     trace("done processing in state %s", _tcp_stateToAscii(tcp->state));
+ }
+@@ -2931,6 +3959,7 @@
+     tcp->receive.lastAcknowledgment = initialSequenceNumber;
+ 
+     tcp->autotune.isEnabled = TRUE;
++    tcp->diag.lastBin = G_MININT;
+ 
+     tcp->throttledOutput = priorityqueue_new((GCompareDataFunc)packet_compareTCPSequence, NULL,
+                                              (GDestroyNotify)packet_unref, NULL, NULL);
+--- a/src/main/host/descriptor/tcp.h
++++ b/src/main/host/descriptor/tcp.h
+@@ -93,6 +93,23 @@
+ gint tcp_shutdown(TCP* tcp, const Host* host, gint how);
+ 
+ void tcp_networkInterfaceIsAboutToSendPacket(TCP* tcp, const Host* host, Packet* packet);
++/* rtt5: Linux tcp_is_cwnd_limited (TRUE when RTT5_CWV=0) */
++gboolean tcp_rtt5MayRaiseCwnd(TCP* tcp, gboolean slowStart);
++/* rtt5 switch RTT5_DUP (on unless RTT5_DUP=0): in congestion avoidance, an ACK that advances snd_una resets Reno's
++ * duplicate ACK count, as RFC 5681 counts duplicates */
++gboolean tcp_rtt5Dup(void);
++/* rtt5b switch RTT5_BETA (off unless RTT5_BETA=1): at fast-recovery entry and at an RTO, ssthresh = max(cwnd * 717 /
++ * 1024, 2), as CUBIC's bictcp_recalc_ssthresh, instead of cwnd / 2 + 1 */
++gboolean tcp_rtt5Beta(void);
++/* rtt5 diagnostics: a fast-recovery entry; adv = ACKs that advanced snd_una between the first and third duplicate ACK */
++void tcp_rtt5LogFastRecovery(TCP* tcp, gboolean fromSlowStart, guint32 adv, guint32 cwndBefore, guint32 ssthreshBefore);
++/* rtt6 switch RTT6_CUBIC (on unless RTT6_CUBIC=0): Linux CUBIC (net/ipv4/tcp_cubic.c, v6.12) for Reno's congestion
++ * avoidance and multiplicative decrease; RTT6_HYSTART=0 turns CUBIC's HyStart off. RTT6_CUBIC=0 is rtt5b */
++gboolean tcp_rtt6Cubic(void);
++/* rtt6: cubictcp_recalc_ssthresh, at fast-recovery entry and at an RTO */
++guint32 tcp_rtt6CubicSsthresh(TCP* tcp, guint32 cwnd);
++/* rtt6: cubictcp_cong_avoid in congestion avoidance: bictcp_update, then tcp_cong_avoid_ai on *cwndCnt */
++void tcp_rtt6CubicCongAvoid(TCP* tcp, guint32 acked, guint32* cwndCnt);
+ 
+ TCPCongestionType tcpCongestion_getType(const gchar* type);
+ 
+--- a/src/main/host/descriptor/tcp_cong_reno.c
++++ b/src/main/host/descriptor/tcp_cong_reno.c
+@@ -4,6 +4,7 @@
+ #include <stddef.h>
+ #include <stdint.h>
+ #include <stdlib.h>
++#include <string.h>
+ 
+ #include "lib/logger/logger.h"
+ #include "main/host/descriptor/descriptor.h"
+@@ -21,6 +22,9 @@
+     guint32 cong_avoid_nacked;
+     guint32 ssthresh;
+ 
++    /* rtt5 diagnostics: ACKs that advanced snd_una since the first duplicate ACK of the current count */
++    guint32 adv_since_dup;
++
+ } CAReno;
+ 
+ /*
+@@ -36,6 +40,19 @@
+     reno->ssthresh = (tcp_cong(tcp)->cwnd / 2) + 1;
+ }
+ 
++/* rtt5b (RTT5_BETA=1): CUBIC's multiplicative decrease, bictcp_recalc_ssthresh: max(cwnd * 717 / 1024, 2) */
++static inline void ssthresh_reduce(TCP *tcp, CAReno *reno) {
++    if (tcp_rtt6Cubic()) {
++        /* rtt6: cubictcp_recalc_ssthresh, which also ends CUBIC's epoch and records W_max (fast convergence) */
++        reno->ssthresh = tcp_rtt6CubicSsthresh(tcp, tcp_cong(tcp)->cwnd);
++    } else if (tcp_rtt5Beta()) {
++        guint32 s = (guint32)(((guint64)tcp_cong(tcp)->cwnd * 717) / 1024);
++        reno->ssthresh = MAX(s, 2);
++    } else {
++        ssthresh_halve(tcp, reno);
++    }
++}
++
+ /*
+  * Pass in a non-zero value for n to ack n packets during the transition.
+  */
+@@ -50,6 +67,9 @@
+ 
+ static void ca_reno_slow_start_duplicate_ack_ev_(TCP *tcp) {
+     CAReno *reno = tcp_cong(tcp)->ca;
++    if (reno->duplicate_ack_n == 0) {
++        reno->adv_since_dup = 0;
++    }
+     reno->duplicate_ack_n++;
+ 
+     if (reno->duplicate_ack_n == 3) { // transition to fast recovery
+@@ -57,10 +77,14 @@
+         trace("[CONG-AVOID] three duplicate acks");
+         debug("[CONG] desc %p three duplicate acks transition_to_fast_recovery", (LegacyFile*)tcp);
+ 
+-        ssthresh_halve(tcp, reno);
++        guint32 cwnd0 = tcp_cong(tcp)->cwnd, ssthresh0 = reno->ssthresh;
++        gboolean fromSlowStart = reno->state_hooks == slow_start_hooks_();
++
++        ssthresh_reduce(tcp, reno);
+         tcp_cong(tcp)->cwnd = reno->ssthresh + 3;
+ 
+         reno->state_hooks = fast_recovery_hooks_();
++        tcp_rtt5LogFastRecovery(tcp, fromSlowStart, reno->adv_since_dup, cwnd0, ssthresh0);
+     }
+ }
+ 
+@@ -102,7 +126,8 @@
+     reno->duplicate_ack_n = 0;
+     tcp_cong(tcp)->cwnd = reno->ssthresh;
+ 
+-    transition_to_cong_avoid(tcp, reno, n);
++    /* rtt5: the ACK that ends recovery raises cwnd only while tcp_is_cwnd_limited */
++    transition_to_cong_avoid(tcp, reno, tcp_rtt5MayRaiseCwnd(tcp, FALSE) ? n : 0);
+ }
+ 
+ /* CONG AVOID *******************************************************/
+@@ -110,6 +135,12 @@
+ static void ca_reno_cong_avoid_new_ack_ev_(TCP *tcp, guint32 n) {
+     CAReno *reno = tcp_cong(tcp)->ca;
+ 
++    /* rtt6: CUBIC's congestion avoidance, with Reno's ACK counter as Linux's snd_cwnd_cnt */
++    if (tcp_rtt6Cubic()) {
++        tcp_rtt6CubicCongAvoid(tcp, n, &reno->cong_avoid_nacked);
++        return;
++    }
++
+     reno->cong_avoid_nacked += n;
+ 
+     // We only increase one for each send window
+@@ -126,6 +157,7 @@
+     reno->ssthresh = INT32_MAX;
+     reno->cong_avoid_nacked = 0;
+     reno->duplicate_ack_n = 0;
++    reno->adv_since_dup = 0;
+     reno->state_hooks = slow_start_hooks_();
+ }
+ 
+@@ -145,6 +177,24 @@
+ 
+ static void tcp_cong_reno_new_ack_ev_(TCP *tcp, guint32 n) {
+     CAReno *reno = tcp_cong(tcp)->ca;
++    /* rtt5 diagnostics: an ACK that advances snd_una between duplicate ACKs */
++    if (reno->duplicate_ack_n > 0) {
++        reno->adv_since_dup++;
++    }
++    /* rtt5 (RTT5_DUP): in congestion avoidance, an ACK that advances snd_una ends the run of duplicate ACKs, as slow
++     * start does and as RFC 5681 counts them */
++    if (reno->state_hooks == cong_avoid_hooks_() && tcp_rtt5Dup()) {
++        reno->duplicate_ack_n = 0;
++    }
++    /* rtt5: like Linux's tcp_reno_cong_avoid, raise cwnd in slow start and congestion avoidance only while
++     * tcp_is_cwnd_limited; slow start's duplicate ACK reset still runs */
++    if (reno->state_hooks != fast_recovery_hooks_() &&
++        !tcp_rtt5MayRaiseCwnd(tcp, reno->state_hooks == slow_start_hooks_())) {
++        if (reno->state_hooks == slow_start_hooks_()) {
++            reno->duplicate_ack_n = 0;
++        }
++        return;
++    }
+     reno->state_hooks->tcp_cong_new_ack_ev(tcp, n);
+ }
+ 
+@@ -154,7 +204,7 @@
+     CAReno *reno = tcp_cong(tcp)->ca;
+ 
+     reno->duplicate_ack_n = 0;
+-    ssthresh_halve(tcp, reno);
++    ssthresh_reduce(tcp, reno);
+     tcp_cong(tcp)->cwnd = 10;
+ 
+     // transition to slow start
+@@ -181,6 +231,57 @@
+     .tcp_cong_name_str = tcp_cong_reno_name_str_,
+ };
+ 
++_Static_assert(sizeof(CAReno) <= sizeof(((TCPCongRenoSaved *)0)->ca), "CAReno does not fit");
++
++void tcp_cong_reno_save(TCP *tcp, TCPCongRenoSaved *saved) {
++    saved->cwnd = tcp_cong(tcp)->cwnd;
++    memcpy(saved->ca, tcp_cong(tcp)->ca, sizeof(CAReno));
++}
++
++void tcp_cong_reno_undo(TCP *tcp, const TCPCongRenoSaved *saved) {
++    CAReno *reno = tcp_cong(tcp)->ca;
++    CAReno old;
++    memcpy(&old, saved->ca, sizeof(CAReno));
++    guint32 ssthresh = MAX(reno->ssthresh, old.ssthresh);
++    guint32 cwnd = MAX(tcp_cong(tcp)->cwnd, saved->cwnd);
++    *reno = old;
++    reno->ssthresh = ssthresh;
++    tcp_cong(tcp)->cwnd = cwnd;
++}
++
++/* rtt5: Linux tcp_cwnd_restart: ssthresh = tcp_current_ssthresh (unchanged in recovery, else at least 3/4 of the
++ * old cwnd), then the caller's cwnd; a cwnd below ssthresh means slow start (tcp_in_slow_start) */
++void tcp_cong_reno_restart(TCP *tcp, guint32 cwnd) {
++    CAReno *reno = tcp_cong(tcp)->ca;
++    if (reno->state_hooks != fast_recovery_hooks_()) {
++        guint32 old = tcp_cong(tcp)->cwnd;
++        reno->ssthresh = MAX(reno->ssthresh, (old >> 1) + (old >> 2));
++    }
++    tcp_cong(tcp)->cwnd = cwnd;
++    if (reno->state_hooks == cong_avoid_hooks_() && cwnd < reno->ssthresh) {
++        reno->state_hooks = slow_start_hooks_();
++    }
++}
++
++char tcp_cong_reno_phase(TCP *tcp) {
++    CAReno *reno = tcp_cong(tcp)->ca;
++    if (reno->state_hooks == slow_start_hooks_()) {
++        return 's';
++    }
++    return reno->state_hooks == fast_recovery_hooks_() ? 'f' : 'c';
++}
++
++/* rtt6: HyStart (hystart_update) sets ssthresh = cwnd; Linux is then out of slow start (tcp_in_slow_start is
++ * cwnd < ssthresh), so this ACK's increase already follows congestion avoidance and its RTT5_CWV gate */
++void tcp_cong_reno_hystart_exit(TCP *tcp) {
++    CAReno *reno = tcp_cong(tcp)->ca;
++    reno->ssthresh = tcp_cong(tcp)->cwnd;
++    if (reno->state_hooks == slow_start_hooks_()) {
++        reno->cong_avoid_nacked = 0;
++        reno->state_hooks = cong_avoid_hooks_();
++    }
++}
++
+ void tcp_cong_reno_init(TCP *tcp) {
+     CAReno *reno = malloc(sizeof(CAReno));
+     ca_reno_init_(tcp, reno);
+--- a/src/main/host/descriptor/tcp_cong_reno.h
++++ b/src/main/host/descriptor/tcp_cong_reno.h
+@@ -9,4 +9,19 @@
+ 
+ void tcp_cong_reno_init(TCP *tcp);
+ 
++/* rtt2 (Eifel undo): cwnd and the whole Reno state (state machine, duplicate ACK count, CA counter, ssthresh) */
++typedef struct TCPCongRenoSaved_ {
++    guint32 cwnd;
++    unsigned char ca[64];
++} TCPCongRenoSaved;
++void tcp_cong_reno_save(TCP *tcp, TCPCongRenoSaved *saved);
++/* restore the saved Reno state, with cwnd and ssthresh at least their saved values (Linux tcp_undo_cwnd_reduction) */
++void tcp_cong_reno_undo(TCP *tcp, const TCPCongRenoSaved *saved);
++/* rtt5: restart after idle (Linux tcp_cwnd_restart): ssthresh = tcp_current_ssthresh, then cwnd */
++void tcp_cong_reno_restart(TCP *tcp, guint32 cwnd);
++/* rtt5 diagnostics: Reno's phase: 's' slow start, 'c' congestion avoidance, 'f' fast recovery */
++char tcp_cong_reno_phase(TCP *tcp);
++/* rtt6: HyStart found the end of slow start: ssthresh = cwnd, congestion avoidance from this ACK on */
++void tcp_cong_reno_hystart_exit(TCP *tcp);
++
+ #endif // SHD_TCP_CONG_RENO_H_
+--- a/src/main/host/descriptor/tcp_retransmit_tally.cc
++++ b/src/main/host/descriptor/tcp_retransmit_tally.cc
+@@ -250,6 +250,17 @@
+    rt->compute_lost();
+ }
+ 
++void retransmit_tally_undo(void *p, const uint32_t *unsent, size_t n) {
++   auto rt = cast_and_assert(p);
++   rt->marked_lost_.clear();
++   Ranges drop;
++   for (size_t i = 0; i < n; ++i) {
++      ranges_insert(&drop, {static_cast<SeqNum>(unsent[i]), static_cast<SeqNum>(unsent[i]) + 1});
++   }
++   rt->retransmitted_ = ranges_subtract(rt->retransmitted_, drop);
++   rt->compute_lost();
++}
++
+ void retransmit_tally_clear_retransmitted(void *p) {
+    auto rt = cast_and_assert(p);
+    rt->retransmitted_.clear();
+@@ -260,6 +271,17 @@
+    return rt->lost_.size();
+ }
+ 
++uint32_t retransmit_tally_count_in_flight(const void *p, uint32_t begin, uint32_t end) {
++   auto rt = cast_and_assert(p);
++   if (begin >= end) { return 0; }
++   Ranges out{SeqRange{static_cast<SeqNum>(begin), static_cast<SeqNum>(end)}};
++   out = ranges_subtract(out, rt->sacked_);
++   out = ranges_subtract(out, rt->lost_); // lost_ = marked lost - SACKed - retransmitted
++   SeqNum n = 0;
++   for (const auto &range : out) { n += range.second - range.first; }
++   return static_cast<uint32_t>(n);
++}
++
+ void retransmit_tally_populate_lost_ranges(const void *p, uint32_t *lost) {
+    auto rt = cast_and_assert(p);
+ 
+--- a/src/main/host/descriptor/tcp_retransmit_tally.h
++++ b/src/main/host/descriptor/tcp_retransmit_tally.h
+@@ -41,7 +41,13 @@
+ void retransmit_tally_mark_lost(void *p, uint32_t begin, uint32_t end);
+ void retransmit_tally_mark_retransmitted(void *p, uint32_t begin, uint32_t end);
+ void retransmit_tally_clear_retransmitted(void *p);
++/* rtt2 (Eifel undo): clear every lost mark (Linux clears TCPCB_LOST) and unmark the given resends, which were dropped
++ * before they were sent, as retransmitted */
++void retransmit_tally_undo(void *p, const uint32_t *unsent, size_t n);
+ size_t retransmit_tally_num_lost_ranges(const void *p);
++/* rtt3: packets in flight in [begin, end) as Linux counts them (packets_out - sacked_out - lost_out + retrans_out):
++ * not SACKed, and not marked lost or marked lost and retransmitted */
++uint32_t retransmit_tally_count_in_flight(const void *p, uint32_t begin, uint32_t end);
+ void retransmit_tally_populate_lost_ranges(const void *p, uint32_t *lost);
+ 
+ #ifdef __cplusplus

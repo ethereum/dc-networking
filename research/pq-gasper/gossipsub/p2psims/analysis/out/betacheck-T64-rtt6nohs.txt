@@ -1,0 +1,4 @@
+== runs/T64-rtt-rtt6nohs (shadow.log), rule: max(cwnd * 717 // 1024, 2)
+fast-recovery entries 47515 (from slow start 6676, from congestion avoidance 40839): ssthresh after = rule in 47515 (100.000 %); cwnd after = ssthresh + 3 in 47515; unparsed 0
+RTOs 105783 (first of an episode 58994, repeated 46789): ssthresh after = rule in 105783 (100.000 %; first 58994, repeated 46789); unpaired 0, unparsed 0
+mismatches (first 10): none

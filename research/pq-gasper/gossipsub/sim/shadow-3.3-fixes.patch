@@ -1,0 +1,31 @@
+diff --git a/src/main/core/sim_config.rs b/src/main/core/sim_config.rs
+index 8a96799..1335579 100644
+--- a/src/main/core/sim_config.rs
++++ b/src/main/core/sim_config.rs
+@@ -250,7 +250,7 @@ fn build_host(
+             .bandwidth_down
+             .map(|x| x.convert(units::SiPrefixUpper::Base).unwrap().value()),
+         bandwidth_up_bits: host
+-            .bandwidth_down
++            .bandwidth_up
+             .map(|x| x.convert(units::SiPrefixUpper::Base).unwrap().value()),
+ 
+         ip_addr: host.ip_addr.map(|x| x.into()),
+diff --git a/src/main/host/descriptor/tcp.c b/src/main/host/descriptor/tcp.c
+index f1ed9fd..4f426ca 100644
+--- a/src/main/host/descriptor/tcp.c
++++ b/src/main/host/descriptor/tcp.c
+@@ -2487,8 +2487,11 @@ gssize tcp_sendUserData(TCP* tcp, const Host* host, UntypedForeignPtr buffer, gs
+         }
+     }
+ 
+-    /* maximum data we can send network, o/w tcp truncates and only sends 65536*/
+-    gsize acceptable = MIN(nBytes, 65535);
++    /* Accept as much as the send buffer holds. A cap below the free space (Shadow 3.3
++     * used 65535) makes a short write while the socket stays writable; tokio reads a
++     * short write as "buffer full", waits for an EPOLLOUT edge that never comes, and the
++     * connection's writer stalls for good. */
++    gsize acceptable = nBytes;
+     gsize space = _tcp_getBufferSpaceOut(tcp);
+     gsize remaining = MIN(acceptable, space);
+ 

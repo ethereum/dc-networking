@@ -1,0 +1,7 @@
+== R20-pq-b16-ps100-cf-s1: per observer client, slots 1+: observer-slots, negative-score peers per observer, own failed sends per observer per 12 s, lowest score seen
+   lighthouse weight {'run (-10)'}: 21110   10.35      1208  -1212429225.3
+   lodestar   weight {0.0}: 1102    0.20      4392  -389473711.0
+   nimbus     weight {0.0}: 3382    0.28      6740  -467538367.8
+   other      weight {'run (-10)'}: 2736   15.82      1446  -750819927.5
+   prysm      weight {0.0}: 7521    0.56      6101  -183133450.7
+   teku       weight {0.0}: 2953    0.26      4890  -46432892.2

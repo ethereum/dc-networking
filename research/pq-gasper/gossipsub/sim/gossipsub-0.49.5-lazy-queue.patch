@@ -1,0 +1,36 @@
+diff -ru a/src/rpc.rs b/src/rpc.rs
+--- a/src/rpc.rs	2026-11-07 12:56:11.511808947 +0000
++++ b/src/rpc.rs	2026-11-07 12:56:11.515808990 +0000
+@@ -37,6 +37,9 @@
+ pub(crate) struct Sender {
+     /// Capacity of the priority channel for `Publish` messages.
+     priority_cap: usize,
++    /// Capacity of the non-priority channel. It is unbounded and checked here, because a bounded
++    /// channel allocates all its slots up front (cap / 2 = 2500 `RpcOut`s, about 0.55 MiB per peer).
++    non_priority_cap: usize,
+     len: Arc<AtomicUsize>,
+     pub(crate) priority_sender: async_channel::Sender<RpcOut>,
+     pub(crate) non_priority_sender: async_channel::Sender<RpcOut>,
+@@ -52,10 +55,11 @@
+         // That's also why we define `cap` and divide it by two,
+         // to ensure there is capacity for both priority and non_priority messages.
+         let (priority_sender, priority_receiver) = async_channel::unbounded();
+-        let (non_priority_sender, non_priority_receiver) = async_channel::bounded(cap / 2);
++        let (non_priority_sender, non_priority_receiver) = async_channel::unbounded();
+         let len = Arc::new(AtomicUsize::new(0));
+         Sender {
+             priority_cap: cap / 2,
++            non_priority_cap: cap / 2,
+             len,
+             priority_sender,
+             non_priority_sender,
+@@ -90,6 +94,9 @@
+             | RpcOut::Subscribe(_)
+             | RpcOut::Unsubscribe(_) => &self.priority_sender,
+             RpcOut::Forward { .. } | RpcOut::IHave(_) | RpcOut::IWant(_) | RpcOut::IDontWant(_) => {
++                if self.non_priority_sender.len() >= self.non_priority_cap {
++                    return Err(rpc);
++                }
+                 &self.non_priority_sender
+             }
+         };

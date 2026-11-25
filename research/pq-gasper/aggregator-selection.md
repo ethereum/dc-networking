@@ -5,7 +5,7 @@ date: 2026-11-18
 provenance: agent
 ---
 
-> **Provenance: agent.** Written 2026-11-18 by an agent, expanding avenue 9 of [README.md](README.md) ("Reduce number of Aggregators"). Yann has not reviewed it line by line. Every number comes from [`sim/aggregator_dos.py`](sim/aggregator_dos.py) or [`sim/blind_attack.py`](sim/blind_attack.py) (stdlib; run them with `python3`). The model is back-of-envelope:
+> **Provenance: agent.** Written 2026-11-18 by an agent, expanding the avenue "Reduce number of Aggregators" of [the avenues post](../../posts/pq-gasper-avenues.md). Yann has not reviewed it line by line. Every number comes from [`sim/aggregator_dos.py`](sim/aggregator_dos.py) or [`sim/blind_attack.py`](sim/blind_attack.py) (stdlib; run them with `python3`). The model is back-of-envelope:
 > - V = 800,000 validators, 16 subnets, so n ≈ 1,563 voters per subnet per slot and 512 committee-slots per epoch;
 > - an aggregate that never appears loses its committee's votes for good, unless a fallback exists.
 

@@ -1,0 +1,26 @@
+# PQ Gasper subnet specs study (Nov 23): 1,600 signatures per subnet per slot, every node needs all by 8.0 s.
+# Lines: NAME HOSTS SLOTS THREADS flags; runs/run_pq1600.sh adds the Q2048x20-m1600-s1 stack (seed 1), later flags win.
+# After each run, .amp-out/specs-decide.py appends the search's next run (step 1: upload at 1000 down; step 2:
+# download at U*; step 3: seed 2 at D*/U*; step 4: PQ verification at 2,000 us per signature).
+S2048x20-h1000x100-s1 2048 20 46 --links 1000/100 --links-novalidator 1000/100
+S2048x20-h1000x200-s1 2048 20 46 --links 1000/200 --links-novalidator 1000/200
+# Nov 23 06:10 stopped (dropped), partial output in runs/stopped-S2048x20-h1000x400-s1-dropped: S2048x20-h1000x400-s1 2048 20 46 --links 1000/400 --links-novalidator 1000/400
+# 06:0x: no upload passes with the modelled access loss (100 and 200 identical); diagnostic without packet loss, queued after 1000/400:
+# 06:1x replaced (it also removed backbone loss): S2048x20-h1000x200-noloss-s1 2048 20 46 --links 1000/200 --links-novalidator 1000/200 --loss-scale 0
+# 06:1x plan: home hosts' access-link loss off (--access-loss-scale 0, backbone loss, latency and jitter kept): 1000/100,
+# then 1000/50 or 1000/200 -> U*; 100/U* then 50/U* or 200/U* -> D*; seed 2 at D*/U*; 1000/200 at a fifth of the
+# access loss (-al02); then, if nothing else is queued, the upload midpoint and D*/U* at 2,000 us per signature.
+S2048x20-h1000x100-al0-s1 2048 20 46 --links 1000/100 --links-novalidator 1000/100 --access-loss-scale 0
+S2048x20-h1000x50-al0-s1 2048 20 46 --links 1000/50 --links-novalidator 1000/50 --access-loss-scale 0
+S2048x20-h100x100-al0-s1 2048 20 46 --links 100/100 --links-novalidator 100/100 --access-loss-scale 0
+S2048x20-h50x100-al0-s1 2048 20 46 --links 50/100 --links-novalidator 50/100 --access-loss-scale 0
+S2048x20-h100x100-al0-s2 2048 20 46 --links 100/100 --links-novalidator 100/100 --seed 2 --access-loss-scale 0
+S2048x20-h1000x200-al02-s1 2048 20 46 --links 1000/200 --links-novalidator 1000/200 --access-loss-scale 0.2
+# Coordinator 15:1x Nov 23: after 1000/200 at a fifth of the access loss, in this order: a 512 x 8 TCP diagnostic of the
+# 50/100 failure (rtt6-log build via runs/shadowbin-NAME, access loss off, 50/100 and 100/100; --pcap 40 captures 40 home
+# hosts and 1 fast host to count packets lost before their interface); 100/100 at 2,000 us per signature; then 1000/75.
+# Queued by hand; .amp-out/specs-decide.py only logs that these are queued.
+S512x8-h50x100-al0-log-s1 512 8 46 --links 50/100 --links-novalidator 50/100 --access-loss-scale 0 --pcap 40
+S512x8-h100x100-al0-log-s1 512 8 46 --links 100/100 --links-novalidator 100/100 --access-loss-scale 0 --pcap 40
+S2048x20-h100x100-al0-v2000-s1 2048 20 46 --links 100/100 --links-novalidator 100/100 --verify-us pq=2000,block=10000,col=1500,att=600,agg=2500,syncc=2000 --access-loss-scale 0
+S2048x20-h1000x75-al0-s1 2048 20 46 --links 1000/75 --links-novalidator 1000/75 --access-loss-scale 0

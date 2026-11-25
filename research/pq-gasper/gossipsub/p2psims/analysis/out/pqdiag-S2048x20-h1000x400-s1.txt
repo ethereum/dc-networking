@@ -1,0 +1,13 @@
+== S2048x20-h1000x400-s1: 2048 hosts, 20 slots, peer-scale 1.0, binary old; analysed slots 2-19
+
+# Item 1: PQ misses at the 8 s deadline (online node-slots)
+ node-slot completeness per slot and class (%), all slots:
+  1000x400 [92.24, 86.1]
+  cloud  [99.59, 99.73]
+  all    [94.9, 91.03]
+  pass rule (every class >= 99 % in every slot from slot 2): PASS
+Traceback (most recent call last):
+  File "/home/yann/projects/p2p-ministry-gossip2000/.amp-out/pqdiag.py", line 198, in <module>
+    worst = {c: min((pct(sum(d['complete'] for (ss, i), d in ns.items() if ss == s and link[i] == c and not d['off']),
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: min() iterable argument is empty

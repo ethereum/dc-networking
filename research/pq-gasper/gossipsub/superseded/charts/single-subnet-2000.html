@@ -1,0 +1,58 @@
+<style>
+  .rows { display: grid; gap: 10px; }
+  .group { font-size: 12px; line-height: 16px; color: var(--muted-foreground); margin-top: 8px; }
+  .row { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr) 52px; align-items: center; gap: 8px; min-width: 0; }
+  .lab { font-size: 12px; line-height: 16px; text-wrap: pretty; }
+  .wrap { position: relative; min-width: 0; height: 16px; }
+  .bar { position: absolute; left: 0; top: 2px; height: 12px; background: var(--chart-1); }
+  .bar.ctx { background: var(--chart-context); }
+  .pass { position: absolute; top: -3px; bottom: -3px; border-left: 1px dashed var(--muted-foreground); }
+  .val { font-size: 12px; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+</style>
+<div class="ui-header">
+  <p class="ui-title" id="title">In one subnet of 2,000 signatures, 1 Gbit nodes got them all in 99.8 % of slots, home stakers in 1.4 %</p>
+  <p class="ui-sub">Share of node·slots holding all 2,000 signatures 4 s after publishing started, by link class, when every node is in one gossipsub topic</p>
+</div>
+<div class="rows" id="rows"></div>
+<p class="ui-caption" style="margin-top: 12px; text-wrap: pretty">
+  Dashed line: the 99 % pass rule. 512 nodes over 5 slots (slots 2–4 counted), bundles of up to 16, on a clean network without packet loss, churn or peer scoring, with Shadow's original TCP. leanXMSS signatures are 2,404 bytes, between the two sizes tested. Without bundles, on 2,048 nodes, 1 Gbit nodes completed 49 % and home nodes under 0.5 %.
+</p>
+<script>
+  {
+    const groups = [
+      {
+        name: '3 kB signatures',
+        rows: [
+          { label: 'Stakers, 50/25 Mbit/s', v: 1.4 },
+          { label: 'No validators, 50/15', v: 0.4 },
+          { label: '1 Gbit nodes', v: 99.8, ctx: true },
+        ],
+      },
+      {
+        name: '1.2 kB signatures',
+        rows: [
+          { label: 'Stakers, 50/25 Mbit/s', v: 71.3 },
+          { label: 'No validators, 50/15', v: 29.5 },
+          { label: '1 Gbit nodes', v: 100, ctx: true },
+        ],
+      },
+    ]
+    const [stake, , gbit] = groups[0].rows
+    document.getElementById('title').textContent =
+      'In one subnet of 2,000 signatures, 1 Gbit nodes got them all in ' + gbit.v + ' % of slots, home stakers in ' + stake.v + ' %'
+    const line = '<i class="pass" style="left:99%"></i>'
+    document.getElementById('rows').innerHTML = groups
+      .map(
+        (g) =>
+          '<div class="group">' + g.name + '</div>' +
+          g.rows
+            .map(
+              (r) =>
+                '<div class="row"><span class="lab">' + r.label + '</span><div class="wrap"><i class="bar' + (r.ctx ? ' ctx' : '') +
+                '" style="width:' + r.v + '%"></i>' + line + '</div><span class="val">' + r.v.toFixed(1) + ' %</span></div>',
+            )
+            .join(''),
+      )
+      .join('')
+  }
+</script>

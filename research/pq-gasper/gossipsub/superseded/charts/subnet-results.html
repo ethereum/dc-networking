@@ -1,0 +1,48 @@
+<style>
+  .rows { display: grid; gap: 14px; }
+  .row { display: grid; gap: 4px; min-width: 0; }
+  .lab { font-size: 12px; line-height: 16px; text-wrap: pretty; }
+  .lab .ui-muted { margin-left: 6px; }
+  .track { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .wrap { position: relative; flex: 1 1 auto; min-width: 0; height: 16px; }
+  .bar { position: absolute; left: 0; top: 2px; height: 12px; background: var(--chart-1); }
+  .bar.ctx { background: var(--chart-context); }
+  .pass { position: absolute; top: -3px; bottom: -3px; border-left: 1px dashed var(--muted-foreground); }
+  .note { position: absolute; left: 0; top: 0; font-size: 12px; line-height: 16px; color: var(--muted-foreground); white-space: nowrap; }
+  .val { flex: 0 0 104px; display: flex; align-items: center; gap: 8px; font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+</style>
+<div class="ui-header">
+  <p class="ui-title" id="title">At 125 signatures per subnet every layout passes; with fewer 1 Gbit nodes it fails</p>
+  <p class="ui-sub">Nodes missing at least one signature they need at the 8 s deadline, in each run's worst slot, for the link class closest to the line. 2,000 signatures per slot on 16 subnets: home nodes need the 125 of each subnet they need, 1 Gbit nodes join all 16 and need all 2,000.</p>
+</div>
+<div class="rows" id="rows"></div>
+<p class="ui-caption" style="margin-top: 12px; text-wrap: pretty">
+  Dashed line: the pass rule, at least 99 % of each link class complete in every slot from slot 2. 2,048 nodes over 20 slots unless noted, bundles of up to 16 signatures, Linux-like TCP (CUBIC), one seed per run. In today's layout every home node joins two backbone subnets and a staker also its duty subnet, which is the only one it needs.
+</p>
+<script>
+  {
+    const max = 2
+    const rows = [
+      { label: 'One subnet per home node', sub: '1 Gbit nodes', n: 2, of: 742 },
+      { label: 'Two subnets per staker', sub: '1 Gbit nodes', n: 3, of: 742 },
+      { label: 'Today\u2019s layout: two backbone subnets plus the duty subnet', sub: 'nodes without validators', n: 3, of: 330 },
+      { label: 'One subnet per home node, 50 slots on 1,024 nodes', sub: '1 Gbit nodes', n: 3, of: 366 },
+      { label: 'One subnet, only the 413 nodes above 8 validators on 1 Gbit', sub: '1 Gbit nodes', n: 7, of: 413, ctx: true },
+    ]
+    const line = '<i class="pass" style="left:' + 100 / max + '%"></i>'
+    document.getElementById('rows').innerHTML = rows
+      .map((r) => {
+        const lab = '<div class="lab">' + r.label + (r.sub ? '<span class="ui-muted">' + r.sub + '</span>' : '') + '</div>'
+        if (r.pending) {
+          return '<div class="row">' + lab + '<div class="track"><div class="wrap"><span class="note">' + r.pending + '</span></div><span class="val"></span></div></div>'
+        }
+        const pct = (100 * r.n) / r.of
+        const ok = pct <= 1
+        return (
+          '<div class="row">' + lab + '<div class="track"><div class="wrap"><i class="bar' + (r.ctx ? ' ctx' : '') + '" style="width:' + Math.min(pct / max, 1) * 100 + '%"></i>' + line +
+          '</div><span class="val">' + pct.toFixed(2) + ' %<span class="ui-status" data-tone="' + (ok ? 'success' : 'danger') + '"><span class="ui-dot"></span>' + (ok ? 'pass' : 'fail') + '</span></span></div></div>'
+        )
+      })
+      .join('')
+  }
+</script>

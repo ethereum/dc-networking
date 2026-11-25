@@ -1,0 +1,9 @@
+== S1024x20-h1000x200-al02-s1: 1024 hosts (1000/200 658, 1 Gbit 366), slots 2-19 analysed; 1,600 signatures per subnet per slot, every node needs all by 8.0 s
+   Upload = bytes handed to TCP (can run ahead of the link while socket buffers fill); download = bytes read from TCP. All traffic; the last column is the PQ topic's share of the download. Node-slots online through the deadline.
+
+| Class (hosts, link down/up) | Window | Upload Mbit/s: mean / p90 / p99 / busiest node / top node-slot | Upload % of link: mean / busiest | Download Mbit/s: mean / p90 / p99 / busiest node / top node-slot | Download % of link: mean / busiest | PQ share of download |
+|---|---|---|---|---|---|---|
+| 1000/200 (658, 1000/200) | 4-8 s | 34.4 / 53.4 / 71.0 / 66.0 (n13) / 87.8 | 17.2 / 33.0 | 40.8 / 63.3 / 98.6 / 109.0 (n981) / 130.7 | 4.1 / 10.9 | 96 % |
+| 1000/200 (658, 1000/200) | 4-5 s | 95.1 / 172.0 / 234.6 / 224.3 (n634) / 294.3 | 47.5 / 112.2 | 79.8 / 129.4 / 175.8 / 172.4 (n437) / 212.6 | 8.0 / 17.2 | 97 % |
+| 1 Gbit (366, 1000/1000) | 4-8 s | 53.9 / 77.9 / 99.7 / 92.2 (n1013) / 122.2 | 5.4 / 9.2 | 35.7 / 50.9 / 74.0 / 81.7 (n892) / 106.8 | 3.6 / 8.2 | 95 % |
+| 1 Gbit (366, 1000/1000) | 4-5 s | 179.2 / 276.2 / 356.0 / 330.5 (n810) / 456.0 | 17.9 / 33.0 | 89.8 / 129.2 / 162.3 / 148.7 (n565) / 228.9 | 9.0 / 14.9 | 97 % |

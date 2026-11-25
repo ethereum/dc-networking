@@ -1,0 +1,27 @@
+<div class="ui-header">
+  <p class="ui-title" id="title">A PQ Gasper subnet carries 16× the signatures of a subnet in our 16-subnet runs</p>
+  <p class="ui-sub">Signatures per slot that every node in one subnet must take in and forward within 4 s</p>
+</div>
+<div id="bars"></div>
+<p class="ui-caption" style="margin-top: 8px; text-wrap: pretty">
+  PQ Gasper sends about 32k signatures per slot, 2,000 in each of 16 subnets. leanVM benchmarks a lighter version, 16 subnets of 1,400 (716,800 validators). Our realistic runs put 2,000 signatures per slot on 16 subnets, 125 each; home nodes joined up to three.
+</p>
+<script>
+  {
+    const items = [
+      { label: 'PQ Gasper, 32k per slot', value: 2000, highlight: true, color: 'var(--chart-1)' },
+      { label: 'leanVM benchmark design', value: 1400 },
+      { label: 'Most a home node carried here', value: 375 },
+      { label: 'One subnet in our runs', value: 125, highlight: true, color: 'var(--chart-2)' },
+    ]
+    const gasper = items[0].value
+    const tested = items[3].value
+    document.getElementById('title').textContent =
+      'A PQ Gasper subnet carries ' + Math.round(gasper / tested) + '× the signatures of a subnet in our 16-subnet runs'
+    ui.bars(document.getElementById('bars'), {
+      items,
+      sort: false,
+      format: (v) => v.toLocaleString('en-US'),
+    })
+  }
+</script>

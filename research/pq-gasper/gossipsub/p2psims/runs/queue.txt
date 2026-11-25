@@ -1,0 +1,9 @@
+v2000-t8-eip7870 x
+v2000-t1-eip7870 x
+v2000-t0-eip7870 x
+v2000-all1g --hosts 2048 --validators-csv data/f9ba162f-nodes.csv --msgs 2000 --links 1000/1000 --fast-share 0
+v1000-t8-eip7870 --hosts 2048 --validators-csv data/f9ba162f-nodes.csv --msgs 1000 --fast-above 8 --fast-share 0.2 --links 50/25 --links-novalidator 50/15
+v2000-t8-100x50 --hosts 2048 --validators-csv data/f9ba162f-nodes.csv --msgs 2000 --fast-above 8 --fast-share 0.2 --links 100/50 --links-novalidator 100/50
+v500-t8-eip7870 --hosts 2048 --validators-csv data/f9ba162f-nodes.csv --msgs 500 --fast-above 8 --fast-share 0.2 --links 50/25 --links-novalidator 50/15
+v250-t8-eip7870 --hosts 2048 --validators-csv data/f9ba162f-nodes.csv --msgs 250 --fast-above 8 --fast-share 0.2 --links 50/25 --links-novalidator 50/15
+v2000-t8-200x100 --hosts 2048 --validators-csv data/f9ba162f-nodes.csv --msgs 2000 --fast-above 8 --fast-share 0.2 --links 200/100 --links-novalidator 200/100

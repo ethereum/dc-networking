@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 268" width="760" height="268" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title id="t">Largest load each class passed, and the next load tested, which failed</title>
+<desc id="d">Horizontal bars, signatures per subnet per slot, against the 1,600 of one PQ Gasper subnet. Home, no validators (50/15 Mbit/s · 330 nodes): passed 300, failed 400; Home stakers (50/25 Mbit/s · 976 nodes): passed 400, failed 600; 1 Gbit nodes (1 Gbit/s · 742 nodes): passed 800, failed 1,600.</desc>
+<style>text{font-variant-numeric:tabular-nums}.f-surface{fill:#fcfcfb}.k-surface{stroke:#fcfcfb}.f-ink{fill:#0b0b0b}.k-ink{stroke:#0b0b0b}.f-ink2{fill:#52514e}.k-ink2{stroke:#52514e}.f-muted{fill:#898781}.k-muted{stroke:#898781}.f-grid{fill:#e1e0d9}.k-grid{stroke:#e1e0d9}.f-axis{fill:#c3c2b7}.k-axis{stroke:#c3c2b7}.f-border{fill:rgba(11,11,11,0.10)}.k-border{stroke:rgba(11,11,11,0.10)}.f-s1{fill:#2a78d6}.k-s1{stroke:#2a78d6}.f-s2{fill:#eb6834}.k-s2{stroke:#eb6834}.f-s3{fill:#9e9d95}.k-s3{stroke:#9e9d95}@media (prefers-color-scheme: dark){.f-surface{fill:#1a1a19}.k-surface{stroke:#1a1a19}.f-ink{fill:#f0efec}.k-ink{stroke:#f0efec}.f-ink2{fill:#c3c2b7}.k-ink2{stroke:#c3c2b7}.f-muted{fill:#898781}.k-muted{stroke:#898781}.f-grid{fill:#2c2c2a}.k-grid{stroke:#2c2c2a}.f-axis{fill:#383835}.k-axis{stroke:#383835}.f-border{fill:rgba(255,255,255,0.10)}.k-border{stroke:rgba(255,255,255,0.10)}.f-s1{fill:#3987e5}.k-s1{stroke:#3987e5}.f-s2{fill:#d95926}.k-s2{stroke:#d95926}.f-s3{fill:#77766f}.k-s3{stroke:#77766f}}</style>
+<rect x="0.5" y="0.5" width="759" height="267" rx="12" fill="#fcfcfb" stroke="rgba(11,11,11,0.10)" class="f-surface k-border"/>
+<text x="592" y="36" font-size="12" text-anchor="end" fill="#52514e" class="f-ink2">One PQ Gasper subnet</text>
+<text x="672" y="36" font-size="12" text-anchor="end" fill="#52514e" class="f-ink2">passed</text>
+<text x="736" y="36" font-size="12" text-anchor="end" fill="#898781" class="f-muted">failed</text>
+<line x1="312" y1="48" x2="312" y2="210" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="408" y1="48" x2="408" y2="210" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="504" y1="48" x2="504" y2="210" stroke-width="1" stroke="#e1e0d9" class="k-grid"/>
+<line x1="600" y1="24" x2="600" y2="210" stroke-width="1.5" stroke-dasharray="4 3" stroke="#52514e" class="k-ink2"/>
+<text x="24" y="70" font-size="14" font-weight="600" fill="#0b0b0b" class="f-ink">Home, no validators</text>
+<text x="24" y="87" font-size="12" fill="#52514e" class="f-ink2">50/15 Mbit/s · 330 nodes</text>
+<rect x="288" y="63" width="24" height="18" fill-opacity="0.2" stroke-width="1.25" stroke-dasharray="3 2" fill="#2a78d6" stroke="#2a78d6" class="f-s1 k-s1"/>
+<rect x="216" y="63" width="72" height="18" fill="#2a78d6" class="f-s1"/>
+<text x="672" y="77" font-size="14" font-weight="600" text-anchor="end" fill="#0b0b0b" class="f-ink">300</text>
+<text x="736" y="77" font-size="14" text-anchor="end" fill="#898781" class="f-muted">400</text>
+<text x="24" y="122" font-size="14" font-weight="600" fill="#0b0b0b" class="f-ink">Home stakers</text>
+<text x="24" y="139" font-size="12" fill="#52514e" class="f-ink2">50/25 Mbit/s · 976 nodes</text>
+<rect x="312" y="115" width="48" height="18" fill-opacity="0.2" stroke-width="1.25" stroke-dasharray="3 2" fill="#eb6834" stroke="#eb6834" class="f-s2 k-s2"/>
+<rect x="216" y="115" width="96" height="18" fill="#eb6834" class="f-s2"/>
+<text x="672" y="129" font-size="14" font-weight="600" text-anchor="end" fill="#0b0b0b" class="f-ink">400</text>
+<text x="736" y="129" font-size="14" text-anchor="end" fill="#898781" class="f-muted">600</text>
+<text x="24" y="174" font-size="14" font-weight="600" fill="#0b0b0b" class="f-ink">1 Gbit nodes</text>
+<text x="24" y="191" font-size="12" fill="#52514e" class="f-ink2">1 Gbit/s · 742 nodes</text>
+<rect x="408" y="167" width="192" height="18" fill-opacity="0.2" stroke-width="1.25" stroke-dasharray="3 2" fill="#9e9d95" stroke="#9e9d95" class="f-s3 k-s3"/>
+<rect x="216" y="167" width="192" height="18" fill="#9e9d95" class="f-s3"/>
+<text x="672" y="181" font-size="14" font-weight="600" text-anchor="end" fill="#0b0b0b" class="f-ink">800</text>
+<text x="736" y="181" font-size="14" text-anchor="end" fill="#898781" class="f-muted">1,600</text>
+<line x1="216" y1="210" x2="600" y2="210" stroke-width="1" stroke="#c3c2b7" class="k-axis"/>
+<text x="216" y="228" font-size="12" fill="#898781" class="f-muted">0</text>
+<text x="312" y="228" font-size="12" text-anchor="middle" fill="#898781" class="f-muted">400</text>
+<text x="408" y="228" font-size="12" text-anchor="middle" fill="#898781" class="f-muted">800</text>
+<text x="504" y="228" font-size="12" text-anchor="middle" fill="#898781" class="f-muted">1,200</text>
+<text x="600" y="228" font-size="12" text-anchor="middle" fill="#898781" class="f-muted">1,600</text>
+<text x="216" y="250" font-size="12.5" fill="#52514e" class="f-ink2">Signatures per subnet per slot</text>
+</svg>

@@ -1,0 +1,8 @@
+shadow rc=0 wall=298s
+initial sizes (class, send, receive): sockets {}
+autotune flags (send, receive): sockets {}
+50x15: send growth steps 29370, max 4194304 (at 4 MiB cap: 51); receive growth steps 95616, max 6291456 (at 6 MiB cap: 1)
+50x25: send growth steps 85937, max 4194304 (at 4 MiB cap: 199); receive growth steps 314680, max 6291456 (at 6 MiB cap: 1)
+cloud: send growth steps 153538, max 4194304 (at 4 MiB cap: 569); receive growth steps 1005974, max 6291456 (at 6 MiB cap: 170)
+first RTT samples (sockets): 0; initial-size events: 0 (none means Shadow's initial sizing never ran)
+CHECK PASS (no socket starts above 131,072 / 174,760 B or grows past 4 / 6 MiB)

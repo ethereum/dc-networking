@@ -1,0 +1,32 @@
+<div class="ui-header">
+	<p class="ui-title" id="title"></p>
+	<p class="ui-sub">MiB moved per node per slot (in + out, votes and proofs), one simulated subnet of 217 hosts</p>
+</div>
+<div id="bars"></div>
+<p class="ui-caption" style="margin-top: 8px">
+	Shadow 3.3, rust-libp2p (TCP + noise + yamux), 391 leanSig-size votes per slot, 16 aggregators.
+	Gossip averaged over two topology seeds (one slot each), direct over four slots. Proof phase:
+	gossip floods all 16 leaf proofs (220 KiB) to every node; direct pulls the best and one random proof
+	to the proposer only.
+</p>
+<script>
+	{
+		const gossip = { 'Home voter': 36.1, 'Cloud voter': 44.9, Aggregator: 41.8, Proposer: 33.7 }
+		const direct = { 'Home voter': 0.1, 'Cloud voter': 0.1, Aggregator: 1.27, Proposer: 0.43 }
+		const items = []
+		for (const k of Object.keys(gossip)) {
+			items.push({ label: `${k}, gossip`, value: gossip[k] })
+			items.push({ label: `${k}, direct`, value: direct[k], highlight: true })
+		}
+		const gmin = Math.min(...Object.values(gossip))
+		const gmax = Math.max(...Object.values(gossip))
+		const dmax = Math.max(...Object.values(direct))
+		document.getElementById('title').textContent =
+			`Every gossip node moves ${Math.round(gmin)}–${Math.round(gmax)} MiB per slot; with direct delivery no node moves more than ${dmax.toFixed(1)} MiB`
+		ui.bars(document.getElementById('bars'), {
+			items,
+			sort: false,
+			format: (v) => (v < 1 ? `${v.toFixed(2)} MiB` : `${v.toFixed(1)} MiB`),
+		})
+	}
+</script>

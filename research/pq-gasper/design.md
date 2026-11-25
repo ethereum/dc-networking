@@ -157,7 +157,7 @@ provenance: agent
   - "One index per 12-second slot" is now 8 per slot, plus one per target epoch for attestations, 2^30 bid leaves and 2^15 reserved ones.
   - All attesters of an epoch share a leaf, which suits leanVM's grouping by (leaf, message).
   - The PQ Gasper row (16 leaf proofs, one recursion level) matches the spec.
-- **[README.md](README.md) avenues.** Avenue 9 (fewer aggregators, 16 → 4) landed. Avenue 5 (builders aggregate) has no counterpart in the spec; [builders.md](builders.md) argues for it.
+- **[Avenues](../../posts/pq-gasper-avenues.md).** "Reduce number of Aggregators" (16 → 4) landed. "Rely on Builders to aggregate" has no counterpart in the spec; [the builders post](../../posts/pq-gasper-builders.md) argues for it.
 
 ## The `pq-dc` branch
 

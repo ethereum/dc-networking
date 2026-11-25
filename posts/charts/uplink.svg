@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 344" width="760" height="344" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title id="t">Home nodes fail once their mean upload reaches about half the uplink</title>
+<desc id="d">Lines of mean upload 4–8 s into the slot, as a share of the uplink, against signatures per subnet per slot (200, 300, 400, 600, 800, 1,600). Home, no validators (50/15 Mbit/s): 33.9 %, 45.9 %, 55.9 %, 71.6 %, 84.3 %, 114.9 %, passed up to 300; Home stakers (50/25 Mbit/s): 22.6 %, 31.1 %, 38.5 %, 50.1 %, 59.1 %, 85.1 %, passed up to 400.</desc>
+<style>text{font-variant-numeric:tabular-nums}.f-surface{fill:#fcfcfb}.k-surface{stroke:#fcfcfb}.f-ink{fill:#0b0b0b}.k-ink{stroke:#0b0b0b}.f-ink2{fill:#52514e}.k-ink2{stroke:#52514e}.f-muted{fill:#898781}.k-muted{stroke:#898781}.f-grid{fill:#e1e0d9}.k-grid{stroke:#e1e0d9}.f-axis{fill:#c3c2b7}.k-axis{stroke:#c3c2b7}.f-border{fill:rgba(11,11,11,0.10)}.k-border{stroke:rgba(11,11,11,0.10)}.f-s1{fill:#2a78d6}.k-s1{stroke:#2a78d6}.f-s2{fill:#eb6834}.k-s2{stroke:#eb6834}.f-s3{fill:#9e9d95}.k-s3{stroke:#9e9d95}@media (prefers-color-scheme: dark){.f-surface{fill:#1a1a19}.k-surface{stroke:#1a1a19}.f-ink{fill:#f0efec}.k-ink{stroke:#f0efec}.f-ink2{fill:#c3c2b7}.k-ink2{stroke:#c3c2b7}.f-muted{fill:#898781}.k-muted{stroke:#898781}.f-grid{fill:#2c2c2a}.k-grid{stroke:#2c2c2a}.f-axis{fill:#383835}.k-axis{stroke:#383835}.f-border{fill:rgba(255,255,255,0.10)}.k-border{stroke:rgba(255,255,255,0.10)}.f-s1{fill:#3987e5}.k-s1{stroke:#3987e5}.f-s2{fill:#d95926}.k-s2{stroke:#d95926}.f-s3{fill:#77766f}.k-s3{stroke:#77766f}}</style>
+<rect x="0.5" y="0.5" width="759" height="343" rx="12" fill="#fcfcfb" stroke="rgba(11,11,11,0.10)" class="f-surface k-border"/>
+<text x="24" y="34" font-size="13" fill="#52514e" class="f-ink2">Upload 4–8 s into the slot, as a share of the uplink</text>
+<circle cx="604" cy="30" r="5" fill="#52514e" class="f-ink2"/>
+<text x="615" y="34" font-size="12.5" fill="#52514e" class="f-ink2">passed</text>
+<circle cx="678" cy="30" r="4.25" stroke-width="1.75" fill="#fcfcfb" stroke="#52514e" class="f-surface k-ink2"/>
+<text x="689" y="34" font-size="12.5" fill="#52514e" class="f-ink2">failed</text>
+<line x1="64" y1="286" x2="556" y2="286" stroke-width="1" stroke="#c3c2b7" class="k-axis"/>
+<line x1="64" y1="197.2" x2="556" y2="197.2" stroke-width="1" stroke-dasharray="4 3" stroke="#898781" class="k-muted"/>
+<text x="70" y="190.2" font-size="12" fill="#898781" class="f-muted">half the uplink</text>
+<line x1="64" y1="108.4" x2="556" y2="108.4" stroke-width="1" stroke-dasharray="4 3" stroke="#898781" class="k-muted"/>
+<text x="70" y="101.4" font-size="12" fill="#898781" class="f-muted">full uplink</text>
+<text x="56" y="290" font-size="12" text-anchor="end" fill="#898781" class="f-muted">0 %</text>
+<text x="56" y="201.2" font-size="12" text-anchor="end" fill="#898781" class="f-muted">50 %</text>
+<text x="56" y="112.4" font-size="12" text-anchor="end" fill="#898781" class="f-muted">100 %</text>
+<text x="64" y="304" font-size="12" text-anchor="middle" fill="#898781" class="f-muted">0</text>
+<text x="187" y="304" font-size="12" text-anchor="middle" fill="#898781" class="f-muted">400</text>
+<text x="310" y="304" font-size="12" text-anchor="middle" fill="#898781" class="f-muted">800</text>
+<text x="433" y="304" font-size="12" text-anchor="middle" fill="#898781" class="f-muted">1,200</text>
+<text x="556" y="304" font-size="12" text-anchor="middle" fill="#898781" class="f-muted">1,600</text>
+<text x="310" y="326" font-size="12.5" text-anchor="middle" fill="#52514e" class="f-ink2">Signatures per subnet per slot</text>
+<polyline points="125.5,225.794 156.25,204.482 187,186.722 248.5,158.838 310,136.283 556,81.9376" fill="none" stroke-width="2.5" stroke-linejoin="round" stroke="#2a78d6" class="k-s1"/>
+<circle cx="125.5" cy="225.794" r="5" fill="#2a78d6" class="f-s1"/>
+<circle cx="156.25" cy="204.482" r="5" fill="#2a78d6" class="f-s1"/>
+<circle cx="187" cy="186.722" r="4.25" stroke-width="2" fill="#fcfcfb" stroke="#2a78d6" class="f-surface k-s1"/>
+<circle cx="248.5" cy="158.838" r="4.25" stroke-width="2" fill="#fcfcfb" stroke="#2a78d6" class="f-surface k-s1"/>
+<circle cx="310" cy="136.283" r="4.25" stroke-width="2" fill="#fcfcfb" stroke="#2a78d6" class="f-surface k-s1"/>
+<circle cx="556" cy="81.9376" r="4.25" stroke-width="2" fill="#fcfcfb" stroke="#2a78d6" class="f-surface k-s1"/>
+<text x="570" y="82.9376" font-size="13" font-weight="600" fill="#2a78d6" class="f-s1">Home, no validators</text>
+<text x="570" y="98.9376" font-size="12" fill="#52514e" class="f-ink2">50/15 Mbit/s</text>
+<polyline points="125.5,245.862 156.25,230.766 187,217.624 248.5,197.022 310,181.038 556,134.862" fill="none" stroke-width="2.5" stroke-linejoin="round" stroke="#eb6834" class="k-s2"/>
+<circle cx="125.5" cy="245.862" r="5" fill="#eb6834" class="f-s2"/>
+<circle cx="156.25" cy="230.766" r="5" fill="#eb6834" class="f-s2"/>
+<circle cx="187" cy="217.624" r="5" fill="#eb6834" class="f-s2"/>
+<circle cx="248.5" cy="197.022" r="4.25" stroke-width="2" fill="#fcfcfb" stroke="#eb6834" class="f-surface k-s2"/>
+<circle cx="310" cy="181.038" r="4.25" stroke-width="2" fill="#fcfcfb" stroke="#eb6834" class="f-surface k-s2"/>
+<circle cx="556" cy="134.862" r="4.25" stroke-width="2" fill="#fcfcfb" stroke="#eb6834" class="f-surface k-s2"/>
+<text x="570" y="135.862" font-size="13" font-weight="600" fill="#eb6834" class="f-s2">Home stakers</text>
+<text x="570" y="151.862" font-size="12" fill="#52514e" class="f-ink2">50/25 Mbit/s</text>
+</svg>

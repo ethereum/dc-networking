@@ -1,0 +1,74 @@
+== runs/R20-pq-fs0-b16-2k4-rtt6-ps100-cf2-s1 (shadow-tcpd.log.gz): 640763 TCP endpoints with snapshots
+snapshot lines cut by the log buffer: 0 of 6,950,160; endpoints whose counter comes from an earlier snapshot or is missing: txfl 0, txca 0, hstrain 0, hsdelay 0, epochs 0, txstart 0, txshift 0, rounds 0
+CUBIC on: True
+data packets released with cwnd >= ssthresh (snapshot counters, to each endpoint's last snapshot):
+  1G->1G     309,608,557 of 409,246,282 =  75.7 %   (39982 endpoints)
+  1G->home   206,077,540 of 295,868,854 =  69.7 %   (125874 endpoints)
+  home->1G   224,902,337 of 317,907,285 =  70.7 %   (125875 endpoints)
+  home->home 178,050,504 of 263,450,033 =  67.6 %   (349032 endpoints)
+  all        918,638,938 of 1,286,472,454 =  71.4 %
+HyStart exits (tcpd hys lines; both tests can fire on one ACK): train / delay, endpoints with an exit, cwnd at exit p50/p90
+  1G->1G     train  5,186  delay      0  (snapshot counters 3,984 / 0), cwnd at exit p50/p90 44/224
+  1G->home   train  1,458  delay  1,663  (snapshot counters 1,338 / 1,587), cwnd at exit p50/p90 87/202
+  home->1G   train  2,353  delay  3,588  (snapshot counters 2,330 / 3,558), cwnd at exit p50/p90 74/238
+  home->home train      0  delay  5,949  (snapshot counters 0 / 5,921), cwnd at exit p50/p90 108/239
+  delay exits: curr_rtt - delay_min p10/p50/p90 ms 4.3/5.9/11.8 (threshold 4.4 ms at p50); delay_min p50 35.2 ms
+  train exits: round time p50 4.9 ms against threshold p50 4.6 ms; ack delay p50 1000 us; delay_min p50 8.2 ms
+CUBIC epochs (tcpd cubep lines): count, with W_max > cwnd (concave start), K p50/p90 s, W_max p50 by path type
+  1G->1G     111,847 epochs (109,158 counted),  99,472 below W_max, K p50/p90 3.42/4.93 s, W_max p50 69
+  1G->home   751,008 epochs (740,280 counted), 410,455 below W_max, K p50/p90 2.59/3.74 s, W_max p50 28
+  home->1G   542,097 epochs (536,456 counted), 410,586 below W_max, K p50/p90 2.71/3.80 s, W_max p50 30
+  home->home 1,695,266 epochs (1,673,998 counted), 559,002 below W_max, K p50/p90 2.46/3.42 s, W_max p50 21
+  K against cbrt((W_max - cwnd) / 0.4): relative error p50 0.07 %, p99 0.14 %, max 0.14 % over 1,479,515 epochs
+TX_START (new data with nothing in flight) and epoch shifts: events / shifts of an active epoch
+  1G->1G     10,950,883 / 9,580,758
+  1G->home   15,023,534 / 8,452,295
+  home->1G   11,529,498 / 6,632,557
+  home->home 20,387,386 / 6,634,174
+  traced shifts: 250,963, epoch after = min(epoch + idle, now) in 250,963 (5,828 capped at now); idle p50/p90 128/1400 ms
+congestion-avoidance growth per round trip (rounds counted, over 1.5 x starting cwnd + 1, over half the ACKed packets + 1, max ratio)
+  1G->1G     1,930,725 rounds,     96 over 1.5x+1,      0 over acked/2+1, max 83.500x
+  1G->home   5,370,123 rounds,  2,898 over 1.5x+1,      0 over acked/2+1, max 48.000x
+  home->1G   5,361,944 rounds,  5,041 over 1.5x+1,      0 over acked/2+1, max 60.000x
+  home->home 6,830,875 rounds, 11,106 over 1.5x+1,      0 over acked/2+1, max 39.000x
+logged targets against W_max + 0.4 (t - K)^3: |target - formula| / |0.4 (t - K)^3| p50 6.98 %, p99 92.68 % over 367,842 recomputations in 49384 traced epochs
+  |target - formula| in segments p50 0.27, p99 0.98, max 77.75; within 1 segment 99.9 % (integer truncation in bictcp_update)
+  against Linux's integer formula origin +- (410 |t - K|^3 >> 40), C = 410/1024: equal in 367,842 of 367,842, max |difference| 0 segments
+  cubic target above the Reno-friendly cwnd (cubic governs) in 176,366 of 367,842 (115,404 concave t < K, 60,962 convex); with W_max >= 30, cwnd within 3 segments of the target in 63,833 of 89,740
+  traces: concave (cubic governs, W_max >= 30), convex (cubic governs past K), Reno-friendly region
+  trace n1702 0x7aa27c3633e0 (1G->1G), epoch at 107521 ms, origin 75, K 3.86 s, W_max 75, 161 recomputations; t - K (s), cwnd, target (code), origin + 0.4 (t - K)^3, cnt, Reno-friendly cwnd:
+     -3.708  cwnd     52  target     55  formula      54.6  cnt     17  friendly 52
+     -2.937  cwnd     64  target     65  formula      64.9  cnt     64  friendly 55
+     -2.314  cwnd     69  target     71  formula      70.0  cnt     34  friendly 57
+     -1.693  cwnd     73  target     74  formula      73.1  cnt     73  friendly 59
+     -0.925  cwnd     75  target     75  formula      74.7  cnt   7500  friendly 61
+     -0.215  cwnd     75  target     75  formula      75.0  cnt   7500  friendly 64
+      0.389  cwnd     75  target     75  formula      75.0  cnt   7500  friendly 66
+      1.007  cwnd     75  target     75  formula      75.4  cnt   7500  friendly 68
+      1.609  cwnd     76  target     76  formula      76.7  cnt   7600  friendly 70
+      2.193  cwnd     78  target     79  formula      79.2  cnt     78  friendly 72
+      2.794  cwnd     82  target     83  formula      83.7  cnt     82  friendly 74
+  trace n1687 0x7aa220280030 (1G->1G), epoch at 188806 ms, origin 39, K 2.59 s, W_max 39, 239 recomputations; t - K (s), cwnd, target (code), origin + 0.4 (t - K)^3, cnt, Reno-friendly cwnd:
+     -2.444  cwnd     32  target     34  formula      33.2  cnt     16  friendly 32
+     -0.463  cwnd     39  target     39  formula      39.0  cnt   3900  friendly 38
+      1.010  cwnd     43  target     39  formula      39.4  cnt   4300  friendly 43
+      2.036  cwnd     47  target     42  formula      42.4  cnt   4700  friendly 47
+      3.106  cwnd     50  target     51  formula      51.0  cnt     50  friendly 51
+      4.181  cwnd     64  target     68  formula      68.2  cnt     16  friendly 54
+      4.933  cwnd     81  target     87  formula      87.0  cnt     13  friendly 56
+      5.459  cwnd     99  target    104  formula     104.1  cnt     19  friendly 58
+      6.021  cwnd    120  target    126  formula     126.3  cnt     20  friendly 60
+      6.604  cwnd    145  target    154  formula     154.2  cnt     16  friendly 62
+      7.115  cwnd    174  target    183  formula     183.1  cnt     19  friendly 63
+  trace n0287 0x7aa33ad8d2f0 (home->1G), epoch at 69605 ms, origin 11, K 1.71 s, W_max 11, 112 recomputations; t - K (s), cwnd, target (code), origin + 0.4 (t - K)^3, cnt, Reno-friendly cwnd:
+     -1.140  cwnd     10  target     11  formula      10.4  cnt     10  friendly 11
+     -0.730  cwnd     13  target     11  formula      10.8  cnt   1300  friendly 13
+     -0.326  cwnd     15  target     11  formula      11.0  cnt   1500  friendly 15
+      0.079  cwnd     17  target     11  formula      11.0  cnt   1700  friendly 17
+      0.479  cwnd     19  target     11  formula      11.0  cnt     19  friendly 20
+      0.830  cwnd     22  target     11  formula      11.2  cnt   2200  friendly 22
+      1.224  cwnd     24  target     11  formula      11.7  cnt   2400  friendly 24
+      1.638  cwnd     26  target     12  formula      12.8  cnt     26  friendly 27
+      1.994  cwnd     29  target     14  formula      14.2  cnt   2900  friendly 29
+      2.380  cwnd     31  target     16  formula      16.4  cnt   3100  friendly 31
+      2.746  cwnd     33  target     19  formula      19.3  cnt   3300  friendly 33

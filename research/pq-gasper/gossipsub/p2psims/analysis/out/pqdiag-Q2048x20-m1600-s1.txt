@@ -1,0 +1,109 @@
+== Q2048x20-m1600-s1: 2048 hosts, 20 slots, peer-scale 1.0, binary old; analysed slots 2-19
+
+# Item 1: PQ misses at the 8 s deadline (online node-slots)
+ node-slot completeness per slot and class (%), all slots:
+  50x15  [18.24, 36.97, 35.15, 33.64, 26.06, 28.79, 30.0, 30.0, 23.33, 26.36, 28.18, 26.06, 27.27, 28.48, 27.36]
+  50x25  [50.1, 53.4, 57.82, 57.04, 57.14, 55.75, 56.57, 57.19, 53.29, 53.96, 53.34, 56.32, 53.85, 56.01, 57.04]
+  cloud  [97.29, 97.97, 98.92, 99.86, 99.46, 99.73, 99.46, 99.73, 99.46, 99.73, 99.59, 99.32, 99.59, 99.46, 99.73]
+  all    [62.06, 66.88, 69.03, 68.76, 67.43, 67.3, 67.79, 68.18, 65.15, 66.06, 66.01, 67.01, 66.13, 67.3, 67.73]
+  pass rule (every class >= 99 % in every slot from slot 2): FAIL
+  worst slot per class (%, slot): {'50x15': (23.33, 8), '50x25': (53.29, 8), 'cloud': (98.92, 2)}
+
+ slots 2-19: per class  node-slots | complete % | PQ msg miss % at 8 s | at 9 s | needed pairs
+  50x15     4289 | 28.51 | 10.0444 | 7.5589 | 1290659
+  50x25    12652 | 55.79 | 3.2613 | 2.0053 | 3806786
+  cloud     9611 | 99.54 | 0.0168 | 0.0087 | 2888742
+  all      26552 | 67.22 | 3.1839 | 2.1806 | 7986187
+  offline node-slots left out: 72
+
+ incomplete node-slots, slots 2-19, by first matching reason: count (missing msgs)
+  50x15    3066: rejoined12-60s 4 (338), never 937 (72140), near_miss(<=1s) 480 (3057), late(>1s) 1645 (54104)
+  50x25    5593: rejoined<=12s 2 (14), rejoined12-60s 7 (120), never 628 (35787), near_miss(<=1s) 1513 (7240), late(>1s) 3443 (80990)
+  cloud      44: near_miss(<=1s) 21 (77), late(>1s) 23 (409)
+  50x15  repeat hosts: 322 of 330 hosts incomplete at least once; node-slots on hosts incomplete >= 2 times 99.84 %; top 10 % of these hosts hold 13.57 %; max per host 13 of 18 slots
+  50x25  repeat hosts: 791 of 976 hosts incomplete at least once; node-slots on hosts incomplete >= 2 times 98.86 %; top 10 % of these hosts hold 17.79 %; max per host 13 of 18 slots
+  cloud  repeat hosts: 22 of 742 hosts incomplete at least once; node-slots on hosts incomplete >= 2 times 68.18 %; top 10 % of these hosts hold 31.82 %; max per host 9 of 18 slots
+  share of a slot's incomplete hosts also incomplete in the previous slot (%): [75.24, 74.44, 74.4, 76.14, 74.0, 69.66, 75.47, 76.51, 75.07, 72.25, 75.15, 74.51, None, None, None, None, None]
+  most often incomplete hosts: incomplete slots | link client peer_target nat city access | conns | negative peers | PQ topics with an empty mesh at 3.95 s | on those topics: connected subscribers, of them negative (means over the host's incomplete slots)
+   host 658: 13 | 50x15 lighthouse 200 nat=True fra dsl | 198.4 | 52.5 | 0.0 | None, None
+   host 40: 13 | 50x25 prysm 70 nat=None gru dsl | 71.7 | 0.0 | 0.0 | None, None
+   host 701: 13 | 50x15 lighthouse 200 nat=None sin dsl | 200.2 | 74.3 | 0.0 | None, None
+   host 599: 13 | 50x15 lighthouse 200 nat=None syd cable | 200.8 | 68.3 | 0.0 | None, None
+   host 798: 13 | 50x15 lighthouse 200 nat=None sin dsl | 200.6 | 75.1 | 0.0 | None, None
+   host 18: 13 | 50x25 lighthouse 200 nat=True sin dsl | 197.0 | 53.5 | 0.0 | None, None
+   host 1555: 13 | 50x15 lighthouse 200 nat=True us-west cable | 198.2 | 55.5 | 0.0 | None, None
+   host 1290: 13 | 50x15 lighthouse 200 nat=None us-west dsl | 200.0 | 60.8 | 0.0 | None, None
+   host 1998: 13 | 50x15 lighthouse 200 nat=None syd fiber | 202.2 | 62.1 | 0.0 | None, None
+   host 1116: 13 | 50x15 lodestar 200 nat=None ams cable | 198.6 | 0.2 | 0.0 | None, None
+   host 539: 13 | 50x15 lighthouse 200 nat=None par dsl | 199.2 | 60.1 | 0.0 | None, None
+   host 1078: 13 | 50x25 lighthouse 200 nat=None sel dsl | 199.4 | 60.8 | 0.0 | None, None
+  messages missed by > 50 % of their online subscribers: 0 of 3912 (0 reached none); they account for 0.0 % of missed (node, message) pairs
+
+ per slot 2-19: PQ msg miss % at 8 s by class
+  50x15  [10.3299, 10.5763, 9.2186, 9.4108, 9.4199, 9.7889, 11.3246, 10.9031, 10.0125, 10.4515, 9.4746, 10.5824, 9.1276, None, None, None, None, None]
+  50x25  [3.7912, 3.1881, 2.9788, 3.3479, 3.0798, 3.181, 3.422, 2.925, 3.3722, 3.192, 3.5811, 3.3617, 2.9971, None, None, None, None, None]
+  cloud  [0.0437, 0.0076, 0.007, 0.0013, 0.0125, 0.0023, 0.007, 0.0036, 0.0257, 0.0232, 0.0351, 0.0461, 0.004, None, None, None, None, None]
+
+# BLS attestation miss rate (tracked attestations, slots 2-19): missing at 8 s / never, % of deliveries
+  per slot, missing at 8 s (% of deliveries) by class:
+   50x15  [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+   50x25  [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+   cloud  [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+
+# Item 2: per slot (mesh snapshot at 3.95 s into the slot)
+  mesh links         [293367, 280204, 285118, 310731, 293490, 292543, 293390, 288808, 312096, 305176, 293900, 292842, 302371, 317443, 302461, 296375, 304657]
+  links/node         [143.8, 137.3, 139.7, 152.2, 143.7, 143.2, 143.6, 141.4, 152.8, 149.4, 143.9, 143.3, 147.9, 155.4, 148.0, 145.1, 149.2]
+  conns/node         [163.8, 163.9, 163.9, 164.2, 164.5, 163.5, 164.1, 164.7, 163.4, 163.9, 163.8, 163.5, 164.2, 163.7, 163.5, 163.6, 163.7]
+  PQ mesh 50x15      [6.61, 6.04, 6.09, 6.47, 6.03, 6.2, 5.92, 5.92, 6.46, 5.89, 5.88, 5.95, 6.07, 6.4, 5.9, 5.9, 6.1]
+  PQ mesh<6 50x15 %  [24.32, 35.45, 37.27, 25.15, 40.0, 42.73, 44.55, 43.03, 26.36, 44.85, 44.24, 44.24, 45.76, 29.09, 43.03, 45.29, 40.43]
+  PQ mesh=0 50x15 %  [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  PQ mesh 50x25      [6.47, 6.5, 6.54, 6.96, 6.41, 6.71, 6.37, 6.32, 7.08, 6.4, 6.23, 6.21, 6.54, 6.94, 6.13, 6.23, 6.34]
+  PQ mesh<6 50x25 %  [26.75, 26.44, 30.66, 18.4, 30.8, 29.98, 36.04, 36.65, 18.89, 37.1, 38.54, 39.12, 35.83, 18.6, 40.8, 37.0, 38.85]
+  PQ mesh=0 50x25 %  [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  PQ mesh cloud      [7.27, 7.75, 8.27, 8.44, 7.91, 8.3, 8.1, 7.93, 8.48, 8.18, 7.83, 7.81, 8.22, 8.41, 7.88, 7.72, 8.13]
+  PQ mesh<6 cloud %  [14.48, 10.69, 10.42, 12.72, 11.77, 9.61, 11.5, 13.13, 11.1, 11.64, 12.31, 14.59, 12.03, 12.3, 13.51, 13.11, 10.68]
+  PQ mesh=0 cloud %  [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  neg peers          [147, 24597, 41180, 52392, 62591, 65449, 65508, 65476, 63592, 63670, 62891, 61671, 60961, 60353, 60620, 59950, 59569]
+  negative-score peers per observer, by observer class:
+   50x15  [0.0, 13.4, 24.2, 32.6, 40.2, 42.6, 43.1, 43.6, 42.8, 42.9, 42.7, 42.4, 42.2, 42.2, 42.8, 42.3, 42.7]
+   50x25  [0.0, 10.9, 19.2, 24.9, 30.4, 32.6, 33.0, 33.4, 32.6, 32.7, 32.2, 31.5, 31.1, 30.7, 31.0, 30.5, 30.3]
+   cloud  [0.2, 12.9, 19.7, 23.6, 26.6, 26.6, 25.8, 25.1, 24.0, 24.0, 23.6, 22.9, 22.6, 22.4, 22.1, 22.1, 21.6]
+  negative-score peers per observer, by observer client:
+   lighthouse [0.1, 18.8, 31.3, 39.7, 47.3, 49.4, 49.4, 49.4, 48.0, 48.1, 47.6, 46.6, 45.9, 45.5, 45.8, 45.3, 44.9]
+   lodestar   [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.3]
+   nimbus     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1]
+   other      [0.1, 25.5, 44.6, 57.8, 69.6, 73.2, 73.7, 73.5, 70.8, 70.8, 69.8, 68.6, 68.6, 68.3, 67.5, 67.3, 67.5]
+   prysm      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+   teku       [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1]
+  % of connections to peers of a class that are negative, by scored-peer class:
+   50x15  [0.0, 10.69, 16.63, 20.77, 24.93, 26.32, 26.07, 25.76, 25.18, 24.9, 24.38, 23.86, 23.44, 23.22, 22.9, 22.42, 22.33]
+   50x25  [0.0, 8.75, 14.47, 18.29, 21.81, 23.09, 23.12, 22.97, 22.49, 22.22, 21.9, 21.37, 20.88, 20.74, 20.72, 20.39, 20.17]
+   cloud  [0.12, 4.03, 7.54, 9.85, 11.65, 12.05, 11.96, 12.06, 11.84, 12.26, 12.28, 12.26, 12.26, 12.24, 12.68, 12.74, 12.75]
+  negative scores by band per slot [(-1,0), [-10,-1), [-100,-10), [-1000,-100), < -1000]:
+   [[0, 13, 37, 95, 2], [176, 1485, 6420, 10379, 6137], [1246, 4789, 13638, 14863, 6644], [3810, 10074, 16880, 14649, 6979], [8443, 13711, 17327, 15095, 8015], [11514, 13864, 17034, 14783, 8254], [11714, 13983, 16513, 14589, 8709], [12080, 14000, 16308, 14118, 8970], [11848, 13509, 15682, 13300, 9253], [11728, 13110, 14843, 13537, 10452], [11278, 12426, 15318, 13619, 10250], [10723, 12642, 15352, 12572, 10382], [10808, 12573, 14180, 12457, 10943], [10762, 11653, 13815, 12801, 11322], [10120, 11494, 13986, 12698, 12322], [9858, 11394, 14141, 12933, 11624], [9836, 11688, 14376, 11689, 11980]]
+  negatives per observer vs the observer's own failed sends (timeouts + queue full) in the 12 s before the snapshot:
+   0-0 failed: 2038 observer-slots, mean negatives 0.1
+   1-99 failed: 10 observer-slots, mean negatives 4.2
+   100-999 failed: 2449 observer-slots, mean negatives 25.7
+   1000-4999 failed: 26123 observer-slots, mean negatives 32.4
+   5000-inf failed: 4101 observer-slots, mean negatives 5.3
+  per slot, summed over hosts (counter deltas over the slot):
+   penalty GraftBackoff    [15, 21, 6, 9, 10, 138, 249, 334, 358, 209, 217, 238, 314, 372, 349, 324, 130]
+   penalty BrokenPromise   [1544, 1820, 1936, 2097, 1956, 1895, 1732, 1871, 2104, 2277, 2144, 1954, 1795, 1876, 1954, 1849, 780]
+   penalty MessageDeficit  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 60, 31]
+   penalty IPColocation    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+   pq        BadScore churn [9675, 9230, 8556, 8423, 7946, 7771, 7113, 7023, 7687, 7018, 6582, 6504, 6657, 7057, 6116, 6090, 3232]
+   bg_block  BadScore churn [6829, 5913, 5254, 4794, 3952, 3562, 2914, 2870, 3457, 2878, 2590, 2384, 2221, 2502, 1867, 1943, 909]
+   bg_agg    BadScore churn [8279, 7594, 7042, 6889, 6373, 6053, 5426, 5253, 5715, 4948, 4812, 4623, 4449, 4643, 3892, 3877, 1378]
+   bg_att    BadScore churn [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+   bg_col    BadScore churn [26942, 12783, 10148, 11175, 7368, 9874, 9476, 6296, 8762, 6742, 9416, 4418, 5553, 12058, 5170, 8126, 3537]
+   bg_syncc  BadScore churn [6827, 5821, 5139, 4771, 3908, 3566, 2810, 2851, 3488, 2804, 2528, 2198, 2230, 2647, 1987, 2014, 889]
+   messages dropped after the queue timeout, thousands, summed over hosts (forwards / publishes):
+   pq        [(2539.7, 0.0), (2863.8, 0.0), (2807.5, 0.0), (2864.6, 0.0), (2665.3, 0.0), (2585.7, 0.0), (2338.3, 0.1), (2265.7, 0.0), (2374.1, 0.0), (2222.6, 0.0), (2053.1, 0.0), (2103.5, 0.0), (2185.2, 0.0), (2306.7, 0.0), (2040.4, 0.0), (1932.3, 0.1), (1194.0, 0.0)]
+   bg_block  [(0.0, 0.0), (0.1, 0.0), (0.4, 0.0), (0.3, 0.0), (0.4, 0.0), (0.4, 0.0), (0.3, 0.0), (0.2, 0.0), (0.2, 0.0), (0.2, 0.0), (0.2, 0.0), (0.2, 0.0), (0.2, 0.0), (0.2, 0.0), (0.2, 0.0), (0.1, 0.0), (0.1, 0.0)]
+   bg_agg    [(2461.0, 0.0), (3272.0, 0.0), (3349.8, 0.0), (3291.9, 0.1), (3161.7, 0.1), (3209.7, 0.1), (2878.8, 0.1), (2717.0, 0.0), (2779.8, 0.1), (2571.2, 0.1), (2360.6, 0.1), (2317.4, 0.0), (2302.1, 0.1), (2312.9, 0.1), (2064.6, 0.2), (2010.3, 0.1), (651.4, 0.2)]
+   bg_col    [(11.2, 0.0), (3.2, 0.0), (2.9, 0.0), (1.7, 0.0), (1.8, 0.0), (2.9, 0.0), (4.4, 0.0), (3.2, 0.0), (0.7, 0.0), (0.8, 0.0), (4.3, 0.0), (0.9, 0.0), (0.9, 0.0), (3.8, 0.0), (1.2, 0.0), (4.5, 0.0), (1.1, 0.0)]
+   bg_syncc  [(97.6, 0.0), (131.8, 0.0), (136.5, 0.0), (127.7, 0.0), (121.4, 0.0), (121.9, 0.0), (100.2, 0.0), (96.2, 0.0), (93.8, 0.0), (92.6, 0.0), (79.8, 0.0), (76.4, 0.1), (74.2, 0.0), (74.4, 0.0), (66.7, 0.0), (67.6, 0.0), (21.3, 0.0)]
+   failed sends per host (50x15): timed out / queue full [(2256, 6), (3609, 69), (3549, 206), (3587, 468), (3261, 611), (3501, 834), (2968, 854), (2778, 738), (2790, 731), (2661, 855), (2575, 762), (2492, 732), (2461, 729), (2438, 698), (2212, 715), (2108, 640), (971, 358)]
+   failed sends per host (50x25): timed out / queue full [(2372, 11), (3228, 88), (3339, 273), (3317, 507), (3181, 777), (3227, 938), (2893, 956), (2845, 955), (2866, 801), (2722, 829), (2480, 761), (2485, 710), (2528, 746), (2618, 784), (2329, 771), (2253, 714), (774, 324)]
+   failed sends per host (cloud): timed out / queue full [(2381, 1), (2550, 13), (2553, 51), (2510, 83), (2346, 139), (2263, 112), (2053, 106), (1925, 107), (2035, 79), (1843, 80), (1660, 68), (1700, 71), (1740, 44), (1812, 81), (1607, 91), (1492, 76), (760, 45)]
